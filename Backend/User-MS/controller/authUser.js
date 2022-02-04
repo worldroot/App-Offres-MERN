@@ -6,11 +6,9 @@ const VerifToken = require('../middleware/auth')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const User = require('../User')
 
-
 router.post('/register', 
     validateSignupRequest, 
     isRequestValidated, 
-    VerifToken,
     async (req, res) => {
 
     const {
@@ -35,13 +33,12 @@ router.post('/register',
       
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');
-      console.log("User +");
 
       const payload = { user: {id: user.id,} ,};
 
       jwt.sign(
         payload,
-        process.env.JWT_SECRET, {
+        "SECRET", {
           expiresIn: 360000,
         },
         (err, token) => {
@@ -51,12 +48,14 @@ router.post('/register',
           });
         }
       );
+        console.log(savedUser)
+
     } catch (error) {
+
         console.log(error.message);
         res.status(500).send('Server error');
     }
-
-    
+   
   }
 );
 
@@ -84,17 +83,17 @@ router.post('/login',
 
       const isMatch = await bcrypt.compare(password, user.password);
 
-      if (!isMatch) {
-        return res.status(400).json({
-          errors: [{ msg: 'Mot de passe incorrect'}]
-        })
-      }
+        if (!isMatch) {
+            return res.status(400).json({
+            errors: [{ msg: 'Mot de passe incorrect'}]
+            })
+        }
   
       const payload = { user: {id: user.id} }
   
       jwt.sign(
         payload,
-        process.env.JWT_SECRET, {
+        "SECRET", {
           expiresIn: 360000
         }, (err, token) => {
           if (err) throw err;
@@ -106,9 +105,11 @@ router.post('/login',
       console.log("Login Done");
 
     } catch (error) {
+
         console.log(err.message);
         res.status(500).send('Server error');
     }
+
   })
   
   module.exports = router
