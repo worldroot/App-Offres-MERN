@@ -67,6 +67,7 @@ router.get('/:categoryId', async (req, res) => {
 // @access  Private Admin
 router.put('/:categoryId', 
     catid,
+    SuperAdminAccess,
     veriftoken, 
     async (req, res) => {
 
@@ -88,6 +89,8 @@ router.put('/:categoryId',
 // @access  Private Admin
 router.delete('/:categoryId',
     catid,
+    SuperAdminAccess,
+    AdminAccess,
     veriftoken, 
 
     async (req, res) => {
