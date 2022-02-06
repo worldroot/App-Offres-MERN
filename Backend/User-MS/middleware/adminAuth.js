@@ -7,7 +7,7 @@ module.exports = async function (req, res, next) {
             _id: req.user.id
         })
 
-        if (req.user.role !== "admin") {
+        if (user.role !== "admin") {
           return res.status(403).json({
               error: 'Admin resources access denied'
           })
