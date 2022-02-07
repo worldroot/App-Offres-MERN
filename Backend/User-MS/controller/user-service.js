@@ -7,7 +7,11 @@ const SuperAdminAccess = require('../middleware/superadminAuth')
 const userid = require('../middleware/userByid')
 const bcrypt = require('bcryptjs')
 
-router.put('/:id', verifToken,
+
+// @desc    update user
+// @access  Public
+router.put('/:id', 
+    verifToken,
     async (req, res) => {
 
   try {
@@ -27,7 +31,11 @@ router.put('/:id', verifToken,
 
 })
 
-router.put('/updatepwd/:id', verifToken,
+
+// @desc    update user password
+// @access  Public
+router.put('/updatepwd/:id', 
+    verifToken,
     async (req, res) => { 
 
     if(req.body.password){
@@ -51,6 +59,31 @@ router.put('/updatepwd/:id', verifToken,
     }
 
 }) 
+
+
+// @desc    update user role
+// @access  Super Admin
+router.put('/superadmin/:id', 
+    verifToken,
+    SuperAdminAccess,
+    async (req, res) => {
+
+  try {
+
+    const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: {role}=req.body, },
+        { new: true }
+      );
+
+    res.status(200).json(updatedUser);
+
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err)
+  }
+
+})
 
 
 module.exports = router
