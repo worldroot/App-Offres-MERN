@@ -30,11 +30,11 @@ router.post('/register',
       user = new User({ nom, prenom , email, password, });
 
       //Methode1
-      //const salt = await bcrypt.genSalt(10); 
-      //user.password = await bcrypt.hash(password, salt); 
+      const salt = await bcrypt.genSalt(10); 
+      user.password = await bcrypt.hash(password, salt); 
 
       //Methode2
-      user.password = CryptoJS.AES.encrypt(password,"K003")
+      //user.password = CryptoJS.AES.encrypt(password,"K003")
       
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');
@@ -103,16 +103,15 @@ router.post('/login',
         }, (err, token) => {
           if (err) throw err;
           res.json({
-            token
+            token,
           })
         }
       )
       console.log("Login Done");
 
-    } catch (error) {
-
-        console.log(err.message);
-        res.status(500).send('Server error');
+    } catch (err) {
+      res.status(500).json(err);
+      console.log(err)
     }
 
   })

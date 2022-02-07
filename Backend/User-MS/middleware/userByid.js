@@ -3,9 +3,8 @@ const User = require('../User')
 
 
 module.exports = async function (req, res, next) {
-    const {
-        userId
-    } = req.params
+    
+    const { userId } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(403).json({
@@ -24,7 +23,7 @@ module.exports = async function (req, res, next) {
 
         req.user = user
         next()
-        
+
     } catch (error) {
 
         console.log(error)
