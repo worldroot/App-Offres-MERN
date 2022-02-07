@@ -10,17 +10,11 @@ const bcrypt = require('bcryptjs')
 router.put('/:id', verifToken,
     async (req, res) => {
 
-    if(req.body.password){
-        const salt = await bcrypt.genSalt(10); 
-        req.body.password = await bcrypt.hash(req.body.password, salt); 
-    }  
-
-
   try {
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { $set: req.body, },
+        { $set: {nom, prenom, email}=req.body, },
         { new: true }
       );
 
@@ -33,32 +27,30 @@ router.put('/:id', verifToken,
 
 })
 
-router.put('/updatepwd/:userId',
-    userid,
-    verifToken,
-    async (req, res) => {
-        const {password} = req.body
-        let user = req.user
+router.put('/updatepwd/:id', verifToken,
+    async (req, res) => { 
 
-        if (password) {
-            password = CryptoJS.AES.decrypt(
-              password,
-              "K003"
-            ).toString();
+    if(req.body.password){
+        const salt = await bcrypt.genSalt(10); 
+        req.body.password = await bcrypt.hash(req.body.password, salt); 
+    }  
+    
+    try {
 
-            user.password = password.trim()
-          }
+    const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body, },
+        { new: true }
+    );
 
-        try {
+    res.status(200).json(updatedUser.password);
 
-            user = await user.save()
-            res.status(200).json(user);
-            
-        } catch (error) {
-            res.status(500).json(error);
-        }
+    } catch (err) {
+    res.status(500).json(err);
+    console.log(err)
+    }
 
+}) 
 
-})
 
 module.exports = router
