@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const CryptoJS = require("crypto-js");
 const VerifToken = require('../middleware/auth')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const User = require('../User')
@@ -28,8 +29,12 @@ router.post('/register',
 
       user = new User({ nom, prenom , email, password, });
 
-      const salt = await bcrypt.genSalt(10); 
-      user.password = await bcrypt.hash(password, salt); 
+      //Methode1
+      //const salt = await bcrypt.genSalt(10); 
+      //user.password = await bcrypt.hash(password, salt); 
+
+      //Methode2
+      user.password = CryptoJS.AES.encrypt(password,"K003")
       
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');
