@@ -4,9 +4,13 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const CryptoJS = require("crypto-js");
 const VerifToken = require('../middleware/auth')
+const VerifBanned = require('../middleware/userAuth')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const User = require('../User')
 
+// @route   POST api/user/register
+// @desc    Register user
+// @access  Public
 router.post('/register', 
     validateSignupRequest, 
     isRequestValidated, 
@@ -72,6 +76,7 @@ router.post('/login',
     validateSigninRequest,
     isRequestValidated,
     VerifToken,
+    VerifBanned,
     async (req, res) => {
 
     const {email, password} = req.body;
