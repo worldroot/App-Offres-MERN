@@ -58,17 +58,18 @@ router.get('/all', async (req, res) => {
 // @route   Get api/categorie/:categoryId
 // @desc    Get Single category
 // @access  Public
-router.get('/:categoryId', async (req, res) => {
+router.get('/:categoryId', catid, async (req, res) => {
     res.json(req.category)
 })
 
 // @route   Put api/categorie/:categoryId
 // @desc    Update Single category
-// @access  Private Admin
+// @access  Private super Admin
 router.put('/:categoryId', 
     catid,
-    SuperAdminAccess,
     veriftoken, 
+    SuperAdminAccess,
+
     async (req, res) => {
 
     let category = req.category;
@@ -78,6 +79,7 @@ router.put('/:categoryId',
     try {
         category = await category.save()
         res.json(category)
+        console.log(category.nomcat)
     } catch (error) {
         console.log(error.message)
         res.status(500).send('Server error');
@@ -86,7 +88,7 @@ router.put('/:categoryId',
 
 // @route   Delete api/categorie/:categoryId
 // @desc    Delete Single category
-// @access  Private Admin
+// @access  Private super Admin
 router.delete('/:categoryId',
     catid,
     SuperAdminAccess,
