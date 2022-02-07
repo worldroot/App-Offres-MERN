@@ -91,9 +91,9 @@ router.put('/:categoryId',
 // @access  Private super Admin
 router.delete('/:categoryId',
     catid,
+    veriftoken,
     SuperAdminAccess,
     AdminAccess,
-    veriftoken, 
 
     async (req, res) => {
 
