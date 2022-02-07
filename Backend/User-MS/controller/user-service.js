@@ -6,11 +6,15 @@ const AdminAccess = require('../middleware/adminAuth')
 const SuperAdminAccess = require('../middleware/superadminAuth')
 const userid = require('../middleware/userByid')
 const bcrypt = require('bcryptjs')
-const CryptoJS = require("crypto-js");
 
-router.put('/:id',
-    verifToken,
+router.put('/:id', verifToken,
     async (req, res) => {
+
+    if(req.body.password){
+        const salt = await bcrypt.genSalt(10); 
+        req.body.password = await bcrypt.hash(req.body.password, salt); 
+    }  
+
 
   try {
 
