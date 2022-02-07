@@ -1,17 +1,18 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../User')
-const verifToken = require('../middleware/auth')
 const AdminAccess = require('../middleware/adminAuth')
 const SuperAdminAccess = require('../middleware/superadminAuth')
 const userid = require('../middleware/userByid')
 const bcrypt = require('bcryptjs')
+const {
+  signAccessToken
+  } = require('../middleware/verify-token')
 
 
 // @desc    update user
 // @access  Public
 router.put('/:id', 
-    verifToken,
     async (req, res) => {
 
   try {
@@ -35,7 +36,6 @@ router.put('/:id',
 // @desc    update user password
 // @access  Public
 router.put('/updatepwd/:id', 
-    verifToken,
     async (req, res) => { 
 
     if(req.body.password){
@@ -64,7 +64,6 @@ router.put('/updatepwd/:id',
 // @desc    update user role
 // @access  Super Admin
 router.put('/superadmin/:id', 
-    verifToken,
     SuperAdminAccess,
     async (req, res) => {
 

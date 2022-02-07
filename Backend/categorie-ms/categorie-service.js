@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
-const veriftoken = require('../user-ms/middleware/auth')
 const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
-const AdminAccess = require('../user-ms/middleware/auth')
+const AdminAccess = require('../user-ms/middleware/adminAuth')
 const catid = require('./categorieByid')
-
+const { signAccessToken } = require('../user-ms/middleware/verify-token')
 const { check, validationResult } = require('express-validator')
 
 // @route   POST api/categorie
@@ -13,7 +12,6 @@ const { check, validationResult } = require('express-validator')
 // @access  Private Admin
 router.post('/', 
     [ check('nomcat', 'Name is required').trim().not().isEmpty()]
-    ,veriftoken
     ,SuperAdminAccess
     ,async (req, res) => {
 
@@ -67,7 +65,6 @@ router.get('/:categoryId', catid, async (req, res) => {
 // @access  Private super Admin
 router.put('/:categoryId', 
     catid,
-    veriftoken, 
     SuperAdminAccess,
 
     async (req, res) => {
@@ -91,7 +88,6 @@ router.put('/:categoryId',
 // @access  Private super Admin
 router.delete('/:categoryId',
     catid,
-    veriftoken,
     SuperAdminAccess,
     AdminAccess,
 

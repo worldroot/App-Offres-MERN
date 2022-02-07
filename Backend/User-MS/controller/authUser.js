@@ -1,12 +1,11 @@
 const express = require('express')
+const User = require('../User')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const CryptoJS = require("crypto-js");
-const VerifToken = require('../middleware/auth')
-const VerifBanned = require('../middleware/userAuth')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
-const User = require('../User')
+const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -16,12 +15,7 @@ router.post('/register',
     isRequestValidated, 
     async (req, res) => {
 
-    const {
-      nom,
-      prenom,
-      email,
-      password
-    } = req.body;
+    const { nom, prenom, email, password } = req.body;
 
     try {
 
@@ -31,33 +25,15 @@ router.post('/register',
           errors: [{ msg: 'Utilisateur existe déjà',}, ],
         }); }
 
-      user = new User({ nom, prenom , email, password, });
+      user = new User({ nom, prenom , email, password });
 
-      //Methode1
-      const salt = await bcrypt.genSalt(10); 
-      user.password = await bcrypt.hash(password, salt); 
-
-      //Methode2
-      //user.password = CryptoJS.AES.encrypt(password,"K003")
-      
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');
+      
+      const accessToken = await signAccessToken(savedUser.id)
+      //const refreshToken = await signRefreshToken(savedUser.id)
 
-      const payload = { user: {id: user.id,} ,};
-
-      jwt.sign(
-        payload,
-        "SECRET", {
-          expiresIn: 360000,
-        },
-        (err, token) => {
-          if (err) throw err;
-          res.status(200).json({
-            token, savedUser
-          });
-        }
-      );
-        console.log(savedUser)
+      res.send({ accessToken })
 
     } catch (error) {
 
@@ -75,24 +51,22 @@ router.post('/register',
 router.post('/login', 
     validateSigninRequest,
     isRequestValidated,
-    VerifToken,
-    VerifBanned,
     async (req, res) => {
-
+          
     const {email, password} = req.body;
   
     try {
      
+      //Mail Verif
       let user = await User.findOne({email});
-      
         if (!user) {
-            return res.status(400).json({
+            return res.status(401).json({
             errors: [{ msg: 'Email incorrect'}]
             })
         }
-
+      
+      //Pass Verif
       const isMatch = await bcrypt.compare(password, user.password);
-
         if (!isMatch) {
             return res.status(400).json({
             errors: [{ msg: 'Mot de passe incorrect'}]

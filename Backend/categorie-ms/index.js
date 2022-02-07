@@ -4,11 +4,11 @@ const cors = require('cors')
 const connectDB = require('../DB/db')
 const bodyParser = require('body-parser')
 const catRoute = require('./categorie-service')
-
+require('dotenv').config()
 connectDB()
 
 const app = express()
-const port = 5002;
+const port = process.env.PORT_CAT_MS;
 
 app.use(express.json())
 app.use(cors())
