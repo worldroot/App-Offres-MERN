@@ -1,5 +1,6 @@
 const JWT = require('jsonwebtoken')
 const client = require('../middleware/redis')
+const createError = require('http-errors')
 
 module.exports = {
     signAccessToken: (userId) => {
@@ -23,7 +24,9 @@ module.exports = {
     },
 
     verifyAccessToken: (req, res, next) => {
-        if (!req.headers['authorization']) return next(createError.Unauthorized())
+        if (!req.headers['authorization']) return res.status(401).json({
+            msg: 'No token, auth denied'
+        })
         const authHeader = req.headers['authorization']
         const bearerToken = authHeader.split(' ')
         const token = bearerToken[1]
@@ -48,19 +51,10 @@ module.exports = {
           }
           JWT.sign(payload, secret, options, (err, token) => {
             if (err) {
-              console.log(err.message)
-              // reject(err)
-              reject(createError.InternalServerError())
+              console.log(err)
             }
-    
-            client.SET(userId, token, 'EX', 365 * 24 * 60 * 60, (err, reply) => {
-              if (err) {
-                console.log(err.message)
-                reject(createError.InternalServerError())
-                return
-              }
-              resolve(token)
-            })
+            resolve(token)
+            
           })
         })
       },

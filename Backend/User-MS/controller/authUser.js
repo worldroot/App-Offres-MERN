@@ -3,7 +3,8 @@ const User = require('../User')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const CryptoJS = require("crypto-js");
+const client = require('../middleware/redis')
+const createError = require('http-errors')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../middleware/verify-token')
 
@@ -31,9 +32,9 @@ router.post('/register',
       if (!savedUser) throw Error('Something went wrong saving the user');
       
       const accessToken = await signAccessToken(savedUser.id)
-      //const refreshToken = await signRefreshToken(savedUser.id)
+      const refreshToken = await signRefreshToken(savedUser.id)
 
-      res.send({ accessToken })
+      res.send({ accessToken, refreshToken })
 
     } catch (error) {
 
@@ -66,33 +67,45 @@ router.post('/login',
         }
       
       //Pass Verif
-      const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await user.isValidPassword(password)
         if (!isMatch) {
             return res.status(400).json({
             errors: [{ msg: 'Mot de passe incorrect'}]
             })
         }
+
+        const accessToken = await signAccessToken(user.id)
+        const refreshToken = await signRefreshToken(user.id)
   
-      const payload = { user: {id: user.id} }
-  
-      jwt.sign(
-        payload,
-        "SECRET", {
-          expiresIn: 360000
-        }, (err, token) => {
-          if (err) throw err;
-          res.json({
-            token,
-          })
-        }
-      )
-      console.log("Login Done");
+        res.send({ accessToken, refreshToken })
+
 
     } catch (err) {
       res.status(500).json(err);
       console.log(err)
     }
 
-  })
+});
+
+router.delete('/logout',
+  async (req, res, next) => {
+    try {
+      const { refreshToken } = req.body
+      if (!refreshToken) throw createError.BadRequest()
+      const userId = await verifyRefreshToken(refreshToken)
+      client.DEL(userId, (err, val) => {
+        if (err) {
+          console.log(err.message)
+          throw createError.InternalServerError()
+        }
+        console.log(val)
+        res.sendStatus(204)
+      })
+    } catch (error) {
+      next(error)
+    }
+
+  }  
+)
   
   module.exports = router

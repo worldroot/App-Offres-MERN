@@ -1,12 +1,10 @@
 const User = require('../User')
 
-module.exports = async function (req, res, next) {
+module.exports = async function (req, res, next, userId) {
     try {
         // Get user information by Id
-        const user = await User.findOne({
-            _id: req.user.id
-        })
-
+        const user = await User.findOne(userId)
+        console.log(user)
         if (user.role !== "super-admin") {
             return res.status(403).json({
                 error: 'Super Admin resources access denied'
