@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const connectDB = require('../DB/db')
+const connectDB = require('./db/db')
 const bodyParser = require('body-parser')
 const authRoute = require('./controller/authUser')
 const userRoute = require('./controller/user-service')
@@ -17,11 +17,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
 app.use("/api/access", authRoute)
 app.use("/api/user", userRoute)
 
 //404
-app.use((req, res) => {
+app.use((res) => {
     res.status(404).json({
         success: false,
         msg: "Page not founded"
