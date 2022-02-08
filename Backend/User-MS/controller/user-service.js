@@ -61,9 +61,9 @@ router.put('/updatepwd/:id',
 }) 
 
 
-// @desc    update user role
+// @desc    banning user 
 // @access  Super Admin
-router.put('/superadmin/:id', 
+router.put('/ban/:id', 
     verifyAccessToken,
     SuperAdminAccess,
     async (req, res) => {
@@ -77,6 +77,30 @@ router.put('/superadmin/:id',
       );
 
     res.status(200).json(updatedUser.banned);
+
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err)
+  }
+
+})
+
+// @desc    update user role 
+// @access  Super Admin
+router.put('/role/:id', 
+    verifyAccessToken,
+    SuperAdminAccess,
+    async (req, res) => {
+
+  try {
+
+    const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: {role}=req.body, },
+        { new: true }
+      );
+
+    res.status(200).json(updatedUser.role);
 
   } catch (err) {
     res.status(500).json(err);

@@ -3,7 +3,6 @@ const User = require('../User')
 const router = express.Router()
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken } = require('../middleware/verify-token')
-const verifUser = require('../middleware/verifUser')
 
 // @route   POST api/user/register
 // @desc    Register user
