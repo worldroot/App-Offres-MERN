@@ -1,6 +1,7 @@
 const User = require('../User')
+//const {verifyAccessToken} = require('./verify-token')
 
-module.exports = async function (req, res, next) {
+module.exports = async(req, res, next, ) => {
     try {
         
         const user = await User.findOne({

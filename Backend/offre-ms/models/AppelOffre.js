@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema;
 
-const AppelOffreSchema = new mongoose.Schema({
+const OffreSchema = new mongoose.Schema({
     titre: {
         type: String,
         trim: true,
@@ -38,8 +38,6 @@ const AppelOffreSchema = new mongoose.Schema({
     status: {
         type: Boolean,
     }
-}, {
-    timestamps: true
 })
 
-module.exports = mongoose.model("AppelOffre", AppelOffreSchema)
+module.exports = mongoose.model("Offre", OffreSchema)
