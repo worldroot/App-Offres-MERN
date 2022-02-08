@@ -13,7 +13,6 @@ const port = process.env.PORT_USER_MS;
 
 app.use(morgan('dev'))
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

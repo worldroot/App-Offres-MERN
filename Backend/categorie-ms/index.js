@@ -1,9 +1,10 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const connectDB = require('../DB/db')
+const connectDB = require('./db/db')
 const bodyParser = require('body-parser')
 const catRoute = require('./categorie-service')
+
 require('dotenv').config()
 connectDB()
 
@@ -12,10 +13,10 @@ const port = process.env.PORT_CAT_MS;
 
 app.use(morgan('dev'))
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
 app.use("/api/categorie", catRoute)
 
 //404

@@ -40,9 +40,8 @@ module.exports = {
             req.user = decoded.user;
             next()
         } catch (err) {
-            const message =
-              err.name === 'JsonWebTokenError' ? 'Unauthorized' : err.message
-            return next(createError.Unauthorized(message))   
+            res.status(401).json(err)
+            console.log(err)
         }        
       },
 
