@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
+const User = require('../user-ms/User')
 const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
 const AdminAccess = require('../user-ms/middleware/adminAuth')
 const {verifyAccessToken} = require('../user-ms/middleware/verify-token')
 const catid = require('./categorieByid')
+//const userid = require('../user-ms/middleware/userByid')
 const { check, validationResult } = require('express-validator')
 
 // @route   POST api/categorie
@@ -23,17 +25,19 @@ router.post('/',
 
     const { nomcat } = req.body
     try {
-        let category = await Category.findOne({ nomcat })
 
-        if (category) {
-            return res.status(403).json({
-                error: 'Category already exist'
-            })
-        }
+            let category = await Category.findOne({ nomcat })
 
-        const newCategory = new Category({ nomcat })
-        category = await newCategory.save()
-        res.json(category)
+            if (category) {
+                return res.status(403).json({
+                    error: 'Category already exist'
+                })
+            }
+    
+            const newCategory = new Category({ nomcat })
+            category = await newCategory.save()
+            res.json(category)
+      
     } catch (error) {
         console.log(error)
         
@@ -91,7 +95,6 @@ router.delete('/:categoryId',
     catid,
     verifyAccessToken,
     SuperAdminAccess,
-    AdminAccess,
 
     async (req, res) => {
 

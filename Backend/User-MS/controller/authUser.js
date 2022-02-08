@@ -1,10 +1,7 @@
 const express = require('express')
 const User = require('../User')
 const router = express.Router()
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
-const client = require('../middleware/redis')
-const createError = require('http-errors')
+const JWT = require('jsonwebtoken')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../middleware/verify-token')
 
@@ -73,11 +70,36 @@ router.post('/login',
             errors: [{ msg: 'Mot de passe incorrect'}]
             })
         }
-
+        
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
-  
         res.send({ accessToken, refreshToken })
+        
+
+        /*
+        const signAccessToken = () => {
+        
+          return new Promise((resolve) => {
+              const payload = {user: {id: user.id}}
+              const secret = process.env.ACCESS_TOKEN_SECRET
+              const options = {
+                expiresIn: '1h',
+                audience: user.id,
+              }
+              console.log(payload)
+              JWT.sign(payload, secret, options, (err, token) => {
+                if (err) {
+                  console.log(err)
+                  return
+                }
+                resolve(token)
+              })
+            })     
+        }
+        const accessToken = await signAccessToken()
+        res.send({ accessToken })
+        */
+
 
 
     } catch (err) {
@@ -86,26 +108,5 @@ router.post('/login',
     }
 
 });
-
-router.delete('/logout',
-  async (req, res, next) => {
-    try {
-      const { refreshToken } = req.body
-      if (!refreshToken) throw createError.BadRequest()
-      const userId = await verifyRefreshToken(refreshToken)
-      client.DEL(userId, (err, val) => {
-        if (err) {
-          console.log(err.message)
-          throw createError.InternalServerError()
-        }
-        console.log(val)
-        res.sendStatus(204)
-      })
-    } catch (error) {
-      next(error)
-    }
-
-  }  
-)
   
-  module.exports = router
+module.exports = router
