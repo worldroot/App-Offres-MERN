@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const Offre = require('../models/AppelOffre')
+const Offre = require('../models/Offre')
 const User = require('../../user-ms/User')
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 let path = require('path');
 const {verifyAccessToken} = require('../../user-ms/middleware/verify-token')
-const { validationResult } = require('express-validator')
-const verifOffre = require('../middleware/offreValidator')
+const {validateAddOffre, isRequestValidated} = require('../middleware/offreValidator')
+
 
 
 
@@ -37,14 +37,11 @@ let upload = multer({ storage, fileFilter });
 // @desc    Create appel offre
 // @access  Private Admin
 router.post('/',
+    validateAddOffre,
+    isRequestValidated,
     upload.any(),
     verifyAccessToken,
     async (req, res) => {
-
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){
-          return res.status(402).json({ error: errors.array()[0].msg })
-        }
 
     let {titre, description, dateDebut, dateFin, category, postedBy } = req.body;
     let images = req.files;

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
-//const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
+const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
 const {verifyAccessToken} = require('../user-ms/middleware/verify-token')
 const catid = require('./categorieByid')
-//const userid = require('../user-ms/middleware/userByid')
+const userid = require('../user-ms/middleware/userByid')
 const { check, validationResult } = require('express-validator')
 
 // @route   POST api/categorie
@@ -13,6 +13,8 @@ const { check, validationResult } = require('express-validator')
 router.post('/', 
     [ check('nomcat', 'Name is required').trim().not().isEmpty()]
     ,verifyAccessToken
+
+
     ,async (req, res) => {
 
     const errors = validationResult(req);
