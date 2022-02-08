@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
-const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
+//const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
 const {verifyAccessToken} = require('../user-ms/middleware/verify-token')
 const catid = require('./categorieByid')
 //const userid = require('../user-ms/middleware/userByid')
@@ -13,7 +13,6 @@ const { check, validationResult } = require('express-validator')
 router.post('/', 
     [ check('nomcat', 'Name is required').trim().not().isEmpty()]
     ,verifyAccessToken
-    ,SuperAdminAccess
     ,async (req, res) => {
 
     const errors = validationResult(req);
@@ -45,10 +44,11 @@ router.post('/',
 // @route   Get api/categorie/all
 // @desc    Get all categories
 // @access  Public
-router.get('/all', async (req, res) => {
+router.get('/all', async (res) => {
     try {
         let data = await Category.find({})
         res.json(data)
+
     } catch (error) {
         console.log(error)
         res.status(500).send('Server error')
@@ -68,7 +68,6 @@ router.get('/:categoryId', catid, async (req, res) => {
 router.put('/:categoryId', 
     catid,
     verifyAccessToken,
-    SuperAdminAccess,
 
     async (req, res) => {
 
@@ -84,6 +83,7 @@ router.put('/:categoryId',
         console.log(error.message)
         res.status(500).send('Server error');
     }
+
 })
 
 // @route   Delete api/categorie/:categoryId
@@ -92,7 +92,6 @@ router.put('/:categoryId',
 router.delete('/:categoryId',
     catid,
     verifyAccessToken,
-    SuperAdminAccess,
 
     async (req, res) => {
 
@@ -100,7 +99,7 @@ router.delete('/:categoryId',
     try {
         let deletedCategory = await category.remove()
         res.json({
-            message: `${deletedCategory.nomcat} deleted successfully`
+            message: `Category : ${deletedCategory.nomcat} deleted successfully`
         })
     } catch (error) {
         console.log(error.message)

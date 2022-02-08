@@ -2,7 +2,7 @@ const User = require('../User')
 
 module.exports = async function (req, res, next) {
     try {
-        // Get user information by Id
+        
         const user = await User.findOne({
             _id: req.user.id
         })
