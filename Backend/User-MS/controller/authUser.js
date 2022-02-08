@@ -1,9 +1,9 @@
 const express = require('express')
 const User = require('../User')
 const router = express.Router()
-const JWT = require('jsonwebtoken')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
-const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../middleware/verify-token')
+const { signAccessToken } = require('../middleware/verify-token')
+const verifUser = require('../middleware/verifUser')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -29,9 +29,8 @@ router.post('/register',
       if (!savedUser) throw Error('Something went wrong saving the user');
       
       const accessToken = await signAccessToken(savedUser.id)
-      const refreshToken = await signRefreshToken(savedUser.id)
 
-      res.send({ accessToken, refreshToken })
+      res.send({ accessToken })
 
     } catch (error) {
 
@@ -62,7 +61,6 @@ router.post('/login',
             errors: [{ msg: 'Email incorrect'}]
             })
         }
-      
       //Pass Verif
         const isMatch = await user.isValidPassword(password)
         if (!isMatch) {
@@ -70,38 +68,16 @@ router.post('/login',
             errors: [{ msg: 'Mot de passe incorrect'}]
             })
         }
+
+        if (user.banned === true) {
+          return res.status(403).json({
+              error: 'Banned Account'
+          })
+        }
         
         const accessToken = await signAccessToken(user.id)
-        const refreshToken = await signRefreshToken(user.id)
-        res.send({ accessToken, refreshToken })
-        
-
-        /*
-        const signAccessToken = () => {
-        
-          return new Promise((resolve) => {
-              const payload = {user: {id: user.id}}
-              const secret = process.env.ACCESS_TOKEN_SECRET
-              const options = {
-                expiresIn: '1h',
-                audience: user.id,
-              }
-              console.log(payload)
-              JWT.sign(payload, secret, options, (err, token) => {
-                if (err) {
-                  console.log(err)
-                  return
-                }
-                resolve(token)
-              })
-            })     
-        }
-        const accessToken = await signAccessToken()
         res.send({ accessToken })
-        */
-
-
-
+        
     } catch (err) {
       res.status(500).json(err);
       console.log(err)
