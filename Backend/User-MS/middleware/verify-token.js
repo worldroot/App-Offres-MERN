@@ -11,10 +11,10 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '4h',
+              expiresIn: '24h',
               audience: userId,
             }
-            
+
             JWT.sign(payload, secret, options, (err, token) => {
               if (err) {
                 console.log(err)
@@ -46,45 +46,6 @@ module.exports = {
         }        
       },
 
-    signRefreshToken: (userId) => {
-        return new Promise((resolve) => {
-          const payload = {user: {id: userId}}
-          const secret = process.env.REFRESH_TOKEN_SECRET
-          const options = {
-            expiresIn: '1y',
-            audience: userId,
-          }
-          JWT.sign(payload, secret, options, (err, token) => {
-            if (err) {
-              console.log(err)
-            }
-            resolve(token)
-            
-          })
-        })
-      },
-
-    verifyRefreshToken: (refreshToken) => {
-        return new Promise((resolve, reject) => {
-          JWT.verify(
-            refreshToken,
-            process.env.REFRESH_TOKEN_SECRET,
-            (err, payload) => {
-              if (err) return reject(createError.Unauthorized())
-              const userId = payload.aud
-              client.GET(userId, (err, result) => {
-                if (err) {
-                  console.log(err.message)
-                  reject(createError.InternalServerError())
-                  return
-                }
-                if (refreshToken === result) return resolve(userId)
-                reject(createError.Unauthorized())
-              })
-            }
-          )
-        })
-      },
 
 
 }

@@ -5,14 +5,13 @@ const AdminAccess = require('../middleware/adminAuth')
 const SuperAdminAccess = require('../middleware/superadminAuth')
 const userid = require('../middleware/userByid')
 const bcrypt = require('bcryptjs')
-const {
-  signAccessToken
-  } = require('../middleware/verify-token')
+const { verifyAccessToken } = require('../middleware/verify-token')
 
 
 // @desc    update user
 // @access  Public
 router.put('/:id', 
+    verifyAccessToken,
     async (req, res) => {
 
   try {
@@ -36,6 +35,7 @@ router.put('/:id',
 // @desc    update user password
 // @access  Public
 router.put('/updatepwd/:id', 
+    verifyAccessToken,
     async (req, res) => { 
 
     if(req.body.password){
@@ -64,6 +64,7 @@ router.put('/updatepwd/:id',
 // @desc    update user role
 // @access  Super Admin
 router.put('/superadmin/:id', 
+    verifyAccessToken,
     SuperAdminAccess,
     async (req, res) => {
 
@@ -71,11 +72,11 @@ router.put('/superadmin/:id',
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { $set: {role}=req.body, },
+        { $set: {banned}=req.body, },
         { new: true }
       );
 
-    res.status(200).json(updatedUser);
+    res.status(200).json(updatedUser.banned);
 
   } catch (err) {
     res.status(500).json(err);

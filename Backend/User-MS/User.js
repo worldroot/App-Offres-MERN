@@ -23,9 +23,12 @@ const UserSchema = new mongoose.Schema({
       telephone: { type: String },
       role: {
         type: String,
-        enum: ["user", "admin", "super-admin", "banned-user"],
+        enum: ["user", "admin", "super-admin"],
         default: "user",
-      }
+      },
+      banned: {
+        type: Boolean,
+        default: false}
 
     },
         { timestamps: true }

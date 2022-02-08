@@ -7,13 +7,15 @@ module.exports = async function (req, res, next) {
             _id: req.user.id
         })
         
-        if (user.role !== "super-admin") {
+        if (user.banned === true) {
             return res.status(403).json({
-                error: 'Super Admin resources access denied'
+                error: 'Banned Account'
             })
+        }else{
+            next()
         }
 
-        next()
+        
     } catch (error) {
         console.log(error)
         res.status(500).send('Server Error')
