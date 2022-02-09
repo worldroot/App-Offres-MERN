@@ -6,6 +6,7 @@ const SuperAdminAccess = require('../middleware/superadminAuth')
 const userid = require('../middleware/userByid')
 const bcrypt = require('bcryptjs')
 const { verifyAccessToken } = require('../middleware/verify-token')
+const e = require('express')
 
 
 // @desc    update user
@@ -107,6 +108,21 @@ router.put('/role/:id',
     console.log(err)
   }
 
+})
+
+// @route   POST api/user
+// @desc    User Information
+// @access  Private 
+router.get('/:id',async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password')
+    res.json(user)
+  } catch (error) {
+
+    console.log(error.message);
+    res.status(500).send('Server Error')
+
+  }
 })
 
 

@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
+const User = require('../user-ms/User')
 const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
 const {verifyAccessToken} = require('../user-ms/middleware/verify-token')
 const catid = require('./categorieByid')
 const userid = require('../user-ms/middleware/userByid')
+const axios = require('axios')
 const { check, validationResult } = require('express-validator')
 
 // @route   POST api/categorie
@@ -12,9 +14,7 @@ const { check, validationResult } = require('express-validator')
 // @access  Private Admin
 router.post('/', 
     [ check('nomcat', 'Name is required').trim().not().isEmpty()]
-    ,verifyAccessToken
-
-
+    ,verifyAccessToken 
     ,async (req, res) => {
 
     const errors = validationResult(req);
@@ -22,25 +22,41 @@ router.post('/',
         return res.status(400).json({ error: errors.array()[0].msg })
     }
 
-    const { nomcat } = req.body
-    try {
-
-            let category = await Category.findOne({ nomcat })
-
-            if (category) {
-                return res.status(403).json({
-                    error: 'Category already exist'
-                })
-            }
-    
-            const newCategory = new Category({ nomcat })
-            category = await newCategory.save()
-            res.json(category)
-      
-    } catch (error) {
-        console.log(error)
+    axios.get("http://localhost:5001/api/user/"+req.user.id)
+    .then(async (response)=>{
+        var role = response.data.role
         
-    }
+        if (role !== 'super-admin') {
+            return res.status(404).json({
+                error: 'Super Admin resources access denied'
+            })
+
+        }else{
+             
+            const { nomcat } = req.body
+            try {
+
+
+                let category = await Category.findOne({ nomcat })
+    
+                if (category) {
+                    return res.status(403).json({
+                        error: 'Category already exist'
+                    })
+                }
+        
+                const newCategory = new Category({ nomcat })
+                category = await newCategory.save()
+                res.json(category)
+          
+            } catch (error) {
+                console.log(error)
+                res.status(500).send('Server error')
+            }
+
+        }
+    })
+
 })
 
 // @route   Get api/categorie/all
