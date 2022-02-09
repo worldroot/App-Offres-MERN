@@ -29,6 +29,6 @@ module.exports = async function(req, res, next ){
 
     } catch (error){
         console.log(error);
-        res.send('Server Error');
+        res.send('Error in by id file');
     }
 }
