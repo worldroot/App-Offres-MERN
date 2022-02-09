@@ -73,7 +73,7 @@ router.post('/',
                  let save = newAO.save();
                  if(save){
                     res.json({
-                        message: `${newAO.titre} added successfully`
+                        message: `Appel d'offre -> ${newAO.titre} added successfully`
                     })
                  }
              } catch (error) {

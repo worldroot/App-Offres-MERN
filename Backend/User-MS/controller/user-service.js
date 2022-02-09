@@ -115,9 +115,9 @@ router.put('/role/:id',
 
 })
 
-// @route   POST api/user
+// @route   GET api/user
 // @desc    User Information
-// @access  Private 
+// @access  Public 
 router.get('/:id',async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password')
@@ -127,6 +127,23 @@ router.get('/:id',async (req, res) => {
     console.log(error.message);
     res.status(500).send('Server Error')
 
+  }
+})
+
+// @route   GET api/user
+// @desc    All
+// @access  Public 
+router.get('/',
+  verifyAccessToken,
+  AdminAndSuper,
+  async (req,res) => {
+  try {
+      let users = await User.find({}).select('-password')
+      res.json(users)
+
+  } catch (error) {
+      console.log(error)
+      res.status(500).send('Server error')
   }
 })
 

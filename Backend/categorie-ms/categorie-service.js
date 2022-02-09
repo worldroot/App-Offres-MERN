@@ -57,10 +57,10 @@ router.post('/',
 // @route   Get api/categorie/all
 // @desc    Get all categories
 // @access  Public
-router.get('/all', async (res) => {
+router.get('/all', async (req, res) => {
     try {
         let data = await Category.find({})
-        res.json(data)
+        res.send(data)
 
     } catch (error) {
         console.log(error)
