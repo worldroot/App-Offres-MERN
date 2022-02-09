@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('../User')
 const AdminAccess = require('../middleware/adminAuth')
 const SuperAdminAccess = require('../middleware/superadminAuth')
+const AdminAndSuper = require('../middleware/doubleAuth')
 const userid = require('../middleware/userByid')
 const bcrypt = require('bcryptjs')
 const { verifyAccessToken } = require('../middleware/verify-token')
@@ -66,7 +67,7 @@ router.put('/updatepwd/:id',
 // @access  Super Admin
 router.put('/ban/:id', 
     verifyAccessToken,
-    SuperAdminAccess,
+    AdminAndSuper,
     async (req, res) => {
 
   try {
@@ -77,7 +78,9 @@ router.put('/ban/:id',
         { new: true }
       );
 
-    res.status(200).json(updatedUser.banned);
+    res.status(200).json({
+      message: `User: ${updatedUser.nom} -> Banned: ${updatedUser.banned} `
+    })
 
   } catch (err) {
     res.status(500).json(err);
@@ -101,7 +104,9 @@ router.put('/role/:id',
         { new: true }
       );
 
-    res.status(200).json(updatedUser.role);
+    res.status(200).json({
+        message: `Role: ${updatedUser.role} : updated successfully`
+    })
 
   } catch (err) {
     res.status(500).json(err);

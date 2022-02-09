@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
-const User = require('../user-ms/User')
-const SuperAdminAccess = require('../user-ms/middleware/superadminAuth')
 const {verifyAccessToken} = require('../user-ms/middleware/verify-token')
 const catid = require('./categorieByid')
-const userid = require('../user-ms/middleware/userByid')
 const axios = require('axios')
 const { check, validationResult } = require('express-validator')
 
@@ -26,6 +23,7 @@ router.post('/',
     .then(async (response)=>{
         var role = response.data.role
         
+        //Add by Super Admin Only
         if (role !== 'super-admin') {
             return res.status(404).json({
                 error: 'Super Admin resources access denied'
@@ -36,15 +34,12 @@ router.post('/',
             const { nomcat } = req.body
             try {
 
-
                 let category = await Category.findOne({ nomcat })
-    
                 if (category) {
                     return res.status(403).json({
                         error: 'Category already exist'
                     })
                 }
-        
                 const newCategory = new Category({ nomcat })
                 category = await newCategory.save()
                 res.json(category)
@@ -86,21 +81,42 @@ router.get('/:categoryId', catid, async (req, res) => {
 router.put('/:categoryId', 
     catid,
     verifyAccessToken,
-
     async (req, res) => {
 
-    let category = req.category;
-    const { nomcat } = req.body
-    if (nomcat) category.nomcat = nomcat.trim()
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array()[0].msg })
+        }
+    
+        axios.get("http://localhost:5001/api/user/"+req.user.id)
+        .then(async (response)=>{
+            var role = response.data.role
+            
+            //Update by Super Admin Only
+            if (role !== 'super-admin') {
+                return res.status(404).json({
+                    error: 'Super Admin resources access denied'
+                })
+    
+            }else{
 
-    try {
-        category = await category.save()
-        res.json(category)
-        console.log(category.nomcat)
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).send('Server error');
-    }
+                let category = req.category;
+                const { nomcat } = req.body
+                if (nomcat) category.nomcat = nomcat.trim()
+
+                try {
+                    category = await category.save()
+                    res.json({
+                        message: `Category : ${category.nomcat} updated successfully`
+                    })
+                    console.log(category.nomcat)
+                    } catch (error) {
+                        console.log(error.message)
+                        res.status(500).send('Server error');
+                    }
+            }
+        })
+
 
 })
 
@@ -113,16 +129,38 @@ router.delete('/:categoryId',
 
     async (req, res) => {
 
-    let category = req.category;
-    try {
-        let deletedCategory = await category.remove()
-        res.json({
-            message: `Category : ${deletedCategory.nomcat} deleted successfully`
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array()[0].msg })
+        }
+    
+        axios.get("http://localhost:5001/api/user/"+req.user.id)
+        .then(async (response)=>{
+            var role = response.data.role
+            
+            //Delete by Super Admin Only
+            if (role !== 'super-admin') {
+                return res.status(404).json({
+                    error: 'Super Admin resources access denied'
+                })
+    
+            }else{
+                 
+            
+                let category = req.category;
+                try {
+                    let deletedCategory = await category.remove()
+                    res.json({
+                        message: `Category : ${deletedCategory.nomcat} deleted successfully`
+                    })
+                    } catch (error) {
+                        console.log(error.message)
+                        res.status(500).send('Server error');
+                    }
+                
+            }
         })
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).send('Server error');
-    }
+    
 })
 
 

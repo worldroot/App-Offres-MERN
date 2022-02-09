@@ -6,8 +6,8 @@ module.exports = async(req, res, next, ) => {
         const user = await User.findOne({
             _id: req.user.id
         })
-        //&& user.role !== "admin" 
-        if (user.role !== "super-admin"  ) {
+       
+        if (user.role !== "super-admin" && user.role !== "admin"  ) {
             return res.status(403).json({
                 error: 'Super Admin resources access denied'
             })
