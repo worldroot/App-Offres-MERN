@@ -109,7 +109,7 @@ router.put('/:categoryId',
                     res.json({
                         message: `Category : ${category.nomcat} updated successfully`
                     })
-                    console.log(category.nomcat)
+                    
                     } catch (error) {
                         console.log(error.message)
                         res.status(500).send('Server error');
