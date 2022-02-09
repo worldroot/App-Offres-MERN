@@ -9,25 +9,18 @@ exports.validateAddOffre = [
     .notEmpty()
     .withMessage('description is required'),
 
-    check('image')
-    .isEmail()
-    .withMessage('image is required'),
-
     check('dateDebut')
-    .isEmail()
+    .notEmpty()
     .withMessage('dateDebut is required'),
 
     check('dateFin')
-    .isEmail()
+    .notEmpty()
     .withMessage('dateFin is required'),
 
     check('category')
-    .isEmail()
+    .notEmpty()
     .withMessage('category is required'),
 
-    check('postedBy')
-    .isEmail()
-    .withMessage('postedBy is required'),
     
 ];
 

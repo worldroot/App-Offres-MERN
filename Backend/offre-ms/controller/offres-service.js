@@ -1,15 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const Offre = require('../models/Offre')
-const User = require('../../user-ms/User')
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 let path = require('path');
 const {verifyAccessToken} = require('../../user-ms/middleware/verify-token')
 const {validateAddOffre, isRequestValidated} = require('../middleware/offreValidator')
-
-
-
+const axios = require('axios')
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -37,43 +34,60 @@ let upload = multer({ storage, fileFilter });
 // @desc    Create appel offre
 // @access  Private Admin
 router.post('/',
-    validateAddOffre,
-    isRequestValidated,
     upload.any(),
     verifyAccessToken,
+    validateAddOffre,
+    isRequestValidated,
     async (req, res) => {
 
-    let {titre, description, dateDebut, dateFin, category, postedBy } = req.body;
-    let images = req.files;
-     try {
-         let allimages = []
-         for(const img of images){
-             allimages.push(img.filename)
-         }
-
-         let newAO = new Offre({
-             image: allimages,
-             titre,
-             description,
-             dateDebut,
-             dateFin,
-             category,
-             postedBy
-         });
-
-         let save = newAO.save();
-         if(save){
-            res.json({
-                message: `${newAO.titre} added successfully`
+    axios.get("http://localhost:5001/api/user/"+req.user.id)
+    .then(async (response)=>{
+        var role = response.data.role
+        
+        //Add by Super Admin Only
+        if (role !== 'super-admin' && role !== 'admin' ) {
+            return res.status(404).json({
+                error: 'Access Denied !!'
             })
-         }
-     } catch (error) {
-         console.log(error)
-         res.status(500).send('Server error');
-     }
 
+        }else{
 
+            let {titre, description, dateDebut, dateFin, category, postedBy } = req.body;
+            let images = req.files;
+             try {
+                 let allimages = []
+                 for(const img of images){
+                     allimages.push(img.filename)
+                 }
+        
+                 let newAO = new Offre({
+                     image: allimages,
+                     titre,
+                     description,
+                     dateDebut,
+                     dateFin,
+                     category,
+                     postedBy: req.user.id
+                 });
+        
+                 let save = newAO.save();
+                 if(save){
+                    res.json({
+                        message: `${newAO.titre} added successfully`
+                    })
+                 }
+             } catch (error) {
+                 console.log(error)
+                 res.status(500).send('Server error');
+             }
+             
+           
+
+        }
     })
+
+
+})
 
 
 module.exports = router
