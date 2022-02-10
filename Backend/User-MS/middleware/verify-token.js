@@ -11,7 +11,7 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '1h',
+              expiresIn: '15s',
               audience: userId
             }
             
@@ -21,34 +21,13 @@ module.exports = {
                 console.log(err)
                 return
               }
-              resolve(token)
+              resolve([token , {AccessToken_Expires_In :options.expiresIn}])
              
             })
-
-            
+             
           })    
       },
 
-      timeofAccessToken: (userId) => {
-        
-        return new Promise((resolve) => {
-            const payload = {user: {id: userId}}
-            const secret = process.env.ACCESS_TOKEN_SECRET
-            const options = {
-              expiresIn: '1h',
-              audience: userId
-            }
-            
-            JWT.sign(payload, secret, options, (err, token) => {
-              
-              if (err) {
-                console.log(err)
-                return
-              }
-              resolve(options.expiresIn)
-            })
-          })    
-      },
 
     verifyAccessToken: (req, res, next) => {
         
@@ -82,25 +61,8 @@ module.exports = {
               console.log(err)
               reject(token)
             }
-            resolve(token)
+            resolve([token, {RefreshToken_Expires_In: options.expiresIn}])
             
-          })
-        })
-      },
-      timeofRefreshToken: (userId) => {
-        return new Promise((resolve, reject) => {
-          const payload = {user: {id: userId}}
-          const secret = process.env.REFRESH_TOKEN_SECRET
-          const options = { 
-            expiresIn: '48h',
-            audience: userId
-          }
-          JWT.sign(payload, secret, options, (err, token) => {
-            if (err) {
-              console.log(err)
-              reject(token)
-            }
-            resolve(options.expiresIn)
           })
         })
       },

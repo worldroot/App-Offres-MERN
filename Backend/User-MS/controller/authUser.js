@@ -5,9 +5,7 @@ const createError = require('http-errors')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, 
         signRefreshToken, 
-        verifyRefreshToken,
-        timeofAccessToken,
-        timeofRefreshToken } = require('../middleware/verify-token')
+        verifyRefreshToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -34,11 +32,8 @@ router.post('/register',
       
       const AccessToken = await signAccessToken(savedUser.id)
       const RefreshToken = await signRefreshToken(savedUser.id)
-      const AccessTime = await timeofAccessToken(savedUser.id)
-      const RefTime = await timeofRefreshToken(savedUser.id)
       
-      res.send({ AccessToken: AccessToken, AccessToken_Expires_In: AccessTime, 
-                 RefreshToken: RefreshToken, RefreshToken_Expires_In: RefTime  })
+      res.send({ AccessToken, RefreshToken  })
 
     } catch (error) {
 
@@ -85,11 +80,7 @@ router.post('/login',
         
         const AccessToken = await signAccessToken(user.id)
         const RefreshToken = await signRefreshToken(user.id)
-        const AccessTime = await timeofAccessToken(user.id)
-        const RefTime = await timeofRefreshToken(user.id)
-        
-        res.send({ AccessToken: AccessToken, AccessToken_Expires_In: AccessTime, 
-                   RefreshToken: RefreshToken, RefreshToken_Expires_In: RefTime  })
+        res.send({ AccessToken, RefreshToken  })
         
     } catch (err) {
       res.status(500).json(err);
