@@ -1,6 +1,5 @@
 const JWT = require('jsonwebtoken')
 const User = require('../User')
-const client = require('../middleware/redis')
 const createError = require('http-errors')
 
 module.exports = {
