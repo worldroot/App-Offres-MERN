@@ -1,8 +1,13 @@
 const express = require('express')
 const User = require('../User')
 const router = express.Router()
+const createError = require('http-errors')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
-const { signAccessToken, signRefreshToken } = require('../middleware/verify-token')
+const { signAccessToken, 
+        signRefreshToken, 
+        verifyRefreshToken,
+        timeofAccessToken,
+        timeofRefreshToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -29,8 +34,11 @@ router.post('/register',
       
       const AccessToken = await signAccessToken(savedUser.id)
       const RefreshToken = await signRefreshToken(savedUser.id)
-
-      res.send({ AccessToken, RefreshToken })
+      const AccessTime = await timeofAccessToken(savedUser.id)
+      const RefTime = await timeofRefreshToken(savedUser.id)
+      
+      res.send({ AccessToken: AccessToken, AccessToken_Expires_In: AccessTime, 
+                 RefreshToken: RefreshToken, RefreshToken_Expires_In: RefTime  })
 
     } catch (error) {
 
@@ -77,8 +85,11 @@ router.post('/login',
         
         const AccessToken = await signAccessToken(user.id)
         const RefreshToken = await signRefreshToken(user.id)
-
-        res.send({ AccessToken, RefreshToken })
+        const AccessTime = await timeofAccessToken(user.id)
+        const RefTime = await timeofRefreshToken(user.id)
+        
+        res.send({ AccessToken: AccessToken, AccessToken_Expires_In: AccessTime, 
+                   RefreshToken: RefreshToken, RefreshToken_Expires_In: RefTime  })
         
     } catch (err) {
       res.status(500).json(err);
@@ -86,5 +97,22 @@ router.post('/login',
     }
 
 });
+
+
+router.post('/refresh-token',
+  async (req, res, next) => {
+    try {
+      const { refreshToken } = req.body
+      if (!refreshToken) throw createError.BadRequest()
+      const userId = await verifyRefreshToken(refreshToken)
+
+      const accessToken = await signAccessToken(userId)
+      const refToken = await signRefreshToken(userId)
+      res.send({ AccessToken: accessToken, RefreshToken: refToken })
+    } catch (error) {
+      next(error)
+    }
+  
+})
   
 module.exports = router

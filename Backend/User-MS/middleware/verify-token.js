@@ -16,15 +16,37 @@ module.exports = {
             }
             
             JWT.sign(payload, secret, options, (err, token) => {
+              
               if (err) {
                 console.log(err)
                 return
               }
               resolve(token)
+             
             })
-          })
-         
-    },
+          })    
+      },
+
+      timeofAccessToken: (userId) => {
+        
+        return new Promise((resolve) => {
+            const payload = {user: {id: userId}}
+            const secret = process.env.ACCESS_TOKEN_SECRET
+            const options = {
+              expiresIn: '2h',
+              audience: userId
+            }
+            
+            JWT.sign(payload, secret, options, (err, token) => {
+              
+              if (err) {
+                console.log(err)
+                return
+              }
+              resolve(options.expiresIn)
+            })
+          })    
+      },
 
     verifyAccessToken: (req, res, next) => {
         
@@ -56,34 +78,52 @@ module.exports = {
           JWT.sign(payload, secret, options, (err, token) => {
             if (err) {
               console.log(err)
+              reject(token)
             }
             resolve(token)
             
           })
         })
       },
+      timeofRefreshToken: (userId) => {
+        return new Promise((resolve, reject) => {
+          const payload = {user: {id: userId}}
+          const secret = process.env.REFRESH_TOKEN_SECRET
+          const options = { 
+            expiresIn: '48h',
+            audience: userId
+          }
+          JWT.sign(payload, secret, options, (err, token) => {
+            if (err) {
+              console.log(err)
+              reject(token)
+            }
+            resolve(options.expiresIn)
+          })
+        })
+      },
 
       verifyRefreshToken: (refreshToken) => {
         return new Promise((resolve, reject) => {
-          const decoded = JWT.verify(
+          JWT.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
             (err, payload) => {
               if (err) return reject(createError.Unauthorized())
               const userId = payload.aud
+              const time = payload.exp
               client.GET(userId, (err, result) => {
                 if (err) {
                   console.log(err.message)
                   reject(createError.InternalServerError())
                   return
                 }
-                if (refreshToken === result) return resolve(userId)
+                if (refreshToken === result) return resolve(userId, time)
                 reject(createError.Unauthorized())
               })
             }
           )
-          req.user = decoded.user;
-
+          
         })
       },
 
