@@ -12,19 +12,20 @@ const e = require('express')
 
 // @desc    update user
 // @access  Public
-router.put('/:id', 
+router.put('/', 
     verifyAccessToken,
     async (req, res) => {
 
   try {
-
+    
     const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
+        req.user.id,
         { $set: {nom, prenom, email}=req.body, },
         { new: true }
       );
-
-    res.status(200).json(updatedUser);
+    res.status(200).json({
+        message: `Updated successfully-> Nom: ${updatedUser.nom}, Prenom: ${updatedUser.prenom}, Email: ${updatedUser.email}`
+    })
 
   } catch (err) {
     res.status(500).json(err);
@@ -34,22 +35,28 @@ router.put('/:id',
 })
 
 
-// @desc    update user password
+// @desc    update user password Double Pass
 // @access  Public
 router.put('/updatepwd/:id', 
     verifyAccessToken,
     async (req, res) => { 
 
-    if(req.body.password){
-        const salt = await bcrypt.genSalt(10); 
-        req.body.password = await bcrypt.hash(req.body.password, salt); 
-    }  
+    const {password , confirmpass} = req.body  
+    if(password !== confirmpass){
+      res.status(403).send('Passwords are not matched ')
+    }else {
+        if(password){
+          const salt = await bcrypt.genSalt(10); 
+          password = await bcrypt.hash(password, salt); 
+      }  
+    }
+
     
     try {
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { $set: req.body, },
+        { $set: {password}=req.body, },
         { new: true }
     );
 
@@ -120,7 +127,7 @@ router.put('/role/:id',
 // @access  Public 
 router.get('/:id',async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password')
+    const user = await User.findById(req.user.id).select('-password')
     res.json(user)
   } catch (error) {
 

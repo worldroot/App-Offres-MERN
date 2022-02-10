@@ -11,10 +11,10 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '24h',
-              audience: userId,
+              expiresIn: '2h',
+              audience: userId
             }
-
+            
             JWT.sign(payload, secret, options, (err, token) => {
               if (err) {
                 console.log(err)
@@ -38,12 +38,53 @@ module.exports = {
         try {
             const decoded = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET)
             req.user = decoded.user;
-            
             next()
         } catch (err) {
             res.status(401).json(err)
             console.log(err)
         }        
+      },
+
+    signRefreshToken: (userId) => {
+        return new Promise((resolve, reject) => {
+          const payload = {user: {id: userId}}
+          const secret = process.env.REFRESH_TOKEN_SECRET
+          const options = { 
+            expiresIn: '48h',
+            audience: userId
+          }
+          JWT.sign(payload, secret, options, (err, token) => {
+            if (err) {
+              console.log(err)
+            }
+            resolve(token)
+            
+          })
+        })
+      },
+
+      verifyRefreshToken: (refreshToken) => {
+        return new Promise((resolve, reject) => {
+          const decoded = JWT.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET,
+            (err, payload) => {
+              if (err) return reject(createError.Unauthorized())
+              const userId = payload.aud
+              client.GET(userId, (err, result) => {
+                if (err) {
+                  console.log(err.message)
+                  reject(createError.InternalServerError())
+                  return
+                }
+                if (refreshToken === result) return resolve(userId)
+                reject(createError.Unauthorized())
+              })
+            }
+          )
+          req.user = decoded.user;
+
+        })
       },
 
 

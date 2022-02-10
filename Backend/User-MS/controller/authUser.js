@@ -2,7 +2,7 @@ const express = require('express')
 const User = require('../User')
 const router = express.Router()
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
-const { signAccessToken } = require('../middleware/verify-token')
+const { signAccessToken, signRefreshToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -27,9 +27,10 @@ router.post('/register',
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');
       
-      const accessToken = await signAccessToken(savedUser.id)
+      const AccessToken = await signAccessToken(savedUser.id)
+      const RefreshToken = await signRefreshToken(savedUser.id)
 
-      res.send({ accessToken })
+      res.send({ AccessToken, RefreshToken })
 
     } catch (error) {
 
@@ -74,8 +75,10 @@ router.post('/login',
           })
         }
         
-        const accessToken = await signAccessToken(user.id)
-        res.send({ accessToken })
+        const AccessToken = await signAccessToken(user.id)
+        const RefreshToken = await signRefreshToken(user.id)
+
+        res.send({ AccessToken, RefreshToken })
         
     } catch (err) {
       res.status(500).json(err);
