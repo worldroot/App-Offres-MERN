@@ -37,34 +37,33 @@ router.put('/',
 
 // @desc    update user password Double Pass
 // @access  Public
-router.put('/updatepwd/:id', 
+router.put('/updatepwd', 
     verifyAccessToken,
     async (req, res) => { 
 
     const {password , confirmpass} = req.body  
     if(password !== confirmpass){
-      res.status(403).send('Passwords are not matched ')
+      return res.status(403).send('Passwords are not matched !')
+
     }else {
-        if(password){
-          const salt = await bcrypt.genSalt(10); 
-          password = await bcrypt.hash(password, salt); 
-      }  
-    }
 
-    
-    try {
+        const salt = await bcrypt.genSalt(10); 
+        req.body.password = await bcrypt.hash(req.body.password, salt); 
+  
+      try {
 
-    const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        { $set: {password}=req.body, },
-        { new: true }
-    );
-
-    res.status(200).json(updatedUser.password);
-
-    } catch (err) {
-    res.status(500).json(err);
-    console.log(err)
+          const updatedUser = await User.findByIdAndUpdate(
+              req.user.id,
+              { $set: req.body, },
+              { new: true }
+          );
+      
+          res.status(200).json(updatedUser.password);
+      
+          } catch (err) {
+          res.status(500).json(err);
+          console.log(err)
+          }
     }
 
 }) 
