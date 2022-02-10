@@ -108,7 +108,7 @@ router.post('/refresh-token',
 
       const accessToken = await signAccessToken(userId)
       const refToken = await signRefreshToken(userId)
-      res.send({ AccessToken: accessToken, RefreshToken: refToken })
+      res.send({ NewAccessToken: accessToken, NewRefreshToken: refToken })
     } catch (error) {
       next(error)
     }

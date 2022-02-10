@@ -11,7 +11,7 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '2h',
+              expiresIn: '10s',
               audience: userId
             }
             
@@ -24,6 +24,8 @@ module.exports = {
               resolve(token)
              
             })
+
+            
           })    
       },
 
@@ -33,7 +35,7 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '2h',
+              expiresIn: '10s',
               audience: userId
             }
             
@@ -111,16 +113,7 @@ module.exports = {
             (err, payload) => {
               if (err) return reject(createError.Unauthorized())
               const userId = payload.aud
-              const time = payload.exp
-              client.GET(userId, (err, result) => {
-                if (err) {
-                  console.log(err.message)
-                  reject(createError.InternalServerError())
-                  return
-                }
-                if (refreshToken === result) return resolve(userId, time)
-                reject(createError.Unauthorized())
-              })
+              resolve(userId)
             }
           )
           
