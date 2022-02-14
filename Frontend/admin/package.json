@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "admin",
   "version": "0.1.0",
   "private": true,
   "repository": {
@@ -11,7 +11,6 @@
   "bugs": {
     "url": "https://github.com/GhassenBoughzala/App-Offres-MERN/issues"
   },
-
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
