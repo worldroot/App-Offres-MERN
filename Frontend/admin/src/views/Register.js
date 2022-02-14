@@ -20,7 +20,7 @@ const Register = () => {
       <Col lg="6" md="8">
         <Card className="bg-secondary shadow border-0">
           <CardHeader className="bg-transparent pb-5">
-            
+            <h1 className="text-center">Register</h1>
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
             

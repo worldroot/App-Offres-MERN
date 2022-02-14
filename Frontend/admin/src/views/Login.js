@@ -21,7 +21,7 @@ const Login = () => {
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
           <CardHeader className="bg-transparent pb-5">
-            
+            <h1 className="text-center">Login</h1>
 
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">

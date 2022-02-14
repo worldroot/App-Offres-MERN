@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 // reactstrap components
 import {
   Badge,
@@ -36,7 +19,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
+import Header from "../components/Headers/Header.js";
 
 const Tables = () => {
   return (
@@ -73,10 +56,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/bootstrap.jpg")
-                                .default
-                            }
+                            src="../assets/img/theme/bootstrap.jpg"
                           />
                         </a>
                         <Media>
@@ -104,10 +84,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -125,10 +102,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -146,10 +120,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -167,10 +138,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -238,10 +206,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/angular.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -269,10 +234,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -290,10 +252,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -311,10 +270,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -332,10 +288,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -403,10 +356,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/sketch.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -432,10 +382,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -453,10 +400,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -474,10 +418,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -495,10 +436,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -566,10 +504,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/react.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -597,10 +532,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -618,10 +550,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -639,10 +568,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -660,10 +586,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -731,9 +654,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/vue.jpg").default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -761,10 +682,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -782,10 +700,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -803,10 +718,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -824,10 +736,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -974,10 +883,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/bootstrap.jpg")
-                                .default
-                            }
+                            src="../assets/img/theme/bootstrap.jpg"
                           />
                         </a>
                         <Media>
@@ -1005,10 +911,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1026,10 +929,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1047,10 +947,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1068,10 +965,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1139,10 +1033,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/angular.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -1170,10 +1061,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1191,10 +1079,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip delay={0} target="tooltip66535734">
@@ -1209,10 +1094,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1230,10 +1112,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1301,10 +1180,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/sketch.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -1330,10 +1206,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1351,10 +1224,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1372,10 +1242,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1393,10 +1260,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1464,10 +1328,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/react.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -1495,10 +1356,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1516,10 +1374,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1537,10 +1392,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1558,10 +1410,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1629,9 +1478,7 @@ const Tables = () => {
                         >
                           <img
                             alt="..."
-                            src={
-                              require("../../assets/img/theme/vue.jpg").default
-                            }
+                            src=''
                           />
                         </a>
                         <Media>
@@ -1659,10 +1506,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-1-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1680,10 +1524,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-2-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1701,10 +1542,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-3-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1722,10 +1560,7 @@ const Tables = () => {
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={
-                              require("../../assets/img/theme/team-4-800x800.jpg")
-                                .default
-                            }
+                            src=''
                           />
                         </a>
                         <UncontrolledTooltip
