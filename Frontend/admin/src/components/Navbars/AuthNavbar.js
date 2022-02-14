@@ -29,6 +29,7 @@ import {
   Col,
 } from "reactstrap";
 
+const LogoImg = require('../../assets/img/oo.png')
 const AdminNavbar = () => {
   return (
     <>
@@ -37,9 +38,7 @@ const AdminNavbar = () => {
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={
-                require("../../assets/img/brand/argon-react-white.png").default
-              }
+              src={LogoImg}
             />
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
