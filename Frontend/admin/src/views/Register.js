@@ -29,10 +29,20 @@ const Register = () => {
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-hat-3" />
+                      <i className="ni ni-single-02" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text" />
+                  <Input placeholder="Nom" type="text" />
+                </InputGroup>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup className="input-group-alternative mb-3">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-single-02" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input placeholder="Prenom" type="text" />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -57,7 +67,7 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="Password"
+                    placeholder="Mot de passe"
                     type="password"
                     autoComplete="new-password"
                   />

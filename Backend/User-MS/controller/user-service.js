@@ -119,23 +119,6 @@ router.put('/role/:id',
 
 })
 
-// @route   GET api/user
-// @desc    User Information by token
-// @access  Public 
-router.get('/getuser',
-    verifyAccessToken  
-    ,async (req, res) => {
-
-  try {
-    const user = await User.findById(req.user.id)
-    res.json(user)
-  } catch (error) {
-
-    console.log(error.message);
-    res.status(500).send('Server Error')
-
-  }
-})
 
 // @route   GET api/user
 // @desc    User Information by token

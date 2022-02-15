@@ -5,7 +5,8 @@ const createError = require('http-errors')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, 
         signRefreshToken, 
-        verifyRefreshToken } = require('../middleware/verify-token')
+        verifyRefreshToken, 
+        verifyAccessToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -104,6 +105,24 @@ router.post('/refresh-token',
       next(error)
     }
   
+})
+
+// @route   GET api/user
+// @desc    User Information by token
+// @access  Public 
+router.get('/getuser',
+    verifyAccessToken  
+    ,async (req, res) => {
+
+  try {
+    const user = await User.findById(req.user.id)
+    res.json(user)
+  } catch (error) {
+
+    console.log(error.message);
+    res.status(500).send('Server Error')
+
+  }
 })
   
 module.exports = router
