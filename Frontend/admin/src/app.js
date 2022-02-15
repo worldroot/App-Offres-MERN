@@ -6,6 +6,7 @@ import setAuthToken from './helpers/authToken';
 import store from './redux/store';
 import { loadUser } from './redux/auth/authActions';
 
+import { ToastContainer } from 'react-toastify';
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 
@@ -23,6 +24,7 @@ function App({ history }) {
   return (
     <Provider store={store}>
           <BrowserRouter>
+          <ToastContainer />
             <Switch>
             <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
             <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
