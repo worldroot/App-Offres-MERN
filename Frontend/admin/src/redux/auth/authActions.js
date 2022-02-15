@@ -1,6 +1,6 @@
 
 import {UsermsURL} from '../../helpers/urls'
-import AuthToken from 'helpers/authToken'
+import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { 
@@ -15,10 +15,11 @@ import {
  } from './authTypes'
 
 
+
 export const loadUser = () => async (dispatch) => {
 
-    if (localStorage.token) {
-        AuthToken(localStorage.token)
+    if (localStorage.accessToken) {
+        setAuthToken(localStorage.accessToken)
     }
 
     try {
@@ -47,7 +48,6 @@ export const register = ({
             'Content-Type': 'application/json',
         },
     };
-
     // Set body
     const body = JSON.stringify({
         nom,
@@ -55,25 +55,18 @@ export const register = ({
         email,
         password
     });
+    dispatch({ type: SET_LOADING})
 
-    dispatch({
-        type: SET_LOADING
-    })
     try {
-        // Response 
         const res = await axios.post(`${UsermsURL}/api/access/register`, body, config)
-
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data
         })
+
         dispatch(loadUser())
     } catch (err) {
-        const errors = err.response.data.errors
-        if (errors) {
-            errors.forEach(error => toast.error(error.msg))
-        }
-
+        console.log(err)
         dispatch({
             type: REGISTER_FAIL
         })
@@ -103,25 +96,28 @@ export const login = ({
         email,
         password
     });
-
     dispatch({
         type: SET_LOADING
     })
     try {
-        // Response 
+        
         const res = await axios.post(`${UsermsURL}/api/access/login`, body, config)
+        if(!res){
+            toast.error('Error !');
+        }else{
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data
+            })
+            dispatch(loadUser())
 
-        dispatch({
-            type: LOGIN_SUCCESS,
-            payload: res.data
-        })
-        dispatch(loadUser())
-    } catch (err) {
-        const errors = err.response.data.errors
-        if (errors) {
-            errors.forEach(error => toast.error(error.msg))
         }
-
+        
+        
+        
+    } catch (err) {
+        console.log(err)
+        toast.error("Quelque chose s'est mal passé !")
         dispatch({
             type: LOGIN_FAIL
         })

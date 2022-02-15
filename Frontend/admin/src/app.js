@@ -12,8 +12,8 @@ import AuthLayout from "layouts/Auth.js";
 
 function App({ history }) {
 
-  if (localStorage.token) {
-    setAuthToken(localStorage.token);
+  if (localStorage.accessToken) {
+    setAuthToken(localStorage.accessToken);
   }
 
   useEffect(() => {

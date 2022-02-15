@@ -1,5 +1,3 @@
-// reactstrap components
-
 import {
   Button,
   Card,
@@ -15,7 +13,48 @@ import {
   Col,
 } from "reactstrap";
 
-const Login = () => {
+import React, { useState } from 'react';
+import {connect} from 'react-redux'
+import { login } from "redux/auth/authActions"
+import {toast} from 'react-toastify'
+
+const Login = ({ login, isAuth, isLoading, user }) => {
+
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const { email, password } = data;
+
+  const handleChange = (name) => (event) => {
+    setData({ ...data, [name]: event.target.value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if(!email || !password){
+      toast.warn('Verifier vos champs !')
+    }else{
+      try {
+        login({email,password});
+      } catch (error) {
+        console.log(error)
+        toast.error('Error !')
+      }
+    }
+    e.preventDefault();
+
+  };
+/*
+  if (isAuth && user) {
+    const { name } = user;
+    toast.success(`Bienvenue ${name}`);
+    if (role === 0) return <Redirect to='/dashboard/'/>;
+    if (role === 1) return <Redirect to='/dashboard/'/>;
+  }
+*/
+
   return (
     <>
       <Col lg="5" md="7">
@@ -26,7 +65,7 @@ const Login = () => {
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
             
-            <Form role="form">
+            <Form role="form" onSubmit={onSubmit}>
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -37,7 +76,8 @@ const Login = () => {
                   <Input
                     placeholder="Email"
                     type="email"
-                    autoComplete="new-email"
+                    onChange={handleChange('email')}
+                    value={email}
                   />
                 </InputGroup>
               </FormGroup>
@@ -51,13 +91,14 @@ const Login = () => {
                   <Input
                     placeholder="Password"
                     type="password"
-                    autoComplete="new-password"
+                    onChange={handleChange('password')}
+                    value={password}
                   />
                 </InputGroup>
               </FormGroup>
              
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
+                <Button className="my-4" color="primary" type="submit">
                   Sign in
                 </Button>
               </div>
@@ -84,4 +125,9 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapToStateProps = (state) => ({
+  isAuth: state.auth.isAuthenticated,
+  isLoading: state.auth.loading,
+  user: state.auth.user,
+});
+export default connect(mapToStateProps, { login })(Login);

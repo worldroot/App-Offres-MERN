@@ -31,10 +31,10 @@ router.post('/register',
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');
       
-      const AccessToken = await signAccessToken(savedUser.id)
-      const RefreshToken = await signRefreshToken(savedUser.id)
+      const accessToken = await signAccessToken(savedUser.id)
+      const refreshToken = await signRefreshToken(savedUser.id)
       
-      res.send({ AccessToken, RefreshToken  })
+      res.send({ accessToken, refreshToken  })
 
     } catch (error) {
 
@@ -79,9 +79,9 @@ router.post('/login',
           })
         }
         
-        const AccessToken = await signAccessToken(user.id)
-        const RefreshToken = await signRefreshToken(user.id)
-        res.send({ AccessToken, RefreshToken  })
+        const accessToken = await signAccessToken(user.id)
+        const refreshToken = await signRefreshToken(user.id)
+        res.send({ accessToken, refreshToken  })
         
     } catch (err) {
       res.status(500).json(err);
@@ -115,7 +115,7 @@ router.get('/getuser',
     ,async (req, res) => {
 
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user.id).select('-password')
     res.json(user)
   } catch (error) {
 
