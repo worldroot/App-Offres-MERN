@@ -7,8 +7,11 @@ import store from './redux/store';
 import { loadUser } from './redux/auth/authActions';
 
 import { ToastContainer } from 'react-toastify';
-import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
+
+import Adminroute from 'routes/AdminRoute';
+import SuperAdminRoute from 'routes/SuperAdminRoute';
+import AdminIndex from 'views/AdminIndex';
 
 function App({ history }) {
 
@@ -26,9 +29,8 @@ function App({ history }) {
           <BrowserRouter>
           <ToastContainer />
             <Switch>
-            <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+            <Route path="/admin" component={AdminIndex} />
             <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-            <Redirect from="/" to="/admin/index" />
             </Switch>
         </BrowserRouter>,
     </Provider>

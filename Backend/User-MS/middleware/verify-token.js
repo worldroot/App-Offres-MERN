@@ -20,8 +20,8 @@ module.exports = {
                 console.log(err)
                 return
               }
-              //resolve([token , {AccessToken_Expires_In :options.expiresIn}])
-                resolve(token)
+              //resolve([token , options.expiresIn])
+               resolve(token)
             })
              
           })    
@@ -60,7 +60,8 @@ module.exports = {
               console.log(err)
               reject(token)
             }
-            resolve([token, {RefreshToken_Expires_In: options.expiresIn}])
+            //resolve([token, options.expiresIn])
+            resolve(token)
             
           })
         })

@@ -62,14 +62,14 @@ router.post('/login',
       let user = await User.findOne({email});
         if (!user) {
             return res.status(401).json({
-            errors: [{ msg: 'Email incorrect'}]
+              errors: [{ msg: 'Email incorrect'}]
             })
         }
       //Pass Verif
         const isMatch = await user.isValidPassword(password)
         if (!isMatch) {
             return res.status(400).json({
-            errors: [{ msg: 'Mot de passe incorrect'}]
+              errors: [{ msg: 'Mot de passe incorrect'}]
             })
         }
 
@@ -81,7 +81,7 @@ router.post('/login',
         
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
-        res.send({ accessToken, refreshToken  })
+        res.status(200).json({ accessToken, refreshToken  })
         
     } catch (err) {
       res.status(500).json(err);

@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -32,9 +15,14 @@ import {
   Nav,
   Container,
   Media,
+  Button
 } from "reactstrap";
 
-const AdminNavbar = (props) => {
+import { logout } from "redux/auth/authActions";
+import {connect} from 'react-redux'
+
+const AdminNavbar = (props, user, isAuth) => {
+  
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -72,18 +60,17 @@ const AdminNavbar = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Admin
+                      {user.nom}
                     </span>
                   </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
                 <DropdownItem className="noti-title" header tag="div">
-                  <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
-                  <span>My profile</span>
+                  <span>Profile</span>
                 </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-settings-gear-65" />
@@ -97,11 +84,13 @@ const AdminNavbar = (props) => {
                   <i className="ni ni-support-16" />
                   <span>Support</span>
                 </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Logout</span>
-                </DropdownItem>
+
+                    <DropdownItem divider />
+                    <DropdownItem onClick={ logout() }>
+                      <i className="fas fa-sign-out-alt"></i>
+                      <span>Logout</span>
+                    </DropdownItem>
+
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
@@ -111,4 +100,9 @@ const AdminNavbar = (props) => {
   );
 };
 
-export default AdminNavbar;
+const mapToStateProps = (state) => ({
+  isAuth: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
+
+export default connect(mapToStateProps, { logout } )(AdminNavbar);

@@ -14,11 +14,12 @@ import {
 } from "reactstrap";
 
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
-const Login = ({ login, isAuth, isLoading, user }) => {
+const Login = ({ login, isAuth, user }) => {
 
   const [data, setData] = useState({
     email: '',
@@ -43,17 +44,16 @@ const Login = ({ login, isAuth, isLoading, user }) => {
         toast.error('Error !')
       }
     }
-    e.preventDefault();
 
   };
-/*
+
   if (isAuth && user) {
-    const { name } = user;
-    toast.success(`Bienvenue ${name}`);
-    if (role === 0) return <Redirect to='/dashboard/'/>;
-    if (role === 1) return <Redirect to='/dashboard/'/>;
+    const { role } = user;
+    toast.info(`Bienvenue ${role}`);
+    if (role === "admin") return <Redirect to='/admin/index'/>;
+    //if (role === 1) return <Redirect to='/dashboard/'/>;
   }
-*/
+
 
   return (
     <>

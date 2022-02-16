@@ -6,7 +6,8 @@ import {
     LOGIN_FAIL,
     AUTH_ERROR,
     LOGOUT,
-    SET_LOADING
+    SET_LOADING,
+    ERROR
  } from './authTypes'
 
 
@@ -49,6 +50,7 @@ export default function (state = intialState, action) {
                 case REGISTER_FAIL:
                 case LOGIN_FAIL:
                 case AUTH_ERROR:
+                case ERROR:
                 case LOGOUT:
                     // Remove Token in localstorage
                     localStorage.removeItem('accessToken');

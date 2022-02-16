@@ -16,7 +16,7 @@ import {
 
 import React, { useState } from 'react';
 import {connect} from 'react-redux'
-import { register } from "redux/auth/authActions"
+import { signup } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
 import '../components/Loading/loading.css'
@@ -42,11 +42,10 @@ const Register = (register, isAuth, isLoading, user) => {
       toast.warn('Verifier vos champs !')
     }else{
       try {
-        register({nom, prenom, email, password})
-        toast.success('Enregistré avec succès');
+          signup({nom, prenom, email, password})
       } catch (error) {
-        console.log(error)
-        toast.error('Error !')
+          console.log(error)
+          toast.error('Error !')
       }
     }
     
@@ -150,4 +149,4 @@ const mapToStateProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapToStateProps, { register })(Register);
+export default connect(mapToStateProps, { signup })(Register);

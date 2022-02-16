@@ -11,7 +11,8 @@ import {
     LOGIN_FAIL,
     AUTH_ERROR,
     LOGOUT,
-    SET_LOADING
+    SET_LOADING,
+    ERROR
  } from './authTypes'
 
 
@@ -36,18 +37,14 @@ export const loadUser = () => async (dispatch) => {
     }
 }
 
-export const register = ({
+export const signup = ({
     nom,
     prenom,
     email,
     password
 }) => async (dispatch) => {
     // Config header for axios
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
+    const config = { headers: { 'Content-Type': 'application/json', },};
     // Set body
     const body = JSON.stringify({
         nom,
@@ -55,21 +52,28 @@ export const register = ({
         email,
         password
     });
-    dispatch({ type: SET_LOADING})
+    
+    dispatch({ type: SET_LOADING })
 
     try {
+        // Response 
         const res = await axios.post(`${UsermsURL}/api/access/register`, body, config)
-        dispatch({
-            type: REGISTER_SUCCESS,
-            payload: res.data
-        })
+        
+        if(!res){
+            toast.error('Response Error !');
+        }else{
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data
+            })
+            dispatch(loadUser())
+            console.log("R+")
+        }
 
-        dispatch(loadUser())
     } catch (err) {
+        toast.error('Error !');
         console.log(err)
-        dispatch({
-            type: REGISTER_FAIL
-        })
+        dispatch({ type: REGISTER_FAIL })
     }
 };
 
@@ -78,11 +82,7 @@ export const login = ({
     password
 }) => async (dispatch) => {
     // Config header for axios
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
+    const config = { headers: { 'Content-Type': 'application/json', }, };
 
     if(!email){
         toast.warn("Verifier votre e-mail")
@@ -96,9 +96,7 @@ export const login = ({
         email,
         password
     });
-    dispatch({
-        type: SET_LOADING
-    })
+    dispatch({ type: SET_LOADING  })
     try {
         
         const res = await axios.post(`${UsermsURL}/api/access/login`, body, config)
@@ -110,10 +108,9 @@ export const login = ({
                 payload: res.data
             })
             dispatch(loadUser())
-
+            toast.success('Connecté avec succès');
+            
         }
-        
-        
         
     } catch (err) {
         console.log(err)
@@ -124,8 +121,22 @@ export const login = ({
     }
 };
 
-export const logout = () => dispatch => {
-    dispatch({
-        type: LOGOUT
-    })
+export const logout = () => {
+    return (dispatch) =>{
+        
+        try {
+
+            dispatch({ type: LOGOUT })
+            toast.info(`Utilisateur déconnecté !`);
+        } catch (error) {
+    
+            console.log(error)
+            toast.error("Quelque chose s'est mal passé !")
+            dispatch({ type: ERROR })   
+        }
+
+    }
+    
+   
+   
 }
