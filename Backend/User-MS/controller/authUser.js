@@ -6,7 +6,8 @@ const { validateSigninRequest, validateSignupRequest, isRequestValidated } = req
 const { signAccessToken, 
         signRefreshToken, 
         verifyRefreshToken, 
-        verifyAccessToken } = require('../middleware/verify-token')
+        verifyAccessToken,
+        ExpAccessToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -23,7 +24,8 @@ router.post('/register',
       let user = await User.findOne({email});
       if (user) {
         return res.status(400).json({
-          errors: [{ msg: 'Utilisateur existe déjà',}, ],
+          error: true,
+          msg: 'Utilisateur existe déjà',
         }); }
 
       user = new User({ nom, prenom , email, password });
@@ -39,7 +41,10 @@ router.post('/register',
     } catch (error) {
 
         console.log(error.message);
-        res.status(500).send('Server error');
+        res.status(500).json({
+          error: true,
+          msg:'Server error'
+        });
     }
    
   }
@@ -62,29 +67,36 @@ router.post('/login',
       let user = await User.findOne({email});
         if (!user) {
             return res.status(401).json({
-              errors: [{ msg: 'Email incorrect'}]
+              error: true,
+              msg: 'Email incorrect'
             })
         }
       //Pass Verif
         const isMatch = await user.isValidPassword(password)
         if (!isMatch) {
             return res.status(400).json({
-              errors: [{ msg: 'Mot de passe incorrect'}]
+              error: true,
+              msg: 'Mot de passe incorrect'
             })
         }
 
         if (user.banned === true) {
           return res.status(403).json({
-              error: 'Banned Account'
+              error: true,
+              msg: 'Banned Account'
           })
         }
         
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
-        res.status(200).json({ accessToken, refreshToken  })
+        const expiresIn = await ExpAccessToken(user.id)
+        res.status(200).json({ accessToken, expiresIn, refreshToken  })
         
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
       console.log(err)
     }
 
@@ -99,8 +111,8 @@ router.post('/refresh-token',
       const userId = await verifyRefreshToken(refreshToken)
 
       const accessToken = await signAccessToken(userId)
-      const refToken = await signRefreshToken(userId)
-      res.send({ NewAccessToken: accessToken, NewRefreshToken: refToken })
+      
+      res.send({ accessToken })
     } catch (error) {
       next(error)
     }
@@ -118,9 +130,12 @@ router.get('/getuser',
     const user = await User.findById(req.user.id).select('-password')
     res.json(user)
   } catch (error) {
-
-    console.log(error.message);
-    res.status(500).send('Server Error')
+    
+    res.status(500).json({
+      error: true,
+      msg:'Server error'
+    });
+    console.log(error);
 
   }
 })

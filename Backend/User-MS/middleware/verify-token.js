@@ -27,6 +27,28 @@ module.exports = {
           })    
       },
 
+      ExpAccessToken: (userId) => {
+        
+        return new Promise((resolve) => {
+            const payload = {user: {id: userId}}
+            const secret = process.env.ACCESS_TOKEN_SECRET
+            const options = {
+              expiresIn: '1h',
+              audience: userId
+            }
+            
+            JWT.sign(payload, secret, options, (err, token) => {
+              
+              if (err) {
+                console.log(err)
+                return
+              }
+              resolve(options.expiresIn)
+            })
+             
+          })    
+      },
+
 
     verifyAccessToken: (req, res, next) => {
         

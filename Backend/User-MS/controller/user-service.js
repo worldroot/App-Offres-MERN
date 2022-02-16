@@ -24,11 +24,14 @@ router.put('/',
         { new: true }
       );
     res.status(200).json({
-        message: `Updated successfully-> Nom: ${updatedUser.nom}, Prenom: ${updatedUser.prenom}, Email: ${updatedUser.email}`
+        msg: `Updated successfully-> Nom: ${updatedUser.nom}, Prenom: ${updatedUser.prenom}, Email: ${updatedUser.email}`
     })
 
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      error: true,
+      msg:'Server error'
+    });
     console.log(err)
   }
 
@@ -60,8 +63,11 @@ router.put('/updatepwd',
           res.status(200).json(updatedUser.password);
       
           } catch (err) {
-          res.status(500).json(err);
-          console.log(err)
+            res.status(500).json({
+              error: true,
+              msg:'Server error'
+            });
+            console.log(err)
           }
     }
 
@@ -87,7 +93,10 @@ router.put('/ban/:id',
     })
 
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      error: true,
+      msg:'Server error'
+    });
     console.log(err)
   }
 
@@ -113,7 +122,10 @@ router.put('/role/:id',
     })
 
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      error: true,
+      msg:'Server error'
+    });
     console.log(err)
   }
 
@@ -127,10 +139,14 @@ router.get('/:id',async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password')
     res.json(user)
+    
   } catch (error) {
 
+    res.status(500).json({
+      error: true,
+      msg:'Server error'
+    });
     console.log(error.message);
-    res.status(500).send('Server Error')
 
   }
 })
@@ -148,7 +164,10 @@ router.get('/',
 
   } catch (error) {
       console.log(error)
-      res.status(500).send('Server error')
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
   }
 })
 
