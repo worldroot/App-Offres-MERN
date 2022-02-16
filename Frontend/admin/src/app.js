@@ -7,7 +7,7 @@ import store from './redux/store';
 import { loadUser } from './redux/auth/authActions';
 
 import { ToastContainer } from 'react-toastify';
-import AuthLayout from "layouts/Auth.js";
+import AuthLayout from "./views/Auth";
 
 import Adminroute from 'routes/AdminRoute';
 import SuperAdminRoute from 'routes/SuperAdminRoute';

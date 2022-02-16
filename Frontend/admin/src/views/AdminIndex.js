@@ -21,7 +21,7 @@ import Sidebar from "components/Sidebar/Sidebar";
 
 import routes from "routes.js";
 
-const Index = (props) => {
+const AdminIndex = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
@@ -85,14 +85,11 @@ const Index = (props) => {
           </Col>
         </Row>
       </Container>
-       
-        <Container fluid>
-          <AdminFooter />
-        </Container>
+
       </div>
      
     </>
   );
 };
 
-export default Index;
+export default AdminIndex;
