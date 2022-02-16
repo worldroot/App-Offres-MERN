@@ -34,7 +34,7 @@ export const loadUser = () => async (dispatch) => {
     } catch (error) {
         console.log(error.response)
         dispatch({
-            type: AUTH_ERROR
+            type: ERROR
         })
     }
 }
@@ -60,17 +60,13 @@ export const register = ({
     try {
         // Response 
         const res = await axios.post(`${UsermsURL}/api/access/register`, body, config)
-        if(!res){
+  
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data
             })
             dispatch(loadUser())
             toast.success("Inscription avec succès")
-        }else{
-            toast.warn('404 !');
-        }
-       
 
     } catch (err) {
 
@@ -129,5 +125,7 @@ export const logout = () => dispatch => {
     dispatch({
         type: LOGOUT
     })
+    return <Redirect to='/login'/>
+
 }
 

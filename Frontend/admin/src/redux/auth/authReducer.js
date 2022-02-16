@@ -57,6 +57,13 @@ export default function (state = intialState, action) {
                 case LOGIN_FAIL:
                 case AUTH_ERROR:
                 case ERROR:
+                    return {
+                        ...state,
+                        accessToken: null,
+                        isAuthenticated: false,
+                        loading: false,
+                        user: null
+                    };
                 case LOGOUT:
                     // Remove Token in localstorage
                     localStorage.removeItem('accessToken');

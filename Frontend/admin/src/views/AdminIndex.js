@@ -13,14 +13,22 @@ import {
   Col,
 } from "reactstrap";
 
-import { useState } from "react";
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
-
+import { Redirect, useHistory } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {toast} from 'react-toastify'
 import routes from "routes.js";
 
-const AdminIndex = (props) => {
+const AdminIndex = ({user, isAuth}) => {
+
+  
+  if(!isAuth){
+    const history = useHistory()
+    history.push('/login')
+  }
+
 
   return (
     <>
@@ -93,4 +101,9 @@ const AdminIndex = (props) => {
   );
 };
 
-export default AdminIndex;
+const mapToStateProps = (state) => ({
+  isAuth: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
+
+export default connect (mapToStateProps)(AdminIndex);

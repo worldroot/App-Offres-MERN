@@ -22,7 +22,7 @@ import routes from "routes.js";
 
 const SuperAdminIndex = ({user, isAuth}) => {
 
-  if(!isAuth && !user){
+  if(!isAuth){
     return <Redirect to='/login'/>;
   }
 

@@ -42,7 +42,7 @@ function App({ history }) {
             <SuperAdminRoute exact path="/super-admin" component={SuperAdmin} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/profile" component={Profile} />
-
+            <Redirect from="/" to="/login" />
             </Switch>
         </BrowserRouter>,
     </Provider>

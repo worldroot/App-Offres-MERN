@@ -21,15 +21,12 @@ import {
 
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { Link } from "react-router-dom";
+import { Redirect, Link, useHistory } from 'react-router-dom'
 
 const AdminNavbar = ({ logout ,user, isAuth }) => {
 
-  if(!isAuth && !user){
-    return <Redirect to='/login'/>;
-  }
-  
+  let history = useHistory()
+  //window.location.reload(true);
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -62,9 +59,10 @@ const AdminNavbar = ({ logout ,user, isAuth }) => {
                 </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={ ()=> {
-                      logout()
-                      return <Redirect to='/login'/>;
-                    } }>
+                       logout(),
+                       history.push('/login')
+                      
+                       }}>
                       <i className="fas fa-sign-out-alt"></i>
                       <span>Logout</span>
                     </DropdownItem>
