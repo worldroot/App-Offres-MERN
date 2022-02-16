@@ -37,10 +37,7 @@ const AuthNavbar = ({isAuth, user}) => {
                   <Link to="/">
                     <img
                       alt="..."
-                      src={
-                        require("../../assets/img/brand/argon-react.png")
-                          .default
-                      }
+                      src={ require("../../assets/img/brand/argon-react.png") }
                     />
                   </Link>
                 </Col>
@@ -67,16 +64,16 @@ const AuthNavbar = ({isAuth, user}) => {
                   <NavItem>
                     <NavLink
                       className="nav-link-icon"
-                      to="/auth/register"
+                      to="/register"
                       tag={Link}
                     >
-                      <i className="ni ni-circle-08" />
+                      <i className="ni ni-circle-08"/>
                       <span className="nav-link-inner--text">Register</span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink className="nav-link-icon" to="/auth/login" tag={Link}>
-                      <i className="ni ni-key-25" />
+                    <NavLink className="nav-link-icon" to="/login" tag={Link}>
+                      <i className="ni ni-key-25"/>
                       <span className="nav-link-inner--text">Login</span>
                     </NavLink>
                   </NavItem>

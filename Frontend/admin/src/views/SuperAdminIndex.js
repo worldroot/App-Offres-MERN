@@ -25,9 +25,7 @@ import {
 
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
-import AdminFooter from "components/Footers/AdminFooter";
 import Sidebar from "components/Sidebar/Sidebar";
-
 import routes from "routes.js";
 
 const Index = (props) => {
@@ -60,7 +58,7 @@ const Index = (props) => {
         {...props}
         routes={routes}
         logo={{
-          innerLink: "/admin/index",
+          innerLink: "",
           imgSrc: require("../assets/img/brand/argon-react.png").default,
           imgAlt: "...",
         }}
@@ -83,7 +81,7 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Tableau de bord Admin 
+                      Tableau de bord Super Admin 
                     </h6>
                     <h2 className="mb-0">Total orders</h2>
                   </div>
@@ -96,10 +94,6 @@ const Index = (props) => {
           </Col>
         </Row>
       </Container>
-       
-        <Container fluid>
-          <AdminFooter />
-        </Container>
       </div>
      
     </>

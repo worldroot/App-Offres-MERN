@@ -21,7 +21,7 @@ import {
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 
-const AdminNavbar = (props, user, isAuth) => {
+const AdminNavbar = (props) => {
   
   return (
     <>
@@ -33,34 +33,15 @@ const AdminNavbar = (props, user, isAuth) => {
           >
             {props.brandText}
           </Link>
-          <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-            <FormGroup className="mb-0">
-              <InputGroup className="input-group-alternative">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <i className="fas fa-search" />
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input placeholder="Search" type="text" />
-              </InputGroup>
-            </FormGroup>
-          </Form>
+         
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={
-                        require("../../assets/img/theme/team-1-800x800.jpg")
-                          
-                      }
-                    />
-                  </span>
+                    <i className="fas fa-user-shield"></i>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      {user.nom}
+                      
                     </span>
                   </Media>
                 </Media>
@@ -68,7 +49,7 @@ const AdminNavbar = (props, user, isAuth) => {
               <DropdownMenu className="dropdown-menu-arrow" right>
                 <DropdownItem className="noti-title" header tag="div">
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>Profile</span>
                 </DropdownItem>
@@ -106,3 +87,20 @@ const mapToStateProps = (state) => ({
 });
 
 export default connect(mapToStateProps, { logout } )(AdminNavbar);
+
+
+/* Serach Bar
+
+ <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+            <FormGroup className="mb-0">
+              <InputGroup className="input-group-alternative">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fas fa-search" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input placeholder="Search" type="text" />
+              </InputGroup>
+            </FormGroup>
+          </Form>
+*/

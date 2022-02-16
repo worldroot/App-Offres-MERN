@@ -4,7 +4,6 @@ import { Container, Row, Col } from "reactstrap";
 
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-
 import routes from "routes.js";
 
 const Auth = (props) => {
@@ -50,8 +49,6 @@ const Auth = (props) => {
                 <Col lg="5" md="6">
                   <h1 className="text-white">Welcome!</h1>
                   <p className="text-lead text-light">
-                    Use these awesome forms to login or create new account in
-                    your project for free.
                   </p>
                 </Col>
               </Row>

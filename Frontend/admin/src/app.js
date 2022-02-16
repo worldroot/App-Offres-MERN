@@ -11,7 +11,12 @@ import AuthLayout from "./views/Auth";
 
 import Adminroute from 'routes/AdminRoute';
 import SuperAdminRoute from 'routes/SuperAdminRoute';
+
 import AdminIndex from 'views/AdminIndex';
+import SuperAdmin from 'views/SuperAdminIndex';
+import Profile from 'views/UserDetails';
+import Login from 'views/Login';
+import Register from 'views/Register';
 
 function App({ history }) {
 
@@ -30,7 +35,10 @@ function App({ history }) {
           <ToastContainer />
             <Switch>
             <Route path="/admin" component={AdminIndex} />
-            <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+            <Route path="/super-admin" component={SuperAdmin} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
             </Switch>
         </BrowserRouter>,
     </Provider>
