@@ -35,12 +35,12 @@ router.post('/register',
       
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
-      
-      res.send({ accessToken, refreshToken  })
+      const expiresIn = await ExpAccessToken(savedUser.id)
+      res.status(200).json({ accessToken ,expiresIn ,refreshToken  })
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({
           error: true,
           msg:'Server error'
@@ -112,7 +112,7 @@ router.post('/refresh-token',
 
       const accessToken = await signAccessToken(userId)
       
-      res.send({ accessToken })
+      res.status(200).json({ accessToken })
     } catch (error) {
       next(error)
     }
@@ -128,7 +128,7 @@ router.get('/getuser',
 
   try {
     const user = await User.findById(req.user.id).select('-password')
-    res.json(user)
+    res.status(200).json(user)
   } catch (error) {
     
     res.status(500).json({

@@ -37,16 +37,20 @@ router.post('/',
                 let category = await Category.findOne({ nomcat })
                 if (category) {
                     return res.status(403).json({
-                        error: 'Category already exist'
+                        error: true,
+                        msg: 'Category already exist'
                     })
                 }
                 const newCategory = new Category({ nomcat })
                 category = await newCategory.save()
-                res.json(category)
+                res.status(200).json(category)
           
             } catch (error) {
                 console.log(error)
-                res.status(500).send('Server error')
+                res.status(500).json({
+                    error: true,
+                    msg:'Server error'
+                  });
             }
 
         }
@@ -60,11 +64,14 @@ router.post('/',
 router.get('/all', async (req, res) => {
     try {
         let data = await Category.find({})
-        res.send(data)
+        res.status(200).json(data)
 
     } catch (error) {
         console.log(error)
-        res.status(500).send('Server error')
+        res.status(500).json({
+            error: true,
+            msg:'Server error'
+          });
     }
 })
 
@@ -106,13 +113,16 @@ router.put('/:categoryId',
 
                 try {
                     category = await category.save()
-                    res.json({
+                    res.status(200).json({
                         message: `Category : ${category.nomcat} updated successfully`
                     })
                     
                     } catch (error) {
-                        console.log(error.message)
-                        res.status(500).send('Server error');
+                        console.log(error)
+                        res.status(500).json({
+                            error: true,
+                            msg:'Server error'
+                          });
                     }
             }
         })
@@ -150,12 +160,15 @@ router.delete('/:categoryId',
                 let category = req.category;
                 try {
                     let deletedCategory = await category.remove()
-                    res.json({
+                    res.status(200).json({
                         message: `Category : ${deletedCategory.nomcat} deleted successfully`
                     })
                     } catch (error) {
                         console.log(error.message)
-                        res.status(500).send('Server error');
+                        res.status(500).json({
+                            error: true,
+                            msg:'Server error'
+                          });
                     }
                 
             }
