@@ -7,12 +7,11 @@ import store from './redux/store';
 import { loadUser } from './redux/auth/authActions';
 
 import { ToastContainer } from 'react-toastify';
-import AuthLayout from "./views/Auth";
 
-import Adminroute from 'routes/AdminRoute';
+import AdminRoute from 'routes/AdminRoute';
 import SuperAdminRoute from 'routes/SuperAdminRoute';
 
-import AdminIndex from 'views/AdminIndex';
+import Admin from 'views/AdminIndex';
 import SuperAdmin from 'views/SuperAdminIndex';
 import Profile from 'views/UserDetails';
 import Login from 'views/Login';
@@ -34,11 +33,16 @@ function App({ history }) {
           <BrowserRouter>
           <ToastContainer />
             <Switch>
-            <Route path="/admin" component={AdminIndex} />
-            <Route path="/super-admin" component={SuperAdmin} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
+
+            <Route exact path="/" component={Login} />           
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+
+            <AdminRoute exact path="/admin" component={Admin} />
+            <SuperAdminRoute exact path="/super-admin" component={SuperAdmin} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile" component={Profile} />
+
             </Switch>
         </BrowserRouter>,
     </Provider>

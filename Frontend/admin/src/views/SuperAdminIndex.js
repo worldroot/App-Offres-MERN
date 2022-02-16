@@ -1,11 +1,3 @@
-import { useState } from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
-// javascipt plugin for creating charts
-import Chart from "chart.js";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
-// reactstrap components
 import {
   Button,
   Card,
@@ -21,54 +13,33 @@ import {
   Col,
 } from "reactstrap";
 
-
-
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
+import { Redirect } from 'react-router-dom';
+import {connect} from 'react-redux';
 import routes from "routes.js";
 
-const Index = (props) => {
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
+const SuperAdminIndex = ({user, isAuth}) => {
 
+  if(!isAuth && !user){
+    return <Redirect to='/login'/>;
+  }
 
-
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
-  };
-
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
   return (
     <>
     {/* Layout*/}
     <Sidebar
-        {...props}
         routes={routes}
         logo={{
-          innerLink: "",
           imgSrc: require("../assets/img/brand/argon-react.png").default,
           imgAlt: "...",
         }}
       />
 
       <div className="main-content" >
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        />
+        
+        <AdminNavbar/>
 
       {/* Page content */}
       <Header />
@@ -83,7 +54,6 @@ const Index = (props) => {
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
                       Tableau de bord Super Admin 
                     </h6>
-                    <h2 className="mb-0">Total orders</h2>
                   </div>
                 </Row>
               </CardHeader>
@@ -100,4 +70,9 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+const mapToStateProps = (state) => ({
+  isAuth: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
+
+export default connect (mapToStateProps)(SuperAdminIndex);

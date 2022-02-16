@@ -9,15 +9,14 @@ const AdminRoute = ({
     user,
     ...rest
 
-}) => (
-    
+}) => (        
         <Route
             {...rest}
             render={props =>
                 isAuth === true && user.role === "admin" ? (
                     <Component {...props} />
                 ) : (
-                        <Redirect to="/admin/index" />
+                        <Redirect to="/admin" />
                     )
                 
             }
@@ -29,4 +28,4 @@ const mapStateToProps = (state) => ({
     user: state.auth.user
 });
 
-export default connect(mapStateToProps, null)(AdminRoute);
+export default connect(mapStateToProps)(AdminRoute);

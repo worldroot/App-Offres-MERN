@@ -21,31 +21,11 @@ import Sidebar from "components/Sidebar/Sidebar";
 import routes from "routes.js";
 
 const AdminIndex = (props) => {
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
 
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
-  };
-
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
   return (
     <>
     {/* Layout*/}
     <Sidebar
-        {...props}
         routes={routes}
         logo={{
           innerLink: "",
@@ -55,10 +35,7 @@ const AdminIndex = (props) => {
       />
 
       <div className="main-content" >
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        />
+        <AdminNavbar/>
 
         <Header/>
         {/* Page content */}

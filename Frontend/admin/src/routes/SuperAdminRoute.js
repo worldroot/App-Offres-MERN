@@ -14,10 +14,10 @@ const SuperAdminRoute = ({
         <Route
             {...rest}
             render={props =>
-                isAuth === true && user.role === "admin" ? (
+                isAuth === true && user.role === "super-admin" ? (
                     <Component {...props} />
                 ) : (
-                        <Redirect to="/dashboard/admin" />
+                        <Redirect to="/super-admin" />
                     )
                 
             }

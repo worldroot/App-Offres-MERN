@@ -33,12 +33,14 @@ export default function (state = intialState, action) {
                             loading: false,
                     };
                 case REGISTER_SUCCESS:
+                    localStorage.setItem('accessToken', payload.accessToken);
                     return {
+                        ...state,
+                        ...payload,
+                        isAuthenticated: true,
                         loading: false,
-                        user: payload
                     }
                 case LOGIN_SUCCESS:
-                        // Set Token in localstorage
                         localStorage.setItem('accessToken', payload.accessToken);
                         return {
                             ...state,

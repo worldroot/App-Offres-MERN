@@ -3,6 +3,8 @@ import {UsermsURL} from '../../helpers/urls'
 import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Redirect } from 'react-router-dom'
+
 import { 
     USER_LOADED,
     REGISTER_SUCCESS,

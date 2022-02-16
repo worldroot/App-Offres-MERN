@@ -23,7 +23,6 @@ import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Link } from "react-router-dom";
-import {toast} from 'react-toastify'
 
 const AdminNavbar = ({ logout ,user, isAuth }) => {
 
@@ -64,6 +63,7 @@ const AdminNavbar = ({ logout ,user, isAuth }) => {
                     <DropdownItem divider />
                     <DropdownItem onClick={ ()=> {
                       logout()
+                      return <Redirect to='/login'/>;
                     } }>
                       <i className="fas fa-sign-out-alt"></i>
                       <span>Logout</span>
