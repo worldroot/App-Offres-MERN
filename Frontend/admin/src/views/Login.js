@@ -141,7 +141,7 @@ const Login = ({ login, isAuth, user }) => {
                           </FormGroup>
                         
                           <div className="text-center">
-                            <Button className="my-4" color="primary" type="submit">
+                            <Button className="my-4" color="default" type="submit">
                               Connecter
                             </Button>
                           </div>

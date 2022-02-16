@@ -60,9 +60,7 @@ const AdminIndex = (props) => {
           brandText={getBrandText(props.location.pathname)}
         />
 
-      {/* Page content */}
-      <Header />
-
+        <Header/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>

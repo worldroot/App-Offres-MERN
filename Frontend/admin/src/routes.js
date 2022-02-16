@@ -29,7 +29,7 @@ var routes = [
   },
   {
     path: "/profile",
-    name: "User Profile",
+    name: "Profile",
     icon: "ni ni-single-02 text-red",
     component: Profile,
     layout: "",

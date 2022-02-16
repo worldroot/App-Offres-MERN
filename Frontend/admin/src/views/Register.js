@@ -16,8 +16,9 @@ import {
 } from "reactstrap";
 
 import React, { useState } from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { register } from "redux/auth/authActions"
+import { Redirect } from 'react-router-dom'
 import {toast} from 'react-toastify'
 
 import '../components/Loading/loading.css'
@@ -46,9 +47,10 @@ const Register = ({register, isAuth, isLoading, user}) => {
     }else{
       try {
           register({nom, prenom, email, password})
+          return <Redirect to='/login'/>
       } catch (error) {
           console.log(error)
-          toast.error('Error !')
+          toast.error('Error dans les champs !')
       }
     }    
   }
@@ -145,11 +147,11 @@ const Register = ({register, isAuth, isLoading, user}) => {
                             <span className="text-success font-weight-700">strong</span>
                           </small>
                         </div>
-                        
+                        <br></br>
                         <div className="text-center">
                         {isLoading && <div id='loading' className='my-12 border-b text-center' />}
                           {!isLoading && (
-                            <Button className="mt-4" color="primary" type="submit">
+                            <Button className="mt-4" color="default" type="submit">
                               S'inscrire
                             </Button>
                           )}

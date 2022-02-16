@@ -93,9 +93,9 @@ const UserDetails = ({user, isAuth}) => {
                       <i className="ni location_pin mr-2" />
                       {user.nom} {user.prenom}
                     </div>
-                    <div>
-                      <i className="ni education_hat mr-2" />
-                      {user.email}
+                    <div className="h5 font-weight-300">
+                      <i className="ni location_pin mr-2" />
+                      {user.createdAt.substring(0, 10)  }
                     </div>
                     
                    
