@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 // reactstrap components
 import {
   DropdownMenu,
@@ -15,13 +15,21 @@ import {
   Nav,
   Container,
   Media,
-  Button
+  Button,
+  Toast
 } from "reactstrap";
 
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import {toast} from 'react-toastify'
 
-const AdminNavbar = (props) => {
+const AdminNavbar = ({ logout ,user, isAuth }) => {
+
+  if(!isAuth && !user){
+    return <Redirect to='/login'/>;
+  }
   
   return (
     <>
@@ -31,7 +39,7 @@ const AdminNavbar = (props) => {
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
             to="/"
           >
-            {props.brandText}
+            
           </Link>
          
           <Nav className="align-items-center d-none d-md-flex" navbar>
@@ -41,7 +49,7 @@ const AdminNavbar = (props) => {
                     <i className="fas fa-user-shield"></i>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      
+                      {user.role}
                     </span>
                   </Media>
                 </Media>
@@ -67,7 +75,9 @@ const AdminNavbar = (props) => {
                 </DropdownItem>
 
                     <DropdownItem divider />
-                    <DropdownItem onClick={ logout() }>
+                    <DropdownItem onClick={ ()=> {
+                      logout()
+                    } }>
                       <i className="fas fa-sign-out-alt"></i>
                       <span>Logout</span>
                     </DropdownItem>
@@ -86,7 +96,7 @@ const mapToStateProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapToStateProps, { logout } )(AdminNavbar);
+export default connect (mapToStateProps, { logout } )(AdminNavbar);
 
 
 /* Serach Bar

@@ -51,12 +51,12 @@ const AuthNavbar = ({isAuth, user}) => {
             </div>
             <Nav className="ml-auto" navbar>
             { isAuth && (
-                  <NavItem>
-                  <NavLink className="nav-link-icon" to="/" tag={Link}>
-                    <i className="ni ni-planet" />
-                    <span className="nav-link-inner--text">Dashboard</span>
-                  </NavLink>
-                </NavItem>
+                <NavItem>
+                    <NavLink className="nav-link-icon" to="/" tag={Link}>
+                      <i className="ni ni-planet" />
+                      <span className="nav-link-inner--text">Dashboard</span>
+                    </NavLink>
+                  </NavItem>    
             )}
               
               { !isAuth && (

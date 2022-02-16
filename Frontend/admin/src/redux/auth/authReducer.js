@@ -16,7 +16,7 @@ const intialState = {
     accessToken: localStorage.getItem('accesstoken'),
     isAuthenticated: null,
     loading: true,
-    user: null,
+    user: 0,
 };
 
 // Reducers
@@ -33,6 +33,10 @@ export default function (state = intialState, action) {
                             loading: false,
                     };
                 case REGISTER_SUCCESS:
+                    return {
+                        loading: false,
+                        user: payload
+                    }
                 case LOGIN_SUCCESS:
                         // Set Token in localstorage
                         localStorage.setItem('accessToken', payload.accessToken);

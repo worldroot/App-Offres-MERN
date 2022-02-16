@@ -18,7 +18,7 @@ import React, { useState } from 'react';
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'
 import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
@@ -178,7 +178,6 @@ const Login = ({ login, isAuth, user }) => {
 
 const mapToStateProps = (state) => ({
   isAuth: state.auth.isAuthenticated,
-  isLoading: state.auth.loading,
   user: state.auth.user,
 });
 

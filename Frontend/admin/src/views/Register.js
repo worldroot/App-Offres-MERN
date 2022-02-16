@@ -17,14 +17,14 @@ import {
 
 import React, { useState } from 'react';
 import {connect} from 'react-redux'
-import { signup } from "redux/auth/authActions"
+import { register } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
 import '../components/Loading/loading.css'
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
-const Register = (register, isAuth, isLoading, user) => {
+const Register = ({register, isAuth, isLoading, user}) => {
   
   const [data, setData] = useState({
     nom: '',
@@ -45,7 +45,7 @@ const Register = (register, isAuth, isLoading, user) => {
       toast.warn('Verifier vos champs !')
     }else{
       try {
-          signup({nom, prenom, email, password})
+          register({nom, prenom, email, password})
       } catch (error) {
           console.log(error)
           toast.error('Error !')
@@ -62,7 +62,6 @@ const Register = (register, isAuth, isLoading, user) => {
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                  
                   <p className="text-lead text-light">
                   </p>
                 </Col>
@@ -71,7 +70,7 @@ const Register = (register, isAuth, isLoading, user) => {
           </Container>
 
           {/* Content */}
-          <Container className="mt--8 pb-5">
+            <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                 <Col lg="5" md="7">
                   <Card className="bg-secondary shadow border-0">
@@ -161,8 +160,6 @@ const Register = (register, isAuth, isLoading, user) => {
                 </Col> 
                 </Row>
              </Container> 
-                
-          
     </div>
     <AuthFooter />
 </div>
@@ -176,4 +173,4 @@ const mapToStateProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapToStateProps, { signup })(Register);
+export default connect(mapToStateProps, { register })(Register);

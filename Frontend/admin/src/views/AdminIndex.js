@@ -16,7 +16,6 @@ import {
 import { useState } from "react";
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
-import AdminFooter from "components/Footers/AdminFooter";
 import Sidebar from "components/Sidebar/Sidebar";
 
 import routes from "routes.js";
@@ -63,28 +62,55 @@ const AdminIndex = (props) => {
 
       {/* Page content */}
       <Header />
-      <Container className="mt--7" fluid>
-        <Row>
-          
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Tableau de bord Admin 
-                    </h6>
-                    <h2 className="mb-0">Total orders</h2>
-                  </div>
+
+        {/* Page content */}
+        <Container className="mt--7" fluid>
+          <Row>
+            <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+              <Card className="card-profile shadow">
+                <Row className="justify-content-center">
+                  <Col className="order-lg-2" lg="3">
+                    <div className="card-profile-image">
+                      
+                    </div>
+                  </Col>
                 </Row>
-              </CardHeader>
-              <CardBody>
-              
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                  <div className="d-flex justify-content-between">
+                   
+                  </div>
+                </CardHeader>
+                <CardBody className="pt-0 pt-md-4">
+                  <Row>
+                    <div className="col">
+                      <div className="card-profile-stats d-flex justify-content-center mt-md-5">
+                        
+                      </div>
+                    </div>
+                  </Row>
+                  <div className="text-center">
+                    
+                   
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col className="order-xl-1" xl="8">
+              <Card className="bg-secondary shadow">
+                <CardHeader className="bg-white border-0">
+                  <Row className="align-items-center">
+                    <Col xs="8">
+                      <h3 className="mb-0">Admin tableau de bord</h3>
+                    </Col>
+                    
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
 
       </div>
      

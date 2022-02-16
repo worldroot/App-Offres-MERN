@@ -37,7 +37,7 @@ export const loadUser = () => async (dispatch) => {
     }
 }
 
-export const signup = ({
+export const register = ({
     nom,
     prenom,
     email,
@@ -58,19 +58,20 @@ export const signup = ({
     try {
         // Response 
         const res = await axios.post(`${UsermsURL}/api/access/register`, body, config)
-        
         if(!res){
-            toast.error('Response Error !');
-        }else{
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data
             })
             dispatch(loadUser())
-            console.log("R+")
+            toast.success("Inscription avec succès")
+        }else{
+            toast.warn('404 !');
         }
+       
 
     } catch (err) {
+
         toast.error('Error !');
         console.log(err)
         dispatch({ type: REGISTER_FAIL })
@@ -121,22 +122,10 @@ export const login = ({
     }
 };
 
-export const logout = () => {
-    return (dispatch) =>{
-        
-        try {
 
-            dispatch({ type: LOGOUT })
-            toast.info(`Utilisateur déconnecté !`);
-        } catch (error) {
-    
-            console.log(error)
-            toast.error("Quelque chose s'est mal passé !")
-            dispatch({ type: ERROR })   
-        }
-
-    }
-    
-   
-   
+export const logout = () => dispatch => {
+    dispatch({
+        type: LOGOUT
+    })
 }
+

@@ -15,43 +15,30 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
-import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import {connect} from 'react-redux';
 import routes from "routes.js";
 
-const UserDetails = (props, user) => {
+const UserDetails = ({user, isAuth}) => {
 
-
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
-  };
+  if(!isAuth && !user){
+    return <Redirect to='/login'/>;
+  }
 
   return (
     <>
         {/* Layout*/}
         <Sidebar
-        {...props}
         routes={routes}
         logo={{
-          innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png").default,
+          innerLink: "",
+          imgSrc: require("../assets/img/brand/argon-react.png"),
           imgAlt: "...",
         }}
       />
 
       <div className="main-content" >
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        />
-
+        <AdminNavbar/>
         <UserHeader />
         {/* Page content */}
         <Container className="mt--7" fluid>
@@ -89,7 +76,7 @@ const UserDetails = (props, user) => {
                       onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
-                      Editer Profil
+                      Editer
                     </Button>
                   </div>
                 </CardHeader>
@@ -97,33 +84,20 @@ const UserDetails = (props, user) => {
                   <Row>
                     <div className="col">
                       <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                        
+                        {user.email}
                       </div>
                     </div>
                   </Row>
                   <div className="text-center">
-                    <h3>
-                      Jessica Jones
-                      <span className="font-weight-light">, 27</span>
-                    </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                      Bucharest, Romania
-                    </div>
-                    <div className="h5 mt-4">
-                      <i className="ni business_briefcase-24 mr-2" />
-                      Solution Manager - Creative Tim Officer
+                      {user.nom} {user.prenom}
                     </div>
                     <div>
                       <i className="ni education_hat mr-2" />
-                      University of Computer Science
+                      {user.email}
                     </div>
-                    <hr className="my-4" />
-                    <p>
-                      Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                      Nick Murphy — writes, performs and records all of his own
-                      music.
-                    </p>
+                    
                    
                   </div>
                 </CardBody>
