@@ -23,17 +23,18 @@ var routes = [
   },
   {
     path: "/",
-    name: "Users",
-    icon: "fas fa-users text-red",
-    component: Icons,
-    layout: "/admin",
-  },
-  {
-    path: "/",
     name: "Offres",
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
     layout: "/admin",
   },
+  {
+    path: "/",
+    name: "Utilisateurs",
+    icon: "fas fa-users text-red",
+    component: Icons,
+    layout: "/admin",
+  },
+
 ];
 export default routes;

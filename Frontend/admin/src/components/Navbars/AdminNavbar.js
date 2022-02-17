@@ -55,16 +55,16 @@ const AdminNavbar = ({ logout ,user, isAuth }) => {
 
               { user.role === "admin" &&(
                   <DropdownItem to="/admin" tag={Link}>
-                  <i className="fas fa-tools" />
-                  <span>Dashboard</span>
-                </DropdownItem>
+                    <i className="fas fa-tools" />
+                    <span>Dashboard</span>
+                  </DropdownItem>
               )} 
 
               { user.role === "super-admin" &&(
                   <DropdownItem to="/super-admin" tag={Link}>
-                  <i className="fas fa-tools"></i>
-                  <span>Dashboard</span>
-                </DropdownItem>
+                    <i className="fas fa-tools"></i>
+                    <span>Dashboard</span>
+                  </DropdownItem>
               )} 
 
 
