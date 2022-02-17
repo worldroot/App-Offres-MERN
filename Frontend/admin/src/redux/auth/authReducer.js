@@ -9,7 +9,9 @@ import {
     SET_LOADING,
     ERROR,
     REFTOKEN_ERROR,
-    REFTOKEN_IS_SET
+    REFTOKEN_IS_SET,
+    UPDATE_ERROR,
+    UPDATE_USER
  } from './authTypes'
 
 
@@ -21,6 +23,7 @@ const intialState = {
     isAuthenticated: null,
     loading: true,
     user: 0,
+    users: []
 };
 
 // Reducers
@@ -60,11 +63,13 @@ export default function (state = intialState, action) {
                         ...state,
                         loading: true
                     };
+            
                 case REFTOKEN_IS_SET: 
                 case REGISTER_FAIL:
                 case LOGIN_FAIL:
                 case AUTH_ERROR:
                 case REFTOKEN_ERROR:
+
                 case ERROR:
                     return {
                         ...state,

@@ -52,9 +52,22 @@ const AdminNavbar = ({ logout ,user, isAuth }) => {
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem className="noti-title" header tag="div">
-                   
+
+              { user.role === "admin" &&(
+                  <DropdownItem to="/admin" tag={Link}>
+                  <i className="fas fa-tools" />
+                  <span>Dashboard</span>
                 </DropdownItem>
+              )} 
+
+              { user.role === "super-admin" &&(
+                  <DropdownItem to="/super-admin" tag={Link}>
+                  <i className="fas fa-tools"></i>
+                  <span>Dashboard</span>
+                </DropdownItem>
+              )} 
+
+
                 <DropdownItem to="/profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>Profile</span>

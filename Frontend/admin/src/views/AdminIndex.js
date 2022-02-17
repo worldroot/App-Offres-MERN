@@ -28,6 +28,14 @@ const AdminIndex = ({user, isAuth}) => {
   }
 
 
+  if (isAuth && user) {
+    const { role } = user;
+    if (role === "admin") return <Redirect to='/admin'/>;
+    if (role === "super-admin") return <Redirect to='/super-admin'/>;
+    //if (role === 1) return <Redirect to='/dashboard/'/>;
+  }
+
+
   return (
     <>
     {/* Layout*/}

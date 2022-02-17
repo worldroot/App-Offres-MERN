@@ -15,7 +15,7 @@ import {
     SET_LOADING,
     ERROR,
     REFTOKEN_ERROR,
-    REFTOKEN_IS_SET
+    REFTOKEN_IS_SET,
  } from './authTypes'
 
 
@@ -33,7 +33,7 @@ export const loadUser = () => async (dispatch) => {
             type: USER_LOADED,
             payload: res.data
         })
-        
+
     } catch (error) {
         console.log(error.response)
         dispatch({
@@ -131,3 +131,4 @@ export const logout = () => dispatch => {
         type: LOGOUT
     })
 }
+
