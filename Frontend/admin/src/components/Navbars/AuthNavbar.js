@@ -12,11 +12,15 @@ import {
 } from "reactstrap";
 
 const LogoImg = require('../../assets/img/oo.png')
-import { Link } from "react-router-dom";
+import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import {toast} from 'react-toastify'
 
+const AuthNavbar = ({isAuth, user, logout}) => {
 
-const AuthNavbar = ({isAuth, user}) => {
+  let history = useHistory()
+
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
@@ -52,9 +56,15 @@ const AuthNavbar = ({isAuth, user}) => {
             <Nav className="ml-auto" navbar>
             { isAuth && (
                 <NavItem>
-                    <NavLink className="nav-link-icon" to="/" tag={Link}>
-                      <i className="ni ni-planet" />
-                      <span className="nav-link-inner--text">Dashboard</span>
+                    <NavLink className="nav-link-icon" to="/" onClick={ ()=> {
+                       logout(),
+                       history.push('/login'),
+                       toast.info('Utilisateur déconnecté ')
+                       }} tag={Link}>
+
+                      <i className="fas fa-sign-out-alt"></i>
+
+                      <span className="nav-link-inner--text">Se déconnecter</span>
                     </NavLink>
                   </NavItem>    
             )}
@@ -94,4 +104,4 @@ const mapToStateProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapToStateProps)(AuthNavbar);
+export default connect(mapToStateProps, {logout})(AuthNavbar);

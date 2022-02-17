@@ -125,7 +125,5 @@ export const logout = () => dispatch => {
     dispatch({
         type: LOGOUT
     })
-    return <Redirect to='/login'/>
-
 }
 

@@ -17,7 +17,7 @@ router.post('/register',
     isRequestValidated, 
     async (req, res) => {
 
-    const { nom, prenom, email, password } = req.body;
+    const { nom, prenom, email, password, role } = req.body;
 
     try {
 
@@ -28,7 +28,7 @@ router.post('/register',
           msg: 'Utilisateur existe déjà',
         }); }
 
-      user = new User({ nom, prenom , email, password });
+      user = new User({ nom, prenom , email, password, role });
 
       const savedUser = await user.save();
       if (!savedUser) throw Error('Something went wrong saving the user');

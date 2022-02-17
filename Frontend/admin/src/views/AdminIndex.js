@@ -16,17 +16,15 @@ import {
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {toast} from 'react-toastify'
 import routes from "routes.js";
 
 const AdminIndex = ({user, isAuth}) => {
 
-  
   if(!isAuth){
-    const history = useHistory()
-    history.push('/login')
+    return <Redirect to='/login'/>;
   }
 
 

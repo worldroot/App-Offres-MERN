@@ -36,22 +36,6 @@ const Login = ({ login, isAuth, user }) => {
     setData({ ...data, [name]: event.target.value });
   };
 
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     if(!email || !password){
@@ -69,7 +53,7 @@ const Login = ({ login, isAuth, user }) => {
 
   if (isAuth && user) {
     const { role } = user;
-    toast.info(`Bienvenue ${role}`);
+    toast.info(`${role}`);
     if (role === "admin") return <Redirect to='/admin'/>;
     if (role === "super-admin") return <Redirect to='/super-admin'/>;
     //if (role === 1) return <Redirect to='/dashboard/'/>;
@@ -97,76 +81,91 @@ const Login = ({ login, isAuth, user }) => {
           </Container>
 
           {/* Content */}
-          <Container className="mt--8 pb-5">
-                <Row className="justify-content-center">
-                        
-                  <Col lg="5" md="7">
-                    <Card className="bg-secondary shadow border-0">
-                      <CardHeader className="bg-transparent pb-5">
-                        <h1 className="text-center">Login</h1>
+          { !isAuth && (
 
-                      </CardHeader>
-                      <CardBody className="px-lg-5 py-lg-5">
-                        
-                        <Form role="form" onSubmit={onSubmit}>
-                          <FormGroup className="mb-3">
-                            <InputGroup className="input-group-alternative">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="ni ni-email-83" />
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <Input
-                                placeholder="Email"
-                                type="email"
-                                onChange={handleChange('email')}
-                                value={email}
-                              />
-                            </InputGroup>
-                          </FormGroup>
-                          <FormGroup>
-                            <InputGroup className="input-group-alternative">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="ni ni-lock-circle-open" />
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <Input
-                                placeholder="Password"
-                                type="password"
-                                onChange={handleChange('password')}
-                                value={password}
-                              />
-                            </InputGroup>
-                          </FormGroup>
-                        
-                          <div className="text-center">
-                            <Button className="my-4" color="default" type="submit">
-                              Connecter
-                            </Button>
-                          </div>
-                        </Form>
-                      </CardBody>
-                    </Card>
-                    <Row className="mt-3">
-                      <Col xs="6">
-                        <a
-                          className="text-light"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <small>Forgot password?</small>
-                        </a>
-                      </Col>
-                      <Col className="text-right" xs="6">
-                        
-                        
-                      </Col>
-                    </Row>
-                  </Col>
+          <Container className="mt--8 pb-5">
+          <Row className="justify-content-center">
                   
-                </Row>
+            <Col lg="5" md="7">
+              <Card className="bg-secondary shadow border-0">
+                <CardHeader className="bg-transparent pb-5">
+                  <h1 className="text-center">Login</h1>
+
+                </CardHeader>
+                <CardBody className="px-lg-5 py-lg-5">
+                  
+                  <Form role="form" onSubmit={onSubmit}>
+                    <FormGroup className="mb-3">
+                      <InputGroup className="input-group-alternative">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="ni ni-email-83" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Email"
+                          type="email"
+                          onChange={handleChange('email')}
+                          value={email}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                    <FormGroup>
+                      <InputGroup className="input-group-alternative">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="ni ni-lock-circle-open" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Password"
+                          type="password"
+                          onChange={handleChange('password')}
+                          value={password}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                  
+                    <div className="text-center">
+                      <Button className="my-4" color="default" type="submit">
+                        Connecter
+                      </Button>
+                    </div>
+                  </Form>
+                </CardBody>
+              </Card>
+              <Row className="mt-3">
+                <Col xs="6">
+                  <a
+                    className="text-light"
+                    href="#pablo"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <small>Forgot password?</small>
+                  </a>
+                </Col>
+                <Col className="text-right" xs="6">
+                  
+                  
+                </Col>
+              </Row>
+            </Col>
+            
+          </Row>
           </Container>
+
+          )}
+
+          { isAuth &&(
+
+          <Container className="mt--8 pb-5">
+          <Row className="justify-content-center">
+                  
+          <h1 className="text-center">Déjà connecté</h1>
+            
+          </Row>
+          </Container>
+          )}
 
         </div>   
         <AuthFooter />    

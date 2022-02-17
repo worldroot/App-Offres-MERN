@@ -22,6 +22,7 @@ import {
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 import { Redirect, Link, useHistory } from 'react-router-dom'
+import {toast} from 'react-toastify'
 
 const AdminNavbar = ({ logout ,user, isAuth }) => {
 
@@ -60,11 +61,11 @@ const AdminNavbar = ({ logout ,user, isAuth }) => {
                     <DropdownItem divider />
                     <DropdownItem onClick={ ()=> {
                        logout(),
-                       history.push('/login')
-                      
+                       history.push('/login'),
+                       toast.info('Utilisateur déconnecté ')
                        }}>
                       <i className="fas fa-sign-out-alt"></i>
-                      <span>Logout</span>
+                      <span>Se déconnecter</span>
                     </DropdownItem>
 
               </DropdownMenu>

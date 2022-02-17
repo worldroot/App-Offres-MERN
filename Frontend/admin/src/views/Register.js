@@ -18,7 +18,7 @@ import {
 import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import { register } from "redux/auth/authActions"
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
 
 import '../components/Loading/loading.css'
@@ -36,8 +36,15 @@ const Register = ({register, isAuth, isLoading, user}) => {
 
   const { nom, prenom, email, password} = data
 
-  const handleChange = (nom) => (event) => {
-    setData({ ...data, [nom]: event.target.value })
+  /*
+  const history = useHistory()
+  setTimeout(() => {
+    history.push('/login')
+  }, 1000);
+  */
+
+  const handleChange = (name) => (event) => {
+    setData({ ...data, [name]: event.target.value })
   }
 
   const onSubmit = async(e) => {
@@ -47,13 +54,22 @@ const Register = ({register, isAuth, isLoading, user}) => {
     }else{
       try {
           register({nom, prenom, email, password})
-          return <Redirect to='/login'/>
-      } catch (error) {
-          console.log(error)
-          toast.error('Error dans les champs !')
-      }
-    }    
-  }
+          
+
+        } catch (error) {
+            console.log(error)
+            toast.error('Error dans les champs !')
+        }
+      }    
+    }
+    
+    if (isAuth && user) {
+      const { role } = user;
+      toast.info(`Bienvenue ${role}`);
+      if (role === "admin") return <Redirect to='/admin'/>;
+      if (role === "super-admin") return <Redirect to='/super-admin'/>;
+      //if (role === 1) return <Redirect to='/dashboard/'/>;
+    }
 
   return (
     <>
