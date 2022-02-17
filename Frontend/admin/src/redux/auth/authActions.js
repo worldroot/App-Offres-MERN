@@ -1,4 +1,3 @@
-
 import {UsermsURL} from '../../helpers/urls'
 import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
@@ -14,7 +13,9 @@ import {
     AUTH_ERROR,
     LOGOUT,
     SET_LOADING,
-    ERROR
+    ERROR,
+    REFTOKEN_ERROR,
+    REFTOKEN_IS_SET
  } from './authTypes'
 
 
@@ -26,11 +27,13 @@ export const loadUser = () => async (dispatch) => {
     }
 
     try {
+
         const res = await axios.get(`${UsermsURL}/api/access/getuser`);
         dispatch({
             type: USER_LOADED,
             payload: res.data
         })
+        
     } catch (error) {
         console.log(error.response)
         dispatch({
@@ -43,7 +46,8 @@ export const register = ({
     nom,
     prenom,
     email,
-    password
+    password,
+    role
 }) => async (dispatch) => {
     // Config header for axios
     const config = { headers: { 'Content-Type': 'application/json', },};
@@ -52,7 +56,8 @@ export const register = ({
         nom,
         prenom,
         email,
-        password
+        password,
+        role
     });
     
     dispatch({ type: SET_LOADING })
@@ -97,7 +102,7 @@ export const login = ({
     });
     dispatch({ type: SET_LOADING  })
     try {
-        
+
         const res = await axios.post(`${UsermsURL}/api/access/login`, body, config)
         if(!res){
             toast.error('Error !');
@@ -126,4 +131,3 @@ export const logout = () => dispatch => {
         type: LOGOUT
     })
 }
-

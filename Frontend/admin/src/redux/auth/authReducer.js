@@ -7,13 +7,17 @@ import {
     AUTH_ERROR,
     LOGOUT,
     SET_LOADING,
-    ERROR
+    ERROR,
+    REFTOKEN_ERROR,
+    REFTOKEN_IS_SET
  } from './authTypes'
 
 
  // Intial State
 const intialState = {
     accessToken: localStorage.getItem('accesstoken'),
+    expiresIn: localStorage.getItem('expiresIn'),
+    refreshToken: localStorage.getItem('refreshToken'),
     isAuthenticated: null,
     loading: true,
     user: 0,
@@ -34,6 +38,7 @@ export default function (state = intialState, action) {
                     };
                 case REGISTER_SUCCESS:
                     localStorage.setItem('accessToken', payload.accessToken);
+                    localStorage.setItem('refreshToken', payload.refreshToken);
                     return {
                         ...state,
                         ...payload,
@@ -42,6 +47,8 @@ export default function (state = intialState, action) {
                     }
                 case LOGIN_SUCCESS:
                         localStorage.setItem('accessToken', payload.accessToken);
+                        localStorage.setItem('refreshToken', payload.refreshToken);
+                        localStorage.setItem('expiresIn', payload.expiresIn);
                         return {
                             ...state,
                             ...payload,
@@ -53,9 +60,11 @@ export default function (state = intialState, action) {
                         ...state,
                         loading: true
                     };
+                case REFTOKEN_IS_SET: 
                 case REGISTER_FAIL:
                 case LOGIN_FAIL:
                 case AUTH_ERROR:
+                case REFTOKEN_ERROR:
                 case ERROR:
                     return {
                         ...state,
@@ -66,10 +75,9 @@ export default function (state = intialState, action) {
                     };
                 case LOGOUT:
                     // Remove Token in localstorage
-                    localStorage.removeItem('accessToken');
+                    localStorage.clear();
                     return {
                         ...state,
-                        accessToken: null,
                         isAuthenticated: false,
                         loading: false,
                         user: null

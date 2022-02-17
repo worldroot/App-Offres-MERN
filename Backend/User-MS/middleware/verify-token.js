@@ -10,7 +10,7 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '1h',
+              expiresIn: '24h',
               audience: userId
             }
             
@@ -33,7 +33,7 @@ module.exports = {
             const payload = {user: {id: userId}}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-              expiresIn: '1h',
+              expiresIn: '24h',
               audience: userId
             }
             
@@ -64,7 +64,7 @@ module.exports = {
             req.user = decoded.user;
             next()
         } catch (err) {
-            res.status(401).json(err)
+            res.status(403).json(err)
             console.log(err)
         }        
       },
@@ -74,7 +74,7 @@ module.exports = {
           const payload = {user: {id: userId}}
           const secret = process.env.REFRESH_TOKEN_SECRET
           const options = { 
-            expiresIn: '48h',
+            expiresIn: '72h',
             audience: userId
           }
           JWT.sign(payload, secret, options, (err, token) => {
