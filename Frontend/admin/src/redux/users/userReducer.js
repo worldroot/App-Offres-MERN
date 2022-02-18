@@ -5,7 +5,6 @@ import {
     USER_DEL,
     USER_ERR,
     USER_REQ,
-
 } from './userTypes'
 
 // Intial State

@@ -22,6 +22,7 @@ const UpdateUserDetails = ({...props}) => {
 
   const dispatch = useDispatch()
   const user = useSelector(state => state.auth.user);
+  
   const [nom, setnom] = useState(user.nom);
   const [prenom, setprenom] = useState(user.prenom);
   const [email, setemail] = useState(user.email);
@@ -33,9 +34,10 @@ const UpdateUserDetails = ({...props}) => {
       if (props.currentId !== 0){
 
          dispatch(updateUser(nom, prenom, email))
+
          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+           window.location.reload();
+        }, 2000);
 
          reset()
 
