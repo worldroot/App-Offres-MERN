@@ -155,8 +155,6 @@ router.get('/:id',async (req, res) => {
 // @desc    All
 // @access  Public 
 router.get('/',
-  verifyAccessToken,
-  AdminAndSuper,
   async (req,res) => {
   try {
       let users = await User.find({}).select('-password')

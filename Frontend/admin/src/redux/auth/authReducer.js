@@ -22,8 +22,7 @@ const intialState = {
     refreshToken: localStorage.getItem('refreshToken'),
     isAuthenticated: null,
     loading: true,
-    user: 0,
-    users: []
+    user: [],
 };
 
 // Reducers
@@ -41,7 +40,7 @@ export default function (state = intialState, action) {
                     };
                 case REGISTER_SUCCESS:
                     localStorage.setItem('accessToken', payload.accessToken);
-                    localStorage.setItem('refreshToken', payload.refreshToken);
+                    localStorage.setItem('expiresIn', payload.expiresIn);
                     return {
                         ...state,
                         ...payload,
@@ -50,7 +49,7 @@ export default function (state = intialState, action) {
                     }
                 case LOGIN_SUCCESS:
                         localStorage.setItem('accessToken', payload.accessToken);
-                        localStorage.setItem('refreshToken', payload.refreshToken);
+                        //localStorage.setItem('refreshToken', payload.refreshToken);
                         localStorage.setItem('expiresIn', payload.expiresIn);
                         return {
                             ...state,

@@ -24,6 +24,7 @@ import Profile from "./UpdateUser";
 const UserDetails = ({user, isAuth}) => {
 
   const [currentId, setCurrentId] = useState(0);
+
   if(!isAuth && !user){
     return <Redirect to='/login'/>;
   }
@@ -75,8 +76,7 @@ const UserDetails = ({user, isAuth}) => {
           <Button
             className="float-right"
             color="default"
-            
-            onClick={(e) => e.preventDefault()}
+            onClick={() => setCurrentId(user._id)}
             size="sm"
           >
             Editer
@@ -89,18 +89,17 @@ const UserDetails = ({user, isAuth}) => {
             <div className="card-profile-stats d-flex justify-content-center mt-md-3">
               <div className="text-center">
                   <h3>
-                    {user.nom} {user.prenom}
+                    Nom: {user.nom} 
+                  </h3>
+                  <h3>
+                    Prenom: {user.prenom}
                   </h3>
                   
                   <div>
                     <i className="ni education_hat mr-2" />
                     Email: {user.email}
                   </div>
-                  
-                  <div className="h5 font-weight-300">
-                    <i className="ni location_pin mr-2" />
-                    Compte depuis: {user.createdAt.substring(0,10)}
-                  </div>  
+
                </div>
             </div>
           </div>
@@ -111,85 +110,13 @@ const UserDetails = ({user, isAuth}) => {
   </Col>
 
   
-  <Col className="order-xl-1" xl="8">
-    <Card className="bg-secondary shadow">
-      <CardHeader className="bg-white border-0">
-        <Row className="align-items-center">
-          <Col xs="8">
-            <h3 className="mb-0">My account</h3>
+          <Col className="order-xl-1" xl="8">
+                { currentId !== 0 && (
+                  <Profile {...{ currentId, setCurrentId }} />
+                  )
+                 }
           </Col>
-          <Col className="text-right" xs="4">
-            <Button
-              color="default"
-              onClick={(e) => e.preventDefault()}
-              size="sm"
-            >
-              Confirmer
-            </Button>
-          </Col>
-        </Row>
-      </CardHeader>
-      <CardBody>
-        <Form>
-          <h6 className="heading-small text-muted mb-4">
-            User information
-          </h6>
-          <div className="pl-lg-4">
-          <Row>
-              <Col lg="6">
-                <FormGroup>
-                  <label className="form-control-label">
-                    Nom
-                  </label>
-                  <Input
-                    className="form-control-alternative"
-                    type="text"
-                  />
-                </FormGroup>
-              </Col>
-              <Col lg="6">
-                <FormGroup>
-                  <label className="form-control-label" >
-                    Prenom
-                  </label>
-                  <Input
-                    className="form-control-alternative"
-                    type="text"
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="6">
-                <FormGroup>
-                  <label className="form-control-label">
-                    Username
-                  </label>
-                  <Input
-                    className="form-control-alternative"
-                    type="text"
-                  />
-                </FormGroup>
-              </Col>
-              <Col lg="6">
-                <FormGroup>
-                  <label className="form-control-label">
-                    Email address
-                  </label>
-                  <Input
-                    className="form-control-alternative"
-                    type="email"
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            
-          </div>
 
-        </Form>
-      </CardBody>
-    </Card>
-  </Col>
 </Row>
 </Container>
       </div>                  

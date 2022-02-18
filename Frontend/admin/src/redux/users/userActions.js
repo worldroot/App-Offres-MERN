@@ -1,34 +1,52 @@
 import {UsermsURL} from '../../helpers/urls'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import setAuthToken from '../../helpers/authToken';
 import {
     GET_ALL_USERS,
     GET_FAIL,
     USER_UP,
     USER_DEL,
     USER_ERR,
+    USER_REQ
     
 } from './userTypes'
 
 
 //URLS
 export const ALL = () => axios.get(`${UsermsURL}/api/user`);
-export const UP = (id, updated) => axios.put(`${UsermsURL}/api/user/` + id, updated);
 //export const DELU = (id) => axios.delete(`${UsermsURL}/api/users/` + id);
 
-export const updateUser = (id, data) => (dispatch) => {
-    UP(id,data)
-    .then((res) => {
+export const updateUser = (nom, prenom, email) => (dispatch) => {
+
+    const config = { headers: { 'Content-Type': 'application/json', },};
+
+    const body = JSON.stringify({ nom, prenom, email });
+
+    dispatch({ type: USER_REQ })
+
+    try {
+
+        setAuthToken(localStorage.accessToken)
+        const res = axios.put(`${UsermsURL}/api/user/`, body, config)
+
         console.log(res);
+
         dispatch({
             type: USER_UP,
             payload: res.data,
         });
-    }).catch((err) => 
-        console.log(err),
-        UPDATE_ERROR
-    );
+        toast.info("Mise a jour profil avec succès")
+        
+    } catch (error) {
+
+        console.log(error)
+        dispatch({
+            type: USER_ERR,
+            payload: res.data,
+        });
+    }
+
 };
 
 export const getAllUsers = () => (dispatch) => {

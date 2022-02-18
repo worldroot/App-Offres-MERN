@@ -11,7 +11,7 @@ const middleware = [thunk]
 
 const rootReducer = combineReducers ({
     auth,
-    users,
+    users
 });
 
 const store = createStore(
