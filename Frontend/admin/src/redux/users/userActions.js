@@ -20,23 +20,28 @@ export const ALL = () => axios.get(`${UsermsURL}/api/user`);
 export const updateUser = (nom, prenom, email) => (dispatch) => {
 
     const config = { headers: { 'Content-Type': 'application/json', },};
-
     const body = JSON.stringify({ nom, prenom, email });
-
     dispatch({ type: USER_REQ })
 
     try {
 
         setAuthToken(localStorage.accessToken)
         const res = axios.put(`${UsermsURL}/api/user/`, body, config)
-
-        console.log(res);
-
-        dispatch({
-            type: USER_UP,
-            payload: res.data,
-        });
-        toast.info("Mise a jour profil avec succès")
+                         .catch(function (error) {
+                                    if (error.response) {
+                                        dispatch({
+                                            type: USER_ERR,
+                                            payload: res.data,
+                                        });
+                                        toast.error('Error !');
+                                    }
+                                })
+                                
+                                dispatch({
+                                    type: USER_UP,
+                                    payload: res.data,
+                                });
+                                toast.info("Mise a jour profil avec succès")                            
         
     } catch (error) {
 

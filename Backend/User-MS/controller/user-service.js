@@ -20,7 +20,7 @@ router.put('/',
     
     const updatedUser = await User.findByIdAndUpdate(
         req.user.id,
-        { $set: {nom, prenom, email}=req.body, },
+        { $set: req.body },
         { new: true }
       );
     res.status(200).json({

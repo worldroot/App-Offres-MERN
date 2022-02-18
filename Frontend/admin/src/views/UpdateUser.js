@@ -12,14 +12,15 @@ import {
 } from "reactstrap";
 
 import { Redirect } from 'react-router-dom'
-import {connect, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import React, { useState } from "react";
 import useForm from "../helpers/useForm";
-import { getAllUsers, updateUser } from "redux/users/userActions";
+import { updateUser } from "redux/users/userActions";
 const initialFieldValues = {}
 
 const UpdateUserDetails = ({...props}) => {
 
+  const dispatch = useDispatch()
   const user = useSelector(state => state.auth.user);
   const [nom, setnom] = useState(user.nom);
   const [prenom, setprenom] = useState(user.prenom);
@@ -28,20 +29,22 @@ const UpdateUserDetails = ({...props}) => {
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
 
   const handleSubmit = (e) => {
-
-    e.preventDefault();    
-
+      e.preventDefault();    
       if (props.currentId !== 0){
-          
-          //props.UP(props.currentId, values, onSuccess);
-          UP({nom, prenom, email})
-          
+
+         dispatch(updateUser(nom, prenom, email))
+         setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+
+         reset()
 
       } else {  
         toast.error('Erreur');
+        resetForm();
       }   
-
   };
+
   const reset = (e) => { resetForm(); }
   
 
@@ -115,7 +118,6 @@ const UpdateUserDetails = ({...props}) => {
             </Row>
             <Button
                 color="default"
-                onClick={(e) => e.preventDefault()}
                 size="md"
                 type="submit"
               >
@@ -139,13 +141,5 @@ const UpdateUserDetails = ({...props}) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  List: state.users.uslist,
-});
 
-const mapActionToProps = {
-    All: getAllUsers,
-    UP: updateUser
-};
-
-export default connect(mapStateToProps, mapActionToProps)(UpdateUserDetails);
+export default UpdateUserDetails;

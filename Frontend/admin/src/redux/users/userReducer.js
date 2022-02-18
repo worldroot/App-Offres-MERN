@@ -23,13 +23,7 @@ export default function (state = intialState, action) {
                 case GET_ALL_USERS: 
                     return{...state, uslist:[...action.payload]}
                 case USER_UP:
-                    return {
-                        ...state,
-                        user: payload,
-                        isAuthenticated: true,
-                        loading: false,
-                    };
-                    
+                    return {...state, user: action.payload };
                 case USER_DEL:
                     return{...state,
                         uslist: state.uslist.filter(u => u._id !== action.payload)}
