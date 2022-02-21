@@ -23,10 +23,23 @@ import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 import { Redirect, Link, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
+import { useState } from "react";
 
-const AdminNavbar = ({ logout ,user, isAuth }) => {
+const AdminNavbar = ({ logout }) => {
 
   let history = useHistory()
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
+
+  /*
+  if(!user){
+    toast.error("ERROR")
+    return <Redirect to='/login'/>;
+  }
+  */
   //window.location.reload(true);
   return (
     <>
@@ -92,8 +105,7 @@ const AdminNavbar = ({ logout ,user, isAuth }) => {
 };
 
 const mapToStateProps = (state) => ({
-  isAuth: state.auth.isAuthenticated,
-  user: state.auth.user,
+
 });
 
 export default connect (mapToStateProps, { logout } )(AdminNavbar);

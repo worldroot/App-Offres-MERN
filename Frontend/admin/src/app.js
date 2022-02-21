@@ -17,7 +17,7 @@ import Profile from 'views/UserDetails';
 import Login from 'views/Login';
 import Register from 'views/Register';
 
-function App({ history }) {
+function App() {
 
   if (localStorage.accessToken) {
     setAuthToken(localStorage.accessToken);
@@ -25,7 +25,7 @@ function App({ history }) {
 
   useEffect(() => {
     console.log('app')
-    store.dispatch(loadUser()) 
+    //store.dispatch(loadUser()) 
   }, [])
 
   return (
@@ -38,8 +38,8 @@ function App({ history }) {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
 
-            <AdminRoute exact path="/admin" component={Admin} />
-            <SuperAdminRoute exact path="/super-admin" component={SuperAdmin} />
+            <Route exact path="/admin" component={Admin} />
+            <Route exact path="/super-admin" component={SuperAdmin} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/profile" component={Profile} />
             <Redirect from="/" to="/login" />

@@ -16,14 +16,20 @@ import UserHeader from "components/Headers/UserHeader.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
 import { Redirect } from 'react-router-dom'
-import { connect } from 'react-redux';
-import React, { useState } from "react";
+import { connect, useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import store from "redux/store";
 import routes from "routes.js";
 import Profile from "./UpdateUser";
+import { loadUser } from 'redux/auth/authActions';
 
-const UserDetails = ({user, isAuth}) => {
+
+const UserDetails = () => {
 
   const [currentId, setCurrentId] = useState(0);
+  const user = useSelector(state => state.auth.user);
+  const isAuth = useSelector(state => state.auth.isAuthenticated);
+
 
   if(!isAuth && !user){
     return <Redirect to='/login'/>;
@@ -124,12 +130,7 @@ const UserDetails = ({user, isAuth}) => {
   );
 };
 
-const mapToStateProps = (state) => ({
-  isAuth: state.auth.isAuthenticated,
-  user: state.auth.user,
-});
-
-export default connect(mapToStateProps)(UserDetails);
+export default UserDetails;
 
 
 

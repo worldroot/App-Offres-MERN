@@ -14,7 +14,7 @@ import {
   Container
 } from "reactstrap";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 

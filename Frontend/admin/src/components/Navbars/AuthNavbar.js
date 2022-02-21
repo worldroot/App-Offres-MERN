@@ -16,10 +16,16 @@ import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
+import { useState } from "react";
 
-const AuthNavbar = ({isAuth, user, logout}) => {
+const AuthNavbar = ({isAuth, logout}) => {
 
   let history = useHistory()
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   return (
     <>
@@ -101,7 +107,7 @@ const AuthNavbar = ({isAuth, user, logout}) => {
 
 const mapToStateProps = (state) => ({
   isAuth: state.auth.isAuthenticated,
-  user: state.auth.user,
+  //user: state.auth.user,
 });
 
 export default connect(mapToStateProps, {logout})(AuthNavbar);

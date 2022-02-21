@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 
+
 const AdminRoute = ({
     
     component: Component,
@@ -23,6 +24,7 @@ const AdminRoute = ({
         />
     );
 
+ 
 const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuthenticated,
     user: state.auth.user

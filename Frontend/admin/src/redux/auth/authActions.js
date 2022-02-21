@@ -29,13 +29,15 @@ export const loadUser = () => async (dispatch) => {
     try {
 
         const res = await axios.get(`${UsermsURL}/api/access/getuser`);
+        localStorage.setItem('user', JSON.stringify(res.data));
+        
         dispatch({
             type: USER_LOADED,
-            payload: res.data
+            payload: res.data,
         })
 
     } catch (error) {
-        console.log(error.response)
+        console.log(error)
         dispatch({
             type: ERROR
         })
