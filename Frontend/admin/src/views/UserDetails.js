@@ -27,7 +27,12 @@ import { loadUser } from 'redux/auth/authActions';
 const UserDetails = () => {
 
   const [currentId, setCurrentId] = useState(0);
-  const user = useSelector(state => state.auth.user);
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
+  
   const isAuth = useSelector(state => state.auth.isAuthenticated);
 
 

@@ -21,7 +21,13 @@ const initialFieldValues = {}
 const UpdateUserDetails = ({...props}) => {
 
   const dispatch = useDispatch()
-  const user = useSelector(state => state.auth.user);
+  //const user = useSelector(state => state.auth.user);
+
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   
   const [nom, setnom] = useState(user.nom);
   const [prenom, setprenom] = useState(user.prenom);

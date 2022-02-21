@@ -53,7 +53,7 @@ const Login = ({ login, isAuth, user }) => {
 
   if (isAuth && user) {
     const { role } = user;
-    toast.info(`${role}`);
+
     if (role === "admin") return <Redirect to='/admin'/>;
     if (role === "super-admin") return <Redirect to='/super-admin'/>;
     //if (role === 1) return <Redirect to='/dashboard/'/>;

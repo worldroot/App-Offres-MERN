@@ -1,26 +1,4 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 /*eslint-disable*/
-import { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
-// nodejs library to set properties for components
-import { PropTypes } from "prop-types";
-
 // reactstrap components
 import {
   Button,
@@ -53,6 +31,10 @@ import {
 } from "reactstrap";
 
 var ps;
+import { useState } from "react";
+import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+// nodejs library to set properties for components
+import { PropTypes } from "prop-types";
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
@@ -88,7 +70,7 @@ const Sidebar = (props) => {
   };
 
 const { bgColor, routes, logo } = props;
-const LogoImg = require('../../assets/img/oo.png')
+const LogoImg = require('../../assets/img/oored.png')
 
   let navbarBrandProps;
   if (logo && logo.innerLink) {

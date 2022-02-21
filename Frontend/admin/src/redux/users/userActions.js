@@ -41,6 +41,9 @@ export const updateUser = (nom, prenom, email) => (dispatch) => {
                                     type: USER_UP,
                                     payload: res.data,
                                 });
+                            
+                                localStorage.removeItem('user')
+                                localStorage.setItem('user', JSON.stringify(res.data));
                                 toast.info("Mise a jour profil avec succès")                            
         
     } catch (error) {

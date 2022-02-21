@@ -65,7 +65,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
     
     if (isAuth && user) {
       const { role } = user;
-      toast.info(`Bienvenue ${role}`);
+      //toast.info(`Bienvenue ${role}`);
       if (role === "admin") return <Redirect to='/admin'/>;
       if (role === "super-admin") return <Redirect to='/super-admin'/>;
       //if (role === 1) return <Redirect to='/dashboard/'/>;
