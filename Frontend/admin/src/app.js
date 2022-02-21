@@ -28,6 +28,9 @@ function App() {
     //store.dispatch(loadUser()) 
   }, [])
 
+  //DARK-RED: #C11923
+  //RED: #ED1A24
+
   return (
     <Provider store={store}>
           <BrowserRouter>
@@ -43,6 +46,7 @@ function App() {
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/profile" component={Profile} />
             <Redirect from="/" to="/login" />
+            
             </Switch>
         </BrowserRouter>,
     </Provider>

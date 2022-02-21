@@ -21,9 +21,10 @@ import {connect} from 'react-redux';
 import {toast} from 'react-toastify'
 import routes from "routes.js";
 
-const AdminIndex = ({user, isAuth}) => {
+const AdminIndex = ({isAuth}) => {
 
-  if(!isAuth){
+  const userExist = localStorage.getItem("user")
+  if(!userExist){
     return <Redirect to='/login'/>;
   }
 
@@ -98,9 +99,4 @@ const AdminIndex = ({user, isAuth}) => {
   );
 };
 
-const mapToStateProps = (state) => ({
-  isAuth: state.auth.isAuthenticated,
-  user: state.auth.user,
-});
-
-export default connect (mapToStateProps)(AdminIndex);
+export default AdminIndex;

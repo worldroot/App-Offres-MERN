@@ -18,14 +18,10 @@ import { Link, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useState } from "react";
 
-const AuthNavbar = ({isAuth, logout}) => {
+const AuthNavbar = ({ logout, isAuth }) => {
 
   let history = useHistory()
-  const [user] = useState(() => {
-    const saved = localStorage.getItem("user");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
+  const userExist = localStorage.getItem("user")
 
   return (
     <>
@@ -60,7 +56,7 @@ const AuthNavbar = ({isAuth, logout}) => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
-            { isAuth && (
+            { userExist && (
                 <NavItem>
                     <NavLink className="nav-link-icon" to="/" onClick={ ()=> {
                        logout(),
@@ -75,7 +71,7 @@ const AuthNavbar = ({isAuth, logout}) => {
                   </NavItem>    
             )}
               
-              { !isAuth && (
+              { !userExist && (
                 <>
                   <NavItem>
                     <NavLink

@@ -50,13 +50,22 @@ const Login = ({ login, isAuth, user }) => {
     }
   };
 
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
-  if (isAuth && user) {
-    const { role } = user;
 
-    if (role === "admin") return <Redirect to='/admin'/>;
-    if (role === "super-admin") return <Redirect to='/super-admin'/>;
-    //if (role === 1) return <Redirect to='/dashboard/'/>;
+  const userExist = localStorage.getItem("user")
+
+  if (userExist) {
+
+    const {role} = user
+    if (userLocal.role === "admin" && role === "admin") return <Redirect to='/admin'/>;
+    if (userLocal.role === "super-admin" && role === "super-admin") return <Redirect to='/super-admin'/>;
+    //if (role === 1) return <Redirect to='/dashboard/'/>
+
   }
 
 
@@ -64,7 +73,7 @@ const Login = ({ login, isAuth, user }) => {
     <>
         <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-gradient-info py-7 py-lg-8">
+        <div className="header bg-red py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -81,7 +90,7 @@ const Login = ({ login, isAuth, user }) => {
           </Container>
 
           {/* Content */}
-          { !isAuth && (
+          { !userExist && (
 
           <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
@@ -89,7 +98,7 @@ const Login = ({ login, isAuth, user }) => {
             <Col lg="5" md="7">
               <Card className="bg-secondary shadow border-0">
                 <CardHeader className="bg-transparent pb-5">
-                  <h1 className="text-center">Login</h1>
+                  <h1 className="text-center text-dark">Login</h1>
 
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
@@ -127,7 +136,7 @@ const Login = ({ login, isAuth, user }) => {
                     </FormGroup>
                   
                     <div className="text-center">
-                      <Button className="my-4" color="default" type="submit">
+                      <Button className="my-4" color="dark" type="submit">
                         Connecter
                       </Button>
                     </div>
@@ -156,12 +165,12 @@ const Login = ({ login, isAuth, user }) => {
 
           )}
 
-          { isAuth &&(
+          { userExist && (
 
           <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
                   
-          <h1 className="text-center">Déjà connecté</h1>
+            <h1 className="text-center text-dark">Déjà connecté</h1>
             
           </Row>
           </Container>
@@ -177,7 +186,7 @@ const Login = ({ login, isAuth, user }) => {
 
 const mapToStateProps = (state) => ({
   isAuth: state.auth.isAuthenticated,
-  user: state.auth.user,
+  user: state.auth.user
 });
 
 export default connect(mapToStateProps, { login }) (Login);

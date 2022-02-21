@@ -75,7 +75,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
     <>
     <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-gradient-info py-7 py-lg-8">
+        <div className="header bg-red py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -93,7 +93,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
                 <Col lg="5" md="7">
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-transparent pb-5">
-                      <h1 className="text-center">Inscription</h1>
+                      <h1 className="text-center text-dark">Inscription</h1>
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       
@@ -165,12 +165,9 @@ const Register = ({register, isAuth, isLoading, user}) => {
                         </div>
                         <br></br>
                         <div className="text-center">
-                        {isLoading && <div id='loading' className='my-12 border-b text-center' />}
-                          {!isLoading && (
-                            <Button className="mt-4" color="default" type="submit">
+                            <Button className="mt-4" color="dark" type="submit">
                               S'inscrire
                             </Button>
-                          )}
                         </div>
                       </Form>
                     </CardBody>
