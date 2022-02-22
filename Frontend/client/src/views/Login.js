@@ -29,6 +29,8 @@ import {toast} from 'react-toastify'
 
 const Login = ({ login, isAuth, user }) => {
 
+  
+  const style = { width: "200px" }
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -56,6 +58,12 @@ const Login = ({ login, isAuth, user }) => {
 
   const userExist = localStorage.getItem("user")
 
+  if (isAuth && user) {
+    const { role } = user;
+    //toast.info(`Bienvenue ${role}`);
+    if (role === "user") return <Redirect to='/home'/>;
+    //if (role === 1) return <Redirect to='/dashboard/'/>;
+  }
 
   
 
@@ -130,7 +138,7 @@ const Login = ({ login, isAuth, user }) => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Password"
+                            placeholder="Mot de passe"
                             type="password"
                             onChange={handleChange('password')}
                             value={password}
@@ -146,23 +154,25 @@ const Login = ({ login, isAuth, user }) => {
                       </FormGroup>
                     
                       <div className="text-center">
-                        <Button className="my-4 btn-outline-white" color="dark" type="submit">
+                        <Button className="my-4 btn-outline-white" type="submit">
                           Connecter
                         </Button>
                       </div>
                     </Form>
                   </Col>
                   {/* SIDE 2 */}
-                  <Col className="align-self-center" xl="4">  
+                  <Col className="align-self-center sticky" xl="4">  
                        <div className="md-2">
                           
                           <img
                               className="img-fluid"
+                              style={ style }
                               alt="..."
                               src={OO}
                             />
                             <img
                               className="img-fluid"
+                              style={ style }
                               alt="..."
                               src={ooredoo}
                             />
@@ -171,8 +181,7 @@ const Login = ({ login, isAuth, user }) => {
                 </Row>
               </Col>
 
-                  
-              
+
             </Row>
             </Container>
 

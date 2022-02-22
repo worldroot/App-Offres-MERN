@@ -24,6 +24,8 @@ import {toast} from 'react-toastify'
 import '../components/Loading/loading.css'
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
+import OO from "../assets/img/ccwhite.png"
+import ooredoo from "../assets/img/oo.png"
 
 const Register = ({register, isAuth, isLoading, user}) => {
   
@@ -66,8 +68,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
     if (isAuth && user) {
       const { role } = user;
       //toast.info(`Bienvenue ${role}`);
-      if (role === "admin") return <Redirect to='/admin'/>;
-      if (role === "super-admin") return <Redirect to='/super-admin'/>;
+      if (role === "user") return <Redirect to='/home'/>;
       //if (role === 1) return <Redirect to='/dashboard/'/>;
     }
 
@@ -90,89 +91,123 @@ const Register = ({register, isAuth, isLoading, user}) => {
           {/* Content */}
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
-                <Col lg="5" md="7">
-                  <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-transparent pb-5">
-                      <h1 className="text-center text-dark">Inscription</h1>
-                    </CardHeader>
-                    <CardBody className="px-lg-5 py-lg-5">
-                      
+                          
+                  <Col className="order-xl-1 mt-2 mt-md-5 py-5 bg-red " xl="8">
+                    
+                    <Row className="mt-3">
+                      {/* SIDE 1 */}
+                      <Col xl="8">
+                          <Row className="mt-3">
+                            <Col xl="2">
+                              <div className="display-flex flex-items-center padding-xl">
+                                <i className="fas fa-user fa-fw fa-3x text-white"></i>
+                              </div>
+                            </Col>
+                            <Col xl="8">
+                              <div className="flex-grow-1">
+                                <div className="small font-weight-bold text-white-50 mb-0 text-uppercase">Inscrivez-vous pour profiter de tous nos services</div>
+                                <div className="h3 mb-0 text-white">Mon espace</div>
+                              </div>
+                            </Col>
+                          </Row>
+                    
+                      <br></br>
+
+
                       <Form role="form" onSubmit={onSubmit}>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative mb-3">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-single-02" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input 
-                              placeholder="Nom" 
-                              type="text" 
-                              onChange={handleChange('nom')}
-                              value={nom}
-                              />
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative mb-3">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-single-02" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input 
-                              placeholder="Prenom" 
-                              type="text"
-                              onChange={handleChange('prenom')}
-                              value={prenom} />
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative mb-3">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-email-83" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input
-                              placeholder="Email"
-                              type="email"
-                              onChange={handleChange('email')}
-                              value={email}
-                            />
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="ni ni-lock-circle-open" />
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <Input
-                                placeholder="Password"
-                                type="password"
-                                onChange={handleChange('password')}
-                                value={password}
-                              />
-                            </InputGroup>
-                        </FormGroup>
-                        <div className="text-muted font-italic">
-                          <small>
-                            password strength:{" "}
-                            <span className="text-success font-weight-700">strong</span>
-                          </small>
-                        </div>
-                        <br></br>
-                        <div className="text-center">
-                            <Button className="mt-4" color="dark" type="submit">
-                              S'inscrire
-                            </Button>
-                        </div>
-                      </Form>
-                    </CardBody>
-                  </Card>
-                </Col> 
+                            <FormGroup>
+                              <InputGroup className="input-group-alternative mb-3">
+                                <InputGroupAddon addonType="prepend">
+                                  <InputGroupText>
+                                    <i className="ni ni-single-02" />
+                                  </InputGroupText>
+                                </InputGroupAddon>
+                                <Input 
+                                  placeholder="Nom" 
+                                  type="text" 
+                                  onChange={handleChange('nom')}
+                                  value={nom}
+                                  />
+                              </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                              <InputGroup className="input-group-alternative mb-3">
+                                <InputGroupAddon addonType="prepend">
+                                  <InputGroupText>
+                                    <i className="ni ni-single-02" />
+                                  </InputGroupText>
+                                </InputGroupAddon>
+                                <Input 
+                                  placeholder="Prenom" 
+                                  type="text"
+                                  onChange={handleChange('prenom')}
+                                  value={prenom} />
+                              </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                              <InputGroup className="input-group-alternative mb-3">
+                                <InputGroupAddon addonType="prepend">
+                                  <InputGroupText>
+                                    <i className="ni ni-email-83" />
+                                  </InputGroupText>
+                                </InputGroupAddon>
+                                <Input
+                                  placeholder="Email"
+                                  type="email"
+                                  onChange={handleChange('email')}
+                                  value={email}
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                              <InputGroup className="input-group-alternative">
+                                  <InputGroupAddon addonType="prepend">
+                                    <InputGroupText>
+                                      <i className="ni ni-lock-circle-open" />
+                                    </InputGroupText>
+                                  </InputGroupAddon>
+                                  <Input
+                                    placeholder="Mot de passe"
+                                    type="password"
+                                    onChange={handleChange('password')}
+                                    value={password}
+                                  />
+                                </InputGroup>
+                            </FormGroup>
+                            <div className="text-muted font-italic">
+                              <small>
+                                password strength:{" "}
+                                <span className="text-info font-weight-700">strong</span>
+                              </small>
+                            </div>
+                            
+                            <div className="text-center">
+                                <Button className="mt-4 btn-outline-white"  type="submit">
+                                  S'inscrire
+                                </Button>
+                            </div>
+                          </Form>
+
+                      </Col>
+                      {/* SIDE 2 */}
+                      <Col className="align-self-center" xl="4">  
+                          <div className="md-2">
+                              
+                              <img
+                                  className="img-fluid"
+                                  alt="..."
+                                  src={OO}
+                                />
+                                <img
+                                  className="img-fluid"
+                                  alt="..."
+                                  src={ooredoo}
+                                />
+                            </div>   
+                      </Col>
+                    </Row>
+                  </Col>
+
                 </Row>
              </Container> 
     </div>
