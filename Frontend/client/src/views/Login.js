@@ -4,6 +4,7 @@ import {
   CardHeader,
   CardTitle,
   CardBody,
+  NavbarBrand,
   FormGroup,
   Form,
   Input,
@@ -18,6 +19,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
+import OO from "../assets/img/ccwhite.png"
+import ooredoo from "../assets/img/oo.png"
 
 import { Redirect } from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -150,10 +153,20 @@ const Login = ({ login, isAuth, user }) => {
                     </Form>
                   </Col>
                   {/* SIDE 2 */}
-                  <Col className="text-right align-self-center" xl="4">
-                      <div className=" mb-4 mb-xl-0 bg-white">
-                     
-                      </div>
+                  <Col className="align-self-center" xl="4">  
+                       <div className="md-2">
+                          
+                          <img
+                              className="img-fluid"
+                              alt="..."
+                              src={OO}
+                            />
+                            <img
+                              className="img-fluid"
+                              alt="..."
+                              src={ooredoo}
+                            />
+                        </div>   
                   </Col>
                 </Row>
               </Col>
@@ -170,10 +183,10 @@ const Login = ({ login, isAuth, user }) => {
 
           { userExist && (
 
-          <Container classNameName="mt--8 pb-5">
-          <Row classNameName="justify-content-center">
+          <Container classeName="mt--8 pb-5">
+          <Row className="justify-content-center">
                   
-            <h1 classNameName="text-center text-white">Déjà connecté</h1>
+            <h1 className="text-center text-white">Déjà connecté</h1>
             
           </Row>
           </Container>
