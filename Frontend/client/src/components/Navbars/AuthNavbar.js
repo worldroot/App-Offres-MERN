@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 
 const LogoImg = require('../../assets/img/oo.png')
+const ooredoo = require('../../assets/img/oored.png')
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 import { Link, useHistory, Redirect } from 'react-router-dom'
@@ -57,8 +58,9 @@ const AuthNavbar = ({ logout, isAuth }) => {
                 <Col className="collapse-brand" xs="6">
                   <Link to="/">
                     <img
+                      className="img-fluid"
                       alt="..."
-                      src={ require("../../assets/img/brand/argon-react.png") }
+                      src={ ooredoo }
                     />
                   </Link>
                 </Col>
