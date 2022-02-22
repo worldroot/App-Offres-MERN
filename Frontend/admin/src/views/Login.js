@@ -50,23 +50,10 @@ const Login = ({ login, isAuth, user }) => {
     }
   };
 
-  const [userLocal] = useState(() => {
-    const saved = localStorage.getItem("user");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
-
-
   const userExist = localStorage.getItem("user")
 
-  if (userExist) {
 
-    const {role} = user
-    if (userLocal.role === "admin" && role === "admin") return <Redirect to='/admin'/>;
-    if (userLocal.role === "super-admin" && role === "super-admin") return <Redirect to='/super-admin'/>;
-    //if (role === 1) return <Redirect to='/dashboard/'/>
-
-  }
+  
 
 
   return (
@@ -170,7 +157,7 @@ const Login = ({ login, isAuth, user }) => {
           <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
                   
-            <h1 className="text-center text-dark">Déjà connecté</h1>
+            <h1 className="text-center text-white">Déjà connecté</h1>
             
           </Row>
           </Container>

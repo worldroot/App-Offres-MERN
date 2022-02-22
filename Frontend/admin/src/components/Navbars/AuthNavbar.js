@@ -14,7 +14,7 @@ import {
 const LogoImg = require('../../assets/img/oo.png')
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, Redirect } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useState } from "react";
 
@@ -22,6 +22,21 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
   let history = useHistory()
   const userExist = localStorage.getItem("user")
+
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
+
+
+
+    //if (user.role === "admin" ) return <Redirect to='/admin'/>;
+    //if (user.role === "super-admin" ) return <Redirect to='/super-admin'/>;
+    //if (role === 1) return <Redirect to='/dashboard/'/>
+
+  
+
 
   return (
     <>
@@ -57,6 +72,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
             </div>
             <Nav className="ml-auto" navbar>
             { userExist && (
+              
                 <NavItem>
                     <NavLink className="nav-link-icon" to="/" onClick={ ()=> {
                        logout(),
@@ -70,7 +86,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                     </NavLink>
                   </NavItem>    
             )}
-              
+   
               { !userExist && (
                 <>
                   <NavItem>

@@ -9,7 +9,7 @@ import { loadUser } from './redux/auth/authActions';
 import { ToastContainer } from 'react-toastify';
 
 import AdminRoute from 'routes/AdminRoute';
-import SuperAdminRoute from 'routes/SuperAdminRoute';
+import SuperRoute from 'routes/SuperAdminRoute';
 
 import Admin from 'views/AdminIndex';
 import SuperAdmin from 'views/SuperAdminIndex';
@@ -41,8 +41,8 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
 
-            <Route exact path="/admin" component={Admin} />
-            <Route exact path="/super-admin" component={SuperAdmin} />
+            <AdminRoute exact path="/admin" component={Admin} />
+            <SuperRoute exact path="/super-admin" component={SuperAdmin} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/profile" component={Profile} />
             <Redirect from="/" to="/login" />
