@@ -112,9 +112,15 @@ router.post('/refresh-token',
 
       const accessToken = await signAccessToken(userId)
       
-      res.status(200).json({ accessToken })
+      res.status(200).json({accessToken})
     } catch (error) {
+
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
       next(error)
+      
     }
   
 })

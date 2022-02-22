@@ -16,17 +16,58 @@ import {
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {toast} from 'react-toastify'
 import routes from "routes.js";
+import decode from 'jwt-decode'
+import axios from 'axios'
+import {UsermsURL} from '../helpers/urls'
+import React, { useEffect, useState } from 'react';
+import { logout, refreshJwt } from "redux/auth/authActions";
 
-const AdminIndex = ({isAuth}) => {
 
+const AdminIndex = ({isAuth, logout, refreshJwt }) => {
+
+  const location = useLocation()
   const userExist = localStorage.getItem("user")
   if(!userExist){
     return <Redirect to='/login'/>;
   }
+
+  useEffect(() => {
+
+    const accessToken = localStorage.getItem("accessToken")
+    if(accessToken){
+      
+      
+      const refreshToken = localStorage.getItem("refreshToken")
+      const decodedToken = decode(accessToken)
+      //console.log({refreshToken})
+
+      if(decodedToken.exp * 1000 < new Date().getTime()){
+
+          //localStorage.removeItem("accessToken")
+          refreshJwt({refreshToken})
+          
+      }
+
+    }else{
+      toast.error('Token Error')
+      return <Redirect to='/login'/>; 
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if(localStorage.getItem("accessToken") === null){
+      return <Redirect to='/login'/>; 
+    }
+  }, [])
+
+
+  //const accessToken = localStorage.getItem("accessToken")
+  //const decodedToken = decode(accessToken)
+  //console.log(new Date().getTime()) 
 
   return (
     <>
@@ -99,4 +140,8 @@ const AdminIndex = ({isAuth}) => {
   );
 };
 
-export default AdminIndex;
+const mapToStateProps = (state) => ({
+
+});
+
+export default connect(mapToStateProps, {refreshJwt})(AdminIndex);

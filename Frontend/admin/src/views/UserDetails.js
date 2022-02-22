@@ -20,7 +20,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import React, { useState, useEffect } from "react";
 import routes from "routes.js";
 import Profile from "./UpdateUser";
-import store from 'redux/store';
+import decode from "jwt-decode";
 import { loadUser } from "redux/auth/authActions";
 
 const UserDetails = (props) => {
@@ -30,6 +30,7 @@ const UserDetails = (props) => {
 
   const userExist = localStorage.getItem("user");
 
+
   /*
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
@@ -37,6 +38,7 @@ const UserDetails = (props) => {
     return initialValue || "";
     });
   */
+
 
   useEffect(() => { 
       props.GetUser()

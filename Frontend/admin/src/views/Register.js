@@ -124,7 +124,8 @@ const Register = ({register, isAuth, isLoading, user}) => {
                               placeholder="Prenom" 
                               type="text"
                               onChange={handleChange('prenom')}
-                              value={prenom} />
+                              value={prenom}
+                              />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -165,9 +166,13 @@ const Register = ({register, isAuth, isLoading, user}) => {
                         </div>
                         <br></br>
                         <div className="text-center">
-                            <Button className="mt-4" color="dark" type="submit">
-                              S'inscrire
-                            </Button>
+                        {isLoading && <div id='loading' className='my-12 border-b text-center' />}
+                          {!isLoading && (
+                              <Button className="mt-4" color="dark" type="submit">
+                                S'inscrire
+                              </Button>
+                          )}
+                           
                         </div>
                       </Form>
                     </CardBody>

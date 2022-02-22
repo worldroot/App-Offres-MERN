@@ -32,24 +32,26 @@ export default function (state = intialState, action) {
     switch (type) {
 
                 case USER_LOADED:
-                    return {
+                        return {
+                                ...state,
+                                user: payload,
+                                isAuthenticated: true,
+                                loading: false,
+                        };
+                case REGISTER_SUCCESS:
+                        localStorage.setItem('accessToken', payload.accessToken);
+                        localStorage.setItem('expiresIn', payload.expiresIn);
+                        localStorage.setItem('refreshToken', payload.refreshToken);
+                        return {
                             ...state,
-                            user: payload,
+                            ...payload,
                             isAuthenticated: true,
                             loading: false,
-                    };
-                case REGISTER_SUCCESS:
-                    localStorage.setItem('accessToken', payload.accessToken);
-                    localStorage.setItem('expiresIn', payload.expiresIn);
-                    return {
-                        ...state,
-                        ...payload,
-                        isAuthenticated: true,
-                        loading: false,
-                    }
+                        }
                 case LOGIN_SUCCESS:
                         localStorage.setItem('accessToken', payload.accessToken);
                         localStorage.setItem('expiresIn', payload.expiresIn);
+                        localStorage.setItem('refreshToken', payload.refreshToken);
                         return {
                             ...state,
                             ...payload,
@@ -57,40 +59,42 @@ export default function (state = intialState, action) {
                             loading: false,
                         };
                 case SET_LOADING:
-                    return {
-                        ...state,
-                        loading: true
-                    };
+                        return {
+                            ...state,
+                            loading: true
+                        };
             
-                case REFTOKEN_IS_SET: 
-                    return {
-                        ...state,
-                        ...payload,
-                        isAuthenticated: true,
-                        loading: false,
-                    }
+                case REFTOKEN_IS_SET:
+                        localStorage.setItem('accessToken', payload.accessToken);
+                        return {
+                            ...state,
+                            ...payload,
+                            isAuthenticated: true,
+                            loading: false,
+                        }
                 case REGISTER_FAIL:
                 case LOGIN_FAIL:
                 case AUTH_ERROR:
                 case REFTOKEN_ERROR:
 
                 case ERROR:
-                    return {
-                        ...state,
-                        accessToken: null,
-                        isAuthenticated: false,
-                        loading: false,
-                        user: null
-                    };
+                        return {
+                            ...state,
+                            accessToken: null,
+                            isAuthenticated: false,
+                            loading: false,
+                            user: null
+                        };
                 case LOGOUT:
-                    // Remove Token in localstorage
-                    localStorage.clear();
-                    return {
-                        ...state,
-                        isAuthenticated: false,
-                        loading: false,
-                        user: null
-                    };
+                        //Remove Token in localstorage
+                        localStorage.clear();
+                        return {
+                            ...state,
+                            isAuthenticated: false,
+                            loading: false,
+                            user: null
+                        };
+
                 default:
                     return state;
     }

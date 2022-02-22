@@ -23,7 +23,7 @@ import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
-const Login = ({ login, isAuth, user }) => {
+const Login = ({ login, isAuth, user,isLoading }) => {
 
   const [data, setData] = useState({
     email: '',
@@ -42,7 +42,11 @@ const Login = ({ login, isAuth, user }) => {
       toast.warn('Verifier vos champs !')
     }else{
       try {
-        login({email,password});
+
+        setTimeout(() => {
+          login({email,password});
+       }, 1200);
+        
       } catch (error) {
         console.log(error)
         toast.error('Error !')
@@ -51,8 +55,19 @@ const Login = ({ login, isAuth, user }) => {
   };
 
   const userExist = localStorage.getItem("user")
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
+  if(isAuth && user){
 
+    const {role} = user
+    if (role === "admin" ) return <Redirect to='/admin'/>;
+    if (role === "super-admin" ) return <Redirect to='/super-admin'/>;
+
+  }
   
 
 
@@ -123,9 +138,10 @@ const Login = ({ login, isAuth, user }) => {
                     </FormGroup>
                   
                     <div className="text-center">
-                      <Button className="my-4" color="dark" type="submit">
-                        Connecter
-                      </Button>
+                              <Button className="my-4" color="dark" type="submit">
+                                Connecter
+                              </Button>
+                     
                     </div>
                   </Form>
                 </CardBody>
@@ -173,6 +189,7 @@ const Login = ({ login, isAuth, user }) => {
 
 const mapToStateProps = (state) => ({
   isAuth: state.auth.isAuthenticated,
+  isLoading: state.auth.loading,
   user: state.auth.user
 });
 

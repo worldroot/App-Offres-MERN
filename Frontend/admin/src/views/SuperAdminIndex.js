@@ -19,12 +19,17 @@ import Sidebar from "components/Sidebar/Sidebar";
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import routes from "routes.js";
+import decode from 'jwt-decode'
 
 const SuperAdminIndex = ({user, isAuth}) => {
 
-  if(!isAuth){
+  const userExist = localStorage.getItem("user")
+  
+  if(!userExist){
     return <Redirect to='/login'/>;
   }
+
+ 
 
   return (
     <>

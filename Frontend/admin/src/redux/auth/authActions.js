@@ -2,7 +2,8 @@ import {UsermsURL} from '../../helpers/urls'
 import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
+import decode from 'jwt-decode'
 
 import { 
     USER_LOADED,
@@ -18,32 +19,16 @@ import {
     REFTOKEN_IS_SET,
  } from './authTypes'
 
-
-
 export const loadUser = () => async (dispatch) => {
 
     if (localStorage.accessToken) {
-
-        if(localStorage.expiresIn * 1000 < new Date().getTime()){
-            //refresh-token
-            const res = await axios.post(`${UsermsURL}/api/access/refresh-token`, localStorage.accessToken)
-            console.log(res.data)
-            dispatch({
-                type: REFTOKEN_IS_SET,
-                payload: res.data,
-            })
-        }else{
-            dispatch({
-                type: REFTOKEN_ERROR
-            })
-        }
+        setAuthToken(localStorage.accessToken)
     }
-
+    
     try {
 
-        setAuthToken(localStorage.accessToken)
         const res = await axios.get(`${UsermsURL}/api/access/getuser`);
-        localStorage.setItem('user', JSON.stringify(res.data));
+        localStorage.setItem('user', JSON.stringify(res.data) );
         
         dispatch({
             type: USER_LOADED,
@@ -55,6 +40,7 @@ export const loadUser = () => async (dispatch) => {
         dispatch({
             type: ERROR
         })
+       
     }
 }
 
@@ -92,6 +78,7 @@ export const register = ({
     } catch (err) {
 
         toast.error('Error !');
+        localStorage.clear();
         console.log(err)
         dispatch({ type: REGISTER_FAIL })
     }
@@ -120,6 +107,7 @@ export const login = ({
     try {
 
         const res = await axios.post(`${UsermsURL}/api/access/login`, body, config)
+        
         if(!res){
             toast.error('Error !');
         }else{
@@ -133,8 +121,11 @@ export const login = ({
         }
         
     } catch (err) {
-        console.log(err)
+
         toast.error("Quelque chose s'est mal passé !")
+        localStorage.clear();
+        console.log(err)
+       
         dispatch({
             type: LOGIN_FAIL
         })
@@ -147,4 +138,51 @@ export const logout = () => dispatch => {
         type: LOGOUT
     })
 }
+
+
+export const refreshJwt = ({
+    refreshToken
+}) => async (dispatch) => {
+    // Config header for axios
+    const config = { headers: { 'Content-Type': 'application/json', },};
+    // Set body
+    const body = JSON.stringify({ refreshToken });
+    
+    dispatch({ type: SET_LOADING })
+
+    try {
+        // Response 
+        const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)        
+        
+            dispatch({
+                type: REFTOKEN_IS_SET,
+                payload: res.data
+            })
+
+            dispatch(loadUser())
+           
+    } catch (err) {
+        
+        console.log(err)
+        dispatch({ type: REFTOKEN_ERROR })
+    }
+};
+
+/**
+ *
+       
+        if(localStorage.expiresIn * 1000 < new Date().getTime()){
+            //refresh-token
+            const res = await axios.post(`${UsermsURL}/api/access/refresh-token`, localStorage.accessToken)
+            console.log(localStorage.expiresIn* 1000)
+            dispatch({
+                type: REFTOKEN_IS_SET,
+                payload: res.data,
+            })
+        }else{
+            dispatch({
+                type: REFTOKEN_ERROR
+            })
+        }
+ */
 

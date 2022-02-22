@@ -23,7 +23,10 @@ import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
 import { Redirect, Link, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import { useState } from "react";
+import decode from 'jwt-decode'
+import axios from 'axios'
+import {UsermsURL} from 'helpers/urls'
+import React, { useEffect, useState } from 'react';
 
 const AdminNavbar = ({ logout }) => {
 
@@ -33,6 +36,8 @@ const AdminNavbar = ({ logout }) => {
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
+
+
 
   /*
   if(!user){
