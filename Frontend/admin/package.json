@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GhassenBoughzala/Stock-Devis.git"
+    "url": "git+https://github.com/GhassenBoughzala/App-Offres-MERN.git"
   },
   "keywords": [
     "react",
@@ -20,7 +20,7 @@
   "author": "Ghassen",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GhassenBoughzala/Stock-Devis/issues"
+    "url": "https://github.com/GhassenBoughzala/App-Offres-MERN/issues"
   },
   "scripts": {
     "start": "react-scripts start",

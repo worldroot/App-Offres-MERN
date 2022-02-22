@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+
+import { Provider } from 'react-redux';
+import setAuthToken from './helpers/authToken';
+import store from './redux/store';
+
+import { ToastContainer } from 'react-toastify';
+
+import Login from 'views/Login';
+import Register from 'views/Register';
 
 function App() {
+
+  if (localStorage.accessToken) {
+    setAuthToken(localStorage.accessToken);
+  }
+
+  useEffect(() => {
+    console.log('app')
+    //store.dispatch(loadUser()) 
+  }, [])
+
+  //DARK-RED: #C11923
+  //RED: #ED1A24
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+          <BrowserRouter>
+          <ToastContainer />
+            <Switch>
+
+            <Route exact path="/" component={Login} />           
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Redirect from="/" to="/login" />
+            
+            </Switch>
+        </BrowserRouter>,
+    </Provider>
   );
 }
 
