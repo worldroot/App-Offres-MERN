@@ -63,6 +63,12 @@ export default function (state = intialState, action) {
                     };
             
                 case REFTOKEN_IS_SET: 
+                    return {
+                        ...state,
+                        ...payload,
+                        isAuthenticated: true,
+                        loading: false,
+                    }
                 case REGISTER_FAIL:
                 case LOGIN_FAIL:
                 case AUTH_ERROR:

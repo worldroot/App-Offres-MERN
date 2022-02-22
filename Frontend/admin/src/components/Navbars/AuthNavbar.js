@@ -31,7 +31,11 @@ const AuthNavbar = ({ logout, isAuth }) => {
   });
 
 
-
+  if(isAuth){
+    
+    if (user.role === "admin" ) return <Redirect to='/admin'/>;
+    if (user.role === "super-admin" ) return <Redirect to='/super-admin'/>;
+  }
     //if (user.role === "admin" ) return <Redirect to='/admin'/>;
     //if (user.role === "super-admin" ) return <Redirect to='/super-admin'/>;
     //if (role === 1) return <Redirect to='/dashboard/'/>
@@ -90,26 +94,12 @@ const AuthNavbar = ({ logout, isAuth }) => {
             )}
    
               { !userExist && (
-                <>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      to="/register"
-                      tag={Link}
-                    >
-                      <i className="ni ni-circle-08"/>
-                      <span className="nav-link-inner--text">Register</span>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink className="nav-link-icon" to="/login" tag={Link}>
-                      <i className="ni ni-key-25"/>
-                      <span className="nav-link-inner--text">Login</span>
-                    </NavLink>
-                  </NavItem>
-                </>
-                 
-
+                <NavItem>
+                  <NavLink className="nav-link-icon" to="/login" tag={Link}>
+                    <i className="ni ni-key-25"/>
+                    <span className="nav-link-inner--text">Login</span>
+                  </NavLink>
+                </NavItem>
               )}
             </Nav>
           </UncontrolledCollapse>

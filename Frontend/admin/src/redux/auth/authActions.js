@@ -23,11 +23,25 @@ import {
 export const loadUser = () => async (dispatch) => {
 
     if (localStorage.accessToken) {
-        setAuthToken(localStorage.accessToken)
+
+        if(localStorage.expiresIn * 1000 < new Date().getTime()){
+            //refresh-token
+            const res = await axios.post(`${UsermsURL}/api/access/refresh-token`, localStorage.accessToken)
+            console.log(res.data)
+            dispatch({
+                type: REFTOKEN_IS_SET,
+                payload: res.data,
+            })
+        }else{
+            dispatch({
+                type: REFTOKEN_ERROR
+            })
+        }
     }
 
     try {
 
+        setAuthToken(localStorage.accessToken)
         const res = await axios.get(`${UsermsURL}/api/access/getuser`);
         localStorage.setItem('user', JSON.stringify(res.data));
         
