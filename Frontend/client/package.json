@@ -45,6 +45,7 @@
     "bootstrap": "^4.6.0",
     "chart.js": "2.9.4",
     "classnames": "2.3.1",
+    "jwt-decode": "^3.1.2",
     "moment": "2.29.1",
     "node-sass": "^7.0.1",
     "node-sass-package-importer": "^3.0.4",

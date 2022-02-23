@@ -41,6 +41,7 @@ export default function (state = intialState, action) {
                 case REGISTER_SUCCESS:
                     localStorage.setItem('accessToken', payload.accessToken);
                     localStorage.setItem('expiresIn', payload.expiresIn);
+                    localStorage.setItem('refreshToken', payload.refreshToken);
                     return {
                         ...state,
                         ...payload,
@@ -48,9 +49,10 @@ export default function (state = intialState, action) {
                         loading: false,
                     }
                 case LOGIN_SUCCESS:
-                        localStorage.setItem('accessToken', payload.accessToken);
-                        localStorage.setItem('expiresIn', payload.expiresIn);
-                        return {
+                    localStorage.setItem('accessToken', payload.accessToken);
+                    localStorage.setItem('expiresIn', payload.expiresIn);
+                    localStorage.setItem('refreshToken', payload.refreshToken);
+                    return {
                             ...state,
                             ...payload,
                             isAuthenticated: true,
@@ -61,8 +63,13 @@ export default function (state = intialState, action) {
                         ...state,
                         loading: true
                     };
-            
-                case REFTOKEN_IS_SET: 
+                case REFTOKEN_IS_SET:
+                    localStorage.setItem('accessToken', payload.accessToken);
+                    return {
+                            ...state,
+                            isAuthenticated: true,
+                            loading: false,
+                        }    
                 case REGISTER_FAIL:
                 case LOGIN_FAIL:
                 case AUTH_ERROR:

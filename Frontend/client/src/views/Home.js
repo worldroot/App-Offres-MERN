@@ -19,19 +19,48 @@ import {
   import React, { useEffect, useState } from 'react';
   import AuthNavbar from "components/Navbars/AuthNavbar.js";
   import AuthFooter from "components/Footers/AuthFooter.js";
-  import OO from "../assets/img/ccwhite.png"
-  import ooredoo from "../assets/img/oo.png"
   
   import { Redirect } from 'react-router-dom'
   import {connect} from 'react-redux'
   import {toast} from 'react-toastify'
+
+  import { refreshJwt } from "redux/auth/authActions";
+  import decode from 'jwt-decode'
   
-  const Home = ({ isAuth, user }) => {
+  const Home = ({ refreshJwt }) => {
   
   
     const userExist = localStorage.getItem("user")
   
+    useEffect(() => {
+
+      const accessToken = localStorage.getItem("accessToken")
+      if(accessToken){
+        
+        
+        const refreshToken = localStorage.getItem("refreshToken")
+        const decodedToken = decode(accessToken)
+        //console.log({refreshToken})
   
+        if(decodedToken.exp * 1000 < new Date().getTime()){
+  
+            //localStorage.removeItem("accessToken")
+            refreshJwt({refreshToken})
+            
+        }
+  
+      }else{
+        //toast.error('Token Error')
+        //window.location.reload();
+        return <Redirect to='/login'/>; 
+      }
+    }, []);
+
+    useEffect(() => {
+      if(localStorage.getItem("accessToken") === null){
+        return <Redirect to='/login'/>; 
+      }
+    }, [])
     
   
   
@@ -95,4 +124,4 @@ import {
     user: state.auth.user
   });
   
-  export default connect(mapToStateProps) (Home);
+  export default connect(mapToStateProps, {refreshJwt} ) (Home);

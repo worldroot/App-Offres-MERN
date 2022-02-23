@@ -134,3 +134,31 @@ export const logout = () => dispatch => {
     })
 }
 
+export const refreshJwt = ({
+    refreshToken
+}) => async (dispatch) => {
+    // Config header for axios
+    const config = { headers: { 'Content-Type': 'application/json', },};
+    // Set body
+    const body = JSON.stringify({ refreshToken });
+    
+    dispatch({ type: SET_LOADING })
+
+    try {
+        // Response 
+        const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)  
+       
+            dispatch({
+                type: REFTOKEN_IS_SET,
+                payload: res.data
+            })
+
+            dispatch(loadUser())
+           
+    } catch (err) {
+        
+        console.log(err)
+        dispatch({ type: REFTOKEN_ERROR })
+    }
+};
+
