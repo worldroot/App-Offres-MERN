@@ -2,12 +2,12 @@ const express = require('express')
 const User = require('../User')
 const router = express.Router()
 const createError = require('http-errors')
+const deco = require('jwt-decode')
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, 
         signRefreshToken, 
         verifyRefreshToken, 
-        verifyAccessToken,
-        ExpAccessToken } = require('../middleware/verify-token')
+        verifyAccessToken } = require('../middleware/verify-token')
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -35,7 +35,10 @@ router.post('/register',
       
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
-      const expiresIn = await ExpAccessToken(savedUser.id)
+      
+      var now = new Date()
+      const time = deco(accessToken)
+      const expiresIn = new Date(now.getHours() + time.exp*1000)
       res.status(200).json({ accessToken ,expiresIn ,refreshToken  })
 
     } catch (error) {
@@ -87,9 +90,15 @@ router.post('/login',
           })
         }
         
+
+
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
-        const expiresIn = await ExpAccessToken(user.id)
+
+        var now = new Date()
+        const time = deco(accessToken)
+        const expiresIn = new Date(now.getHours() + time.exp*1000)
+
         res.status(200).json({ accessToken, expiresIn, refreshToken  })
         
     } catch (err) {
@@ -101,6 +110,15 @@ router.post('/login',
     }
 
 });
+
+/*
+ const refreshToken = localStorage.getItem("refreshToken")
+        const decodedToken = decode(accessToken)
+  
+        if(decodedToken.exp * 1000 < new Date().getTime()){
+  
+            refreshJwt({refreshToken})
+             */
 
 
 router.post('/refresh-token',
