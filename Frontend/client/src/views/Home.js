@@ -60,7 +60,7 @@ import {
             <>
               <Container className="mt--8 pb-5">
               <Row className="justify-content-center">
-                    <h1> HELLO </h1>
+                    <h1 className="text-center text-white" > Home </h1>
   
   
               </Row>

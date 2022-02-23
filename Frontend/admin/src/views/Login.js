@@ -23,7 +23,7 @@ import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
-const Login = ({ login, isAuth, user,isLoading }) => {
+const Login = ({ login, isAuth, user, isLoading }) => {
 
   const [data, setData] = useState({
     email: '',
@@ -91,7 +91,8 @@ const Login = ({ login, isAuth, user,isLoading }) => {
           </Container>
 
           {/* Content */}
-          { !isAuth && (
+          
+          { !isAuth  &&(
 
           <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
@@ -138,9 +139,8 @@ const Login = ({ login, isAuth, user,isLoading }) => {
                   
                     <div className="text-center">
                               <Button className="my-4" color="dark" type="submit">
-                                Connecter
-                              </Button>
-                     
+                                  Connecter
+                               </Button>
                     </div>
                   </Form>
                 </CardBody>
@@ -168,7 +168,6 @@ const Login = ({ login, isAuth, user,isLoading }) => {
           )}
 
           { userExist && (
-
           <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
                   
