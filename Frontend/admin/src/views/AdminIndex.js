@@ -21,13 +21,11 @@ import {connect} from 'react-redux';
 import {toast} from 'react-toastify'
 import routes from "routes.js";
 import decode from 'jwt-decode'
-import axios from 'axios'
-import {UsermsURL} from '../helpers/urls'
-import React, { useEffect, useState } from 'react';
-import { logout, refreshJwt } from "redux/auth/authActions";
+import React, { useEffect } from 'react';
+import { refreshJwt } from "redux/auth/authActions";
 
 
-const AdminIndex = ({isAuth, logout, refreshJwt }) => {
+const AdminIndex = ({ refreshJwt }) => {
 
   const location = useLocation()
   const userExist = localStorage.getItem("user")
@@ -46,28 +44,22 @@ const AdminIndex = ({isAuth, logout, refreshJwt }) => {
       //console.log({refreshToken})
 
       if(decodedToken.exp * 1000 < new Date().getTime()){
-
           //localStorage.removeItem("accessToken")
-          refreshJwt({refreshToken})
-          
+          refreshJwt({refreshToken})  
       }
 
     }else{
       toast.error('Token Error')
+      window.location.reload();
       return <Redirect to='/login'/>; 
     }
-  }, [location]);
+  }, []);
 
   useEffect(() => {
     if(localStorage.getItem("accessToken") === null){
       return <Redirect to='/login'/>; 
     }
   }, [])
-
-
-  //const accessToken = localStorage.getItem("accessToken")
-  //const decodedToken = decode(accessToken)
-  //console.log(new Date().getTime()) 
 
   return (
     <>

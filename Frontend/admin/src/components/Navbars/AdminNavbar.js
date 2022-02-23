@@ -21,11 +21,10 @@ import {
 
 import { logout } from "redux/auth/authActions";
 import {connect} from 'react-redux'
-import { Redirect, Link, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import decode from 'jwt-decode'
-import axios from 'axios'
-import {UsermsURL} from 'helpers/urls'
+
 import React, { useEffect, useState } from 'react';
 
 const AdminNavbar = ({ logout }) => {
@@ -37,8 +36,9 @@ const AdminNavbar = ({ logout }) => {
     return initialValue || "";
   });
 
-
-
+      const accessToken = localStorage.getItem("accessToken")
+      const decodedToken = decode(accessToken)
+    
   /*
   if(!user){
     toast.error("ERROR")
@@ -85,11 +85,13 @@ const AdminNavbar = ({ logout }) => {
                   </DropdownItem>
               )} 
 
+                  <DropdownItem to="/profile" tag={Link}>
+                    <i className="ni ni-single-02" />
+                    <span>Profile</span>
+                  </DropdownItem>
 
-                <DropdownItem to="/profile" tag={Link}>
-                  <i className="ni ni-single-02" />
-                  <span>Profile</span>
-                </DropdownItem>
+                    
+
                     <DropdownItem divider />
                     <DropdownItem onClick={ ()=> {
                        logout(),

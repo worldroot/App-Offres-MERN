@@ -16,18 +16,46 @@ import {
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
+import routes from "routes.js";
+
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
-import routes from "routes.js";
+import React, { useEffect } from 'react';
+
+import { refreshJwt } from "redux/auth/authActions";
 import decode from 'jwt-decode'
 
-const SuperAdminIndex = ({user, isAuth}) => {
+const SuperAdminIndex = ({refreshJwt}) => {
 
   const userExist = localStorage.getItem("user")
   
   if(!userExist){
     return <Redirect to='/login'/>;
   }
+
+  useEffect(() => {
+
+    const accessToken = localStorage.getItem("accessToken")
+    if(accessToken){
+      
+      
+      const refreshToken = localStorage.getItem("refreshToken")
+      const decodedToken = decode(accessToken)
+      //console.log({refreshToken})
+
+      if(decodedToken.exp * 1000 < new Date().getTime()){
+
+          //localStorage.removeItem("accessToken")
+          refreshJwt({refreshToken})
+          
+      }
+
+    }else{
+      toast.error('Token Error')
+      window.location.reload();
+      return <Redirect to='/login'/>; 
+    }
+  }, [location]);
 
  
 
@@ -80,4 +108,4 @@ const mapToStateProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect (mapToStateProps)(SuperAdminIndex);
+export default connect (mapToStateProps, {refreshJwt})(SuperAdminIndex);

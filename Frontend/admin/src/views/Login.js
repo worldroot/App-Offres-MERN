@@ -43,9 +43,13 @@ const Login = ({ login, isAuth, user,isLoading }) => {
     }else{
       try {
 
+      
         setTimeout(() => {
           login({email,password});
-       }, 1200);
+       }, 1000);
+      
+
+      //login({email,password});
         
       } catch (error) {
         console.log(error)
@@ -55,11 +59,6 @@ const Login = ({ login, isAuth, user,isLoading }) => {
   };
 
   const userExist = localStorage.getItem("user")
-  const [userLocal] = useState(() => {
-    const saved = localStorage.getItem("user");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
 
   if(isAuth && user){
 
@@ -92,7 +91,7 @@ const Login = ({ login, isAuth, user,isLoading }) => {
           </Container>
 
           {/* Content */}
-          { !userExist && (
+          { !isAuth && (
 
           <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
