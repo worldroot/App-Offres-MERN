@@ -3,11 +3,13 @@ const User = require('../User')
 const router = express.Router()
 const createError = require('http-errors')
 const deco = require('jwt-decode')
+const emailSender = require("../middleware/sendEmail")
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, 
         signRefreshToken, 
         verifyRefreshToken, 
         verifyAccessToken } = require('../middleware/verify-token')
+
 
 // @route   POST api/user/register
 // @desc    Register user
@@ -26,7 +28,8 @@ router.post('/register',
         return res.status(400).json({
           error: true,
           msg: 'Utilisateur existe déjà',
-        }); }
+        });
+       }
 
       user = new User({ nom, prenom , email, password, role });
 
@@ -36,10 +39,22 @@ router.post('/register',
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
       
+      const link = "http//" + req.hostname + ":5001/api/email/verify?accessToken="+accessToken;
+      const sendMail = await emailSender(savedUser.email, link) 
+
       var now = new Date()
       const time = deco(accessToken)
       const expiresIn = new Date(now.getHours() + time.exp*1000)
-      res.status(200).json({ accessToken ,expiresIn ,refreshToken  })
+      
+
+      if(sendMail){
+        res.status(200).json({ 
+          accessToken ,expiresIn ,refreshToken, 
+          msg:'Failed to send email !'  })
+      }else{
+        res.status(200).json({ accessToken ,expiresIn ,refreshToken  })
+      }
+
 
     } catch (error) {
 
@@ -63,7 +78,7 @@ router.post('/login',
     async (req, res) => {
           
     const {email, password} = req.body;
-  
+
     try {
      
       //Mail Verif
