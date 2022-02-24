@@ -45,39 +45,21 @@ const VerifMail = () => {
   
     return (
       <>
-          <div className="main-content">
-          <AuthNavbar />
-          <div className="header bg-red py-7 py-lg-8">
-            <Container>
-              <div className="header-body text-center mb-7">
-                <Row className="justify-content-center">
-                  <Col lg="5" md="6">
-                    
-                    <p className="text-lead text-light">
-                    </p>
-                  </Col>
-                  
-  
-                  
-                </Row>
-              </div>
-            </Container>
+           
   
             {/* Content */}
             { !validUrl && (
             <>
-              <Container className="mt--8 pb-5">
+              <Container className="">
               <Row className="justify-content-center">
-                   
-              <section id="not-found">
-                    <div id="title">Error Page</div>
-                    <div className="circles">
-                    <p>404<br/>
-                    <small>PAGE NOT FOUND</small>
-                    </p>
-                    <span className="circle big"></span>
-                    <span className="circle med"></span>
-                    <span className="circle small"></span>
+            <br></br>
+                <h1 className="text-center text-red"> Error Page</h1>
+            <br></br>
+              <section id="not-found">  
+                    <div className="circles"> 
+                        <span className="circle big"></span>
+                        <span className="circle med"></span>
+                        <span className="circle small"></span>
                     </div>
                 </section>
   
@@ -107,9 +89,7 @@ const VerifMail = () => {
             </Container>
             )}
   
-          </div>   
-          <AuthFooter />    
-        </div>
+          
   
       </>
     );
