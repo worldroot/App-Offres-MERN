@@ -40,7 +40,6 @@ router.post('/register',
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
 
-      
        /**
         *  const token = await new Token({
             userId: savedUser.id,

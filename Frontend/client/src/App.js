@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import Login from 'views/Login';
 import Register from 'views/Register';
 import Home from 'views/Home'
+import VerifMail from 'views/Verifmail';
 
 function App() {
 
@@ -31,11 +32,12 @@ function App() {
           <ToastContainer />
             <Switch>
 
-            <Route exact path="/" component={Home} /> 
-            <Route exact path="/home" component={Home} />            
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Redirect from="/" to="/login" />
+            <Route exact path="/" component={Home}/> 
+            <Route exact path="/home" component={Home}/>            
+            <Route exact path="/login" component={Login}/>
+            <Route exact path="/register" component={Register}/>
+            <Route path="/api/access/:id/verify/:token" component={VerifMail}/>
+            <Redirect from="/" to="/login"/>
             
             </Switch>
         </BrowserRouter>,
