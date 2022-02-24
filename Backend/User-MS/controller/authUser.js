@@ -41,12 +41,14 @@ router.post('/register',
       const refreshToken = await signRefreshToken(savedUser.id)
 
       
-      const token = await new Token({
+       /**
+        *  const token = await new Token({
             userId: savedUser.id,
             token: accessToken
             }).save();
+        */
       
-      const link = `${process.env.BASE_URL}/api/access/${savedUser.id}/verify/${token.token}`
+      const link = `${process.env.BASE_URL}/api/access/${savedUser.id}/verify/${accessToken}`
       const sendMail = await emailSender(savedUser.email,"Verify Enail",link) 
 
       var now = new Date()
@@ -136,8 +138,6 @@ router.post('/login',
         */
 
         
-
-
         var now = new Date()
         const time = deco(accessToken)
         const expiresIn = new Date(now.getHours() + time.exp*1000)
@@ -235,7 +235,7 @@ router.get('/:id/verify/:token', async(req, res) =>{
 
     } catch (error) {
 
-      console.log(error)
+      //console.log(error)
       res.status(500).json({
         error: true,
         msg:'Server error'
