@@ -50,14 +50,14 @@ router.post('/register',
       const link = `${process.env.BASE_URL}/api/access/${savedUser.id}/verify/${accessToken}`
       const sendMail = await emailSender(savedUser.email,"Verify Enail",link) 
 
-      var now = new Date()
+      var date = new Date()
       const time = deco(accessToken)
-      const expiresIn = new Date(now.getHours() + time.exp*1000)
+      const expiresIn = new Date(date.getHours() + time.exp*1000)
       
 
       if(sendMail){
-        res.status(200).json({ 
-          accessToken ,expiresIn ,refreshToken, 
+        res.status(400).json({ 
+          error: true,
           msg:'Failed to send email !'  })
       }else{
         res.status(200).json({ accessToken ,expiresIn ,refreshToken,
@@ -105,6 +105,51 @@ router.post('/login',
               msg: 'Mot de passe incorrect'
             })
         }
+        const accessToken = await signAccessToken(user.id)
+        const refreshToken = await signRefreshToken(user.id)
+
+        var date = new Date()
+        const time = deco(accessToken)
+        const expiresIn = new Date(date.getHours() + time.exp*1000)
+
+        res.status(200).json({ accessToken, expiresIn, refreshToken  })
+        
+    } catch (err) {
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
+      console.log(err)
+    }
+
+});
+
+
+router.post('/loginuser', 
+    validateSigninRequest,
+    isRequestValidated,
+    async (req, res) => {
+          
+    const {email, password} = req.body;
+
+    try {
+     
+      //Mail Verif
+      let user = await User.findOne({email});
+        if (!user) {
+            return res.status(401).json({
+              error: true,
+              msg: 'Email incorrect'
+            })
+        }
+      //Pass Verif
+        const isMatch = await user.isValidPassword(password)
+        if (!isMatch) {
+            return res.status(400).json({
+              error: true,
+              msg: 'Mot de passe incorrect'
+            })
+        }
       //Verif Banned
         if (user.banned) {
           return res.status(403).json({
@@ -117,29 +162,17 @@ router.post('/login',
         const refreshToken = await signRefreshToken(user.id)
 
       //Verif Active
-
-        /*
         if (!user.active) {
-          let token = await Token.findOne({ userId: user.id });
-          if (!token) {
-            token = await new Token({
-              userId: user.id,
-              token: accessToken
-            }).save();
-            const url = `${process.env.BASE_URL}/api/access/${user.id}/verify/${token.token}`
-            await sendEmail(user.email, "Verify Email", url);
-          }
-    
-          return res
-            .status(400)
-            .send({ message: "An Email sent to your account please verify" });
+          const url = `${process.env.BASE_URL}/api/access/${user.id}/verify/${accessToken}`
+          await sendEmail(user.email, "Verify Email", url);
+          return res.status(400).json({ 
+            error: true,
+            msg: "An Email sent to your account please verify" });
         }
-        */
-
         
-        var now = new Date()
+        var date = new Date()
         const time = deco(accessToken)
-        const expiresIn = new Date(now.getHours() + time.exp*1000)
+        const expiresIn = new Date(date.getHours() + time.exp*1000)
 
         res.status(200).json({ accessToken, expiresIn, refreshToken  })
         
@@ -222,7 +255,6 @@ router.get('/:id/verify/:token', async(req, res) =>{
       })
        */
      
-
       await User.findByIdAndUpdate(
         req.params.id,
         { $set: {active: true} },
