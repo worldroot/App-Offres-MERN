@@ -18,11 +18,11 @@ import {
   
   import React, { useEffect, useState } from 'react';
   import AuthNavbar from "components/Navbars/AuthNavbar.js";
-  import AuthFooter from "components/Footers/AuthFooter.js";
   import PageNotFound from "components/Loading/PageNotFound";
   import 'components/Loading/404.css'
-  import { Redirect, useParams } from 'react-router-dom'
+  import { useParams } from 'react-router-dom'
   import axios from "axios";
+  import {toast} from 'react-toastify'
   
 const VerifMail = () => {
     
@@ -36,8 +36,10 @@ const VerifMail = () => {
 				const { data } = await axios.get(url);
 				console.log(data);
 				setValidUrl(true);
+        toast.success('Félicitations')
 			} catch (error) {
 				console.log(error);
+        toast.error("Quelque chose s'est mal passé !")
 				setValidUrl(false);
 			}
 		};
@@ -69,7 +71,7 @@ const VerifMail = () => {
                   <Col>
                         <br></br>
                         <h1 className="text-center text-white">Votre compte a été activé avec succès</h1>
-                        <h1 className="text-center text-white">Félicitations</h1>
+                        <h1 className="text-center text-white"></h1>
                         <br></br>
                         <h1 className="text-center text-white"><i className="far fa-check-circle fa-fw fa-3x text-white"></i></h1>
                         <br></br>

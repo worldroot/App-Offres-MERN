@@ -74,10 +74,10 @@ export const register = ({
             })
             dispatch(loadUser())
             toast.success("Inscription avec succès")
-
+            toast.info("Vérifiez votre email pour activer votre compte")
     } catch (err) {
 
-        toast.error('Error !');
+        toast.error("Inscription: Quelque chose s'est mal passé !");
         console.log(err)
         dispatch({ type: REGISTER_FAIL })
     }
@@ -105,22 +105,21 @@ export const login = ({
     dispatch({ type: SET_LOADING  })
     try {
 
-        const res = await axios.post(`${UsermsURL}/api/access/login`, body, config)
+        const res = await axios.post(`${UsermsURL}/api/access/loginuser`, body, config)
         if(!res){
-            toast.error('Error !');
+            toast.error("Login: Quelque chose s'est mal passé !");
         }else{
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
             })
             dispatch(loadUser())
-            toast.success('Connecté avec succès');
-            
+            toast.success('Connecté avec succès');   
         }
         
     } catch (err) {
         console.log(err)
-        toast.error("Quelque chose s'est mal passé !")
+        toast.error("Accès refusé: Vérifiez si votre compte est actif !")
         dispatch({
             type: LOGIN_FAIL
         })
