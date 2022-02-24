@@ -45,21 +45,26 @@ const VerifMail = () => {
   
     return (
       <>
+          <div className="main-content">
+          <AuthNavbar />
+          <div className="header bg-red py-7 py-lg-8">
            
   
             {/* Content */}
             { !validUrl && (
             <>
-              <Container className="">
+              <Container className="mt--8 pb-5">
               <Row className="justify-content-center">
-            <br></br>
-                <h1 className="text-center text-red"> Error Page</h1>
-            <br></br>
-              <section id="not-found">  
-                    <div className="circles"> 
-                        <span className="circle big"></span>
-                        <span className="circle med"></span>
-                        <span className="circle small"></span>
+                   
+              <section id="not-found">
+                    <div id="title">Error Page</div>
+                    <div className="circles">
+                    <h1>404<br/>
+                    <small>PAGE NOT FOUND</small>
+                    </h1>
+                    <span className="circle big"></span>
+                    <span className="circle med"></span>
+                    <span className="circle small"></span>
                     </div>
                 </section>
   
@@ -76,20 +81,31 @@ const VerifMail = () => {
   
             <Container classeName="mt--8 pb-5">
             <Row className="justify-content-center">
-                    
+              <Col>
+                    <br></br>
+                    <h1 className="text-center text-white">Votre compte a été activé avec succès</h1>
+                    <h1 className="text-center text-white">Félicitations</h1>
+                    <br></br>
+                    <h1 className="text-center text-white"><i className="far fa-check-circle fa-fw fa-3x text-white"></i></h1>
+                    <br></br>
                     <div className="text-center">
                         <a href="/login">
                             <Button className="my-4 btn-outline-white" type="submit">
-                            Login
+                            Go to Login
                             </Button>
                         </a>
                     </div>
+                    <br></br>
+              </Col>
+                  
               
             </Row>
             </Container>
             )}
   
-          
+          </div>   
+          <AuthFooter />    
+        </div>
   
       </>
     );

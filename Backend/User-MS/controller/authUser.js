@@ -210,7 +210,9 @@ router.get('/:id/verify/:token', async(req, res) =>{
         msg:'Invalid link'
       })
 
-      const token = await Token.findOne({
+      /**
+       *  
+       * const token = await Token.findOne({
         userId: user._id,
         token: req.params.token
       })
@@ -218,6 +220,8 @@ router.get('/:id/verify/:token', async(req, res) =>{
         error: true,
         msg:'Invalid link'
       })
+       */
+     
 
       await User.findByIdAndUpdate(
         req.params.id,
@@ -225,7 +229,7 @@ router.get('/:id/verify/:token', async(req, res) =>{
         { new: true }
       );
       //await User.updateOne({_id: user._id, active: true})
-      await Token.remove()
+      //await Token.remove()
 
       res.status(200).json({
         error: false,
