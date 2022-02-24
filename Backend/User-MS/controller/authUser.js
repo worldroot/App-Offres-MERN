@@ -1,5 +1,6 @@
 const express = require('express')
-const User = require('../User')
+const User = require('../models/User')
+const Token = require('../models/Token')
 const router = express.Router()
 const createError = require('http-errors')
 const deco = require('jwt-decode')
@@ -11,7 +12,7 @@ const { signAccessToken,
         verifyAccessToken } = require('../middleware/verify-token')
 
 
-// @route   POST api/user/register
+// @route   POST /register
 // @desc    Register user
 // @access  Public
 router.post('/register', 
@@ -38,9 +39,15 @@ router.post('/register',
       
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
+
       
-      const link = "http//" + req.hostname + ":5001/api/email/verify?accessToken="+accessToken;
-      const sendMail = await emailSender(savedUser.email, link) 
+      const token = await new Token({
+            userId: savedUser.id,
+            token: accessToken
+            }).save();
+      
+      const link = `${process.env.BASE_URL}/api/access/${savedUser.id}/verify/${token.token}`
+      const sendMail = await emailSender(savedUser.email,"Verify Enail",link) 
 
       var now = new Date()
       const time = deco(accessToken)
@@ -52,7 +59,8 @@ router.post('/register',
           accessToken ,expiresIn ,refreshToken, 
           msg:'Failed to send email !'  })
       }else{
-        res.status(200).json({ accessToken ,expiresIn ,refreshToken  })
+        res.status(200).json({ accessToken ,expiresIn ,refreshToken,
+          msg:'Go verify your account !'  })
       }
 
 
@@ -68,8 +76,7 @@ router.post('/register',
   }
 );
 
-
-// @route   POST api/user/login
+// @route   POST /login
 // @desc    Login user
 // @access  Public
 router.post('/login', 
@@ -97,18 +104,39 @@ router.post('/login',
               msg: 'Mot de passe incorrect'
             })
         }
-
-        if (user.banned === true) {
+      //Verif Banned
+        if (user.banned) {
           return res.status(403).json({
               error: true,
               msg: 'Banned Account'
           })
         }
-        
-
 
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
+
+      //Verif Active
+
+        /*
+        if (!user.active) {
+          let token = await Token.findOne({ userId: user.id });
+          if (!token) {
+            token = await new Token({
+              userId: user.id,
+              token: accessToken
+            }).save();
+            const url = `${process.env.BASE_URL}/api/access/${user.id}/verify/${token.token}`
+            await sendEmail(user.email, "Verify Email", url);
+          }
+    
+          return res
+            .status(400)
+            .send({ message: "An Email sent to your account please verify" });
+        }
+        */
+
+        
+
 
         var now = new Date()
         const time = deco(accessToken)
@@ -126,16 +154,9 @@ router.post('/login',
 
 });
 
-/*
- const refreshToken = localStorage.getItem("refreshToken")
-        const decodedToken = decode(accessToken)
-  
-        if(decodedToken.exp * 1000 < new Date().getTime()){
-  
-            refreshJwt({refreshToken})
-             */
-
-
+// @route   POST /refresh-token'
+// @desc    Get new Acc Token
+// @access  Public
 router.post('/refresh-token',
   async (req, res, next) => {
     try {
@@ -158,7 +179,7 @@ router.post('/refresh-token',
   
 })
 
-// @route   GET api/user
+// @route   GET /user
 // @desc    User Information by token
 // @access  Public 
 router.get('/getuser',
@@ -177,6 +198,50 @@ router.get('/getuser',
     console.log(error);
 
   }
+})
+
+// @route   GET/:id/verify/:token
+// @desc    User Information by token
+// @access  Public 
+router.get('/:id/verify/:token', async(req, res) =>{
+    try {
+      const user = await User.findOne({_id:req.params.id})
+      if(!user) return res.status(400).json({
+        error: true,
+        msg:'Invalid link'
+      })
+
+      const token = await Token.findOne({
+        userId: user._id,
+        token: req.params.token
+      })
+      if(!token) return res.status(400).json({
+        error: true,
+        msg:'Invalid link'
+      })
+
+      await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: {active: true} },
+        { new: true }
+      );
+      //await User.updateOne({_id: user._id, active: true})
+      await Token.remove()
+
+      res.status(200).json({
+        error: false,
+        msg:'Email Verified'
+      })
+
+    } catch (error) {
+
+      console.log(error)
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
+
+    }
 })
   
 module.exports = router

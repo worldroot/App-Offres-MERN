@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../User')
+const User = require('../models/User')
 const AdminAccess = require('../middleware/adminAuth')
 const SuperAdminAccess = require('../middleware/superadminAuth')
 const AdminAndSuper = require('../middleware/doubleAuth')
