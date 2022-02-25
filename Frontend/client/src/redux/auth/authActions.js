@@ -172,6 +172,7 @@ export const resend = () => async (dispatch) => {
         await axios.get(`${UsermsURL}/api/access/resend/`+ localStorage.accessToken);
         dispatch({ type: RESEND })
         dispatch(loadUser())
+        toast.info("E-mail envoyé avec succès")
 
     } catch (error) {
         console.log(error)

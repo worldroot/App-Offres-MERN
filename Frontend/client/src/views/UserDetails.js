@@ -33,11 +33,18 @@ const UserDetails = (props) => {
       props.GetUser()
     }, []);
 
-  useEffect(() => { 
-      if(!user.active){
-        toast.warn("Vérifiez votre email pour activer votre compte !")
+    const verif = ()=> {
+
+        try {
+            
+            props.ResendEmail()
+            window.location.reload();
+  
+          } catch (error) {
+              console.log(error)
+              toast.error("Quelque chose s'est mal passé !")
+          }   
       }
-    }, []);
 
 
   if(!userExist){
@@ -69,34 +76,35 @@ const UserDetails = (props) => {
           <Col className="order-xl-2 mb-5 mb-xl-0">
             <div className="text-center">
             <Card className="card-profile shadow">
-            <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+            <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
                 <div className="d-flex justify-content-between">
                 { user.active && (
                           <span className="text-success font-weight-700">Verified <i className="far fa-check-circle"></i></span>
                 )}
 
                 { !user.active && (
+                  
                   <Button
                   className="my-4 btn-outline-danger"
                   color="default"
-                  //onClick={() => setCurrentId(user._id)}
+                  onClick={() => verif()}
                   size="sm"
                 >
-                  Verifier
+                  Verifier votre e-mail
                 </Button>
                 )}
                     
                 </div>
               </CardHeader>
               <CardBody className="pt-0 pt-md">
-              
-             <i className="fas fa-user-circle fa-4x text-red"></i>
+             
+
                 <Row>
                   <div className="col">
                     <div className="card-profile-stats d-flex justify-content-center mt-md-2">
                       
                       <div className="text-center">
-                      
+                      <i className="fas fa-user-circle fa-4x text-red"></i>
                         <br/>
                      
                         <br></br>

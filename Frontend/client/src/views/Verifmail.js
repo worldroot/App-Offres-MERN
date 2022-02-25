@@ -37,7 +37,7 @@ const VerifMail = () => {
         setAuthToken(param.token)
 				const url = `http://localhost:5001/api/access/verify/${param.token}`;
 				const { data } = await axios.get(url);
-				console.log(data);
+				//console.log(data);
 				setValidUrl(true);
         toast.success('Félicitations')
 			} catch (error) {
