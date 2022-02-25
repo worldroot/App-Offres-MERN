@@ -9,3 +9,4 @@ export const REFTOKEN_IS_SET = 'REFRESH TOKEN SUCCESS';
 export const REFTOKEN_ERROR = 'REFRESH TOKEN ERROR';
 export const LOGOUT = 'LOGOUT';
 export const ERROR = 'ERROR';
+export const RESEND = 'RESEND EMAIL';

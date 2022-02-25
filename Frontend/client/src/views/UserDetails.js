@@ -12,14 +12,14 @@ import {
   Col,
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.js";
-import AdminNavbar from "components/Navbars/AdminNavbar";
-import Sidebar from "components/Sidebar/Sidebar";
+import AuthNavbar from "components/Navbars/AuthNavbar.js";
+import AuthFooter from "components/Footers/AuthFooter.js";
 import { Redirect } from 'react-router-dom'
 import { connect, useSelector, useDispatch } from 'react-redux';
 import React, { useState, useEffect } from "react";
-import routes from "routes.js";
-import { loadUser } from "redux/auth/authActions";
+import { loadUser, resend } from "redux/auth/authActions";
+import { toast } from "react-toastify";
+import axios from 'axios';
 
 const UserDetails = (props) => {
 
@@ -33,68 +33,73 @@ const UserDetails = (props) => {
       props.GetUser()
     }, []);
 
+  useEffect(() => { 
+      if(!user.active){
+        toast.warn("Vérifiez votre email pour activer votre compte !")
+      }
+    }, []);
+
+
   if(!userExist){
     return <Redirect to='/login'/>;
   }
 
   return(
     <>
-        {/* Layout*/}
-        <Sidebar
-        routes={routes}
-        logo={{
-          innerLink: "",
-          imgSrc: require("../assets/img/brand/argon-react.png"),
-          imgAlt: "...",
-        }} />
 
       <div className="main-content" >
-        <AdminNavbar/>
-        <UserHeader />
-
+      <AuthNavbar />
+      <div className="header bg-red py-7 py-lg-8">
+            <Container>
+              <div className="header-body text-center mb-7">
+                <Row className="justify-content-center">
+                  <Col lg="5" md="6">
+                    
+                    <p className="text-lead text-light">
+                    </p>
+                  </Col>
+                  
+  
+                  
+                </Row>
+              </div>
+            </Container>
         <Container className="mt--7" fluid>
         <Row>
-          <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+          <Col className="order-xl-2 mb-5 mb-xl-0">
+            <div className="text-center">
             <Card className="card-profile shadow">
-              <Row className="justify-content-center">
-                <Col className="order-lg-1" lg="2">
-                  <div className="card-profile-image">
-                    <a href="#" onClick={(e) => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="rounded-circle"
-                        src={ require("../assets/img/theme/react.jpg") }
-                      />
-                    </a>
-                  </div>
-                </Col>
-              </Row>
-              <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+            <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div className="d-flex justify-content-between">
+                { user.active && (
+                          <span className="text-success font-weight-700">Verified <i className="far fa-check-circle"></i></span>
+                )}
+
+                { !user.active && (
                   <Button
-                    className="mr-4"
-                    color="info"
+                  className="my-4 btn-outline-danger"
+                  color="default"
+                  //onClick={() => setCurrentId(user._id)}
+                  size="sm"
+                >
+                  Verifier
+                </Button>
+                )}
                     
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Connect
-                  </Button>
-                  <Button
-                    className="float-right"
-                    color="default"
-                    onClick={() => setCurrentId(user._id)}
-                    size="sm"
-                  >
-                    Editer
-                  </Button>
                 </div>
               </CardHeader>
-              <CardBody className="pt-0 pt-md-4">
+              <CardBody className="pt-0 pt-md">
+              
+             <i className="fas fa-user-circle fa-4x text-red"></i>
                 <Row>
                   <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center mt-md-3">
+                    <div className="card-profile-stats d-flex justify-content-center mt-md-2">
+                      
                       <div className="text-center">
+                      
+                        <br/>
+                     
+                        <br></br>
                           <h3>
                             Nom: {user.nom} 
                           </h3>
@@ -111,26 +116,49 @@ const UserDetails = (props) => {
                     </div>
                   </div>
                 </Row>
+                <Row>
+                  <div className="col">
+                    <div className="card-profile-stats d-flex justify-content-center">
+                      <div>
+                      { user.active && (
+                         <Button
+                         className="my-4 btn-outline-danger"
+                         color="default"
+                         //onClick={() => setCurrentId(user._id)}
+                         size="xl"
+                       >
+                         Editer
+                       </Button>
+                      )}                     
+                      </div>
+                    </div>
+                  </div>
+                 
+                </Row>
               
               </CardBody>
             </Card>
+            </div>
           </Col>
 
           
                 
         </Row>
         </Container>
+        </div>
       </div>                  
     </>
   );
 };
 
 const mapActionToProps = {
-  GetUser: loadUser
+  GetUser: loadUser,
+  ResendEmail: resend
 };
 
 const mapStateToProps = (state) => ({
   isAuth: state.auth.isAuthenticated,
+  user: state.auth.user,
 });
 
 export default connect ( mapStateToProps, mapActionToProps )(UserDetails);

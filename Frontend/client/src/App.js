@@ -11,6 +11,7 @@ import Login from 'views/Login';
 import Register from 'views/Register';
 import Home from 'views/Home'
 import VerifMail from 'views/Verifmail';
+import UserDetails from 'views/UserDetails';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
             <Route exact path="/home" component={Home}/>            
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
+            <Route exact path="/profile" component={UserDetails}/>
             <Route path="/api/access/verify/:token" component={VerifMail}/>
             <Redirect from="/" to="/login"/>
             

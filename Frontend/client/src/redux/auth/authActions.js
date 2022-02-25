@@ -16,6 +16,7 @@ import {
     ERROR,
     REFTOKEN_ERROR,
     REFTOKEN_IS_SET,
+    RESEND,
  } from './authTypes'
 
 
@@ -107,20 +108,16 @@ export const login = ({
     try {
 
         const res = await axios.post(`${UsermsURL}/api/access/loginuser`, body, config)
-        if(!res){
-            toast.error("Login: Quelque chose s'est mal passé !");
-        }else{
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: res.data
-            })
-            dispatch(loadUser())
-            toast.success('Connecté avec succès');   
-        }
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+        })
+        dispatch(loadUser())
+        toast.success('Connecté avec succès');   
         
     } catch (err) {
         console.log(err)
-        toast.error("Accès refusé: Vérifiez si votre compte est actif !")
+        //toast.warn("Vérifiez si votre compte est actif !")
         dispatch({
             type: LOGIN_FAIL
         })
@@ -161,4 +158,26 @@ export const refreshJwt = ({
         dispatch({ type: REFTOKEN_ERROR })
     }
 };
+
+
+
+export const resend = () => async (dispatch) => {
+
+    if (localStorage.accessToken) {
+        setAuthToken(localStorage.accessToken)
+    }
+
+    try {
+
+        await axios.get(`${UsermsURL}/api/access/resend/`+ localStorage.accessToken);
+        dispatch({ type: RESEND })
+        dispatch(loadUser())
+
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: ERROR
+        })
+    }
+}
 

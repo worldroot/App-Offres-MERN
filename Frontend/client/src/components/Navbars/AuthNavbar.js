@@ -1,6 +1,11 @@
 // reactstrap components
 import {
   UncontrolledCollapse,
+  UncontrolledDropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownToggle,
+  Media,
   NavbarBrand,
   Navbar,
   NavItem,
@@ -74,19 +79,39 @@ const AuthNavbar = ({ logout, isAuth }) => {
             </div>
             <Nav className="ml-auto" navbar>
             { userExist && (
-              
-                <NavItem>
-                    <NavLink className="nav-link-icon" to="/" onClick={ ()=> {
+                <>
+
+            <UncontrolledDropdown nav>
+              <DropdownToggle className="pr-0" nav>
+                <Media className="align-items-center">
+                    <i className="fas fa-user-circle fa-2x"></i>
+                  
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-arrow" right>
+
+
+                  <DropdownItem to="/profile" tag={Link}>
+                    <i className="ni ni-single-02" />
+                    <span>Profile</span>
+                  </DropdownItem>
+
+                    
+
+                    <DropdownItem divider />
+                    <DropdownItem onClick={ ()=> {
                        logout(),
                        history.push('/login'),
                        toast.info('Utilisateur déconnecté ')
-                       }} tag={Link}>
-
+                       }}>
                       <i className="fas fa-sign-out-alt"></i>
+                      <span>Se déconnecter</span>
+                    </DropdownItem>
 
-                      <span className="nav-link-inner--text">Se déconnecter</span>
-                    </NavLink>
-                  </NavItem>    
+              </DropdownMenu>
+            </UncontrolledDropdown>
+                </>
+            
             )}
    
               { !userExist && (

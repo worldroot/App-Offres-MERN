@@ -11,7 +11,8 @@ import {
     REFTOKEN_ERROR,
     REFTOKEN_IS_SET,
     UPDATE_ERROR,
-    UPDATE_USER
+    UPDATE_USER,
+    RESEND
  } from './authTypes'
 
 
@@ -74,7 +75,7 @@ export default function (state = intialState, action) {
                 case LOGIN_FAIL:
                 case AUTH_ERROR:
                 case REFTOKEN_ERROR:
-
+                case RESEND:
                 case ERROR:
                     return {
                         ...state,

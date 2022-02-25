@@ -41,7 +41,7 @@ router.post('/register',
       const refreshToken = await signRefreshToken(savedUser.id)
 
       const link = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
-      const sendMail = await emailSender(savedUser.email,"Verify Enail",link) 
+      const sendMail = await emailSender(savedUser.email,"Verify Email",link) 
 
       var date = new Date()
       const time = deco(accessToken)
@@ -161,11 +161,10 @@ router.post('/loginuser',
       //Verif Active
         if (!user.active) {
           const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
-          const sendMail = await emailSender(user.email,"Verify Enail",url) 
+          const sendMail = await emailSender(user.email,"Verify Email",url) 
 
           return res.status(200).json({ 
             accessToken, expiresIn, refreshToken,
-            error: true,
             msg: "An Email sent to your account please verify" });
 
         }else{
@@ -294,7 +293,7 @@ router.get('/resend/:token',
       }else{
 
       const url = `${process.env.BASE_URL}/api/access/verify/${req.params.token}`
-      const sendMail = await emailSender(user.email,"Verify Enail",url) 
+      const sendMail = await emailSender(user.email,"Verify Email",url) 
 
       return res.status(200).json({ 
         error: false,
