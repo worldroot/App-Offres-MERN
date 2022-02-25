@@ -22,17 +22,20 @@ import {
   import 'components/Loading/404.css'
   import { useParams } from 'react-router-dom'
   import axios from "axios";
+  import setAuthToken from 'helpers/authToken';
+
   import {toast} from 'react-toastify'
   
 const VerifMail = () => {
     
-    const [validUrl, setValidUrl] = useState(true);
+  const [validUrl, setValidUrl] = useState(true);
 	const param = useParams();
 
 	useEffect(() => {
 		const verifyEmailUrl = async () => {
 			try {
-				const url = `http://localhost:5001/api/access/${param.id}/verify/${param.token}`;
+        setAuthToken(param.token)
+				const url = `http://localhost:5001/api/access/verify/${param.token}`;
 				const { data } = await axios.get(url);
 				console.log(data);
 				setValidUrl(true);

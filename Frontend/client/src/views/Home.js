@@ -31,6 +31,11 @@ import {
   
   
     const userExist = localStorage.getItem("user")
+    const [user] = useState(() => {
+      const saved = localStorage.getItem("user");
+      const initialValue = JSON.parse(saved);
+      return initialValue || "";
+    });
   
     useEffect(() => {
 
@@ -61,8 +66,7 @@ import {
         return <Redirect to='/login'/>; 
       }
     }, [])
-    
-  
+      
   
     return (
       <>

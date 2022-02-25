@@ -36,7 +36,7 @@ function App() {
             <Route exact path="/home" component={Home}/>            
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
-            <Route path="/api/access/:id/verify/:token" component={VerifMail}/>
+            <Route path="/api/access/verify/:token" component={VerifMail}/>
             <Redirect from="/" to="/login"/>
             
             </Switch>

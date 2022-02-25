@@ -40,14 +40,7 @@ router.post('/register',
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
 
-       /**
-        *  const token = await new Token({
-            userId: savedUser.id,
-            token: accessToken
-            }).save();
-        */
-      
-      const link = `${process.env.BASE_URL}/api/access/${savedUser.id}/verify/${accessToken}`
+      const link = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
       const sendMail = await emailSender(savedUser.email,"Verify Enail",link) 
 
       var date = new Date()
@@ -160,22 +153,28 @@ router.post('/loginuser',
 
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
-
-      //Verif Active
-        if (!user.active) {
-          const url = `${process.env.BASE_URL}/api/access/${user.id}/verify/${accessToken}`
-          await sendEmail(user.email, "Verify Email", url);
-          return res.status(400).json({ 
-            error: true,
-            msg: "An Email sent to your account please verify" });
-        }
-        
         var date = new Date()
         const time = deco(accessToken)
         const expiresIn = new Date(date.getHours() + time.exp*1000)
 
-        res.status(200).json({ accessToken, expiresIn, refreshToken  })
+
+      //Verif Active
+        if (!user.active) {
+          const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
+          const sendMail = await emailSender(user.email,"Verify Enail",url) 
+
+          return res.status(200).json({ 
+            accessToken, expiresIn, refreshToken,
+            error: true,
+            msg: "An Email sent to your account please verify" });
+
+        }else{
+
+          return res.status(200).json({  accessToken, expiresIn, refreshToken });
+
+        }
         
+               
     } catch (err) {
       res.status(500).json({
         error: true,
@@ -233,40 +232,37 @@ router.get('/getuser',
 })
 
 // @route   GET/:id/verify/:token
-// @desc    User Information by token
+// @desc    Verif Emil
 // @access  Public 
-router.get('/:id/verify/:token', async(req, res) =>{
+router.get('/verify/:token', 
+    verifyAccessToken,
+    async(req, res) =>{
     try {
-      const user = await User.findOne({_id:req.params.id})
+      const user = await User.findById(req.user.id).select('-password')
+
       if(!user) return res.status(400).json({
         error: true,
         msg:'Invalid link'
       })
 
-      /**
-       *  
-       * const token = await Token.findOne({
-        userId: user._id,
-        token: req.params.token
-      })
-      if(!token) return res.status(400).json({
-        error: true,
-        msg:'Invalid link'
-      })
-       */
-     
-      await User.findByIdAndUpdate(
-        req.params.id,
-        { $set: {active: true} },
-        { new: true }
-      );
-      //await User.updateOne({_id: user._id, active: true})
-      //await Token.remove()
+     if(!user.active){
+        await User.findByIdAndUpdate(
+          req.user.id,
+          { $set: {active: true} },
+          { new: true }
+        );
 
-      res.status(200).json({
-        error: false,
-        msg:'Email Verified'
-      })
+        res.status(200).json({
+          error: false,
+          msg:'Email Verified'
+        })
+     }else{
+        res.status(400).json({
+          error: true,
+          msg:'Already Verified'
+        })
+     }
+
 
     } catch (error) {
 
@@ -278,5 +274,47 @@ router.get('/:id/verify/:token', async(req, res) =>{
 
     }
 })
+
+
+// @route   GET
+// @desc    User Information by token
+// @access  Public 
+router.get('/resend/:token', 
+    verifyAccessToken,
+    async(req, res) =>{
+    try {
+      const user = await User.findById(req.user.id).select('-password')
+
+      if(!user){
+      return res.status(400).json({
+        error: true,
+        msg:'Invalid link'
+      })
+
+      }else{
+
+      const url = `${process.env.BASE_URL}/api/access/verify/${req.params.token}`
+      const sendMail = await emailSender(user.email,"Verify Enail",url) 
+
+      return res.status(200).json({ 
+        error: false,
+        msg: "An Email sent to your account please verify" });
+
+      }
+
+
+
+
+    } catch (error) {
+
+      console.log(error)
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
+
+    }
+})
+  
   
 module.exports = router
