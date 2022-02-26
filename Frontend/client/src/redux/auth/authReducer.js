@@ -14,8 +14,6 @@ import {
     UPDATE_USER,
     RESEND,
     FORGOTPASS_REQ,
-    RESET_PASS,
-    RESET_FAIL,
     FORGOTPASS_FAIL
  } from './authTypes'
 
@@ -99,14 +97,6 @@ export default function (state = intialState, action) {
                     };
                 case FORGOTPASS_REQ:
                 case FORGOTPASS_FAIL:
-                case RESET_PASS:
-                    return {
-                        ...state,
-                        ...payload,
-                        isAuthenticated: true,
-                        loading: false,
-                    }
-                case RESET_FAIL:
                 default:
                     return state;
     }

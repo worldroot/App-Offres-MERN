@@ -79,9 +79,9 @@ const VerifMail = () => {
                         <h1 className="text-center text-white"><i className="far fa-check-circle fa-fw fa-3x text-white"></i></h1>
                         <br></br>
                         <div className="text-center">
-                            <a href="/login">
+                            <a href="/home">
                                 <Button className="my-4 btn-outline-white" type="submit">
-                                Go to Login
+                                Home
                                 </Button>
                             </a>
                         </div>

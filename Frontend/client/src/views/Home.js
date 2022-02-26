@@ -1,16 +1,4 @@
 import {
-    Button,
-    Card,
-    CardHeader,
-    CardTitle,
-    CardBody,
-    NavbarBrand,
-    FormGroup,
-    Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Row,
     Col,
     Container
@@ -77,13 +65,8 @@ import {
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
                   <Col lg="5" md="6">
-                    
-                    <p className="text-lead text-light">
-                    </p>
+                    <p className="text-lead text-light"></p>
                   </Col>
-                  
-  
-                  
                 </Row>
               </div>
             </Container>

@@ -18,8 +18,6 @@ import {
     REFTOKEN_IS_SET,
     RESEND,
     FORGOTPASS_REQ,
-    RESET_PASS,
-    RESET_FAIL,
     FORGOTPASS_FAIL
  } from './authTypes'
 
@@ -121,7 +119,7 @@ export const login = ({
         
     } catch (err) {
         console.log(err)
-        //toast.warn("Vérifiez si votre compte est actif !")
+        toast.error("Quelque chose s'est mal passé !")
         dispatch({
             type: LOGIN_FAIL
         })
@@ -184,39 +182,6 @@ export const resend = () => async (dispatch) => {
         })
     }
 }
-
-export const resetPass = ({
-    password,
-    confirmpass,
-}) => async (dispatch) => {
-    // Config header for axios
-    const config = { headers: { 'Content-Type': 'application/json', },};
-    // Set body
-    const body = JSON.stringify({
-        confirmpass,
-        password,
-    });
-    
-    dispatch({ type: SET_LOADING })
-
-    try {
-        // Response 
-        const res = await axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
-  
-            dispatch({
-                type: RESET_PASS,
-                payload: res.data
-            })
-            dispatch(loadUser())
-            toast.success("Mot de pass modifié avec succès")
-    } catch (err) {
-
-        toast.error("Forgot Pass: Quelque chose s'est mal passé !");
-        console.log(err)
-        dispatch({ type: REGISTER_FAIL })
-    }
-};
-
 
 export const forgotPass = ({
     email,
