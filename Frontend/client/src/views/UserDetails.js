@@ -74,83 +74,84 @@ const UserDetails = (props) => {
         <Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0">
-            <div className="text-center">
-            <Card className="card-profile shadow">
-            <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
-                <div className="d-flex justify-content-between">
-                { user.active && (
-                          <span className="text-success font-weight-700">Verified <i className="far fa-check-circle"></i></span>
-                )}
+            <Row className="mt-3">
+                <Col xl='4'>
+                <div className="text-center">
+                <Card className="card-profile shadow">
+                <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
+                    <div className="d-flex justify-content-between">
+                    { user.active && (
+                              <span className="text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
+                    )}
 
-                { !user.active && (
-                  
-                  <Button
-                  className="my-4 btn-outline-danger"
-                  color="default"
-                  onClick={() => verif()}
-                  size="sm"
-                >
-                  Verifier votre e-mail
-                </Button>
-                )}
-                    
-                </div>
-              </CardHeader>
-              <CardBody className="pt-0 pt-md">
-             
-
-                <Row>
-                  <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center mt-md-2">
+                    { !user.active && (
                       
-                      <div className="text-center">
-                      <i className="fas fa-user-circle fa-4x text-red"></i>
-                        <br/>
-                     
-                        <br></br>
-                          <h3>
-                            Nom: {user.nom} 
-                          </h3>
-                          <h3>
-                            Prenom: {user.prenom}
-                          </h3>
-                          
-                          <div>
-                            <i className="ni education_hat mr-2" />
-                            Email: {user.email}
-                          </div>
-
-                      </div>
+                      <Button
+                      className="my-4 btn-outline-danger"
+                      color="default"
+                      onClick={() => verif()}
+                      size="sm"
+                    >
+                      Verifier votre e-mail
+                    </Button>
+                    )}
+                        
                     </div>
-                  </div>
-                </Row>
-                <Row>
-                  <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center">
-                      <div>
-                      { user.active && (
-                         <Button
-                         className="my-4 btn-outline-danger"
-                         color="default"
-                         //onClick={() => setCurrentId(user._id)}
-                         size="xl"
-                       >
-                         Editer
-                       </Button>
-                      )}                     
-                      </div>
-                    </div>
-                  </div>
-                 
-                </Row>
-              
-              </CardBody>
-            </Card>
-            </div>
-          </Col>
-
-          
+                  </CardHeader>
+                  <CardBody className="pt-0 pt-md">
                 
+
+                    <Row>
+                      <div className="col">
+                        <div className="card-profile-stats d-flex justify-content-center mt-md-2">
+                          
+                          <div className="text-center">
+                          <i className="fas fa-user-circle fa-4x text-red"></i>
+                            <br/>
+                        
+                            <br></br>
+                              <h3>
+                                Nom: {user.nom} 
+                              </h3>
+                              <h3>
+                                Prenom: {user.prenom}
+                              </h3>
+                              <h3>
+                                Email: {user.email}
+                              </h3>
+                          </div>
+                        </div>
+                      </div>
+                    </Row>
+                    <Row>
+                      <div className="col">
+                        <div className="card-profile-stats d-flex justify-content-center">
+                          <div>
+                          { user.active && (
+                            <Button
+                            className="my-4 btn-outline-danger"
+                            color="default"
+                            //onClick={() => setCurrentId(user._id)}
+                            size="xl"
+                          >
+                            Editer
+                          </Button>
+                          )}                     
+                          </div>
+                        </div>
+                      </div>
+                    
+                    </Row>
+                  
+                  </CardBody>
+                </Card>
+                </div>
+                </Col>
+            </Row>
+          </Col>
+         
+
+               
         </Row>
         </Container>
         </div>

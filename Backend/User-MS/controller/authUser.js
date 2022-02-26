@@ -160,8 +160,8 @@ router.post('/loginuser',
 
       //Verif Active
         if (!user.active) {
-          const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
-          const sendMail = await emailSender(user.email,"Verify Email",url) 
+          //const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
+          //const sendMail = await emailSender(user.email,"Verify Email",url) 
 
           return res.status(200).json({ 
             accessToken, expiresIn, refreshToken,
@@ -273,7 +273,6 @@ router.get('/verify/:token',
 
     }
 })
-
 
 // @route   GET
 // @desc    User Information by token
