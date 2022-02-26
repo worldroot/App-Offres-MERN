@@ -10,3 +10,7 @@ export const REFTOKEN_ERROR = 'REFRESH TOKEN ERROR';
 export const LOGOUT = 'LOGOUT';
 export const ERROR = 'ERROR';
 export const RESEND = 'RESEND EMAIL';
+export const FORGOTPASS_REQ = 'FORGOT PASS';
+export const FORGOTPASS_FAIL = 'FORGOT PASS FAIL';
+export const RESET_PASS = 'RESET PASS';
+export const RESET_FAIL = 'RESET PASS FAIL';

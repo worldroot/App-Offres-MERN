@@ -12,7 +12,11 @@ import {
     REFTOKEN_IS_SET,
     UPDATE_ERROR,
     UPDATE_USER,
-    RESEND
+    RESEND,
+    FORGOTPASS_REQ,
+    RESET_PASS,
+    RESET_FAIL,
+    FORGOTPASS_FAIL
  } from './authTypes'
 
 
@@ -93,6 +97,16 @@ export default function (state = intialState, action) {
                         loading: false,
                         user: null
                     };
+                case FORGOTPASS_REQ:
+                case FORGOTPASS_FAIL:
+                case RESET_PASS:
+                    return {
+                        ...state,
+                        ...payload,
+                        isAuthenticated: true,
+                        loading: false,
+                    }
+                case RESET_FAIL:
                 default:
                     return state;
     }

@@ -79,7 +79,7 @@ const UserDetails = (props) => {
                 <div className="text-center">
                 <Card className="card-profile shadow">
                 <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
-                    <div className="d-flex justify-content-between">
+                    <div className=" justify-content-between">
                     { user.active && (
                               <span className="text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
                     )}

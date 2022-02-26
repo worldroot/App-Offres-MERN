@@ -17,6 +17,9 @@ import {
     REFTOKEN_ERROR,
     REFTOKEN_IS_SET,
     RESEND,
+    FORGOTPASS_REQ,
+    RESET_PASS,
+    RESET_FAIL
  } from './authTypes'
 
 
@@ -181,4 +184,37 @@ export const resend = () => async (dispatch) => {
         })
     }
 }
+
+export const resetPass = ({
+    password,
+    confirmpass,
+}) => async (dispatch) => {
+    // Config header for axios
+    const config = { headers: { 'Content-Type': 'application/json', },};
+    // Set body
+    const body = JSON.stringify({
+        confirmpass,
+        password,
+    });
+    
+    dispatch({ type: SET_LOADING })
+
+    try {
+        // Response 
+        const res = await axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
+  
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data
+            })
+            dispatch(loadUser())
+            toast.success("Inscription avec succès")
+            toast.info("Vérifiez votre email pour activer votre compte")
+    } catch (err) {
+
+        toast.error("Inscription: Quelque chose s'est mal passé !");
+        console.log(err)
+        dispatch({ type: REGISTER_FAIL })
+    }
+};
 

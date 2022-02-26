@@ -12,6 +12,7 @@ import Register from 'views/Register';
 import Home from 'views/Home'
 import VerifMail from 'views/Verifmail';
 import UserDetails from 'views/UserDetails';
+import ForgotPass from 'views/ForgotPass';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
             <Route exact path="/profile" component={UserDetails}/>
+            <Route exact path="/forgot-pass/:token" component={ForgotPass}/>
             <Route path="/api/access/verify/:token" component={VerifMail}/>
             <Redirect from="/" to="/login"/>
             

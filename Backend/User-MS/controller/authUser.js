@@ -4,7 +4,7 @@ const Token = require('../models/Token')
 const router = express.Router()
 const createError = require('http-errors')
 const deco = require('jwt-decode')
-const emailSender = require("../middleware/sendEmail")
+const {emailSender, emailReset} = require("../middleware/sendEmail")
 const { validateSigninRequest, validateSignupRequest, isRequestValidated } = require('../middleware/authValidator')
 const { signAccessToken, 
         signRefreshToken, 
@@ -40,8 +40,8 @@ router.post('/register',
       const accessToken = await signAccessToken(savedUser.id)
       const refreshToken = await signRefreshToken(savedUser.id)
 
-      const link = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
-      const sendMail = await emailSender(savedUser.email,"Verify Email",link) 
+      const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
+      const sendMail = await emailSender(user.email,url, "Activez votre compte")
 
       var date = new Date()
       const time = deco(accessToken)
@@ -292,16 +292,13 @@ router.get('/resend/:token',
       }else{
 
       const url = `${process.env.BASE_URL}/api/access/verify/${req.params.token}`
-      const sendMail = await emailSender(user.email,"Verify Email",url) 
+      const sendMail = await emailSender(user.email,url, "Activez votre compte") 
 
       return res.status(200).json({ 
         error: false,
         msg: "An Email sent to your account please verify" });
 
       }
-
-
-
 
     } catch (error) {
 
@@ -313,6 +310,39 @@ router.get('/resend/:token',
 
     }
 })
+
+// @route   POST
+// @desc    Forgot Pass
+// @access  Public 
+router.post('/forgot-pass',
+  verifyAccessToken, 
+  async (req, res) => {
+  try {
+    // get email
+    const { email } = req.body;
+
+    // check email
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(400)
+        .json({ msg: "This email is not registered in our system." });
+
+    // send email
+    const url = `${process.env.BASE_URL}/forgot-pass/${req.params.token}`
+    const sendMail = await emailReset(user.email, url, "Réinitialisez votre mot de passe", user.nom) 
+
+    // success
+    res
+      .status(200)
+      .json({ msg: "Re-send the password, please check your email." });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+})
+
+
+
   
   
 module.exports = router
