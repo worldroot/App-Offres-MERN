@@ -146,10 +146,10 @@ const Login = ({ login, isAuth, user }) => {
                         </InputGroup>
                         <a
                           className="text-white"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
+                          href="/forgot-pass"
+                          //onClick={(e) => e.preventDefault()}
                         >
-                          <small>Forgot password?</small>
+                          <small>Mot de passe oublié ?</small>
                         </a>
                       </FormGroup>
                     

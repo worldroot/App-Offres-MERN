@@ -118,7 +118,7 @@ const emailReset = async (email, url, text, nom) => {
 		await transporter.sendMail({
 			from: process.env.USER,
 			to: email,
-			subject: "Réinitialiser le mot de passe",
+			subject: "Réinitialiser votre mot de passe",
 			html:`
 			<html lang="en">
 			<head>

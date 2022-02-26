@@ -19,7 +19,8 @@ import {
     RESEND,
     FORGOTPASS_REQ,
     RESET_PASS,
-    RESET_FAIL
+    RESET_FAIL,
+    FORGOTPASS_FAIL
  } from './authTypes'
 
 
@@ -163,7 +164,6 @@ export const refreshJwt = ({
 };
 
 
-
 export const resend = () => async (dispatch) => {
 
     if (localStorage.accessToken) {
@@ -204,17 +204,39 @@ export const resetPass = ({
         const res = await axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
   
             dispatch({
-                type: REGISTER_SUCCESS,
+                type: RESET_PASS,
                 payload: res.data
             })
             dispatch(loadUser())
-            toast.success("Inscription avec succès")
-            toast.info("Vérifiez votre email pour activer votre compte")
+            toast.success("Mot de pass modifié avec succès")
     } catch (err) {
 
-        toast.error("Inscription: Quelque chose s'est mal passé !");
+        toast.error("Forgot Pass: Quelque chose s'est mal passé !");
         console.log(err)
         dispatch({ type: REGISTER_FAIL })
+    }
+};
+
+
+export const forgotPass = ({
+    email,
+}) => async (dispatch) => {
+
+    try {
+
+        // Config header for axios
+        const config = { headers: { 'Content-Type': 'application/json', },};
+        // Set body
+        const body = JSON.stringify({ email });
+
+        await axios.post(`${UsermsURL}/api/access/forgot-pass`, body, config);
+        dispatch({ type: FORGOTPASS_REQ })
+        toast.info("Mot de passe oublié: e-mail envoyé avec succès")
+        
+    } catch (error) {
+        console.log(error)
+        toast.error("Quelque chose s'est mal passé !")
+        dispatch({ type: FORGOTPASS_FAIL })
     }
 };
 

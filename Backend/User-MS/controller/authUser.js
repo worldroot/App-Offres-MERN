@@ -315,21 +315,22 @@ router.get('/resend/:token',
 // @desc    Forgot Pass
 // @access  Public 
 router.post('/forgot-pass',
-  verifyAccessToken, 
   async (req, res) => {
   try {
+    
     // get email
     const { email } = req.body;
 
     // check email
     const user = await User.findOne({ email });
+    
     if (!user)
-      return res
-        .status(400)
-        .json({ msg: "This email is not registered in our system." });
-
+      return res.status(400).json({ 
+        msg: "This email is not registered in our system." });
+        
+    const accessToken = await signAccessToken(user.id)
     // send email
-    const url = `${process.env.BASE_URL}/forgot-pass/${req.params.token}`
+    const url = `${process.env.BASE_URL}/reset-pass/${accessToken}`
     const sendMail = await emailReset(user.email, url, "Réinitialisez votre mot de passe", user.nom) 
 
     // success

@@ -27,7 +27,7 @@ import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
-const Login = ({ isAuth, user }) => {
+const ResetPass = ({ isAuth, user }) => {
 
   
   const style = { width: "200px" }
@@ -192,4 +192,4 @@ const mapToStateProps = (state) => ({
   user: state.auth.user
 });
 
-export default connect(mapToStateProps, { login }) (Login);
+export default connect(mapToStateProps, { login }) (ResetPass);
