@@ -151,8 +151,6 @@ export const refreshJwt = ({
                 type: REFTOKEN_IS_SET,
                 payload: res.data
             })
-
-            dispatch(loadUser())
            
     } catch (err) {
         

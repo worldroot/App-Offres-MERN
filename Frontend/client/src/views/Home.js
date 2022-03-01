@@ -60,7 +60,7 @@ import {
       <>
           <div className="main-content">
           <AuthNavbar />
-          <div className=" bg-transparent py-xl-9">
+          <div className=" bg-trans py-xl-9">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
@@ -75,11 +75,9 @@ import {
             { !userExist && (
             <>
               <Container className="mt--8 pb-5">
-              <Row className="justify-content-center">
-                    <h1 className="text-center text-red" > Home </h1>
-  
-  
-              </Row>
+                <Row className="justify-content-center">
+                      <h1 className="text-center text-red" > Home </h1>
+                </Row>
               </Container>
   
               

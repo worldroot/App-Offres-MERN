@@ -70,6 +70,7 @@ export default function (state = intialState, action) {
                     localStorage.setItem('accessToken', payload.accessToken);
                     return {
                             ...state,
+                            ...payload,
                             isAuthenticated: true,
                             loading: false,
                         }    

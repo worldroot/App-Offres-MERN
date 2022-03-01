@@ -17,9 +17,10 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 import { Redirect } from 'react-router-dom'
 import { connect, useSelector, useDispatch } from 'react-redux';
 import React, { useState, useEffect } from "react";
-import { loadUser, resend } from "redux/auth/authActions";
+import { loadUser, resend, refreshJwt } from "redux/auth/authActions";
 import { toast } from "react-toastify";
-import axios from 'axios';
+import UpdateUserDetails from "./UpdateUser";
+import decode from 'jwt-decode'
 
 const UserDetails = (props) => {
 
@@ -28,15 +29,38 @@ const UserDetails = (props) => {
 
   const userExist = localStorage.getItem("user");
 
+  useEffect(() => {
+
+    const accessToken = localStorage.getItem("accessToken")
+    if(accessToken){
+      
+      
+      const refreshToken = localStorage.getItem("refreshToken")
+      const decodedToken = decode(accessToken)
+      //console.log({refreshToken})
+
+      if(decodedToken.exp * 1000 < new Date().getTime()){
+
+          //localStorage.removeItem("accessToken")
+          //refreshJwt({refreshToken})
+          props.RefToken({refreshToken})
+          
+      }
+
+    }else{
+      //toast.error('Token Error')
+      //window.location.reload();
+      return <Redirect to='/login'/>; 
+    }
+  }, []);
+
 
   useEffect(() => { 
       props.GetUser()
     }, []);
 
     const verif = ()=> {
-
-        try {
-            
+        try { 
             props.ResendEmail()
             setTimeout(() => {
               window.location.reload();
@@ -56,102 +80,85 @@ const UserDetails = (props) => {
 
   return(
     <>
-
       <div className="main-content flex" >
       <AuthNavbar />
-      <div className="header bg-red py-7 py-lg-8">
+      <div className="header bg-red py-7 py-xl-9">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
                   <Col lg="5" md="6">
-                    
                     <p className="text-lead text-light">
                     </p>
                   </Col>
-                  
-  
-                  
                 </Row>
               </div>
             </Container>
-        <Container className="mt--7" fluid>
+        <Container>
         <Row>
-          <Col className="order-xl-2 mb-5 mb-xl-0">
-            <Row className="mt-3">
-                <Col xl='4'>
-                <div className="text-center">
-                <Card className="card-profile shadow">
-                <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
-                    <div className=" justify-content-between">
-                    { user.active && (
-                              <span className="text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
-                    )}
 
-                    { !user.active && (
-                      
-                      <Button
-                      className="my-4 btn-outline-danger"
-                      color="default"
-                      onClick={() => verif()}
-                      size="sm"
-                    >
-                      Verifier votre e-mail
-                    </Button>
-                    )}
-                        
-                    </div>
-                  </CardHeader>
-                  <CardBody className="pt-0 pt-md">
-                
-
-                    <Row>
-                      <div className="col">
-                        <div className="card-profile-stats d-flex justify-content-center mt-md-2">
-                          
-                          <div className="text-center">
-                          <i className="fas fa-user-circle fa-4x text-red"></i>
-                            <br/>
-                        
-                            <br></br>
-                              <h3>
-                                {user.nom} {user.prenom}
-                              </h3>
-                              <h3>
-                                {user.email}
-                              </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </Row>
-                    <Row>
-                      <div className="col">
-                        <div className="card-profile-stats d-flex justify-content-center">
-                          <div>
-                          { user.active && (
-                            <Button
-                            className="my-4 btn-outline-danger"
-                            color="default"
-                            //onClick={() => setCurrentId(user._id)}
-                            size="xl"
-                          >
-                            Editer
-                          </Button>
-                          )}                     
-                          </div>
-                        </div>
-                      </div>
-                    
-                    </Row>
-                  
-                  </CardBody>
-                </Card>
-                </div>
-                </Col>
-            </Row>
-          </Col>
          
+                <Col className="order-xl-1 mb-5 mb-xl-0" xl='4'>
+                 
+                  <div className="text-center">
+                  <Card className="card-profile shadow">
+                    <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
+                      <div className=" justify-content-between">
+                      { user.active && (
+                                <span className="text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
+                      )}
 
-               
+                      { !user.active && (
+                        
+                        <Button
+                        className="my-4 btn-outline-danger"
+                        color="default"
+                        onClick={() => verif()}
+                        size="sm"
+                      >
+                        Verifier votre e-mail
+                      </Button>
+                      )}
+                          
+                      </div>
+                    </CardHeader>
+                    <CardBody className="pt-0 pt-md">
+                      <Row>
+                        <div className="col">
+                          <div className="card-profile-stats d-flex justify-content-center mt-md-2">
+                            
+                            <div className="text-center">
+                            <i className="fas fa-user-circle fa-4x text-red"></i>
+                            <hr className="my-4" />
+                                <h3>{user.nom} {user.prenom} </h3>
+                                <h3> {user.email} </h3>
+                            </div>
+                          </div>
+                          { user.active && (
+                              <Button
+                              className="my-2 btn-outline-dark"
+                              color="default"
+                              //onClick={() => setCurrentId(user._id)}
+                              size="md"
+                            >
+                              Mettre a jour mot de passe
+                            </Button>
+                            )}   
+                                 
+                        </div>
+                      </Row>
+
+                    </CardBody>
+                  </Card>
+                  </div>
+                  
+                </Col>
+                <Col className="order-xl-2" xl='8'>
+                  { user.active && (
+                    <UpdateUserDetails/>
+                  )} 
+                </Col>
+                
+      
         </Row>
         </Container>
         </div>
@@ -163,7 +170,8 @@ const UserDetails = (props) => {
 
 const mapActionToProps = {
   GetUser: loadUser,
-  ResendEmail: resend
+  ResendEmail: resend,
+  RefToken: refreshJwt
 };
 
 const mapStateToProps = (state) => ({
@@ -172,12 +180,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect ( mapStateToProps, mapActionToProps )(UserDetails);
-
-/*
-  { currentId !== 0 && (
-                <div>
-                  <Profile {...{ currentId, setCurrentId }} />
-                </div>   
-              )
-            }
-*/

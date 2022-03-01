@@ -92,7 +92,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
 
                   <DropdownItem to="/profile" tag={Link}>
-                    <i className="ni ni-single-02" />
+                    <i className="ni ni-single-02 text-red" />
                     <span>Profile</span>
                   </DropdownItem>
 
@@ -104,7 +104,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                        history.push('/login'),
                        toast.info('Utilisateur déconnecté ')
                        }}>
-                      <i className="fas fa-sign-out-alt"></i>
+                      <i className="fas fa-sign-out-alt text-red"></i>
                       <span>Se déconnecter</span>
                     </DropdownItem>
 
