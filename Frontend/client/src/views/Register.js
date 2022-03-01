@@ -74,7 +74,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
 
   return (
     <>
-    <div className="main-content">
+    <div className="main-content position-flex">
         <AuthNavbar />
         <div className="header bg-red py-7 py-lg-8">
           <Container>
@@ -190,7 +190,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
 
                       </Col>
                       {/* SIDE 2 */}
-                      <Col className="align-self-center" xl="4">  
+                      <Col className="align-self-center position-sticky" xl="4">  
                           <div className="md-2">
                               
                               <img

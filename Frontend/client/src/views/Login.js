@@ -64,19 +64,12 @@ const Login = ({ login, isAuth, user }) => {
     if (role === "user") return <Redirect to='/home'/>;
     //if (role === 1) return <Redirect to='/dashboard/'/>;
   }
-
-  const mainContent = React.useRef(null);
-  React.useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainContent.current.scrollTop = 0;
-  }, [location]);
   
 
 
   return (
     <>
-      <div className="main-content" ref={mainContent}>
+      <div className="main-content">
         <AuthNavbar />
         <div className="bg-red py-7 py-lg-8">
         <Container>
