@@ -57,7 +57,7 @@ const UserDetails = (props) => {
   return(
     <>
 
-      <div className="main-content" >
+      <div className="main-content flex" >
       <AuthNavbar />
       <div className="header bg-red py-7 py-lg-8">
             <Container>
@@ -114,13 +114,10 @@ const UserDetails = (props) => {
                         
                             <br></br>
                               <h3>
-                                Nom: {user.nom} 
+                                {user.nom} {user.prenom}
                               </h3>
                               <h3>
-                                Prenom: {user.prenom}
-                              </h3>
-                              <h3>
-                                Email: {user.email}
+                                {user.email}
                               </h3>
                           </div>
                         </div>
@@ -158,6 +155,7 @@ const UserDetails = (props) => {
         </Row>
         </Container>
         </div>
+        <AuthFooter />  
       </div>                  
     </>
   );

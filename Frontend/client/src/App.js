@@ -46,7 +46,7 @@ function App() {
             <Redirect from="/" to="/login"/>
             
             </Switch>
-        </BrowserRouter>,
+        </BrowserRouter>
     </Provider>
   );
 }

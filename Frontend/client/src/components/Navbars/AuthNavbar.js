@@ -46,7 +46,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
   return (
     <>
-      <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
+      <Navbar className="navbar-top navbar-horizontal navbar-dark bg-red" expand="md">
         <Container className="px-4">
           <NavbarBrand to="/" tag={Link}>
             <img

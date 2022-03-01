@@ -67,13 +67,18 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  display: flex;
   font-family: Open Sans, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #525f7f;
   text-align: left;
-  background-color: #f8f9fe; }
+  background-color: #ffffff; }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }
@@ -12099,6 +12104,8 @@ a.btn-icon-only {
       background-color: transparent; }
 
 .main-content {
+  min-height:100%;
+  width: 100%;
   position: relative; }
   .main-content .navbar-top {
     position: absolute;

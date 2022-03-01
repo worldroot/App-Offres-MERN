@@ -60,7 +60,7 @@ import {
       <>
           <div className="main-content">
           <AuthNavbar />
-          <div className="header bg-red py-7 py-lg-8">
+          <div className=" bg-transparent py-xl-9">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
@@ -76,7 +76,7 @@ import {
             <>
               <Container className="mt--8 pb-5">
               <Row className="justify-content-center">
-                    <h1 className="text-center text-white" > Home </h1>
+                    <h1 className="text-center text-red" > Home </h1>
   
   
               </Row>
@@ -92,7 +92,7 @@ import {
             <Container classeName="mt--8 pb-5">
             <Row className="justify-content-center">
                     
-              <h1 className="text-center text-white">Bienvenue</h1>
+              <h1 className="text-center text-red">Bienvenue</h1>
               
             </Row>
             </Container>

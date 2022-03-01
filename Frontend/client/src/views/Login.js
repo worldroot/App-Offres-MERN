@@ -65,25 +65,28 @@ const Login = ({ login, isAuth, user }) => {
     //if (role === 1) return <Redirect to='/dashboard/'/>;
   }
 
+  const mainContent = React.useRef(null);
+  React.useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    mainContent.current.scrollTop = 0;
+  }, [location]);
   
 
 
   return (
     <>
-        <div className="main-content">
+      <div className="main-content" ref={mainContent}>
         <AuthNavbar />
-        <div className="header bg-red py-7 py-lg-8">
-          <Container>
+        <div className="bg-red py-7 py-lg-8">
+        <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                  
                   <p className="text-lead text-light">
+                    
                   </p>
                 </Col>
-                
-
-                
               </Row>
             </div>
           </Container>
@@ -94,7 +97,7 @@ const Login = ({ login, isAuth, user }) => {
             <Container className="mt--8 pb-5">
             <Row className="justify-content-center">
                     
-              <Col className="order-xl-1 mt-2 mt-md-5 py-5 bg-red " xl="8">
+              <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-red " xl="8">
                 
                 <Row className="mt-3">
                   {/* SIDE 1 */}
@@ -184,14 +187,10 @@ const Login = ({ login, isAuth, user }) => {
 
             </Row>
             </Container>
-
-            
-            </>
-
+          </>
           )}
 
           { userExist && (
-
           <Container classeName="mt--8 pb-5">
           <Row className="justify-content-center">
                   
@@ -200,10 +199,10 @@ const Login = ({ login, isAuth, user }) => {
           </Row>
           </Container>
           )}
-
-        </div>   
-        <AuthFooter />    
+        
+        </div> 
       </div>
+      <AuthFooter/>
 
     </>
   );
