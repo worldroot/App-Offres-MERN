@@ -69,7 +69,7 @@ export default function (state = intialState, action) {
                     };
                 case REFTOKEN_IS_SET:
                     localStorage.setItem('accessToken', payload.accessToken);
-                    //localStorage.setItem('expiresIn', payload.expiresIn);
+                    localStorage.setItem('expiresIn', payload.expiresIn);
                     return {
                             ...state,
                             ...payload,

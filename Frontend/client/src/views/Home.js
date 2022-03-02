@@ -32,19 +32,19 @@ import {
         
 
         const refreshToken = localStorage.getItem("refreshToken")
-        const decodedToken = decode(accessToken)
-        //console.log({refreshToken})
-  
-        if(decodedToken.exp * 1000 < new Date().getTime()){
+        /**
+         *  const decodedToken = decode(accessToken)
+            if(decodedToken.exp * 1000 < new Date().getTime()){
+                refreshJwt({refreshToken})
+              }
+         */
 
+        let minutes = 1000 * 60 * 40
+        let interval =  setInterval(()=> {
             refreshJwt({refreshToken})
-            
-        }
-  
-      }else{
-        //toast.error('Token Error')
-        //window.location.reload();
-        return <Redirect to='/login'/>; 
+        }, minutes)
+
+        return ()=> clearInterval(interval)
       }
     }, []);
 

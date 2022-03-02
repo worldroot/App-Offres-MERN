@@ -42,11 +42,11 @@ router.post('/register',
 
       const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
       const sendMail = await emailSender(user.email,url, "Activez votre compte")
-
-      var date = new Date()
-      const time = deco(accessToken)
-      const expiresIn = new Date(date.getHours() + time.exp*1000)
       
+      const token = deco(accessToken)
+      var date = new Date(token.exp)
+      var options = {hour: "numeric", minute: "numeric"};
+      const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
 
       if(sendMail){
         res.status(400).json({ 
@@ -101,9 +101,10 @@ router.post('/login',
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
 
-        var date = new Date()
-        const time = deco(accessToken)
-        const expiresIn = new Date(date.getHours() + time.exp*1000)
+        const token = deco(accessToken)
+        var date = new Date(token.exp)
+        var options = {hour: "numeric", minute: "numeric"};
+        const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
 
         res.status(200).json({ accessToken, expiresIn, refreshToken  })
         
@@ -153,9 +154,12 @@ router.post('/loginuser',
 
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
-        var date = new Date()
-        const time = deco(accessToken)
-        const expiresIn = new Date(date.getHours() + time.exp*1000)
+        
+        const token = deco(accessToken)
+        var date = new Date(token.exp)
+        var options = {hour: "numeric", minute: "numeric"};
+        const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
+
 
 
       //Verif Active
@@ -196,11 +200,13 @@ router.post('/refresh-token',
 
       const accessToken = await signAccessToken(userId)
 
-      var date = new Date()
-      const time = deco(accessToken)
-      const expiresIn = new Date(date.getHours() + time.exp*1000)
+      const token = deco(accessToken)
+      var date = new Date(token.exp)
+      var options = {hour: "numeric", minute: "numeric"};
+      const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
+  
       
-      res.status(200).json({accessToken})
+      res.status(200).json({accessToken, expiresIn})
       //console.log({accessToken, expiresIn})
     } catch (error) {
 

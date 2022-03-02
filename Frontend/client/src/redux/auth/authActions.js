@@ -146,9 +146,8 @@ export const refreshJwt = ({
         // Response 
         const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)  
         const {data} = await res
+        //console.log(data)
 
-        console.log(data)
-        
         dispatch({
             type: REFTOKEN_IS_SET,
             payload: data
