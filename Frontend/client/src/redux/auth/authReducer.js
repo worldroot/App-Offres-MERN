@@ -14,7 +14,8 @@ import {
     UPDATE_USER,
     RESEND,
     FORGOTPASS_REQ,
-    FORGOTPASS_FAIL
+    FORGOTPASS_FAIL,
+    SET_LOADING_TOKEN
  } from './authTypes'
 
 
@@ -68,6 +69,7 @@ export default function (state = intialState, action) {
                     };
                 case REFTOKEN_IS_SET:
                     localStorage.setItem('accessToken', payload.accessToken);
+                    //localStorage.setItem('expiresIn', payload.expiresIn);
                     return {
                             ...state,
                             ...payload,
@@ -98,6 +100,7 @@ export default function (state = intialState, action) {
                     };
                 case FORGOTPASS_REQ:
                 case FORGOTPASS_FAIL:
+                case SET_LOADING_TOKEN:
                 default:
                     return state;
     }

@@ -30,14 +30,13 @@ import {
       const accessToken = localStorage.getItem("accessToken")
       if(accessToken){
         
-        
+
         const refreshToken = localStorage.getItem("refreshToken")
         const decodedToken = decode(accessToken)
         //console.log({refreshToken})
   
         if(decodedToken.exp * 1000 < new Date().getTime()){
-  
-            //localStorage.removeItem("accessToken")
+
             refreshJwt({refreshToken})
             
         }

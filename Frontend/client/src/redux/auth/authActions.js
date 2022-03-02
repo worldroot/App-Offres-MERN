@@ -2,7 +2,7 @@ import {UsermsURL} from '../../helpers/urls'
 import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { 
     USER_LOADED,
@@ -18,7 +18,8 @@ import {
     REFTOKEN_IS_SET,
     RESEND,
     FORGOTPASS_REQ,
-    FORGOTPASS_FAIL
+    FORGOTPASS_FAIL,
+    SET_LOADING_TOKEN
  } from './authTypes'
 
 
@@ -128,9 +129,7 @@ export const login = ({
 
 
 export const logout = () => dispatch => {
-    dispatch({
-        type: LOGOUT
-    })
+    dispatch({ type: LOGOUT })
 }
 
 export const refreshJwt = ({
@@ -146,14 +145,17 @@ export const refreshJwt = ({
     try {
         // Response 
         const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)  
-       
-            dispatch({
-                type: REFTOKEN_IS_SET,
-                payload: res.data
-            })
-           
-    } catch (err) {
+        const {data} = await res
+
+        console.log(data)
         
+        dispatch({
+            type: REFTOKEN_IS_SET,
+            payload: data
+        })
+       
+                 
+    } catch (err) {
         console.log(err)
         dispatch({ type: REFTOKEN_ERROR })
     }
@@ -202,4 +204,6 @@ export const forgotPass = ({
         dispatch({ type: FORGOTPASS_FAIL })
     }
 };
+
+
 

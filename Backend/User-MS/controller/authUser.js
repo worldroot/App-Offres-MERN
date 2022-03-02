@@ -195,8 +195,13 @@ router.post('/refresh-token',
       const userId = await verifyRefreshToken(refreshToken)
 
       const accessToken = await signAccessToken(userId)
+
+      var date = new Date()
+      const time = deco(accessToken)
+      const expiresIn = new Date(date.getHours() + time.exp*1000)
       
       res.status(200).json({accessToken})
+      //console.log({accessToken, expiresIn})
     } catch (error) {
 
       res.status(500).json({
@@ -231,7 +236,7 @@ router.get('/getuser',
 })
 
 // @route   GET/:id/verify/:token
-// @desc    Verif Emil
+// @desc    Verif Email
 // @access  Public 
 router.get('/verify/:token', 
     verifyAccessToken,

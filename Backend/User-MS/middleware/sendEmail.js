@@ -79,7 +79,7 @@ const emailSender = async (email, url, text) => {
 			  <div class="container">
 				<div class="wrapper">
 				  <div class="card">
-					<h1><span>Bienvenue !</span>Et merci pour votre inscription !</h1>
+					<h1><span>Bienvenue !</span> Et merci pour votre inscription !</h1>
 					<p>Merci de valider votre email en cliquant sur le bouton ci-dessous 🙂</p>
 					<a href=${url}><button>${text}</button></a>
 					<p class="spacing">
