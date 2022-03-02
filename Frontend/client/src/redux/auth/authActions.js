@@ -140,7 +140,7 @@ export const refreshJwt = ({
     // Set body
     const body = JSON.stringify({ refreshToken });
     
-    dispatch({ type: SET_LOADING })
+    dispatch({ type: SET_LOADING_TOKEN })
 
     try {
         // Response 

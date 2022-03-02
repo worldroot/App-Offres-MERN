@@ -38,24 +38,23 @@ const SuperAdminIndex = ({refreshJwt}) => {
     const accessToken = localStorage.getItem("accessToken")
     if(accessToken){
       
-      
+
       const refreshToken = localStorage.getItem("refreshToken")
-      const decodedToken = decode(accessToken)
-      //console.log({refreshToken})
+      /**
+       *  const decodedToken = decode(accessToken)
+          if(decodedToken.exp * 1000 < new Date().getTime()){
+              refreshJwt({refreshToken})
+            }
+       */
 
-      if(decodedToken.exp * 1000 < new Date().getTime()){
-
-          //localStorage.removeItem("accessToken")
+      let minutes = 1000 * 60 * 40
+      let interval =  setInterval(()=> {
           refreshJwt({refreshToken})
-          
-      }
+      }, minutes)
 
-    }else{
-      toast.error('Token Error')
-      window.location.reload();
-      return <Redirect to='/login'/>; 
+      return ()=> clearInterval(interval)
     }
-  }, [location]);
+  }, []);
 
  
 

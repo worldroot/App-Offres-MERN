@@ -152,17 +152,17 @@ export const refreshJwt = ({
 
     try {
         // Response 
-        const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)        
-        
-            dispatch({
-                type: REFTOKEN_IS_SET,
-                payload: res.data
-            })
+        const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)  
+        const {data} = await res
+        //console.log(data)
 
-            dispatch(loadUser())
-           
+        dispatch({
+            type: REFTOKEN_IS_SET,
+            payload: data
+        })
+       
+                 
     } catch (err) {
-        
         console.log(err)
         dispatch({ type: REFTOKEN_ERROR })
     }
