@@ -5,6 +5,7 @@ import {
   } from "reactstrap";
   
   import React, { useEffect, useState } from 'react';
+  import {motion} from 'framer-motion'
   import AuthNavbar from "components/Navbars/AuthNavbar.js";
   import AuthFooter from "components/Footers/AuthFooter.js";
   
@@ -33,18 +34,22 @@ import {
 
         const refreshToken = localStorage.getItem("refreshToken")
         /**
-         *  const decodedToken = decode(accessToken)
-            if(decodedToken.exp * 1000 < new Date().getTime()){
-                refreshJwt({refreshToken})
-              }
-         */
+         *  
 
-        let minutes = 1000 * 60 * 40
+               let minutes = 1000 * 60 * 40
         let interval =  setInterval(()=> {
             refreshJwt({refreshToken})
         }, minutes)
 
         return ()=> clearInterval(interval)
+         */
+
+       
+        const decodedToken = decode(accessToken)
+            if(decodedToken.exp * 1000 < new Date().getTime()){
+                refreshJwt({refreshToken})
+              }
+
       }
     }, []);
 
@@ -88,9 +93,12 @@ import {
   
             <Container classeName="mt--8 pb-5">
             <Row className="justify-content-center">
-                    
-              <h1 className="text-center text-red">Bienvenue</h1>
-              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{  duration: 1.5 }}>
+                <h1 className="text-center text-red">Bienvenue</h1>
+              </motion.div>   
             </Row>
             </Container>
             )}

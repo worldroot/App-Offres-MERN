@@ -20,6 +20,7 @@ import React, { useState, useEffect } from "react";
 import { loadUser, resend, refreshJwt } from "redux/auth/authActions";
 import { toast } from "react-toastify";
 import UpdateUserDetails from "./UpdateUser";
+import UpdatePass from "./UpdatePass";
 import decode from 'jwt-decode'
 
 const UserDetails = (props) => {
@@ -34,25 +35,24 @@ const UserDetails = (props) => {
     const accessToken = localStorage.getItem("accessToken")
     if(accessToken){
       
-      
+
       const refreshToken = localStorage.getItem("refreshToken")
-      const decodedToken = decode(accessToken)
-      //console.log({refreshToken})
+      /**
+       *  const decodedToken = decode(accessToken)
+          if(decodedToken.exp * 1000 < new Date().getTime()){
+              refreshJwt({refreshToken})
+            }
+       */
 
-      if(decodedToken.exp * 1000 < new Date().getTime()){
+      let minutes = 1000 * 60 * 40
+      let interval =  setInterval(()=> {
+          refreshJwt({refreshToken})
+      }, minutes)
 
-          //localStorage.removeItem("accessToken")
-          //refreshJwt({refreshToken})
-          props.RefToken({refreshToken})
-          
-      }
-
-    }else{
-      //toast.error('Token Error')
-      //window.location.reload();
-      return <Redirect to='/login'/>; 
+      return ()=> clearInterval(interval)
     }
   }, []);
+
 
 
   useEffect(() => { 
@@ -137,7 +137,7 @@ const UserDetails = (props) => {
                               <Button
                               className="my-2 btn-outline-dark"
                               color="default"
-                              //onClick={() => setCurrentId(user._id)}
+                              onClick={() => setCurrentId(user._id)}
                               size="md"
                             >
                               Mettre a jour mot de passe
@@ -152,10 +152,17 @@ const UserDetails = (props) => {
                   </div>
                   
                 </Col>
-                <Col className="order-xl-2" xl='8'>
+                <Col className="order-xl-2" xl='4'>
                   { user.active && (
                     <UpdateUserDetails/>
                   )} 
+                </Col>
+                <br/>
+                <Col className="order-xl-3" xl='4'>
+                  { currentId !== 0 && (
+                          <UpdatePass {...{ currentId, setCurrentId }} />
+                      )
+                  }
                 </Col>
                 
       

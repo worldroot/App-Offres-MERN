@@ -8,14 +8,11 @@ import {
     USER_UP,
     USER_DEL,
     USER_ERR,
-    USER_REQ
+    USER_REQ,
+    UP_PASS_DONE,
+    UP_PASS_FAIL
     
 } from './userTypes'
-
-
-//URLS
-export const ALL = () => axios.get(`${UsermsURL}/api/user`);
-//export const DELU = (id) => axios.delete(`${UsermsURL}/api/users/` + id);
 
 export const updateUser = (nom, prenom, email) => (dispatch) => {
 
@@ -51,40 +48,39 @@ export const updateUser = (nom, prenom, email) => (dispatch) => {
 
         console.log(error)
         dispatch({
-            type: USER_ERR,
-            payload: res.data,
+            type: USER_ERR
         });
     }
 
 };
 
-export const getAllUsers = () => (dispatch) => {
-    ALL()
-    .then((res) => {
-        
-        dispatch({
-            type: GET_ALL_USERS,
-            payload: res.data,
-        });
-    })
-    .catch(
-        (err) =>
-        console.log(err),
-        GET_FAIL
-    )
-}
-/*
-export const deleteUser = async(id, dispatch) =>{
-    DELU(id)
-    .then((res) => {
-        console.log(res);
-        dispatch({
-            type: USER_DEL,
-            payload: id,
-        })
-    }).catch((err) =>
-    console.log(err),
-    USER_ERR
-    );
-}
-*/
+export const updatePassword = (password, confirmpass) => (dispatch) =>{
+
+        const config = { headers: { 'Content-Type': 'application/json', },};
+        const body = JSON.stringify({ password, confirmpass });
+    
+        if(password !== confirmpass){
+          toast.warn('Les mots de passe ne correspondent pas !')
+        }else{
+          try {
+    
+            const res = axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
+            dispatch({
+                type: UP_PASS_DONE,
+                payload: res.data,
+            });
+            toast.success("Mot de pass modifié avec succès")
+            
+            } catch (error) {
+
+                console.log(error)
+                dispatch({
+                    type: UP_PASS_FAIL
+                });
+                
+                toast.error("Quelque chose s'est mal passé !")
+            }
+          } 
+
+     }
+
