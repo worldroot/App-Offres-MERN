@@ -50,12 +50,10 @@ const UpdatePass = ({...props}) => {
   
 
   return (
+<>
+<hr className="my-4" />
 
-
-    <Card className="bg-secondary shadow">
-
-      <CardBody className="pt-0 pt-md">
-        <Form onSubmit={handleSubmit} >
+<FormGroup onSubmit={handleSubmit} >
           <Row className="align-items-center">
             <Col xs="8">
               <h6 className="heading-small text-muted mb-4">
@@ -115,15 +113,12 @@ const UpdatePass = ({...props}) => {
               >
                 Annuler 
               </Button>
-            
-             
-            
+
           </div>
 
-        </Form>
-      </CardBody>
-    </Card>
+        </FormGroup>
 
+</>
   );
 };
 

@@ -16,10 +16,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import React, { useState } from "react";
 import useForm from "../helpers/useForm";
 import { updateUser } from "redux/users/userActions";
+import UpdatePass from "./UpdatePass";
+import {motion} from 'framer-motion'
+
 const initialFieldValues = {}
 
 const UpdateUserDetails = ({...props}) => {
 
+  const [currentId, setCurrentId] = useState(0);
   const dispatch = useDispatch()
   const user = useSelector(state => state.auth.user);
 
@@ -67,6 +71,15 @@ const UpdateUserDetails = ({...props}) => {
           <Col xs="8">
             <h3 className="mb-0">My account</h3>
           </Col>
+          <Col className="text-right" xs="4">
+                    <Button
+                      color="btn btn-outline-dark"
+                      onClick={() => setCurrentId(user._id)}
+                      size="sm"
+                    >
+                      Modifier votre mot de passe
+                    </Button>
+                  </Col>
         </Row>
       </CardHeader>
       <CardBody className="pt-0 pt-md">
@@ -134,12 +147,34 @@ const UpdateUserDetails = ({...props}) => {
               >
                 Confirmer
               </Button>
+              <Button
+                className="btn-outline-dark"
+                color="default"
+                size="md"
+                type="submit"
+                onClick={() => reset()}
+              >
+                Annuler 
+              </Button>
             
              
             
           </div>
 
         </Form>
+       
+        { currentId !== 0 && (
+          <>
+            <motion.div  
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{  duration: 1.5 }}>
+              <UpdatePass {...{ currentId, setCurrentId }} />
+            </motion.div>
+          </>
+        )} 
+
+        
       </CardBody>
     </Card>
 

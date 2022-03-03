@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { loadUser, resend, refreshJwt } from "redux/auth/authActions";
 import { toast } from "react-toastify";
 import UpdateUserDetails from "./UpdateUser";
-import UpdatePass from "./UpdatePass";
+import {motion} from 'framer-motion'
 import decode from 'jwt-decode'
 
 const UserDetails = (props) => {
@@ -42,14 +42,18 @@ const UserDetails = (props) => {
           if(decodedToken.exp * 1000 < new Date().getTime()){
               refreshJwt({refreshToken})
             }
-       */
-
-      let minutes = 1000 * 60 * 40
+             let minutes = 1000 * 60 * 40
       let interval =  setInterval(()=> {
           refreshJwt({refreshToken})
       }, minutes)
 
       return ()=> clearInterval(interval)
+       */
+            const decodedToken = decode(accessToken)
+            if(decodedToken.exp * 1000 < new Date().getTime()){
+                refreshJwt({refreshToken})
+              }            
+     
     }
   }, []);
 
@@ -140,7 +144,7 @@ const UserDetails = (props) => {
                               onClick={() => setCurrentId(user._id)}
                               size="md"
                             >
-                              Mettre a jour mot de passe
+                              Editer votre compte
                             </Button>
                             )}   
                                  
@@ -152,17 +156,19 @@ const UserDetails = (props) => {
                   </div>
                   
                 </Col>
-                <Col className="order-xl-2" xl='4'>
-                  { user.active && (
-                    <UpdateUserDetails/>
-                  )} 
-                </Col>
-                <br/>
-                <Col className="order-xl-3" xl='4'>
+                <Col className="order-xl-2" xl='8'>
                   { currentId !== 0 && (
-                          <UpdatePass {...{ currentId, setCurrentId }} />
-                      )
-                  }
+                    <>
+                      <motion.div 
+                          initial={{ x: '100vw' }}
+                          animate={{ x: 0 }}
+                          transition={{ type: 'spring', stiffness:100 }} >
+                          <UpdateUserDetails {...{ currentId, setCurrentId }}/>
+                      </motion.div>
+                    </>
+                   
+                  )} 
+                   
                 </Col>
                 
       
