@@ -43,10 +43,9 @@ router.post('/register',
       const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
       const sendMail = await emailSender(user.email,url, "Activez votre compte")
       
-      const token = deco(accessToken)
-      var date = new Date(token.exp)
-      var options = {hour: "numeric", minute: "numeric"};
-      const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
+      var date = new Date()
+      const time = deco(accessToken)
+      const expiresIn = new Date(date.getHours() + time.exp*1000)
 
       if(sendMail){
         res.status(400).json({ 
@@ -101,10 +100,9 @@ router.post('/login',
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
 
-        const token = deco(accessToken)
-        var date = new Date(token.exp)
-        var options = {hour: "numeric", minute: "numeric"};
-        const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
+        var date = new Date()
+        const time = deco(accessToken)
+        const expiresIn = new Date(date.getHours() + time.exp*1000)
 
         res.status(200).json({ accessToken, expiresIn, refreshToken  })
         
@@ -155,12 +153,9 @@ router.post('/loginuser',
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
         
-        const token = deco(accessToken)
-        var date = new Date(token.exp)
-        var options = {hour: "numeric", minute: "numeric"};
-        const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
-
-
+        var date = new Date()
+        const time = deco(accessToken)
+        const expiresIn = new Date(date.getHours() + time.exp*1000)
 
       //Verif Active
         if (!user.active) {
@@ -199,12 +194,10 @@ router.post('/refresh-token',
       const userId = await verifyRefreshToken(refreshToken)
 
       const accessToken = await signAccessToken(userId)
-
-      const token = deco(accessToken)
-      var date = new Date(token.exp)
-      var options = {hour: "numeric", minute: "numeric"};
-      const expiresIn = new Intl.DateTimeFormat("default", options).format(date)
-  
+     
+      var date = new Date()
+      const time = deco(accessToken)
+      const expiresIn = new Date(date.getHours() + time.exp*1000)
       
       res.status(200).json({accessToken, expiresIn})
       //console.log({accessToken, expiresIn})
@@ -345,9 +338,8 @@ router.post('/forgot-pass',
     const sendMail = await emailReset(user.email, url, "Réinitialisez votre mot de passe", user.nom) 
 
     // success
-    res
-      .status(200)
-      .json({ msg: "Re-send the password, please check your email." });
+    res.status(200).json({ msg: "Re-send the password, please check your email." });
+    
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }

@@ -17,15 +17,34 @@ router.put('/',
     async (req, res) => {
 
   try {
-    
-    const updatedUser = await User.findByIdAndUpdate(
+    const user = await User.findById(req.user.id)
+    const email = req.body.email
+
+    if( user.email !== email ){
+
+        const noUser = await User.findByIdAndUpdate(
+          req.user.id,
+          { $set: {active: false} },
+          { new: true }
+        );
+        const updatedUser = await User.findByIdAndUpdate(
+          req.user.id,
+          { $set: req.body },
+          { new: true }
+        );
+        res.status(200).json(updatedUser)
+
+    }else{
+
+      const updatedUser = await User.findByIdAndUpdate(
         req.user.id,
         { $set: req.body },
         { new: true }
       );
-    res.status(200).json({
-        msg: `Updated successfully-> Nom: ${updatedUser.nom}, Prenom: ${updatedUser.prenom}, Email: ${updatedUser.email}`
-    })
+
+      res.status(200).json(updatedUser)
+
+    }
 
   } catch (err) {
     res.status(500).json({
