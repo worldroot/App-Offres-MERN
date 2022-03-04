@@ -119,7 +119,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
                               <InputGroup className="input-group-alternative mb-3">
                                 <InputGroupAddon addonType="prepend">
                                   <InputGroupText>
-                                    <i className="ni ni-single-02" />
+                                  <i className="fas fa-user"></i>
                                   </InputGroupText>
                                 </InputGroupAddon>
                                 <Input 
@@ -134,7 +134,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
                               <InputGroup className="input-group-alternative mb-3">
                                 <InputGroupAddon addonType="prepend">
                                   <InputGroupText>
-                                    <i className="ni ni-single-02" />
+                                    <i className="fas fa-user"></i>
                                   </InputGroupText>
                                 </InputGroupAddon>
                                 <Input 
@@ -148,7 +148,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
                               <InputGroup className="input-group-alternative mb-3">
                                 <InputGroupAddon addonType="prepend">
                                   <InputGroupText>
-                                    <i className="ni ni-email-83" />
+                                    <i className="fas fa-envelope"></i>
                                   </InputGroupText>
                                 </InputGroupAddon>
                                 <Input
@@ -163,7 +163,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
                               <InputGroup className="input-group-alternative">
                                   <InputGroupAddon addonType="prepend">
                                     <InputGroupText>
-                                      <i className="ni ni-lock-circle-open" />
+                                      <i className="fas fa-lock"></i>
                                     </InputGroupText>
                                   </InputGroupAddon>
                                   <Input

@@ -92,7 +92,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
 
                   <DropdownItem to="/profile" tag={Link}>
-                    <i className="ni ni-single-02 text-red" />
+                    <i className="fas fa-user text-red" />
                     <span>Profile</span>
                   </DropdownItem>
 
@@ -122,13 +122,13 @@ const AuthNavbar = ({ logout, isAuth }) => {
                       to="/register"
                       tag={Link}
                     >
-                      <i className="ni ni-circle-08"/>
+                      <i className="fas fa-user-plus"/>
                       <span className="nav-link-inner--text">Register</span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink className="nav-link-icon" to="/login" tag={Link}>
-                      <i className="ni ni-key-25"/>
+                      <i className="fas fa-sign-in-alt"></i>
                       <span className="nav-link-inner--text">Login</span>
                     </NavLink>
                   </NavItem>

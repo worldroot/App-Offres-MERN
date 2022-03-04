@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { loadUser, resend, refreshJwt } from "redux/auth/authActions";
 import { toast } from "react-toastify";
 import UpdateUserDetails from "./UpdateUser";
-import {motion} from 'framer-motion'
+import {motion, AnimatePresence} from 'framer-motion'
 import decode from 'jwt-decode'
 
 const UserDetails = (props) => {
@@ -90,7 +90,7 @@ const UserDetails = (props) => {
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
-                  <Col lg="5" md="6">
+                  <Col lg="3" md="3">
                     <p className="text-lead text-light">
                     </p>
                   </Col>
@@ -157,18 +157,19 @@ const UserDetails = (props) => {
                   
                 </Col>
                 <Col className="order-xl-2" xl='8'>
+                  <AnimatePresence>
                   { currentId !== 0 && (
-                    <>
-                      <motion.div 
-                          initial={{ x: '100vw' }}
-                          animate={{ x: 0 }}
-                          transition={{ type: 'spring', stiffness:100 }} >
-                          <UpdateUserDetails {...{ currentId, setCurrentId }}/>
-                      </motion.div>
+                    <>                      
+                        <motion.div 
+                              initial={{ x: '100vw' }}
+                              animate={{ x: 0 }}
+                              transition={{ type: 'spring', stiffness:100 }}
+                              exit={{x: '-100vw' }} >
+                              <UpdateUserDetails {...{ currentId, setCurrentId }}/>
+                          </motion.div>
                     </>
-                   
                   )} 
-                   
+                  </AnimatePresence>
                 </Col>
                 
       

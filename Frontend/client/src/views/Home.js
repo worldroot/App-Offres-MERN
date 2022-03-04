@@ -80,7 +80,12 @@ import {
             <>
               <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">
-                      <h1 className="text-center text-red" > Home </h1>
+                    <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{  duration: 1.5 }}>
+                    <h1 className="text-center text-red">Acceuil</h1>
+                  </motion.div>  
                 </Row>
               </Container>
   

@@ -1,21 +1,10 @@
 import {
     Button,
-    Card,
-    CardHeader,
-    CardTitle,
-    CardBody,
-    NavbarBrand,
-    FormGroup,
-    Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Row,
     Col,
     Container
   } from "reactstrap";
-  
+  import {motion} from 'framer-motion'
   import React, { useEffect, useState } from 'react';
   import AuthNavbar from "components/Navbars/AuthNavbar.js";
   import PageNotFound from "components/Loading/PageNotFound";
@@ -72,20 +61,26 @@ const VerifMail = () => {
                 <Container classeName="mt--8 pb-5">
                 <Row className="justify-content-center">
                   <Col>
-                        <br></br>
-                        <h1 className="text-center text-white">Votre compte a été activé avec succès</h1>
-                        <h1 className="text-center text-white"></h1>
-                        <br></br>
-                        <h1 className="text-center text-white"><i className="far fa-check-circle fa-fw fa-3x text-white"></i></h1>
-                        <br></br>
-                        <div className="text-center">
-                            <a href="/home">
-                                <Button className="my-4 btn-outline-white" type="submit">
-                                Home
-                                </Button>
-                            </a>
-                        </div>
-                        <br></br>
+                        <motion.div 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{  duration: 1.5 }}>
+                             <br></br>
+                            <h1 className="text-center text-white">Votre compte a été activé avec succès</h1>
+                            <h1 className="text-center text-white"></h1>
+                            <br></br>
+                            <h1 className="text-center text-white"><i className="far fa-check-circle fa-fw fa-3x text-white"></i></h1>
+                            <br></br>
+                            <div className="text-center">
+                                <a href="/home">
+                                    <Button className="my-4 btn-outline-white" type="submit">
+                                    Home
+                                    </Button>
+                                </a>
+                            </div>
+                            <br></br>
+                        </motion.div>  
+                       
                   </Col>
                       
                   

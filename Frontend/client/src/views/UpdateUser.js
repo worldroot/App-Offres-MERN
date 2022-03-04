@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import useForm from "../helpers/useForm";
 import { updateUser } from "redux/users/userActions";
 import UpdatePass from "./UpdatePass";
-import {motion} from 'framer-motion'
+import { motion, AnimatePresence} from 'framer-motion'
 
 const initialFieldValues = {}
 
@@ -63,8 +63,7 @@ const UpdateUserDetails = ({...props}) => {
   
 
   return (
-
-
+<>
     <Card className="bg-secondary shadow">
       <CardHeader className="bg-white border-0">
         <Row className="align-items-center">
@@ -142,7 +141,7 @@ const UpdateUserDetails = ({...props}) => {
             <Button
                 className="btn-outline-dark"
                 color="default"
-                size="md"
+                size="sm"
                 type="submit"
               >
                 Confirmer
@@ -150,7 +149,7 @@ const UpdateUserDetails = ({...props}) => {
               <Button
                 className="btn-outline-dark"
                 color="default"
-                size="md"
+                size="sm"
                 type="submit"
                 onClick={() => reset()}
               >
@@ -162,21 +161,28 @@ const UpdateUserDetails = ({...props}) => {
           </div>
 
         </Form>
-       
+       <AnimatePresence>
         { currentId !== 0 && (
-          <>
-            <motion.div  
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{  duration: 1.5 }}>
-              <UpdatePass {...{ currentId, setCurrentId }} />
-            </motion.div>
-          </>
-        )} 
+            <>
+              <motion.div  
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{  duration: 1.5 }}
+                  exit={{opacity: 0}}>
+                <UpdatePass {...{ currentId, setCurrentId }} />
+              </motion.div>
+            </>
+          )} 
+       </AnimatePresence>
+        
 
         
       </CardBody>
     </Card>
+
+</>
+
+    
 
   );
 };

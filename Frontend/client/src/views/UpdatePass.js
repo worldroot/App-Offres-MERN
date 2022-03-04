@@ -98,7 +98,7 @@ const UpdatePass = ({...props}) => {
             <Button
                 className="btn-outline-dark"
                 color="default"
-                size="md"
+                size="sm"
                 type="submit"
               >
                 Confirmer
@@ -107,7 +107,7 @@ const UpdatePass = ({...props}) => {
               <Button
                 className="btn-outline-dark"
                 color="default"
-                size="md"
+                size="sm"
                 type="submit"
                 onClick={() => reset()}
               >

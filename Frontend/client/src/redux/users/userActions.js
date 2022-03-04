@@ -42,7 +42,7 @@ export const updateUser = (nom, prenom, email) => (dispatch) => {
                             
                                 //localStorage.setItem('user', JSON.stringify(res.data));
                                 //localStorage.setItem('user', res.data);
-                                toast.info("Mise a jour profil avec succès")                            
+                                //toast.info("Mise a jour profil avec succès")                            
         
     } catch (error) {
 
@@ -69,7 +69,7 @@ export const updatePassword = (password, confirmpass) => (dispatch) =>{
                 type: UP_PASS_DONE,
                 payload: res.data,
             });
-            toast.success("Mot de pass modifié avec succès")
+            
             
             } catch (error) {
 
