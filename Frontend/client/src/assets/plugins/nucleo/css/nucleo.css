@@ -5,7 +5,7 @@ License - nucleoapp.com/license/
 
 -------------------------------- */
 @font-face {
-  font-family: 'NucleoIcons';
+  font-family: 'Ooredoo-Heavy';
   src: url('../fonts/Ooredoo-Heavy.otf');
   font-weight: normal;
   font-style: normal;
@@ -16,7 +16,7 @@ License - nucleoapp.com/license/
 -------------------------*/
 .ni {
   display: inline-block;
-  font: normal normal normal 14px/1 NucleoIcons;
+  font: normal normal normal 14px/1 Ooredoo-Heavy;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
