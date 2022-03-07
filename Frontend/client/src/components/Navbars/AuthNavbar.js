@@ -14,6 +14,7 @@ import {
   Container,
   Row,
   Col,
+  Button,
 } from "reactstrap";
 
 const LogoImg = require('../../assets/img/oo.png')
@@ -69,12 +70,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                     />
                   </Link>
                 </Col>
-                <Col className="collapse-close" xs="6">
-                  <button className="navbar-toggler" id="navbar-collapse-main">
-                    <span />
-                    <span />
-                  </button>
-                </Col>
+               
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
@@ -84,14 +80,13 @@ const AuthNavbar = ({ logout, isAuth }) => {
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
-                    <i className="fas fa-user-circle fa-2x"></i>
-                  
+                    <i className="fas fa-user-circle fa-2x text-red"></i>   
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
 
 
-                  <DropdownItem to="/profile" tag={Link}>
+                  <DropdownItem className="bg-white" to="/profile" tag={Link}>
                     <i className="fas fa-user text-red" />
                     <span>Profile</span>
                   </DropdownItem>
@@ -99,7 +94,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                     
 
                     <DropdownItem divider />
-                    <DropdownItem onClick={ ()=> {
+                    <DropdownItem className="bg-white" onClick={ ()=> {
                        logout(),
                        history.push('/login'),
                        toast.info('Utilisateur déconnecté ')

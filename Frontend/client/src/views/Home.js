@@ -81,9 +81,9 @@ import {
               <Container className="mt--8 pb-8 py-xl-9">
                 <Row className="justify-content-center">
                     <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{  duration: 1.5 }}>
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{  duration: 1.5 }}>
                     <h1 className="text-center text-red">Acceuil</h1>
                   </motion.div>  
                 </Row>
@@ -96,7 +96,7 @@ import {
   
             { userExist && (
   
-            <Container classeName="mt--8 pb-5">
+            <Container classeName="mt--8 pb-8 py-xl-9">
             <Row className="justify-content-center">
               <motion.div 
                 initial={{ opacity: 0 }}

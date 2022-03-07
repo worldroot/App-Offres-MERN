@@ -17,6 +17,7 @@ import React, { useState } from "react";
 import useForm from "../helpers/useForm";
 import { updatePassword } from "redux/users/userActions";
 import { data } from "jquery";
+import { toast } from "react-toastify";
 const initialFieldValues = {}
 
 const UpdatePass = ({...props}) => {
@@ -29,7 +30,11 @@ const UpdatePass = ({...props}) => {
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
 
   const handleSubmit = (e) => {
-      e.preventDefault();    
+      e.preventDefault();   
+      if(!password || !confirmpass){
+        toast.warn("Verifier vos champs !")
+      }
+      
       if (props.currentId !== 0){
 
          dispatch(updatePassword(password, confirmpass))
@@ -65,7 +70,7 @@ const UpdatePass = ({...props}) => {
             <Row>
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label">
+                  <label className="form-control-label text-dark">
                     Nouveau mot de passe
                   </label>
                   <Input
@@ -82,7 +87,7 @@ const UpdatePass = ({...props}) => {
               
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label">
+                  <label className="form-control-label text-dark">
                     Confirmation mot de passe
                   </label>
                   <Input

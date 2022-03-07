@@ -176,7 +176,8 @@ router.get('/:id',async (req, res) => {
 router.get('/',
   async (req,res) => {
   try {
-      let users = await User.find({}).select('-password')
+      let users = await (await User.find({}).select('-password'))
+      //.filter("role","user")
       res.json(users)
 
   } catch (error) {

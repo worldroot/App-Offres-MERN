@@ -86,7 +86,7 @@ const UserDetails = (props) => {
     <>
       <div className="main-content flex" >
       <AuthNavbar />
-      <div className="header bg-red py-7 py-xl-9">
+      <div className="header bg-danger py-7 py-xl-9">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
@@ -108,7 +108,7 @@ const UserDetails = (props) => {
                     <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
                       <div className=" justify-content-between">
                       { user.active && (
-                                <span className="text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
+                                <span className="text-red font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
                       )}
 
                       { !user.active && (
@@ -164,7 +164,7 @@ const UserDetails = (props) => {
                               initial={{ x: '100vw' }}
                               animate={{ x: 0 }}
                               transition={{ type: 'spring', stiffness:100 }}
-                              exit={{x: '-100vw' }} >
+                              exit={{x: '100vw' }} >
                               <UpdateUserDetails {...{ currentId, setCurrentId }}/>
                           </motion.div>
                     </>

@@ -68,7 +68,7 @@ const UpdateUserDetails = ({...props}) => {
       <CardHeader className="bg-white border-0">
         <Row className="align-items-center">
           <Col xs="8">
-            <h3 className="mb-0">My account</h3>
+            <h3 className="mb-0 text-red">My account</h3>
           </Col>
           <Col className="text-right" xs="4">
                     <Button
@@ -94,7 +94,7 @@ const UpdateUserDetails = ({...props}) => {
             <Row>
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label">
+                  <label className="form-control-label text-dark">
                     Nom
                   </label>
                   <Input
@@ -108,7 +108,7 @@ const UpdateUserDetails = ({...props}) => {
               </Col>
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label" >
+                  <label className="form-control-label text-dark" >
                     Prenom
                   </label>
                   <Input
@@ -125,7 +125,7 @@ const UpdateUserDetails = ({...props}) => {
               
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label">
+                  <label className="form-control-label text-dark">
                     Email address
                   </label>
                   <Input
