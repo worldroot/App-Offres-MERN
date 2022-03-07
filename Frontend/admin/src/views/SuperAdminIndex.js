@@ -16,7 +16,6 @@ import {
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
-import routes from "routes.js";
 
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -40,14 +39,6 @@ const SuperAdminIndex = ({refreshJwt}) => {
       
 
       const refreshToken = localStorage.getItem("refreshToken")
-      /**
-       *        let minutes = 1000 * 60 * 40
-      let interval =  setInterval(()=> {
-          refreshJwt({refreshToken})
-      }, minutes)
-
-      return ()=> clearInterval(interval)
-       */
             const decodedToken = decode(accessToken)
             if(decodedToken.exp * 1000 < new Date().getTime()){
                 refreshJwt({refreshToken})
@@ -60,7 +51,6 @@ const SuperAdminIndex = ({refreshJwt}) => {
     <>
     {/* Layout*/}
     <Sidebar
-        routes={routes}
         logo={{
           imgSrc: require("../assets/img/brand/argon-react.png").default,
           imgAlt: "...",

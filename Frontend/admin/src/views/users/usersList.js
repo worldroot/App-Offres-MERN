@@ -3,19 +3,8 @@ import {
     Badge,
     Card,
     CardHeader,
-    CardFooter,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    DropdownToggle,
-    Media,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Progress,
     Table,
     Container,
-    UncontrolledTooltip,
   } from "reactstrap";
   
   import Header from "../../components/Headers/Header.js";
@@ -24,18 +13,25 @@ import {
   import { Redirect } from 'react-router-dom';
   import {connect} from 'react-redux';
   import {toast} from 'react-toastify'
-  import routes from "routes.js";
+  import { getAllUsers } from "redux/users/userActions.js";
+  import { Fragment, useEffect, useState } from "react";
   
-  const UsersList = ({user, isAuth}) => {
-  
+  const UsersList = (props) => {
 
-  
+    const [user] = useState(() => {
+      const saved = localStorage.getItem("user");
+      const initialValue = JSON.parse(saved);
+      return initialValue || "";
+    });
+
+    useEffect(() => {
+      props.All();
+    }, []);
   
     return (
       <>
       {/* Layout*/}
       <Sidebar
-          routes={routes}
           logo={{
             innerLink: "",
             imgSrc: '',
@@ -58,32 +54,53 @@ import {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Budget</th>
-                    <th scope="col">Budget</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Nom & Prenom</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Date de creation</th>
+                    <th scope="col">Action</th>
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    
-                    <td>$2,500 USD</td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        pending
-                      </Badge>
-                    </td>
-                    <td>
-                     
-                    </td>
-                    <td>
-                      
-                    </td>
-                    
-                  </tr>
-
-
+                { user.role === "admin" &&(
+                  <>
+                  {props.List.filter((user) => {
+                    if(user.role === "user"){
+                        return user
+                    }
+                }).map((user, index) => {
+                      return (
+                        <Fragment key={index}>           
+                            <tr key={user._id}>
+                              <td>{user.email}</td>
+                              <td>{user.nom} {user.prenom}</td>
+                              <td>{user.role}</td>
+                              <td>{user.createdAt.substring(0, 10)}</td>           
+                
+                            
+                            </tr>
+                          </Fragment>
+                          );
+                        })}
+                  </>
+                )}
+                { user.role === "super-admin" &&(
+                  <>
+                  {props.List.map((user, index) => {
+                      return (
+                        <Fragment key={index}>           
+                            <tr key={user._id}>
+                              <td>{user.email}</td>
+                              <td>{user.nom} {user.prenom}</td>
+                              <td>{user.role}</td>
+                              <td>{user.createdAt.substring(0, 10)}</td>           
+                            </tr>
+                          </Fragment>
+                          );
+                        })}
+                  </>
+                )}
                 </tbody>
               </Table>
             </Card>
@@ -96,9 +113,13 @@ import {
     );
   };
   
-  const mapToStateProps = (state) => ({
+  const mapStateToProps = (state) => ({
+    List: state.users.uslist,
     isAuth: state.auth.isAuthenticated,
-    user: state.auth.user,
   });
   
-  export default connect (mapToStateProps)(UsersList);
+  const mapActionToProps = {
+    All: getAllUsers
+  };
+  
+  export default connect (mapStateToProps, mapActionToProps)(UsersList);

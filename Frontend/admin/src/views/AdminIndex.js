@@ -19,7 +19,6 @@ import Sidebar from "components/Sidebar/Sidebar";
 import { Redirect, useLocation } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {toast} from 'react-toastify'
-import routes from "routes.js";
 import decode from 'jwt-decode'
 import React, { useEffect } from 'react';
 import { refreshJwt } from "redux/auth/authActions";
@@ -69,7 +68,6 @@ const AdminIndex = ({ refreshJwt }) => {
     <>
     {/* Layout*/}
     <Sidebar
-        routes={routes}
         logo={{
           innerLink: "",
           imgSrc: require("../assets/img/brand/argon-react.png").default,
