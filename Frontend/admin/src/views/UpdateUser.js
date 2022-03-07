@@ -82,7 +82,7 @@ const UpdateUserDetails = ({...props}) => {
             <Row>
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label">
+                  <label className="form-control-label text-dark">
                     Nom
                   </label>
                   <Input
@@ -96,7 +96,7 @@ const UpdateUserDetails = ({...props}) => {
               </Col>
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label" >
+                  <label className="form-control-label text-dark" >
                     Prenom
                   </label>
                   <Input
@@ -113,7 +113,7 @@ const UpdateUserDetails = ({...props}) => {
               
               <Col lg="6">
                 <FormGroup>
-                  <label className="form-control-label">
+                  <label className="form-control-label text-dark">
                     Email address
                   </label>
                   <Input
@@ -127,6 +127,7 @@ const UpdateUserDetails = ({...props}) => {
               </Col>
             </Row>
             <Button
+                className="btn-outline-dark"
                 color="default"
                 size="md"
                 type="submit"
@@ -134,6 +135,7 @@ const UpdateUserDetails = ({...props}) => {
                 Confirmer
               </Button>
             <Button
+                className="btn-outline-dark"
                 color="info"
                 onClick={() => reset()}
                 size="md"

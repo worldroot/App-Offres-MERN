@@ -50,12 +50,6 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                     />
                   </Link>
                 </Col>
-                <Col className="collapse-close" xs="6">
-                  <button className="navbar-toggler" id="navbar-collapse-main">
-                    <span />
-                    <span />
-                  </button>
-                </Col>
               </Row>
             </div>
             <Nav className="ml-auto" navbar>

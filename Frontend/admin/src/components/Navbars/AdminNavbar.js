@@ -69,23 +69,23 @@ const AdminNavbar = ({ logout }) => {
                   </Media>
                 </Media>
               </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-arrow" right>
+              <DropdownMenu className="dropdown-menu-arrow bg-white" right>
 
               { user.role === "admin" &&(
-                  <DropdownItem to="/admin" tag={Link}>
+                  <DropdownItem to="/admin" className="bg-white" tag={Link}>
                     <i className="fas fa-tools" />
                     <span>Dashboard</span>
                   </DropdownItem>
               )} 
 
               { user.role === "super-admin" &&(
-                  <DropdownItem to="/super-admin" tag={Link}>
+                  <DropdownItem to="/super-admin" className="bg-white" tag={Link}>
                     <i className="fas fa-tools"></i>
                     <span>Dashboard</span>
                   </DropdownItem>
               )} 
 
-                  <DropdownItem to="/profile" tag={Link}>
+                  <DropdownItem to="/profile" className="bg-white" tag={Link}>
                     <i className="ni ni-single-02" />
                     <span>Profile</span>
                   </DropdownItem>
@@ -93,7 +93,8 @@ const AdminNavbar = ({ logout }) => {
                     
 
                     <DropdownItem divider />
-                    <DropdownItem onClick={ ()=> {
+                    <DropdownItem className="bg-white"
+                    onClick={ ()=> {
                        logout(),
                        history.push('/login'),
                        toast.info('Utilisateur déconnecté ')

@@ -21,6 +21,8 @@ import React, { useState, useEffect } from "react";
 import routes from "routes.js";
 import Profile from "./UpdateUser";
 import decode from "jwt-decode";
+import {motion, AnimatePresence} from 'framer-motion'
+
 import { loadUser } from "redux/auth/authActions";
 
 const UserDetails = (props) => {
@@ -82,15 +84,7 @@ const UserDetails = (props) => {
               </Row>
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Connect
-                  </Button>
+                 
                   <Button
                     className="float-right"
                     color="default"
@@ -127,13 +121,23 @@ const UserDetails = (props) => {
             </Card>
           </Col>
 
-          
-                  <Col className="order-xl-1" xl="8">
-                        { currentId !== 0 && (
-                          <Profile {...{ currentId, setCurrentId }} />
+
+          <Col className="order-xl-1" xl="8">
+              <AnimatePresence>
+                      { currentId !== 0 && (
+                          <>
+                          <motion.div
+                              initial={{ y: '100vw' }}
+                              animate={{ y: 0 }}
+                              transition={{ type: 'spring', stiffness:100 }}
+                              exit={{y: '100vw' }}>
+                             <Profile {...{ currentId, setCurrentId }} />
+                          </motion.div>
+                          </>
                           )
                         }
-                  </Col>
+              </AnimatePresence>
+          </Col>
 
         </Row>
         </Container>
