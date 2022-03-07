@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const Category = require('./Categorie')
-const {verifyAccessToken} = require('../user-ms/middleware/verify-token')
+const {verifyAccessToken} = require('./middleware/verify-token')
 const catid = require('./categorieByid')
 const axios = require('axios')
 const { check, validationResult } = require('express-validator')
