@@ -78,7 +78,7 @@ import {
             {/* Content */}
             { !userExist && (
             <>
-              <Container className="mt--8 pb-5">
+              <Container className="mt--8 pb-8 py-xl-9">
                 <Row className="justify-content-center">
                     <motion.div 
                     initial={{ opacity: 0 }}
