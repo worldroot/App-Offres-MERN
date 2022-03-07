@@ -16,6 +16,7 @@ import SuperAdmin from 'views/SuperAdminIndex';
 import Profile from 'views/UserDetails';
 import Login from 'views/Login';
 import Register from 'views/Register';
+import usersList from 'views/users/usersList';
 
 function App() {
 
@@ -43,8 +44,9 @@ function App() {
 
             <AdminRoute exact path="/admin" component={Admin} />
             <SuperRoute exact path="/super-admin" component={SuperAdmin} />
+
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/userslist" component={usersList} />
             <Redirect from="/" to="/login" />
             
             </Switch>

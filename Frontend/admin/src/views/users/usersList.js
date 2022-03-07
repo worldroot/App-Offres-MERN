@@ -1,16 +1,21 @@
 import {
-    Button,
+    Row,
+    Badge,
     Card,
     CardHeader,
-    CardBody,
-    NavItem,
-    NavLink,
-    Nav,
+    CardFooter,
+    DropdownMenu,
+    DropdownItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    Media,
+    Pagination,
+    PaginationItem,
+    PaginationLink,
     Progress,
     Table,
     Container,
-    Row,
-    Col,
+    UncontrolledTooltip,
   } from "reactstrap";
   
   import Header from "../../components/Headers/Header.js";
@@ -23,17 +28,7 @@ import {
   
   const UsersList = ({user, isAuth}) => {
   
-    if(!isAuth){
-      return <Redirect to='/login'/>;
-    }
-  
-  
-    if (isAuth && user) {
-      const { role } = user;
-      if (role === "admin") return <Redirect to='/admin'/>;
-      if (role === "super-admin") return <Redirect to='/super-admin'/>;
-      //if (role === 1) return <Redirect to='/dashboard/'/>;
-    }
+
   
   
     return (
@@ -43,7 +38,7 @@ import {
           routes={routes}
           logo={{
             innerLink: "",
-            imgSrc: require("../assets/img/brand/argon-react.png"),
+            imgSrc: '',
             imgAlt: "...",
           }}
         />
@@ -53,8 +48,48 @@ import {
   
           <Header/>
           {/* Page content */}
-        
-  
+          <Container className="mt--7" fluid>
+          <Row>
+          <div className="col">
+            <Card className="shadow">
+              <CardHeader className="border-0">
+                <h3 className="mb-0">List des utilisateurs</h3>
+              </CardHeader>
+              <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">Budget</th>
+                    <th scope="col">Budget</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" />
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    
+                    <td>$2,500 USD</td>
+                    <td>
+                      <Badge color="" className="badge-dot mr-4">
+                        <i className="bg-warning" />
+                        pending
+                      </Badge>
+                    </td>
+                    <td>
+                     
+                    </td>
+                    <td>
+                      
+                    </td>
+                    
+                  </tr>
+
+
+                </tbody>
+              </Table>
+            </Card>
+          </div>
+        </Row>
+</Container>
         </div>
        
       </>

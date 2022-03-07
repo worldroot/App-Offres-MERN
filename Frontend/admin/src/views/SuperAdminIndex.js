@@ -41,23 +41,21 @@ const SuperAdminIndex = ({refreshJwt}) => {
 
       const refreshToken = localStorage.getItem("refreshToken")
       /**
-       *  const decodedToken = decode(accessToken)
-          if(decodedToken.exp * 1000 < new Date().getTime()){
-              refreshJwt({refreshToken})
-            }
-       */
-
-      let minutes = 1000 * 60 * 40
+       *        let minutes = 1000 * 60 * 40
       let interval =  setInterval(()=> {
           refreshJwt({refreshToken})
       }, minutes)
 
       return ()=> clearInterval(interval)
+       */
+            const decodedToken = decode(accessToken)
+            if(decodedToken.exp * 1000 < new Date().getTime()){
+                refreshJwt({refreshToken})
+              }
     }
   }, []);
 
  
-
   return (
     <>
     {/* Layout*/}

@@ -19,8 +19,8 @@ import {
   Toast
 } from "reactstrap";
 
-import { logout } from "redux/auth/authActions";
-import {connect} from 'react-redux'
+import { logout, refreshJwt } from "redux/auth/authActions";
+import {connect, useDispatch} from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import decode from 'jwt-decode'
@@ -29,6 +29,7 @@ import React, { useEffect, useState } from 'react';
 
 const AdminNavbar = ({ logout }) => {
 
+  const dispatch = useDispatch()
   let history = useHistory()
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
@@ -36,8 +37,20 @@ const AdminNavbar = ({ logout }) => {
     return initialValue || "";
   });
 
-      const accessToken = localStorage.getItem("accessToken")
-      const decodedToken = decode(accessToken)
+      useEffect(() => {
+
+        const accessToken = localStorage.getItem("accessToken")
+        if(accessToken){
+          
+          const refreshToken = localStorage.getItem("refreshToken")
+          const decodedToken = decode(accessToken)
+
+                if(decodedToken.exp * 1000 < new Date().getTime()){
+                    
+                    dispatch(refreshJwt({refreshToken}))
+                  }
+        }
+      }, []);
     
   /*
   if(!user){

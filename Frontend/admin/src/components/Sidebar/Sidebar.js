@@ -198,6 +198,22 @@ const LogoImg = require('../../assets/img/oored.png')
               </Col>
             </Row>
           </div>
+          
+              <NavItem className="pt-0 nav-link" to="/userslist" tag={Link}>
+                    <i className="fas fa-users text-red mr-2" />
+                    <span className="text-dark">  Utilisateurs</span>
+              </NavItem>
+              <br/>
+              <NavItem className="pt-0 nav-link " to="/userslist" tag={Link}>
+                    <i className="fas fa-archive text-red mr-2"></i>
+                    <span className="text-dark">  Categories</span>
+              </NavItem>
+              <br/>
+              <NavItem className="pt-0 nav-link" to="/userslist" tag={Link}>
+                    <i className="fas fa-list-ul text-red mr-2"></i>
+                    <span className="text-dark">  Offres</span>
+              </NavItem>
+
           {/* Form */}
           <Form className="mt-4 mb-3 d-md-none">
             <InputGroup className="input-group-rounded input-group-merge">
@@ -214,8 +230,7 @@ const LogoImg = require('../../assets/img/oored.png')
               </InputGroupAddon>
             </InputGroup>
           </Form>
-          {/* Navigation */}
-          <Nav navbar>{createLinks(routes)}</Nav>
+
           
         </Collapse>
       </Container>

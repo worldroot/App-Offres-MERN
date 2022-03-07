@@ -4,6 +4,7 @@ import Register from "views/Register.js";
 import Login from "views/Login.js";
 import Tables from "views/Tables.js";
 import Icons from "views/Icons.js";
+import usersList from "views/users/usersList";
 
 var routes = [
 
@@ -21,10 +22,10 @@ var routes = [
     component: Tables,
   },
   {
-    path: "/",
+    path: "/userslist",
     name: "Utilisateurs",
     icon: "fas fa-users text-red",
-    component: Icons,
+    component: usersList,
   },
 
 ];
