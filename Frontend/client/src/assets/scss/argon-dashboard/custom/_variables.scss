@@ -44,12 +44,12 @@ $enable-print-styles:       true !default;
 // Color system
 
 $white:    #fff !default;
-$gray-100: #f6f9fc !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
+$gray-100: #F9F9F9 !default;
+$gray-200: #F4F4F4 !default;
+$gray-300: #EEEEEE !default;
 $gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #8898aa !default;   // Line footer color
+$gray-500: #AAAAAA !default;
+$gray-600: #898989 !default;   // Line footer color
 $gray-700: #525f7f !default;   // Line p color
 $gray-800: #221E20 !default;   // Line heading color
 $gray-900: #212529 !default;
@@ -68,12 +68,6 @@ $grays: map-merge((
   "900": $gray-900
 ), $grays);
 
-$gray_1: #AAAAAA;
-$gray_2: #898989;
-$light_gray_1: #F9F9F9;
-$light_gray_2: #F4F4F4;
-$light_gray_3: #EEEEEE;
-$light_gray_4: #E0E0E0;
 $darkgrey:#221E20 !default;
 $blue:    #2ECDF3 !default;
 $indigo:  #5603ad !default;
