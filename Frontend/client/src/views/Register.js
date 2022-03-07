@@ -76,7 +76,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
     <>
     <div className="main-content position-flex">
         <AuthNavbar />
-        <div className="header bg-red py-7 py-lg-8">
+        <div className="header bg-danger py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -92,7 +92,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-3 py-5 bg-red " xl="6">
+                  <Col className="order-xl-1 mt-2 mt-md-3 py-5 bg-danger " xl="6">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}
@@ -174,13 +174,6 @@ const Register = ({register, isAuth, isLoading, user}) => {
                                   />
                                 </InputGroup>
                             </FormGroup>
-                            <div className="text-muted font-italic">
-                              <small>
-                                password strength:{" "}
-                                <span className="text-info font-weight-700">strong</span>
-                              </small>
-                            </div>
-                            
                             <div className="text-center">
                                 <Button className="mt-4 btn-outline-white"  type="submit">
                                   S'inscrire

@@ -51,7 +51,7 @@ $gray-400: #ced4da !default;
 $gray-500: #adb5bd !default;
 $gray-600: #8898aa !default;   // Line footer color
 $gray-700: #525f7f !default;   // Line p color
-$gray-800: #32325d !default;   // Line heading color
+$gray-800: #221E20 !default;   // Line heading color
 $gray-900: #212529 !default;
 $black:    #000 !default;
 
@@ -68,14 +68,14 @@ $grays: map-merge((
   "900": $gray-900
 ), $grays);
 
-$blue:    #5e72e4 !default;
+$blue:    #2ECDF3 !default;
 $indigo:  #5603ad !default;
 $purple:  #8965e0 !default;
 $pink:    #f3a4b5 !default;
 $red:     #C11923 !default;
-$orange:  #fb6340 !default;
-$yellow:  #ffd600 !default;
-$green:   #2dce89 !default;
+$orange:  #FFA300 !default;
+$yellow:  #FFD500 !default;
+$green:   #B0E020 !default;
 $teal:    #11cdef !default;
 $cyan:    #2bffc6 !default;
 
@@ -98,8 +98,8 @@ $colors: map-merge((
   "gray-dark":  $gray-800
 ), $colors);
 
-$default:       #172b4d !default;
-$primary:       #5e72e4 !default;
+$default:       #221E20 !default;
+$primary:       #2ECDF3 !default;
 $secondary:     #f7fafc !default;
 $success:       $green !default;
 $info:          $teal !default;
@@ -149,7 +149,7 @@ $brand-colors: map-merge((
 
 $shape-colors: () !default;
 $shape-colors: map-merge((
-  "default":      #32325d,
+  "default":      #221E20,
   "primary":      #5533ff,
   "secondary":    #24b47e,
   "neutral":      #e9ecef,
@@ -195,9 +195,9 @@ $shapes-light-colors: map-merge((
 
 $shapes-dark-colors: () !default;
 $shapes-dark-colors: map-merge((
-  "step-1-gradient-bg":         #32325d,
-  "step-2-gradient-bg":         #32325d,
-  "step-3-gradient-bg":         #32325d,
+  "step-1-gradient-bg":         #221E20,
+  "step-2-gradient-bg":         #221E20,
+  "step-3-gradient-bg":         #221E20,
   "span-1-bg":                  #2e2e57,
   "span-2-bg":                  #2b2b58,
   "span-3-bg":                  #25254d,

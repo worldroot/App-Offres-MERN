@@ -64,7 +64,7 @@ import {
       <>
           <div className="main-content">
           <AuthNavbar />
-          <div className=" bg-trans py-xl-9">
+          <div className=" bg-white py-xl-9">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">

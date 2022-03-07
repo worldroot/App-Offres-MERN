@@ -71,7 +71,7 @@ const Login = ({ login, isAuth, user }) => {
     <>
       <div className="main-content">
         <AuthNavbar />
-        <div className="bg-red py-7 py-lg-8">
+        <div className="bg-danger py-7 py-lg-8">
         <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -90,7 +90,7 @@ const Login = ({ login, isAuth, user }) => {
             <Container className="mt--8 pb-5">
             <Row className="justify-content-center">
                     
-              <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-red " xl="8">
+              <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-danger " xl="8">
                 
                 <Row className="mt-3">
                   {/* SIDE 1 */}

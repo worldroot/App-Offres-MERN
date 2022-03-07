@@ -46,12 +46,12 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
   return (
     <>
-      <Navbar className="navbar-top navbar-horizontal navbar-dark bg-red" expand="md">
+      <Navbar className="navbar-top navbar-horizontal navbar-dark bg-white" expand="md">
         <Container className="px-4">
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={LogoImg}
+              src={ooredoo}
             />
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
@@ -122,14 +122,14 @@ const AuthNavbar = ({ logout, isAuth }) => {
                       to="/register"
                       tag={Link}
                     >
-                      <i className="fas fa-user-plus"/>
-                      <span className="nav-link-inner--text">Register</span>
+                      <i className="fas fa-user-plus text-red"/>
+                      <span className="nav-link-inner--text text-red">Register</span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink className="nav-link-icon" to="/login" tag={Link}>
-                      <i className="fas fa-sign-in-alt"></i>
-                      <span className="nav-link-inner--text">Login</span>
+                      <i className="fas fa-sign-in-alt text-red"></i>
+                      <span className="nav-link-inner--text text-red">Login</span>
                     </NavLink>
                   </NavItem>
                 </>
