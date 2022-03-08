@@ -4,7 +4,8 @@
   "description": "PFE",
   "main": "index.js",
   "scripts": {
-    "dev-user": "nodemon index.js"
+    "dev-user": "nodemon index.js",
+    "test": "jest --runInBand ./test"
   },
   "repository": {
     "type": "git",
@@ -41,5 +42,12 @@
     "passport": "^0.5.2",
     "redis": "^4.0.3",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "mongodb-memory-server": "^8.4.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
