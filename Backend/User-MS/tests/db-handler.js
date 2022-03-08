@@ -12,7 +12,7 @@ let mongod = undefined;
 module.exports.connect = async () => {
     mongod = await MongoMemoryServer.create();
     const uri = mongod.getUri();
-    console.log(uri)
+    
     const mongooseOpts = {
         useNewUrlParser: true,
         useUnifiedTopology: true

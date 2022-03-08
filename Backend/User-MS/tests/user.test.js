@@ -27,22 +27,24 @@ afterAll(async () => {
 
 //Tests ... //
 
-describe('Creation user ', () => {
+describe('User ', () => {
 
     it('can be created correctly', async () => {
         expect(async () => await UserService.create(userComplete))
             .not
             .toThrow();
     });
+
 });
 
-describe('Creation of tokens ', () => {
+describe('Tokens ', () => {
 
     it('can be created correctly', async () => {
         expect(async () => await UserService.createTokens(userComplete))
             .not
             .toThrow();
     });
+    
 });
 
 
