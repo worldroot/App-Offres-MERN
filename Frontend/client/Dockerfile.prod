@@ -1,6 +1,5 @@
-# Dockerfile for React client
-# Build react client
-FROM node:14-slim
+### Stage One ###
+FROM node:latest
 
 # Working directory be app
 WORKDIR /usr/src/app
@@ -13,6 +12,5 @@ RUN npm i
 # copy local files to app folder
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD ["npm", "run", "start"]
