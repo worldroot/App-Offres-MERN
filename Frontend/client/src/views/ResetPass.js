@@ -104,7 +104,7 @@ const ResetPass = () => {
     { validUrl && (
             <>
             <AuthNavbar />
-        <div className="header bg-red py-7 py-lg-8">
+        <div className="header bg-danger py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">

@@ -29,6 +29,7 @@ import ooredoo from "../assets/img/oo.png"
 
 const Register = ({forgotPass, isAuth, isLoading, user}) => {
   
+  const history = useHistory()
   const [data, setData] = useState({
     nom: '',
     prenom: '',
@@ -75,7 +76,7 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
     <>
     <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-red py-7 py-lg-8">
+        <div className="header bg-danger py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -91,7 +92,7 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-5 py-3 bg-red " xl="6">
+                  <Col className="order-xl-1 mt-2 mt-md-5 py-3 bg-danger " xl="6">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}
@@ -120,7 +121,7 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
                               <InputGroup className="input-group-alternative mb-3">
                                 <InputGroupAddon addonType="prepend">
                                   <InputGroupText>
-                                    <i className="ni ni-email-83" />
+                                  <i className="fas fa-envelope"></i>
                                   </InputGroupText>
                                 </InputGroupAddon>
                                 <Input
@@ -134,6 +135,10 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
                            
                            
                             <div className="text-center">
+                                <Button className="mt-4 btn-outline-white"
+                                  onClick={ ()=> { history.push('/login') }}>
+                                  Retour
+                                </Button>
                                 <Button className="mt-4 btn-outline-white"  type="submit">
                                   Envoyer
                                 </Button>
