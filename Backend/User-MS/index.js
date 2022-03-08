@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const connectDB = require('./db/db')
+let path = require('path');
 const bodyParser = require('body-parser')
 const authRoute = require('./controller/authUser')
 const userRoute = require('./controller/user-service')
@@ -27,6 +28,13 @@ app.use((res) => {
         msg: "Page not founded"
     })
 })
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, "../../Frontend/client", "build")))
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../../Frontend/client", "build", "index.html"));
+    });
+}
 
 let server =  app.listen(port, () => {
     console.log(`Up and Running on port ${port} - This is User service`);

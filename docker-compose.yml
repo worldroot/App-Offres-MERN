@@ -32,6 +32,22 @@ services:
       - user-ms
     networks:
       - app-network
+  react-client:
+    build:
+      context: ./Frontend/client
+      dockerfile: Dockerfile
+    image: react-client
+    container_name: react-client
+    command: npm run start
+    volumes:
+      - ./Frontend/client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-ms
+    networks:
+      - app-network
 
 networks:
     app-network:
