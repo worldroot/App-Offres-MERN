@@ -28,6 +28,8 @@ app.use((res) => {
     })
 })
 
-app.listen(port, () => {
+let server =  app.listen(port, () => {
     console.log(`Up and Running on port ${port} - This is User service`);
 })
+
+module.exports  = server;

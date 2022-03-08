@@ -27,7 +27,7 @@ afterAll(async () => {
 
 //Tests ... //
 
-describe('User ', () => {
+describe('User Register ', () => {
 
     it('can be created correctly', async () => {
         expect(async () => await UserService.create(userComplete))
@@ -44,7 +44,7 @@ describe('Tokens ', () => {
             .not
             .toThrow();
     });
-    
+
 });
 
 
