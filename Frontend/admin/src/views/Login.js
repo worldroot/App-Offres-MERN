@@ -99,9 +99,9 @@ const Login = ({ login, isAuth, user, isLoading }) => {
                   
             <Col lg="5" md="7">
               <Card className="bg-secondary shadow border-0">
-                <CardHeader className="bg-transparent pb-5">
+                <CardHeader className="bg-transparent pb-6">
                   <h1 className="text-center text-dark">Login</h1>
-
+                  <h3 className="text-center text-dark">Espace Administration </h3>
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   
@@ -138,7 +138,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
                     </FormGroup>
                   
                     <div className="text-center">
-                              <Button className="my-4" color="dark" type="submit">
+                              <Button className="my-4 btn-outline-dark" color="dark" type="submit">
                                   Connecter
                                </Button>
                     </div>
@@ -146,15 +146,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
                 </CardBody>
               </Card>
               <Row className="mt-3">
-                <Col xs="6">
-                  <a
-                    className="text-light"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <small>Forgot password?</small>
-                  </a>
-                </Col>
+               
                 <Col className="text-right" xs="6">
                   
                   

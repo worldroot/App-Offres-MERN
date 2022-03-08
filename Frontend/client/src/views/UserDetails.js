@@ -108,7 +108,7 @@ const UserDetails = (props) => {
                     <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
                       <div className=" justify-content-between">
                       { user.active && (
-                                <span className="text-red font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
+                                <span className=" text-info font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
                       )}
 
                       { !user.active && (
