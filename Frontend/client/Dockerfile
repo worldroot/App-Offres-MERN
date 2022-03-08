@@ -1,18 +1,21 @@
-# Dockerfile for React client
-# Build react client
+# pull the base image
 FROM node:alpine
 
-# Working directory be app
-WORKDIR /usr/src/app
+# set the working direction
+WORKDIR /app
 
-COPY package*.json ./
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-###  Installing dependencies
-RUN npm install --silent
+# install app dependencies
+COPY package.json ./
 
-# copy local files to app folder
-COPY . .
+COPY package-lock.json ./
 
-EXPOSE 3000
+RUN npm install
 
-CMD ["npm", "run", "start"]
+# add app
+COPY . ./
+
+# start app
+CMD ["npm", "start"]
