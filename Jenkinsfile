@@ -12,15 +12,15 @@ pipeline {
 
 	stages{
 			
-			stage('Docker Versions'){
-
+			stage('Docker Compose Build'){
 					steps{
+						bat "docker-compose build"
+					}				
+				}
 
-                         sh '''
-                            docker --verion
-                            docker compose version
-                        '''
-						
+            stage('Docker Compose Up'){
+					steps{
+						bat "docker-compose up"
 					}				
 				}
 
