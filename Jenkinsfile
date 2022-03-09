@@ -2,6 +2,7 @@ pipeline {
 	agent any 
 	
 	environment { 
+        COMPOSE_FILE = "docker-compose.yml"
         registry = "ghassenbogh/devopstimesheet" 
         registryCredential = 'dockerHub'
         dockerImage = '' 
@@ -10,15 +11,15 @@ pipeline {
 
 	stages{
 			
-			stage('Docker Compose Build'){
+			stage('Docker Version'){
 					steps{
-						sh "docker-compose build"
+						sh "docker --verion"
 					}				
 				}
 
-            stage('Docker Compose Up'){
+            stage('Docker Compose Version'){
 					steps{
-						sh "docker-compose up"
+						sh "docker compose version"
 					}				
 				}
 							
