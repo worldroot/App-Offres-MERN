@@ -14,13 +14,12 @@ pipeline {
 			
 			stage('Docker Versions'){
 
-                 withEnv(["PATH=$PATH:~/.local/bin"]){
-                    sh '''
+					steps{
+
+                         sh '''
                             docker --verion
                             docker compose version
                         '''
-                }
-					steps{
 						
 					}				
 				}
