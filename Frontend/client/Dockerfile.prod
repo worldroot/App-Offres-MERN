@@ -12,5 +12,9 @@ RUN npm i
 # copy local files to app folder
 COPY . .
 
+EXPOSE 3000
+
 RUN npm run build
+
+CMD ["npm", "run", "start"]
 
