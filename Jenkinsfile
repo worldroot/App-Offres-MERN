@@ -12,6 +12,7 @@ pipeline {
 
 	stages{
 			
+
             stage('Docker Compose version'){
 					steps{
 						sh "docker-compose version"
@@ -24,9 +25,9 @@ pipeline {
 					}				
 				}
 
-             stage('Docker Compose Down'){
+ s			tage('Docker Compose Build'){
 					steps{
-						sh "docker-compose down"
+						sh "docker-compose build"
 					}				
 				}
 
