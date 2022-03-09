@@ -2,6 +2,7 @@ pipeline {
 	agent any 
 	
 	environment { 
+        PATH = "$PATH:/usr/local/bin"
         COMPOSE_FILE = "docker-compose.yml"
         registry = "ghassenbogh/devopstimesheet" 
         registryCredential = 'dockerHub'
@@ -12,15 +13,19 @@ pipeline {
 	stages{
 			
 			stage('Docker Versions'){
-					steps{
-						sh '''
+
+                 withEnv(["PATH=$PATH:~/.local/bin"]){
+                    sh '''
                             docker --verion
                             docker compose version
                         '''
+                }
+					steps{
+						
 					}				
 				}
 
 
-                
+
 		}
 	} 
