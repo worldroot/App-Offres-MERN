@@ -25,7 +25,7 @@ pipeline {
 					}				
 				}
 
- s			tage('Docker Compose Build'){
+ 			stage('Docker Compose Build'){
 					steps{
 						sh "docker-compose build"
 					}				
