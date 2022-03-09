@@ -21,6 +21,11 @@ app.use(bodyParser.json())
 app.use("/api/access", authRoute)
 app.use("/api/user", userRoute)
 
+// Route to be tested
+app.get('/test', (req, res) => {
+    return res.status(200).json('Testing user-ms');
+});
+
 //404
 app.use((res) => {
     res.status(404).json({
