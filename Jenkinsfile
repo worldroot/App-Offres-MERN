@@ -12,9 +12,9 @@ pipeline {
 
 	stages{
 			
-            stage('Docker Compose build'){
+            stage('Docker Compose version'){
 					steps{
-						sh "docker-compose build"
+						sh "docker-compose version"
 					}				
 				}
 
