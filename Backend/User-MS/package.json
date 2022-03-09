@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev-user": "nodemon index.js",
-    "test": "jest --runInBand ./test"
+    "sonar": "node sonar-project.js",
+    "test": "jest --runInBand --silent ./test"
   },
   "repository": {
     "type": "git",
@@ -31,16 +32,19 @@
     "express-validator": "^6.14.0",
     "formidable": "^2.0.1",
     "http-errors": "^2.0.0",
+    "jest-sonar-reporter": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "mongoose": "^6.2.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "nodemailer": "^6.7.2",
-    "nodemailer-smtp-transport": "^2.7.4",
+    "nodemailer-smtp-transport": "^2.4.2",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "redis": "^4.0.3",
+    "sonarqube-scanner": "^2.8.1",
+    "supertest": "^6.2.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -48,6 +52,15 @@
     "mongodb-memory-server": "^8.4.0"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testResultsProcessor": "jest-sonar-reporter"
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   }
 }

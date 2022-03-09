@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const dbHandler = require('./db-handler');
 
 const UserService = require('../controller/user-fortest')
-const UserModel = require('../models/User')
+//const UserModel = require('../models/User')
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -18,19 +18,13 @@ const UserModel = require('../models/User')
  afterEach(async () => {
     await dbHandler.clearDatabase();
 });
-/**
- * Remove and close the db and server.
- */
-afterAll(async () => {
-    await dbHandler.closeDatabase();
-});
 
 //Tests ... //
 
 describe('User Register ', () => {
 
     it('can be created correctly', async () => {
-        expect(async () => await UserService.create(userComplete))
+        await expect(async () => await UserService.create(userComplete))
             .not
             .toThrow();
     });
@@ -40,7 +34,7 @@ describe('User Register ', () => {
 describe('Tokens ', () => {
 
     it('can be created correctly', async () => {
-        expect(async () => await UserService.createTokens(userComplete))
+        await expect(async () => await UserService.createTokens(userComplete))
             .not
             .toThrow();
     });
@@ -55,3 +49,11 @@ const userComplete = {
     email: '@test',
     password: '123456'
 };
+
+
+/**
+ * Remove and close the db and server.
+ */
+ afterAll(async () => {
+    await dbHandler.closeDatabase();
+});

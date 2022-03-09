@@ -21,12 +21,6 @@ const UserModel = require('../models/User')
  afterEach(async () => {
     await dbHandler.clearDatabase();
 });
-/**
- * Remove and close the db and server.
- */
- afterAll(async () => {
-    await dbHandler.closeDatabase();
-});
 
 //Tests ... //
 describe('User getById ', () => {
@@ -71,3 +65,10 @@ const user2 = {
     email: '2@test',
     password: '123456'
 };
+
+/**
+ * Remove and close the db and server.
+ */
+ afterAll(async () => {
+    await dbHandler.closeDatabase();
+});
