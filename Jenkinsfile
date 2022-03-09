@@ -12,14 +12,6 @@ pipeline {
 
 	stages{
 			
-            stage('Testing user-ms'){
-					steps{
-						sh "cd Backend"
-						sh "cd user-ms"
-						sh "npm test"
-					}				
-				}
-
             stage('Docker Compose version'){
 					steps{
 						sh "docker-compose version"
