@@ -1,0 +1,22 @@
+### Stage One ###
+FROM node:latest
+
+# Working directory be app
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+###  Installing dependencies
+RUN npm i
+
+# copy local files to app folder
+COPY . .
+
+EXPOSE 3001
+
+RUN npm run build
+
+CMD ["npm", "run", "start"]
+
+
+

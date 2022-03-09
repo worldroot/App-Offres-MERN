@@ -49,6 +49,22 @@ services:
     networks:
       - app-network
 
+  react-admin:
+    build:
+      context: ./Frontend/admin
+      dockerfile: Dockerfile
+    image: react-admin
+    container_name: react-admin
+    command: npm run start
+    volumes:
+      - ./Frontend/admin:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:3001"
+    depends_on:
+      - user-ms
+    networks:
+      - app-network
 networks:
     app-network:
         driver: bridge
