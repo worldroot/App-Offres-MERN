@@ -14,8 +14,8 @@ pipeline {
 			
             stage('Testing user-ms'){
 					steps{
-						cd "Backend"
-						cd "user-ms"
+						sh "cd Backend"
+						sh "cd user-ms"
 						sh "npm test"
 					}				
 				}
