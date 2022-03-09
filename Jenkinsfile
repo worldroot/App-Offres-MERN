@@ -18,6 +18,12 @@ pipeline {
 						sh "docker-compose version"
 					}				
 				}
+				
+			stage('Docker Compose Build'){
+					steps{
+						sh "docker-compose build"
+					}				
+				}
 
             stage('Docker Compose Up'){
 					steps{
@@ -25,11 +31,7 @@ pipeline {
 					}				
 				}
 
- 			stage('Docker Compose Build'){
-					steps{
-						sh "docker-compose build"
-					}				
-				}
+ 			
 
 		}
 	} 
