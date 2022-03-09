@@ -11,19 +11,16 @@ pipeline {
 
 	stages{
 			
-			stage('Docker Version'){
+			stage('Docker Versions'){
 					steps{
-						sh "docker --verion"
+						sh '''
+                            docker --verion
+                            docker compose version
+                        '''
 					}				
 				}
 
-            stage('Docker Compose Version'){
-					steps{
-						sh "docker compose version"
-					}				
-				}
-							
-		
-			
+
+                
 		}
 	} 
