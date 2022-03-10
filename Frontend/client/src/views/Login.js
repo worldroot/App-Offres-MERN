@@ -60,9 +60,7 @@ const Login = ({ login, isAuth, user }) => {
 
   if (isAuth && user) {
     const { role } = user;
-    //toast.info(`Bienvenue ${role}`);
     if (role === "user") return <Redirect to='/home'/>;
-    //if (role === 1) return <Redirect to='/dashboard/'/>;
   }
   
 

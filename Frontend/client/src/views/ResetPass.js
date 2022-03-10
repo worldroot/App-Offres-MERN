@@ -74,7 +74,7 @@ const ResetPass = () => {
       try {
 
         setAuthToken(param.token)
-        const res = await axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
+        await axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
         toast.success("Mot de pass modifié avec succès")
         history.push('/login')
         
@@ -120,7 +120,7 @@ const ResetPass = () => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-5 py-3 bg-red " xl="6">
+                  <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-danger " xl="6">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}

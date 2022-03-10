@@ -92,7 +92,7 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-5 py-3 bg-danger " xl="6">
+                  <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-danger " xl="6">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}
