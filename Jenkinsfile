@@ -14,6 +14,7 @@ pipeline {
 			stage('User-ms Jest Tests'){
 					steps{
 						dir("Backend/user-ms"){
+							sh "npm install"
 							sh "npm test"
 						}
 					}				
