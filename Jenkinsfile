@@ -32,10 +32,5 @@ pipeline {
 						sh "docker-compose build"
 					}				
 				}
-			stage('Docker Compose Down'){
-					steps{
-						sh "docker-compose down"
-					}				
-				}	
 		}
 	} 
