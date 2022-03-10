@@ -13,7 +13,8 @@ pipeline {
 	stages{
 			stage('User-ms Jest Tests'){
 					steps{
-						sh "cd Backend/user-ms npm test"
+						sh "cd Backend/user-ms"
+						sh "npm test"
 					}				
 				}
 
