@@ -103,7 +103,7 @@ router.put('/ban/:id',
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { $set: {banned}=req.body, },
+        { $set: req.body.banned, },
         { new: true }
       );
 
@@ -132,7 +132,7 @@ router.put('/role/:id',
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { $set: {role}=req.body, },
+        { $set: req.body.role, },
         { new: true }
       );
 

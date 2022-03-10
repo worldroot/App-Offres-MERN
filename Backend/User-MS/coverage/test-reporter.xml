@@ -2,10 +2,10 @@
 <testExecutions version="1">
     <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/user-ms/tests/user.test.js">
         <testCase name="User Register  can be created correctly" duration="11"/>
-        <testCase name="Tokens  can be created correctly" duration="2"/>
+        <testCase name="Tokens  can be created correctly" duration="1"/>
     </file>
     <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/user-ms/tests/userbyid.test.js">
-        <testCase name="User getById  should return null if nothing is found" duration="130"/>
-        <testCase name="User getById  should retrieve correct user if id matches" duration="116"/>
+        <testCase name="User getById  should return null if nothing is found" duration="131"/>
+        <testCase name="User getById  should retrieve correct user if id matches" duration="117"/>
     </file>
 </testExecutions>
