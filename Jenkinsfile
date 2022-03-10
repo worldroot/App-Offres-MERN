@@ -11,7 +11,11 @@ pipeline {
 
 
 	stages{
-			
+			stage('User-ms Jest Tests'){
+					steps{
+						sh "Backend/user-ms npm test"
+					}				
+				}
 
             stage('Docker Compose version'){
 					steps{

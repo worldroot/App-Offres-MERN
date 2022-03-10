@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const dbHandler = require('./db-handler');
 
 const UserService = require('../controller/user-fortest')
-//const UserModel = require('../models/User')
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -18,7 +17,7 @@ const UserService = require('../controller/user-fortest')
 describe('User Register ', () => {
 
     it('can be created correctly', async () => {
-        await expect(async () => await UserService.create(userComplete))
+        await expect(async () => UserService.create(userComplete))
             .not
             .toThrow();
     });
@@ -28,7 +27,7 @@ describe('User Register ', () => {
 describe('Tokens ', () => {
 
     it('can be created correctly', async () => {
-        await expect(async () => await UserService.createTokens(userComplete))
+        await expect(async () => UserService.createTokens(userComplete))
             .not
             .toThrow();
     });
