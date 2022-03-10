@@ -47,7 +47,7 @@ const userComplete = {
     nom: 'testNom',
     prenom: 'testPrenom',
     email: '@test',
-    password: '123456'
+    password: '####'
 };
 
 

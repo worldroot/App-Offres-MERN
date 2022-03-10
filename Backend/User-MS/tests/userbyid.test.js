@@ -57,13 +57,13 @@ const user1 = {
     nom: 'testNom',
     prenom: 'testPrenom',
     email: '@test',
-    password: '123456'
+    password: '####'
 };
 const user2 = {
     nom: 'Test2',
     prenom: 'Test2',
     email: '2@test',
-    password: '123456'
+    password: '####'
 };
 
 /**
