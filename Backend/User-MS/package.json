@@ -6,7 +6,7 @@
   "scripts": {
     "dev-user": "nodemon index.js",
     "sonar": "node sonar-project.js",
-    "test": "jest --runInBand --silent ./test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

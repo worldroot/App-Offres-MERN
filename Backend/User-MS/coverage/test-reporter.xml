@@ -1,14 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/user-ms/tests/userbyid.test.js">
-        <testCase name="User getById  should return null if nothing is found" duration="124"/>
-        <testCase name="User getById  should retrieve correct user if id matches" duration="116"/>
+    <file path="/usr/src/app/tests/userbyid.test.js">
+        <testCase name="User getById  should return null if nothing is found" duration="0">
+            <failure message="Error: Status Code is 403 (MongoDB&apos;s 404)"><![CDATA[Error: Status Code is 403 (MongoDB's 404)
+This means that the requested version-platform combination doesn't exist
+  Used Url: "https://fastdl.mongodb.org/linux/mongodb-linux-arm64-debian10-5.0.3.tgz"
+Try to use different version 'new MongoMemoryServer({ binary: { version: 'X.Y.Z' } })'
+List of available versions can be found here:
+  https://www.mongodb.org/dl/linux for Linux
+  https://www.mongodb.org/dl/osx for OSX
+  https://www.mongodb.org/dl/win32 for Windows
+    at ClientRequest.<anonymous> (/usr/src/app/node_modules/mongodb-memory-server-core/src/util/MongoBinaryDownload.ts:418:17)
+    at Object.onceWrapper (node:events:642:26)
+    at ClientRequest.emit (node:events:527:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:618:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+    at TLSSocket.socketOnData (node:_http_client:482:22)
+    at TLSSocket.emit (node:events:527:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:234:10)]]></failure>
+        </testCase>
+        <testCase name="User getById  should retrieve correct user if id matches" duration="0">
+            <failure message="Error: Status Code is 403 (MongoDB&apos;s 404)"><![CDATA[Error: Status Code is 403 (MongoDB's 404)
+This means that the requested version-platform combination doesn't exist
+  Used Url: "https://fastdl.mongodb.org/linux/mongodb-linux-arm64-debian10-5.0.3.tgz"
+Try to use different version 'new MongoMemoryServer({ binary: { version: 'X.Y.Z' } })'
+List of available versions can be found here:
+  https://www.mongodb.org/dl/linux for Linux
+  https://www.mongodb.org/dl/osx for OSX
+  https://www.mongodb.org/dl/win32 for Windows
+    at ClientRequest.<anonymous> (/usr/src/app/node_modules/mongodb-memory-server-core/src/util/MongoBinaryDownload.ts:418:17)
+    at Object.onceWrapper (node:events:642:26)
+    at ClientRequest.emit (node:events:527:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:618:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+    at TLSSocket.socketOnData (node:_http_client:482:22)
+    at TLSSocket.emit (node:events:527:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:234:10)]]></failure>
+        </testCase>
     </file>
-    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/user-ms/tests/index.test.js">
-        <testCase name="Get Endpoints Get" duration="2"/>
-    </file>
-    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/user-ms/tests/user.test.js">
-        <testCase name="User Register  can be created correctly" duration="9"/>
-        <testCase name="Tokens  can be created correctly" duration="2"/>
+    <file path="/usr/src/app/tests/user.test.js">
+        <testCase name="User Register  can be created correctly" duration="0">
+            <failure message="Error: Status Code is 403 (MongoDB&apos;s 404)"><![CDATA[Error: Status Code is 403 (MongoDB's 404)
+This means that the requested version-platform combination doesn't exist
+  Used Url: "https://fastdl.mongodb.org/linux/mongodb-linux-arm64-debian10-5.0.3.tgz"
+Try to use different version 'new MongoMemoryServer({ binary: { version: 'X.Y.Z' } })'
+List of available versions can be found here:
+  https://www.mongodb.org/dl/linux for Linux
+  https://www.mongodb.org/dl/osx for OSX
+  https://www.mongodb.org/dl/win32 for Windows
+    at ClientRequest.<anonymous> (/usr/src/app/node_modules/mongodb-memory-server-core/src/util/MongoBinaryDownload.ts:418:17)
+    at Object.onceWrapper (node:events:642:26)
+    at ClientRequest.emit (node:events:527:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:618:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+    at TLSSocket.socketOnData (node:_http_client:482:22)
+    at TLSSocket.emit (node:events:527:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:234:10)]]></failure>
+        </testCase>
+        <testCase name="Tokens  can be created correctly" duration="0">
+            <failure message="Error: Status Code is 403 (MongoDB&apos;s 404)"><![CDATA[Error: Status Code is 403 (MongoDB's 404)
+This means that the requested version-platform combination doesn't exist
+  Used Url: "https://fastdl.mongodb.org/linux/mongodb-linux-arm64-debian10-5.0.3.tgz"
+Try to use different version 'new MongoMemoryServer({ binary: { version: 'X.Y.Z' } })'
+List of available versions can be found here:
+  https://www.mongodb.org/dl/linux for Linux
+  https://www.mongodb.org/dl/osx for OSX
+  https://www.mongodb.org/dl/win32 for Windows
+    at ClientRequest.<anonymous> (/usr/src/app/node_modules/mongodb-memory-server-core/src/util/MongoBinaryDownload.ts:418:17)
+    at Object.onceWrapper (node:events:642:26)
+    at ClientRequest.emit (node:events:527:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:618:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+    at TLSSocket.socketOnData (node:_http_client:482:22)
+    at TLSSocket.emit (node:events:527:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:234:10)]]></failure>
+        </testCase>
     </file>
 </testExecutions>
