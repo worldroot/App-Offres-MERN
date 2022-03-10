@@ -19,24 +19,23 @@ pipeline {
 						}
 					}				
 				}
-/* 
-            stage('Docker Compose version'){
+			stage('User-ms SonarQube'){
 					steps{
-						sh "docker-compose version"
+						dir("Backend/user-ms"){
+							sh "npm install"
+							sh "npm run sonar"
+						}
 					}				
 				}
-
 			stage('Docker Compose Build'){
 					steps{
 						sh "docker-compose build"
 					}				
 				}
-
 			stage('Docker Compose Down'){
 					steps{
 						sh "docker-compose down"
 					}				
 				}	
-*/
 		}
 	} 
