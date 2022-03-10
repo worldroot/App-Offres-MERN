@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const dbHandler = require('./db-handler');
+require('dotenv').config();
 
 const UserService = require('../controller/user-fortest')
 const UserModel = require('../models/User')
@@ -63,11 +64,11 @@ const user1 = {
     nom: 'testNom',
     prenom: 'testPrenom',
     email: '@test',
-    password: '####'
+    password: process.env.RANDOM_PASSWORD
 };
 const user2 = {
     nom: 'Test2',
     prenom: 'Test2',
     email: '2@test',
-    password: '####'
+    password: process.env.RANDOM_PASSWORD
 };

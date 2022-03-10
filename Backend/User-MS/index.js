@@ -9,7 +9,7 @@ const userRoute = require('./controller/user-service')
 require('dotenv').config()
 connectDB()
 
-const app = express()
+let app = express()
 const port = process.env.PORT_USER_MS;
 
 app.use(morgan('dev'))
