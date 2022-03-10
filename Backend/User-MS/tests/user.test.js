@@ -11,6 +11,18 @@ const UserService = require('../controller/user-fortest')
  beforeAll(async () => {
     await dbHandler.connect();
 });
+/**
+ * Clear all test data after every test.
+ */
+ afterEach(async () => {
+    await dbHandler.clearDatabase();
+});
+/**
+ * Remove and close the db and server.
+ */
+ afterAll(async () => {
+    await dbHandler.closeDatabase();
+});
 
 //Tests ... //
 
@@ -42,16 +54,3 @@ const userComplete = {
     email: '@test',
     password: '####'
 };
-
-/**
- * Clear all test data after every test.
- */
- afterEach(async () => {
-    await dbHandler.clearDatabase();
-});
-/**
- * Remove and close the db and server.
- */
- afterAll(async () => {
-    await dbHandler.closeDatabase();
-});

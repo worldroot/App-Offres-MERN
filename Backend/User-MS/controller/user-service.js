@@ -22,7 +22,7 @@ router.put('/',
 
     if( user.email !== email ){
 
-        const noUser = await User.findByIdAndUpdate(
+        await User.findByIdAndUpdate(
           req.user.id,
           { $set: {active: false} },
           { new: true }

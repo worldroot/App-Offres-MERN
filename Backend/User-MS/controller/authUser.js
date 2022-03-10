@@ -159,9 +159,7 @@ router.post('/loginuser',
 
       //Verif Active
         if (!user.active) {
-          //const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`
-          //const sendMail = await emailSender(user.email,"Verify Email",url) 
-
+         
           return res.status(200).json({ 
             accessToken, expiresIn, refreshToken,
             msg: "An Email sent to your account please verify" });
@@ -296,7 +294,7 @@ router.get('/resend/:token',
       }else{
 
       const url = `${process.env.BASE_URL}/api/access/verify/${req.params.token}`
-      const sendMail = await emailSender(user.email,url, "Activez votre compte") 
+      await emailSender(user.email,url, "Activez votre compte") 
 
       return res.status(200).json({ 
         error: false,
@@ -335,7 +333,7 @@ router.post('/forgot-pass',
     const accessToken = await signAccessToken(user.id)
     // send email
     const url = `${process.env.BASE_URL}/reset-pass/${accessToken}`
-    const sendMail = await emailReset(user.email, url, "Réinitialisez votre mot de passe", user.nom) 
+    await emailReset(user.email, url, "Réinitialisez votre mot de passe", user.nom) 
 
     // success
     res.status(200).json({ msg: "Re-send the password, please check your email." });
