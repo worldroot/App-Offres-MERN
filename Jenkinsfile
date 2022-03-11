@@ -28,32 +28,15 @@ pipeline {
 						}
 					}				
 				}
-			stage('Building Images'){
+			stage('Build & Push'){
 					steps{
 						dir("Backend/user-ms"){
 							script{
 								dockerImage = docker.build registry + ":$BUILD_NUMBER"
+								docker.withRegistry( '', registryCredential ){dockerImage.push()}
 							}
 						}	
 					}				
-			}
-			
-			stage('Deploy Images'){
-					steps{
-						dir("Backend/user-ms"){
-							script{	
-								withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: registryCredential, usernameVariable: 'ghassenbogh', passwordVariable: 'gh24as68007']]) {
-									usr = USERNAME
-									pswd = PASSWORD
-								}
-								docker.withRegistry('', registryCredential) {
-									sh "docker login -u ${usr} -p ${pswd}"
-									def	image = docker.build registry + ":$BUILD_NUMBER"
-									image.push 'latest'
-								}
-							}
-						}
-					}
 			}
 			stage('Cleaning up') {
 					steps{
