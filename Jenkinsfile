@@ -43,18 +43,11 @@ pipeline {
 					steps{
 						dir("Backend/user-ms"){
 							script{
-								docker.withCredentials([[credentialsId: registryCredential, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-									usr = USERNAME
-									pswd = PASSWORD
-								}
-								docker.withRegistry('', registryCredential) {
-									sh "docker login -u ${usr} -p ${pswd}"
-									dockerImage.push()
-								}
-									
+								docker.withRegistry( '', registryCredential ) 
+								{dockerImage.push()}
 							}
 						}
-					}
+				}
 			}
 		}
 	} 
