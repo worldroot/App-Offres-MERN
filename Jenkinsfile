@@ -27,11 +27,6 @@ pipeline {
 						}
 					}				
 				}
-			stage('Docker Compose Build'){
-					steps{
-						sh "docker-compose build"
-					}				
-				}
 			stage('Building Images'){
 					steps{
 						dir("Backend/user-ms"){
