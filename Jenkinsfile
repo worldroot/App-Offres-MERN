@@ -43,8 +43,13 @@ pipeline {
 					steps{
 						dir("Backend/user-ms"){
 							script{
-								docker.withRegistry( '', registryCredential ) 
-								{dockerImage.push()}
+								docker.withTool('') { 
+
+									docker.withRegistry( '', registryCredential ) 
+									{dockerImage.push()}
+
+								 }
+								
 							}
 						}
 				}
