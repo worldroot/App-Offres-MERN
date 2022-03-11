@@ -4,7 +4,7 @@ pipeline {
 	environment { 
         PATH = "$PATH:/usr/local/bin"
         COMPOSE_FILE = "docker-compose.yml"
-        registry = "ghassenbogh/devopstimesheet" 
+        registry = "ghassenbogh/pfe-mern" 
         registryCredential = 'dockerHub'
         dockerImage = '' 
     }
