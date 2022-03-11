@@ -43,11 +43,11 @@ pipeline {
 					steps{
 						dir("Backend/user-ms"){
 							script{
-								docker.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: params.JP_DockerMechIdCredential, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+								docker.withCredentials([[credentialsId: registryCredential, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 									usr = USERNAME
 									pswd = PASSWORD
 								}
-								docker.withRegistry('', params.JP_DockerMechIdCredential) {
+								docker.withRegistry('', registryCredential) {
 									sh "docker login -u ${usr} -p ${pswd}"
 									dockerImage.push()
 								}
