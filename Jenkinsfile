@@ -12,6 +12,7 @@ pipeline {
 	agent any 
 
 	stages{
+			/**
 			stage('User-ms Jest Tests'){
 					steps{
 						dir("Backend/user-ms"){
@@ -28,6 +29,7 @@ pipeline {
 						}
 					}				
 				}
+			*/
 			stage('Building Images'){
 					steps{
 						dir("Backend/user-ms"){
@@ -45,19 +47,12 @@ pipeline {
 									usr = USERNAME
 									pswd = PASSWORD
 								}
-								docker.withRegistry("http://ourhost:5100", params.JP_DockerMechIdCredential) {
-									sh "docker login -u ${usr} -p ${pswd} http://ourhost:5100"
-									ockerImage.push()
+								docker.withRegistry('', params.JP_DockerMechIdCredential) {
+									sh "docker login -u ${usr} -p ${pswd}"
+									dockerImage.push()
 								}
 									
 							}
-						}
-					}
-			}
-			stage('Cleaning up') {
-					steps{
-						dir("Backend/user-ms"){
-								sh "docker rmi $registry:$BUILD_NUMBER"
 						}
 					}
 			}
