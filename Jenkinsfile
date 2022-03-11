@@ -12,7 +12,7 @@ pipeline {
 	agent any 
 
 	stages{
-			/**
+			
 			stage('User-ms Jest Tests'){
 					steps{
 						dir("Backend/user-ms"){
@@ -29,7 +29,12 @@ pipeline {
 						}
 					}				
 				}
-			*/
+			stage('Docker Compose Build'){
+					steps{
+						sh "docker-compose build"
+					}				
+				}
+			/*
 			stage('Building Images'){
 					steps{
 						dir("Backend/user-ms"){
@@ -54,5 +59,11 @@ pipeline {
 						}
 				}
 			}
+			*/
+
+
+
+
+			
 		}
 	} 
