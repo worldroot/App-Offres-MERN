@@ -32,5 +32,24 @@ pipeline {
 						sh "docker-compose build"
 					}				
 				}
+			stage('Building Images'){
+					steps{
+						dir("Backend/user-ms"){
+							script{
+								dockerImage = docker.build registry + ":$BUILD_NUMBER"
+							}
+						}	
+					}				
+			}
+			stage('Deploy Images'){
+					steps{
+						dir("Backend/user-ms"){
+							script{
+								docker.withRegistry( '', registryCredential ) 
+								{dockerImage.push()}
+							}
+						}
+					}
+			}
 		}
 	} 
