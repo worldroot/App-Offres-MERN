@@ -1,5 +1,5 @@
 pipeline {
-	agent any 
+
 	
 	environment { 
         PATH = "$PATH:/usr/local/bin"
@@ -9,6 +9,7 @@ pipeline {
         dockerImage = '' 
     }
 
+	agent any 
 
 	stages{
 			stage('User-ms Jest Tests'){
@@ -36,12 +37,20 @@ pipeline {
 						}	
 					}				
 			}
+			
 			stage('Deploy Images'){
 					steps{
 						dir("Backend/user-ms"){
-							script{
-								docker.withRegistry( '', registryCredential ) 
-								{dockerImage.push()}
+							script{	
+								withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: registryCredential, usernameVariable: 'ghassenbogh', passwordVariable: 'gh24as68007']]) {
+									usr = USERNAME
+									pswd = PASSWORD
+								}
+								docker.withRegistry('', registryCredential) {
+									sh "docker login -u ${usr} -p ${pswd}"
+									def	image = docker.build registry + ":$BUILD_NUMBER"
+									image.push 'latest'
+								}
 							}
 						}
 					}
