@@ -48,7 +48,9 @@ pipeline {
 			}
 			stage('Cleaning up') {
 					steps{
-						sh "docker rmi $registry:$BUILD_NUMBER"
+						dir("Backend/user-ms"){
+								sh "docker rmi $registry:$BUILD_NUMBER"
+						}
 					}
 			}
 		}
