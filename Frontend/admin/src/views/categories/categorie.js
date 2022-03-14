@@ -4,46 +4,84 @@ import {
     Card,
     CardHeader,
     CardBody,
-    FormGroup,
     Form,
+    FormGroup,
     Input,
-    Container,
+    InputGroup,
     Row,
     Col,
   } from "reactstrap";
   // core components
   import { Redirect } from 'react-router-dom'
-  import { connect, useSelector, useDispatch } from 'react-redux';
-  import React, { useState, useEffect } from "react";
- 
-  import {motion, AnimatePresence} from 'framer-motion'
-  
-  import { loadUser } from "redux/auth/authActions";
-  
-  const Categorie = (props) => {
-  
-    const [currentId, setCurrentId] = useState(0);
-    const user = useSelector(state => state.auth.user);
-  
+  import { connect, useDispatch } from 'react-redux';
+  import {toast} from 'react-toastify'
+  import React, { useEffect } from "react";
+  import { updateCat, addCat } from "redux/cat/catActions";
+  import useForm from "helpers/useForm";
+  const initialFieldValues = { nomcat:"",}
+
+  const Categorie = ({...props}) => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (props.currentId !== 0) {
+          setValues({
+            ...props.List.find((p) => p._id === props.currentId),
+          });
+          setErrors({});
+        }
+    
+      }, [props.currentId]);
+
+    var {
+        values,
+        setValues,
+        errors,
+        setErrors,
+        handleInputChange,
+        resetForm,
+      } = useForm(initialFieldValues, props.setCurrentId);
+
+    const validate = () => {
+        let temp = {...errors};
+        temp.nomcat = values.nomcat ? "" : "This field is required.";   
+        setErrors({...temp,});
+        return Object.values(temp).every((p) => p === "");
+      };
+      
     const userExist = localStorage.getItem("user");
-  
-  
-    /*
-    const [user] = useState(() => {
-      const saved = localStorage.getItem("user");
-      const initialValue = JSON.parse(saved);
-      return initialValue || "";
-      });
-    */
-  
-  
-    useEffect(() => { 
-        props.GetUser()
-      }, []);
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const onSuccess = () => {
+          
+          resetForm();
+        };
+        if (validate()) {
+          if (props.currentId === 0){
+    
+              props.create(values, onSuccess);
+              resetForm();
+             
+          } else {
+            
+            props.update(props.currentId, values, onSuccess);
+            setTimeout(() => {
+                window.location.reload();
+              }, 2500);
+            //dispatch(updateCat(props.currentId, values))
+            
+            
+          }   
+    
+        }else { toast.warn('Warning ! '); }
+      };
   
     if(!userExist){
       return <Redirect to='/login'/>;
     }
+
+    const reset = (e) => { resetForm() }
   
     return(
       <>
@@ -62,20 +100,47 @@ import {
                   <div className="d-flex justify-content-between">
                    
                     <Button
-                      className=" btn-outline-default"
+                      className=" btn-outline-default "
                       color="default"
-                      onClick={() => setCurrentId(user._id)}
+                      onClick={() => reset()}
                       size="sm"
                     >
-                      <i class="fas fa-redo"></i>
+                      <i className="fas fa-redo"></i>
                     </Button>
+
+                    
                   </div>
+                  { props.currentId !== 0 && (
+                       <h3 className="mb-0">Modifier une catégorie</h3>
+                  )}
+                   { props.currentId === 0 && (
+                       <h3 className="mb-0">Ajouter une catégorie</h3>
+                  )}
+                  
                 </CardHeader>
                 <CardBody className="pt-0 pt-md-4">
-                  <Row>
-                        
-                  </Row>
-                
+                         
+                  <Form role="form" onSubmit={onSubmit}>
+                    <FormGroup className="mb-3">
+                      <InputGroup className="input-group-alternative">
+                        <Input
+                          placeholder="Titre de categorie"
+                          type="text"
+                          name="nomcat"
+                          value={values.nomcat}
+                          onChange={handleInputChange}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+
+                  
+                    <div className="text-center">
+                              <Button className="my-4 btn-outline-dark" color="dark" type="submit">
+                                  Confirmer
+                               </Button>
+                    </div>
+
+                  </Form>
                 </CardBody>
               </Card>
                  
@@ -84,20 +149,12 @@ import {
   };
   
   const mapActionToProps = {
-    GetUser: loadUser
+    create: addCat,
+    update: updateCat,
   };
   
   const mapStateToProps = (state) => ({
-    isAuth: state.auth.isAuthenticated,
+    List: state.categories.categories,
   });
   
   export default connect ( mapStateToProps, mapActionToProps )(Categorie);
-  
-  /*
-    { currentId !== 0 && (
-                  <div>
-                    <Profile {...{ currentId, setCurrentId }} />
-                  </div>   
-                )
-              }
-  */

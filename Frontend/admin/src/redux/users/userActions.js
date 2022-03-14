@@ -52,7 +52,6 @@ export const updateUser = (nom, prenom, email) => (dispatch) => {
         console.log(error)
         dispatch({
             type: USER_ERR,
-            payload: res.data,
         });
     }
 

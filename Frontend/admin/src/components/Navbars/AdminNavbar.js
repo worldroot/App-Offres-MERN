@@ -98,10 +98,7 @@ const AdminNavbar = ({ logout }) => {
                   </DropdownItem>
               )} 
 
-                  <DropdownItem to="/profile" className="bg-white" tag={Link}>
-                    <i className="ni ni-single-02" />
-                    <span>Profile</span>
-                  </DropdownItem>
+                 
 
                     
 

@@ -11,22 +11,32 @@ import {
   import Header from "../../components/Headers/Header.js";
   import AdminNavbar from "../../components/Navbars/AdminNavbar";
   import Sidebar from "../../components/Sidebar/Sidebar";
-  import {connect} from 'react-redux';
-  import { getAllUsers } from "redux/users/userActions.js";
+  import {connect, useDispatch} from 'react-redux';
+  import { getAllCat, deleteCat } from "redux/cat/catActions";
   import { Fragment, useEffect, useState } from "react";
-import Categorie from "./categorie.js";
+  import Categorie from "./categorie.js";
   
-  const CategoriesList = (props) => {
+  const CategoriesList = ({...props}) => {
 
     const [user] = useState(() => {
       const saved = localStorage.getItem("user");
       const initialValue = JSON.parse(saved);
       return initialValue || "";
     });
-
+    const dispatch = useDispatch()
+    const [currentId, setCurrentId] = useState(0);
     useEffect(() => {
       props.All();
     }, []);
+
+    const onDLP = (id) => {
+        const onSuccess = () => {
+          window.location.reload();
+        };
+        if(window.confirm("Êtes-vous sûr de vouloir supprimer ?"))
+          dispatch(deleteCat(id, onSuccess))
+      };
+    
   
     return (
       <>
@@ -46,7 +56,7 @@ import Categorie from "./categorie.js";
           {/* Page content */}
           <Container className="mt--7" fluid>
           <Row>
-            <Col className="order-xl-1 mb-5 mb-xl-0" xl="6">
+            <Col className="order-xl-1 mb-5 mb-xl-0" xl="7">
                 <div className="col">
                     <Card className="shadow">
                     <CardHeader className="border-0">
@@ -56,10 +66,12 @@ import Categorie from "./categorie.js";
                         <thead className="thead-light">
                         <tr>
                             <th scope="col">Titre</th>
-                            <th scope="col">Date de creation</th>
-                            <th scope="col"> <i className="fas fa-edit"></i></th>
-                            <th scope="col"> <i className="fas fa-trash"></i></th>
-                            <th scope="col" />
+                            { user.role === "super-admin" &&(
+                                <>
+                                      <th scope="col">Actions</th>
+                                      <th scope="col" />
+                                </>
+                            )}
                         </tr>
                         </thead>
                         <tbody>
@@ -70,15 +82,14 @@ import Categorie from "./categorie.js";
                                 <Fragment key={index}>           
                                     <tr key={cat._id}>
                                     <td>{cat.nomcat}</td>
-                                    <td>{cat.createdAt.substring(0, 10)}</td>  
                                     <td>        
                                         <div onClick={() => setCurrentId(cat._id)}>
-                                            <Button className="btn btn-outline-default" size="sm" >Editer </Button>
+                                            <Button className="btn btn-outline-default" size="sm"> Editer </Button>
                                         </div> 
                                     </td> 
                                     <td>
-                                        <div onClick={() => setCurrentId(cat._id)}>
-                                            <Button className="btn btn-outline-danger" size="sm" >Supprimer </Button>
+                                        <div onClick={() => onDLP(cat._id)}>
+                                            <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>
                                         </div> 
                                     </td>   
                                     </tr>
@@ -93,8 +104,7 @@ import Categorie from "./categorie.js";
                             return (
                                 <Fragment key={index}>           
                                     <tr key={cat._id}>
-                                    <td>{cat.nomcat}</td>
-                                    <td>{cat.createdAt.substring(0, 10)}</td>     
+                                    <td>{cat.nomcat}</td>  
                                     </tr>
                                 </Fragment>
                                 );
@@ -107,9 +117,9 @@ import Categorie from "./categorie.js";
                 </div>
             </Col>
 
-            <Col className="order-xl-2" xl="6">
+            <Col className="order-xl-2" xl="5">
             { user.role === "super-admin" &&(
-                <Categorie/>
+                <Categorie {...{ currentId, setCurrentId }} />
             )}
                 
             </Col>
@@ -122,12 +132,12 @@ import Categorie from "./categorie.js";
   };
   
   const mapStateToProps = (state) => ({
-    List: state.users.uslist,
+    List: state.categories.categories,
     isAuth: state.auth.isAuthenticated,
   });
   
   const mapActionToProps = {
-    All: getAllUsers
+    All: getAllCat,
   };
   
   export default connect (mapStateToProps, mapActionToProps)(CategoriesList);
