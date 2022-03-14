@@ -13,9 +13,17 @@ pipeline {
 
 	stages{
 			
-			stage('User-ms Jest Tests'){
+			stage('User-ms Tests'){
 					steps{
 						dir("Backend/user-ms"){
+							sh "npm install"
+							sh "npm test"
+						}
+					}				
+				}
+			stage('Categorie-ms Tests'){
+					steps{
+						dir("Backend/categorie-ms"){
 							sh "npm install"
 							sh "npm test"
 						}
@@ -24,6 +32,14 @@ pipeline {
 			stage('User-ms SonarQube'){
 					steps{
 						dir("Backend/user-ms"){
+							sh "npm install"
+							sh "npm run sonar"
+						}
+					}				
+				}
+			stage('Categorie-ms SonarQube'){
+					steps{
+						dir("Backend/categorie-ms"){
 							sh "npm install"
 							sh "npm run sonar"
 						}
