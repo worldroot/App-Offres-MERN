@@ -33,6 +33,7 @@
     "formidable": "^2.0.1",
     "http-errors": "^2.0.0",
     "jest": "^27.5.1",
+    "jest-sonar-reporter": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.0",
     "morgan": "^1.10.0",
