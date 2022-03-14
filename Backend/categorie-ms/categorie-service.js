@@ -24,7 +24,7 @@ router.post('/',
         var role = response.data.role
         
         //Add by Super Admin Only
-        if (role !== 'super-admin' && user.role !== 'admin') {
+        if (role !== 'super-admin') {
             return res.status(404).json({
                 error: 'Access denied'
             })
