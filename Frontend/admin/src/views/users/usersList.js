@@ -57,9 +57,10 @@ import {
                     <th scope="col">Email</th>
                     <th scope="col">Nom & Prenom</th>
                     <th scope="col">Role</th>
-                    <th scope="col">Date de creation</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Banned</th>
                     <th scope="col">Action</th>
-                    <th scope="col" />
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -70,15 +71,16 @@ import {
                         return user
                     }
                 }).map((user, index) => {
+                  
                       return (
                         <Fragment key={index}>           
                             <tr key={user._id}>
                               <td>{user.email}</td>
-                              <td>{user.nom} {user.prenom}</td>
+                              <td>{user.nom} </td>
                               <td>{user.role}</td>
-                              <td>{user.createdAt.substring(0, 10)}</td>           
-                
-                            
+                              <td>{user.active.toString()}</td>
+                              <td>{user.banned.toString()}</td>
+                              <td>{user.prenom}</td>
                             </tr>
                           </Fragment>
                           );
@@ -88,13 +90,16 @@ import {
                 { user.role === "super-admin" &&(
                   <>
                   {props.List.map((user, index) => {
+
                       return (
                         <Fragment key={index}>           
                             <tr key={user._id}>
                               <td>{user.email}</td>
                               <td>{user.nom} {user.prenom}</td>
                               <td>{user.role}</td>
-                              <td>{user.createdAt.substring(0, 10)}</td>           
+                              <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
+                              <td>{user.banned ? 'Oui' : 'Non'}</td> 
+                              <td></td>       
                             </tr>
                           </Fragment>
                           );

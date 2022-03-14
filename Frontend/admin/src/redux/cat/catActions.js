@@ -63,7 +63,6 @@ export const addCat = (category) => {
 export const deleteCat = async(id, dispatch) => {
     DLC(id)
     .then((res) => {
-        console.log(res);
         dispatch({
             type: DELETE_CAT,
             payload: id,
@@ -85,6 +84,8 @@ export const updateCat = (id, data) => (dispatch) => {
             payload: res.data,
         });
         toast.info('Mis à jour avec succés');
+        console.log(id, data)
+        
     }).catch((err) => 
         console.log(err),
         CAT_ERR

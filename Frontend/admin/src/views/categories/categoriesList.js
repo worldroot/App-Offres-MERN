@@ -12,9 +12,10 @@ import {
   import AdminNavbar from "../../components/Navbars/AdminNavbar";
   import Sidebar from "../../components/Sidebar/Sidebar";
   import {connect, useDispatch} from 'react-redux';
-  import { getAllCat, deleteCat } from "redux/cat/catActions";
+  import { getAllCat, deleteCat, updateCat } from "redux/cat/catActions";
   import { Fragment, useEffect, useState } from "react";
   import Categorie from "./categorie.js";
+import Updatecategorie from "./updatecategorie.js";
   
   const CategoriesList = ({...props}) => {
 
@@ -36,6 +37,9 @@ import {
         if(window.confirm("Êtes-vous sûr de vouloir supprimer ?"))
           dispatch(deleteCat(id, onSuccess))
       };
+
+    
+
     
   
     return (
@@ -56,11 +60,23 @@ import {
           {/* Page content */}
           <Container className="mt--7" fluid>
           <Row>
-            <Col className="order-xl-1 mb-5 mb-xl-0" xl="7">
+            <Col className="order-xl-1 mb-5 mb-xl-0" xl="8">
                 <div className="col">
                     <Card className="shadow">
-                    <CardHeader className="border-0">
+                    <CardHeader className="border-0 ">
+                        
+                        <div className="d-flex justify-content-between">
                         <h3 className="mb-0">List des categories</h3>
+                        { user.role === "super-admin" &&(
+                          <>
+                            <Button size="sm">
+                              <i className="fas fa-plus"></i>
+                            </Button> 
+                          </>
+                         
+                        )}
+                        </div>
+                       
                     </CardHeader>
                     <Table className="align-items-center table-flush" responsive>
                         <thead className="thead-light">
@@ -69,7 +85,7 @@ import {
                             { user.role === "super-admin" &&(
                                 <>
                                       <th scope="col">Actions</th>
-                                      <th scope="col" />
+                                      <th scope="col"></th>
                                 </>
                             )}
                         </tr>
@@ -79,22 +95,41 @@ import {
                         <>
                         {props.List.map((cat, index) => {
                             return (
-                                <Fragment key={index}>           
-                                    <tr key={cat._id}>
-                                    <td>{cat.nomcat}</td>
-                                    <td>        
-                                        <div onClick={() => setCurrentId(cat._id)}>
-                                            <Button className="btn btn-outline-default" size="sm"> Editer </Button>
-                                        </div> 
-                                    </td> 
-                                    <td>
+                                    <Fragment key={index}>
+
+                                    <tr key={cat.id}>     
+                                      <td> { currentId !== 0 ? (
+                                                  <Updatecategorie {...{ currentId, setCurrentId }} />
+                                                ) : (
+                                                    cat.nomcat
+                                                )
+                                            }   
+                                      </td> 
+                                   { currentId === 0 &&(
+                                     <>
+                                         <td>
+                                          <Button
+                                          className="btn-outline-dark" size="sm"
+                                          onClick={() => setCurrentId(cat._id)}
+                                          >
+                                              Edit
+                                          </Button>
+                                        </td>
+                                       
+                                     </>
+                                       
+                                     )}
+
+                                        <td>
                                         <div onClick={() => onDLP(cat._id)}>
                                             <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>
                                         </div> 
-                                    </td>   
+                                        </td>   
+
                                     </tr>
-                                </Fragment>
+                                    </Fragment>
                                 );
+
                                 })}
                         </>
                         )}
@@ -104,7 +139,7 @@ import {
                             return (
                                 <Fragment key={index}>           
                                     <tr key={cat._id}>
-                                    <td>{cat.nomcat}</td>  
+                                      <td>{cat.nomcat}</td>  
                                     </tr>
                                 </Fragment>
                                 );
@@ -117,7 +152,7 @@ import {
                 </div>
             </Col>
 
-            <Col className="order-xl-2" xl="5">
+            <Col className="order-xl-2" xl="4">
             { user.role === "super-admin" &&(
                 <Categorie {...{ currentId, setCurrentId }} />
             )}
