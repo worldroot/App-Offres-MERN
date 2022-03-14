@@ -204,7 +204,7 @@ const LogoImg = require('../../assets/img/oored.png')
                     <span className="text-dark">  Utilisateurs</span>
               </NavItem>
               <br/>
-              <NavItem className="pt-0 nav-link " to="/userslist" tag={Link}>
+              <NavItem className="pt-0 nav-link " to="/categorieslist" tag={Link}>
                     <i className="fas fa-archive text-red mr-2"></i>
                     <span className="text-dark">  Categories</span>
               </NavItem>

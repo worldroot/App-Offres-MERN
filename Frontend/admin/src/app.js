@@ -17,6 +17,7 @@ import Profile from 'views/UserDetails';
 import Login from 'views/Login';
 import Register from 'views/Register';
 import usersList from 'views/users/usersList';
+import categoriesList from 'views/categories/categoriesList';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
 
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/userslist" component={usersList} />
+            <Route exact path="/categorieslist" component={categoriesList} />
             <Redirect from="/" to="/login" />
             
             </Switch>
