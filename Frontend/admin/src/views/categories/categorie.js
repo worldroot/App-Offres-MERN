@@ -46,14 +46,15 @@ import {
     const onSubmit = (e) => {
         e.preventDefault();
         const onSuccess = () => {
-          
           resetForm();
+          
         };
         if (validate()) {
           if (props.currentId === 0){
     
               props.create(values, onSuccess);
               resetForm();
+              props.setShowModal(false)
              
           } else {
             
@@ -66,7 +67,7 @@ import {
             
           }   
     
-        }else { toast.warn('Warning ! '); }
+        }
       };
   
     if(!userExist){
@@ -74,7 +75,6 @@ import {
     }
 
     const reset = (e) => { resetForm() }
-    const [showModal, setShowModal] = useState(false);
 
     return(
       <>
@@ -114,6 +114,10 @@ import {
                     <div className="text-center">
                               <Button className="my-4 btn-outline-dark" color="dark" type="submit">
                                   Confirmer
+                               </Button>
+                               <Button className="my-4 btn-outline-dark" 
+                                       color="dark" type="submit" onClick={() => props.setShowModal(false)}>
+                                  Annuler
                                </Button>
                     </div>
 

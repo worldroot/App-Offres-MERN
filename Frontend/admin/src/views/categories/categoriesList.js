@@ -170,7 +170,7 @@ import {
                 </div>
             </Col>
 
-            <Col className="order-xl-2" xl="4">
+            
             <AnimatePresence exitBeforeEnter showModal={showModal} setShowModal={setShowModal}>
               { showModal && (
                 <motion.div className="backdrop"
@@ -179,22 +179,19 @@ import {
                   animate="visible"
                   exit="hidden"
                 > 
+                <Col className="" xl="4">
                   <motion.div className="" variants={modal}>
-                  <div className="text-center">
-                             
-                                  <i className=" my-4 far fa-times-circle fa-2x text-white" 
-                                  onClick={() => setShowModal(false)} >
-                                  </i>
-                      
-                    </div>
-                    <Categorie {...{ currentId, setCurrentId }} />
-                   
+                        
+                      <Categorie {...{ currentId, setCurrentId, showModal, setShowModal }} />
+
                   </motion.div>
+                </Col>
+                  
                 </motion.div>
               )}
             </AnimatePresence>
               
-            </Col>
+          
           </Row>
           </Container>
         </div>
