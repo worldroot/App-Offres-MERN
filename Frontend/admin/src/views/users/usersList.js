@@ -59,7 +59,14 @@ import {
                     <th scope="col">Role</th>
                     <th scope="col">Active</th>
                     <th scope="col">Banned</th>
+                    { user.role === 'super-admin' &&(
                     <th scope="col">Action</th>
+                    )}
+                     { user.role === 'admin' &&(
+                    <th scope="col"></th>
+                    )}
+                    
+                   
                    
                   </tr>
                 </thead>
@@ -76,11 +83,12 @@ import {
                         <Fragment key={index}>           
                             <tr key={user._id}>
                               <td>{user.email}</td>
-                              <td>{user.nom} </td>
+                              <td>{user.nom} {user.prenom}</td>
                               <td>{user.role}</td>
-                              <td>{user.active.toString()}</td>
-                              <td>{user.banned.toString()}</td>
-                              <td>{user.prenom}</td>
+                              
+                              <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
+                              <td>{user.banned ? <span className=" text-danger ">Oui</span> : <span className=" text-success " >Non</span> }</td> 
+                           
                             </tr>
                           </Fragment>
                           );
@@ -98,7 +106,7 @@ import {
                               <td>{user.nom} {user.prenom}</td>
                               <td>{user.role}</td>
                               <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
-                              <td>{user.banned ? 'Oui' : 'Non'}</td> 
+                              <td>{user.banned ? <span className=" text-danger ">Oui</span> : <span className=" text-success " >Non</span> }</td> 
                               <td></td>       
                             </tr>
                           </Fragment>

@@ -3,7 +3,8 @@ const morgan = require('morgan')
 const cors = require('cors')
 const connectDB = require('./db/db')
 const bodyParser = require('body-parser')
-const catRoute = require('./controller/categorie-service.js')
+const catRoute = require('./controller/categorie-service')
+const souscatRoute = require('./controller/sous-categorie-service')
 
 require('dotenv').config()
 connectDB()
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use("/api/categorie", catRoute)
+app.use("/api/sous-categorie", souscatRoute)
 
 //404
 app.use((req, res) => {
