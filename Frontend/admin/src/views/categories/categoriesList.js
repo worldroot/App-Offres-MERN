@@ -16,7 +16,6 @@ import {
   import { Fragment, useEffect, useState } from "react";
   import Categorie from "./categorie.js";
   import Updatecategorie from "./updatecategorie.js";
-  import Modal from "components/ModalBox";
 
   import { motion, AnimatePresence } from 'framer-motion';
   import 'components/modal.css'
@@ -43,6 +42,7 @@ import {
     const dispatch = useDispatch()
     const [currentId, setCurrentId] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(-1);
+
     useEffect(() => {
       props.All();
     }, []);
@@ -57,9 +57,6 @@ import {
 
       const [showModal, setShowModal] = useState(false);
     
-
-    
-  
     return (
       <>
       {/* Layout*/}

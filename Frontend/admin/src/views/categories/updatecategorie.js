@@ -70,9 +70,7 @@ import {
             setTimeout(() => {
                 window.location.reload();
               }, 2000);
-            //dispatch(updateCat(props.currentId, values))
-            
-            
+
           }   
     
         }

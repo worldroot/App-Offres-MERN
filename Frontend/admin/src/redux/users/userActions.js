@@ -7,6 +7,8 @@ import {
     GET_FAIL,
     USER_UP,
     USER_DEL,
+    USER_BAN,
+    USER_BAN_FAIL,
     USER_ERR,
     USER_REQ
     
@@ -72,6 +74,25 @@ export const getAllUsers = () => (dispatch) => {
         GET_FAIL
     )
 }
+
+export const BanMe = (id, updated) => axios.put(`${UsermsURL}/api/user/ban` + id, updated);
+export const banUser = (id, data) => (dispatch) => {
+    setAuthToken(localStorage.accessToken)
+    BanMe(id,data)
+    .then((res) => {
+        
+        dispatch({
+            type: USER_BAN,
+            payload: res.data,
+        });
+        toast.success('Mis à jour avec succés');
+        console.log(id, data)
+        
+    }).catch((err) => 
+        console.log(err),
+        USER_BAN_FAIL
+    );
+};
 /*
 export const deleteUser = async(id, dispatch) =>{
     DELU(id)
