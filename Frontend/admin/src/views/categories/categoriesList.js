@@ -15,7 +15,23 @@ import {
   import { getAllCat, deleteCat, updateCat } from "redux/cat/catActions";
   import { Fragment, useEffect, useState } from "react";
   import Categorie from "./categorie.js";
-import Updatecategorie from "./updatecategorie.js";
+  import Updatecategorie from "./updatecategorie.js";
+  import Modal from "components/ModalBox";
+
+  import { motion, AnimatePresence } from 'framer-motion';
+  import 'components/modal.css'
+  const backdrop = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  }
+  const modal = {
+    hidden: { y: "-100vh", opacity: 0 },
+    visible: { 
+      y: "200px", 
+      opacity: 1,
+      transition: { delay: 0.5 }
+    },
+  }
   
   const CategoriesList = ({...props}) => {
 
@@ -38,6 +54,7 @@ import Updatecategorie from "./updatecategorie.js";
           dispatch(deleteCat(id, onSuccess))
       };
 
+      const [showModal, setShowModal] = useState(false);
     
 
     
@@ -45,6 +62,7 @@ import Updatecategorie from "./updatecategorie.js";
     return (
       <>
       {/* Layout*/}
+      
       <Sidebar
           logo={{
             innerLink: "",
@@ -69,7 +87,7 @@ import Updatecategorie from "./updatecategorie.js";
                         <h3 className="mb-0">List des categories</h3>
                         { user.role === "super-admin" &&(
                           <>
-                            <Button size="sm">
+                            <Button size="sm" onClick={() => setShowModal(true)}>
                               <i className="fas fa-plus"></i>
                             </Button> 
                           </>
@@ -153,10 +171,29 @@ import Updatecategorie from "./updatecategorie.js";
             </Col>
 
             <Col className="order-xl-2" xl="4">
-            { user.role === "super-admin" &&(
-                <Categorie {...{ currentId, setCurrentId }} />
-            )}
-                
+            <AnimatePresence exitBeforeEnter showModal={showModal} setShowModal={setShowModal}>
+              { showModal && (
+                <motion.div className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                > 
+                  <motion.div className="" variants={modal}>
+                  <div className="text-center">
+                             
+                                  <i className=" my-4 far fa-times-circle fa-2x text-white" 
+                                  onClick={() => setShowModal(false)} >
+                                  </i>
+                      
+                    </div>
+                    <Categorie {...{ currentId, setCurrentId }} />
+                   
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+              
             </Col>
           </Row>
           </Container>

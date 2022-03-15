@@ -15,16 +15,16 @@ import {
   import { Redirect } from 'react-router-dom'
   import { connect, useDispatch } from 'react-redux';
   import {toast} from 'react-toastify'
-  import React, { useEffect } from "react";
+  import React, { useState } from "react";
   import { updateCat, addCat } from "redux/cat/catActions";
   import useForm from "helpers/useForm";
+  import Modal from "components/ModalBox";
   const initialFieldValues = { nomcat:"",}
+
 
   const Categorie = ({...props}) => {
 
     const dispatch = useDispatch()
-
-
 
     var {
         values,
@@ -74,10 +74,10 @@ import {
     }
 
     const reset = (e) => { resetForm() }
-  
+    const [showModal, setShowModal] = useState(false);
+
     return(
       <>
-
               <Card className="card-profile shadow">
                 <Row className="justify-content-center">
                   <Col className="order-lg-1" lg="2">
@@ -90,8 +90,7 @@ import {
                 </Row>
                 <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                   <div className="d-flex justify-content-between">
-                   
-                  
+                    
                   </div>
                   <h3 className="mb-0">Ajouter une catégorie</h3>
                   
@@ -119,6 +118,8 @@ import {
                     </div>
 
                   </Form>
+
+                  
                 </CardBody>
               </Card>
                  
