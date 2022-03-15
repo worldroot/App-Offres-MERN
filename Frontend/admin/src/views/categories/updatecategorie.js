@@ -60,29 +60,34 @@ import {
           if (props.currentId === 0){
     
               props.create(values, onSuccess);
+              props.setCurrentIndex(-1) 
               resetForm();
              
           } else {
             
             props.update(props.currentId, values, onSuccess);
+            
             setTimeout(() => {
                 window.location.reload();
-              }, 2500);
+              }, 2000);
             //dispatch(updateCat(props.currentId, values))
             
             
           }   
     
-        }else { toast.warn('Warning ! '); }
+        }
       };
   
 
-    const reset = (e) => { resetForm() }
+    const reset = (e) => { 
+      resetForm(),
+      props.setCurrentIndex(-1) 
+    }
   
     return(
       <>      
               <Form role="form" onSubmit={onSubmit}>
-                      <td>
+                      <td className="border-0">
                       <Input
                             type="text"
                             bsSize="sm"
@@ -91,8 +96,8 @@ import {
                             onChange={handleInputChange}
                           />
                       </td>
-                     <td>
-                     <Button className="btn-outline-dark" color="dark" size="sm" type="submit">
+                     <td className="border-0">
+                     <Button className=" btn-outline-success" color="dark" size="sm" type="submit">
                           Confirmer
                       </Button>
                       <Button className="btn-outline-dark" onClick={() => reset()} color="dark" size="sm" type="submit">

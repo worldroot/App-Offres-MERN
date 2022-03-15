@@ -42,6 +42,7 @@ import {
     });
     const dispatch = useDispatch()
     const [currentId, setCurrentId] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(-1);
     useEffect(() => {
       props.All();
     }, []);
@@ -116,8 +117,8 @@ import {
                                     <Fragment key={index}>
 
                                     <tr key={cat.id}>     
-                                      <td> { currentId !== 0 ? (
-                                                  <Updatecategorie {...{ currentId, setCurrentId }} />
+                                      <td> { currentIndex === index ? (
+                                                   <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
                                                 ) : (
                                                     cat.nomcat
                                                 )
@@ -128,7 +129,9 @@ import {
                                          <td>
                                           <Button
                                           className="btn-outline-dark" size="sm"
-                                          onClick={() => setCurrentId(cat._id)}
+                                          onClick={() => {
+                                            setCurrentId(cat._id);
+                                            setCurrentIndex(index)}}
                                           >
                                               Edit
                                           </Button>
@@ -179,7 +182,7 @@ import {
                   animate="visible"
                   exit="hidden"
                 > 
-                <Col className="" xl="4">
+                <Col className="center" xl="3">
                   <motion.div className="" variants={modal}>
                         
                       <Categorie {...{ currentId, setCurrentId, showModal, setShowModal }} />

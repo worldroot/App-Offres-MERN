@@ -112,10 +112,10 @@ import {
 
                   
                     <div className="text-center">
-                              <Button className="my-4 btn-outline-dark" color="dark" type="submit">
+                              <Button className="my-4 btn-outline-success" color="dark" type="submit">
                                   Confirmer
                                </Button>
-                               <Button className="my-4 btn-outline-dark" 
+                               <Button className="my-4 btn-outline-danger" 
                                        color="dark" type="submit" onClick={() => props.setShowModal(false)}>
                                   Annuler
                                </Button>
