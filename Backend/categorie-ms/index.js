@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const connectDB = require('./db/db')
 const bodyParser = require('body-parser')
-const catRoute = require('./categorie-service')
+const catRoute = require('./controller/categorie-service.js')
 
 require('dotenv').config()
 connectDB()
