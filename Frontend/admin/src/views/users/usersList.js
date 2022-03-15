@@ -23,7 +23,7 @@ import {
     hidden: { opacity: 0 },
   }
   const modal = {
-    hidden: { y: "-100vh", opacity: 0 },
+    hidden: { y: "-50vh", opacity: 0 },
     visible: { 
       y: "200px", 
       opacity: 1,
@@ -107,7 +107,7 @@ import {
                                   <td>{user.role}</td>
                                   
                                   <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
-                                  <td>{user.banned ? <span className=" text-danger ">Oui</span> : <span className=" text-success " >Non</span> }</td> 
+                                  <td>{user.banned ? <span className="text-success">Oui</span> : <span className="text-danger" >Non</span> }</td> 
                               
                                 </tr>
                               </Fragment>
@@ -128,8 +128,11 @@ import {
                                   <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
                                   <td>{user.banned ? <span className=" text-danger ">Oui</span> : <span className=" text-success " >Non</span> }</td> 
                                   <td>
-                                            <div onClick={() => setShowModal(true)}>
-                                                <Button className="btn btn-outline-danger" size="sm"> Bannir </Button>
+                                            <div onClick={() => {
+                                            setCurrentId(user._id);
+                                            setShowModal(true)
+                                            } }>
+                                                <Button className="btn btn-outline-dark" size="sm"> Bannir </Button>
                                             </div> 
                                             </td>         
                                 </tr>

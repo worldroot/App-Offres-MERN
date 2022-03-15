@@ -5,12 +5,15 @@ import {
   CardHeader,
   CardBody,
   Form,
-  FormGroup,
-  Input,
-  InputGroup,
   Row,
   Col,
   } from "reactstrap";
+  import { styled } from '@mui/material/styles';
+  import FormGroup from '@mui/material/FormGroup';
+  import FormControlLabel from '@mui/material/FormControlLabel';
+  import Switch from '@mui/material/Switch';
+  import Stack from '@mui/material/Stack';
+  import Typography from '@mui/material/Typography';
   // core components
   import { connect, useDispatch } from 'react-redux';
   import React, { useEffect, useState } from "react";
@@ -18,10 +21,61 @@ import {
   import useForm from "helpers/useForm";
   const initialFieldValues = { banned:"",}
 
+  const IOSSwitch = styled((props) => (
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+  ))(({ theme }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+      padding: 0,
+      margin: 2,
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+        transform: 'translateX(16px)',
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+          opacity: 1,
+          border: 0,
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+          opacity: 0.5,
+        },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+        color: '#33cf4d',
+        border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+        color:
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[600],
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: 22,
+      height: 22,
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 26 / 2,
+      backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+      opacity: 1,
+      transition: theme.transitions.create(['background-color'], {
+        duration: 500,
+      }),
+    },
+  }));
+
   const BanUser = ({...props}) => {
 
     const dispatch = useDispatch()
-   
+  
     useEffect(() => {
         if (props.currentId !== 0) {
           setValues({
@@ -29,7 +83,6 @@ import {
           });
           setErrors({});
         }
-    
       }, [props.currentId]);
 
     var {
@@ -61,16 +114,22 @@ import {
               setTimeout(() => {
                   window.location.reload();
                 }, 2000);
+              props.setShowModal(false)
               resetForm();
              
           } 
         }
       };
-  
+
     const reset = (e) => { 
       resetForm(),
       props.setCurrentIndex(-1) 
     }
+
+    const banned = values.banned
+    const [state, setState] = useState(banned);
+    const toggleChecked = () => setState({state: values.banned = !values.banned} );
+    console.log(banned)
   
     return(
       <>      
@@ -86,24 +145,28 @@ import {
                   </Col>
                 </Row>
                 <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <h3 className="mb-0">Sur de bannir ce utilisateur ?</h3>
+                  <h3 className="mb-0">Etes-vous sûr de bannir {values.email} ?</h3>
                 </CardHeader>
                 <CardBody className="pt-0 pt-md-2">
                     <Form role="form" onSubmit={onSubmit}>
                               
                       <div className="text-center">
-                        <Input
-                            type="text"
-                            bsSize="sm"
-                            name="banned"
-                            color="red"
-                            value={values.banned}
-                            onChange={handleInputChange}
-                          />
+                      <IOSSwitch  name="banned"
+                                  onChange={ toggleChecked }
+                                  checked={banned}
+                                    >
+                      </IOSSwitch>
+                      
+                     
                       </div>
+
                       <div className=" text-center">
-                                <Button className="my-4 btn-outline-dark"
-                                        color="dark" type="submit" onClick={() => props.setShowModal(false)}>
+                               <Button className="my-4 btn-outline-success" size="sm"
+                                        color="dark" type="submit">
+                                    Confirmer
+                                </Button>
+                                <Button className="my-4 btn-outline-dark" size="sm"
+                                        color="dark" type="submit" onClick={() => props.setShowModal(false) }>
                                     Annuler
                                 </Button>
                       </div>
@@ -126,3 +189,17 @@ import {
   });
   
   export default connect ( mapStateToProps, mapActionToProps )(BanUser);
+
+  /**
+                          <select name="banned" 
+                              size="sm" 
+                              value={values.banned}
+                              onChange={handleInputChange}
+                              className="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150">
+                               
+                            <option value={values.banned}> {values.banned ? 'Compte Banni': 'Compte Non Banni'}</option>
+                            <option value="true">Oui</option>
+                            <option value="false">Non</option>
+                          
+                         </select>  
+   */

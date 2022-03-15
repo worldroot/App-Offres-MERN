@@ -128,7 +128,7 @@ import {
                                           className="btn-outline-dark" size="sm"
                                           onClick={() => {
                                             setCurrentId(cat._id);
-                                            setCurrentIndex(index)}}
+                                            setCurrentIndex(index)} }
                                           >
                                               Edit
                                           </Button>

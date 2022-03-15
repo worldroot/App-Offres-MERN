@@ -89,6 +89,12 @@ router.post('/login',
               msg: 'Email incorrect'
             })
         }
+        if (user.banned) {
+          return res.status(403).json({
+              error: true,
+              msg: 'Banned Account'
+          })
+        }
       //Pass Verif
         const isMatch = await user.isValidPassword(password)
         if (!isMatch) {

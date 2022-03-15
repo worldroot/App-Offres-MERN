@@ -75,7 +75,7 @@ export const getAllUsers = () => (dispatch) => {
     )
 }
 
-export const BanMe = (id, updated) => axios.put(`${UsermsURL}/api/user/ban` + id, updated);
+export const BanMe = (id, updated) => axios.put(`${UsermsURL}/api/user/ban/` + id, updated);
 export const banUser = (id, data) => (dispatch) => {
     setAuthToken(localStorage.accessToken)
     BanMe(id,data)
@@ -86,10 +86,11 @@ export const banUser = (id, data) => (dispatch) => {
             payload: res.data,
         });
         toast.success('Mis à jour avec succés');
-        console.log(id, data)
+        console.log(id, data.banned)
         
     }).catch((err) => 
         console.log(err),
+        //toast.error('Erreur '),
         USER_BAN_FAIL
     );
 };
