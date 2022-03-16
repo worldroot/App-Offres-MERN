@@ -74,9 +74,9 @@ const Login = ({ login, isAuth, user, isLoading }) => {
     <>
         <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-red py-xl-9 ">
+        <div className="header bg-red">
           <Container>
-            <div className="header-body text-center mb-8">
+            <div className="header-body text-center">
               <Row className="justify-content-center">
                 <Col lg="7" md="6">
                   
@@ -94,7 +94,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
           
           { !isAuth  &&(
 
-          <Container className="mt--8 pb-5">
+          <Container className="mt-8 pb-9 w-100">
           <Row className="justify-content-center">
                   
             <Col lg="5" md="7">

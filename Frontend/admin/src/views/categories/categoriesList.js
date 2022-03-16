@@ -116,13 +116,22 @@ import {
                     <Table className="align-items-center table-flush" responsive>
                         <thead className="thead-light">
                         <tr>
-                            <th scope="col">Catégories</th>
+                           
                             { user.role === "super-admin" &&(
                                 <>
+                                      <th scope="col">Catégories</th>
                                       <th scope="col">Actions</th>
                                       <th scope="col"></th>
                                       <th scope="col"></th>
                                       <th scope="col"></th>
+                                </>
+                            )}
+                             { user.role === "admin" &&(
+                                <>
+                                      <th scope="col">Catégories</th>
+                                      <th scope="col">Sous-atégories</th>
+                                     
+                                     
                                 </>
                             )}
                         </tr>
@@ -158,8 +167,8 @@ import {
                                                               
                                                               <div key={_id} >
                                                                 <Row className="justify-content-between">
-                                                                  <span>{sousnomcat}</span>
-                                                                  <i className="fas fa-times text-danger fa-1x m-1" size="sm" onClick={() => onDeleteSous(_id)}></i>
+                                                                  <span className="mx-1">{sousnomcat}</span>
+                                                                  <i className="fas fa-times text-danger fa-1x m-1 p--1" size="sm" onClick={() => onDeleteSous(_id)}></i>
                                                                 </Row>
                                                               </div>  
                                                             )
@@ -229,7 +238,19 @@ import {
                                 <Fragment key={index}>           
                                     <tr key={cat._id}>
                                       <td>{cat.nomcat}</td>  
-                                      <td>{cat.sous.sousnomcat}</td>  
+                                      <td> { cat.souscategorie.map(
+                                                        ({sousnomcat, _id}) => {
+                                                            return(
+                                                              
+                                                              <div key={_id} >
+                                                                <Row className="justify-content-between">
+                                                                  <span className="mx-1">{sousnomcat}</span>
+                                                                </Row>
+                                                              </div>  
+                                                            )
+                                                        }
+                                                      )}
+                                                    </td>
                                     </tr>
                                 </Fragment>
                                 );

@@ -151,11 +151,16 @@ import {
                     <Form role="form" onSubmit={onSubmit}>
                               
                       <div className="text-center">
-                      <IOSSwitch  name="banned"
-                                  onChange={ toggleChecked }
-                                  checked={banned}
-                                    >
-                      </IOSSwitch>
+                      <select name="banned" 
+                              size="sm" 
+                              value={values.banned}
+                              onChange={handleInputChange}
+                              className='search-input input-group-alternative input-group-lg'>
+                            <option value="true">Compte Banni</option>
+                            <option value="false">Compte Non Banni</option>
+                          
+                         </select>  
+                     
                       
                      
                       </div>
@@ -202,4 +207,11 @@ import {
                             <option value="false">Non</option>
                           
                          </select>  
+
+
+                          <IOSSwitch  name="banned"
+                                  onChange={ toggleChecked }
+                                  checked={banned}
+                                    >
+                      </IOSSwitch>
    */
