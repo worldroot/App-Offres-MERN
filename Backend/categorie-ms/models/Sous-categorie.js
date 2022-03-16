@@ -1,7 +1,13 @@
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema;
 
 const SousCategorySchema = new mongoose.Schema({
 
+    category: {
+        type: ObjectId,
+        ref: 'Category',
+        required: true
+    },
     sousnomcat: {
         type: String,
         required: true,

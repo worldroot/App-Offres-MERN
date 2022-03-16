@@ -10,8 +10,7 @@ const { check, validationResult } = require('express-validator')
 // @desc    Create Category
 // @access  Private Admin
 router.post('/', 
-    [ check('nomcat', 'Name is required').trim().not().isEmpty()],
-    [ check('sous', 'Sous Categorie is required').trim().not().isEmpty()]
+    [ check('nomcat', 'Name is required').trim().not().isEmpty()]
     ,verifyAccessToken 
     ,async (req, res) => {
 
@@ -32,17 +31,17 @@ router.post('/',
 
         }else{
              
-            const { sous,nomcat } = req.body
+            const { nomcat } = req.body
             try {
 
-                let category = await Category.findOne({ nomcat, sous })
+                let category = await Category.findOne({ nomcat })
                 if (category) {
                     return res.status(403).json({
                         error: true,
                         msg: 'Category already exist'
                     })
                 }
-                const newCategory = new Category({ nomcat, sous })
+                const newCategory = new Category({ nomcat })
                 category = await newCategory.save()
                 res.status(200).json(category)
           
@@ -64,7 +63,24 @@ router.post('/',
 // @access  Public
 router.get('/all', async (req, res) => {
     try {
-        let data = await Category.find({})
+        //let data = await Category.find({})
+        let data = await Category.aggregate([
+            //lookup for list sous secteur references to secteur with id server in array :
+            { $lookup: { from: "souscategories", localField: "_id", foreignField: "category", as: "souscategorie" } },
+            //cancel some attribute to displays :
+            { $project: { souscategorie: { category: 0, __v: 0  } } },
+
+            { $project: { icon: 0, __v: 0, slug: 0,} }
+    
+            //Tests aggregate framework
+            //{ $group: { _id: { secteur: "$secteur", nom: "$nom" } } },
+            /* { $unwind:  "$nom" },
+            { $project:  {secteur: 1, nom: 1} } */
+            /*  {$sort:{secteur: 'secteurs'}}, */
+            //{$sort: {secteur: 1}},
+            //{ $group: { _id: { secteur: "$sousSecteur_par_Secteur" } } },
+        ])     
+                                 
         res.status(200).json(data)
 
     } catch (error) {
@@ -75,6 +91,8 @@ router.get('/all', async (req, res) => {
           });
     }
 })
+
+
 
 // @route   Get api/categorie/:categoryId
 // @desc    Get Single category

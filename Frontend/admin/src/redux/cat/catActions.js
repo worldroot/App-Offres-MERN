@@ -5,7 +5,14 @@ import {
     UP_CAT,
     DELETE_CAT,
     CAT_ERR,
+    GET_SOUS_S,
+    GET_SOUS_F,
+    ADD_SOUS,
+    UP_SOUS,
+    DEL_SOUS,
+    ERR_SOUS
 } from './catTypes'
+
 import { CatmsURL } from '../../helpers/urls'
 import setAuthToken from '../../helpers/authToken';
 import { toast } from 'react-toastify';
@@ -90,5 +97,33 @@ export const updateCat = (id, data) => (dispatch) => {
         console.log(err),
         CAT_ERR
     );
+};
+
+
+//---SOUS-CATEGORIE
+export const createSousSuccess = (data) => {
+    return {
+      type: ADD_SOUS,
+      payload: data,
+    };
+};
+export const addSousCat = (souscategory) => {
+    const data ={ sousnomcat : souscategory.sousnomcat }
+
+    return(dispatch) => {
+        setAuthToken(localStorage.accessToken)
+        
+        return axios.post(`${CatmsURL}/api/sous-categorie/`, data)
+                    .then((res) => { res.data
+
+            const ndata = { sousnomcat : data.sousnomcat, };
+            dispatch(createSousSuccess(ndata));
+            toast.success('Ajouté avec succès');
+            
+        }).catch((err) =>
+            toast.error('ERR'),
+            CAT_ERR
+            );
+    }
 };
 

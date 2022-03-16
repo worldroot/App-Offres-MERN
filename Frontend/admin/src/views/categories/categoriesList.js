@@ -15,6 +15,7 @@ import {
   import { getAllCat, deleteCat, updateCat } from "redux/cat/catActions";
   import { Fragment, useEffect, useState } from "react";
   import Categorie from "./categorie.js";
+  import SousCategorie from "./sous-categorie.js";
   import Updatecategorie from "./updatecategorie.js";
 
   import { motion, AnimatePresence } from 'framer-motion';
@@ -56,6 +57,7 @@ import {
       };
 
       const [showModal, setShowModal] = useState(false);
+      const [showModal2, setShowModal2] = useState(false);
     
     return (
       <>
@@ -76,7 +78,7 @@ import {
           {/* Page content */}
           <Container className="mt--7" fluid>
           <Row>
-            <Col className="order-xl-1 mb-5 mb-xl-0" xl="8">
+            <Col className="order-xl-1 mb-5 mb-xl-0" xl="9">
                 <div className="col">
                     <Card className="shadow">
                     <CardHeader className="border-0 ">
@@ -85,9 +87,13 @@ import {
                         <h3 className="mb-0">List des categories</h3>
                         { user.role === "super-admin" &&(
                           <>
+                            <Row>
                             <Button size="sm" onClick={() => setShowModal(true)}>
-                              <i className="fas fa-plus"></i>
+                              <i className="fas fa-plus"></i> Catégorie
                             </Button> 
+                            
+                            </Row>
+                           
                           </>
                          
                         )}
@@ -97,10 +103,11 @@ import {
                     <Table className="align-items-center table-flush" responsive>
                         <thead className="thead-light">
                         <tr>
-                            <th scope="col">Titre</th>
+                            <th scope="col">Categories & Sous-categories</th>
                             { user.role === "super-admin" &&(
                                 <>
                                       <th scope="col">Actions</th>
+                                      <th scope="col"></th>
                                       <th scope="col"></th>
                                 </>
                             )}
@@ -117,7 +124,12 @@ import {
                                       <td> { currentIndex === index ? (
                                                    <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
                                                 ) : (
-                                                    cat.nomcat
+                                                  <>
+                                                    <td className=" border-0"> {cat.nomcat}</td>
+                                                    <td className=" border-0"> {cat.sous}</td>
+                                                  </>
+                                                   
+                                                    
                                                 )
                                             }   
                                       </td> 
@@ -139,10 +151,19 @@ import {
                                      )}
 
                                         <td>
-                                        <div onClick={() => onDLP(cat._id)}>
-                                            <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>
-                                        </div> 
+                                          <div onClick={() => onDLP(cat._id)}>
+                                              <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>
+                                          </div> 
                                         </td>   
+
+                                        <td>
+                                          <div>
+                                            <Button className="btn btn-outline-default" size="sm" onClick={() => setShowModal2(true)}>
+                                              <i className="fas fa-plus"></i> Sous-Catégorie
+                                            </Button>                                        
+                                          </div>
+                                        </td>   
+                                       
 
                                     </tr>
                                     </Fragment>
@@ -158,6 +179,7 @@ import {
                                 <Fragment key={index}>           
                                     <tr key={cat._id}>
                                       <td>{cat.nomcat}</td>  
+                                      <td>{cat.sous.sousnomcat}</td>  
                                     </tr>
                                 </Fragment>
                                 );
@@ -183,6 +205,26 @@ import {
                   <motion.div className="" variants={modal}>
                         
                       <Categorie {...{ currentId, setCurrentId, showModal, setShowModal }} />
+
+                  </motion.div>
+                </Col>
+                  
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence exitBeforeEnter showModal={showModal2} setShowModal={setShowModal2}>
+              { showModal2 && (
+                <motion.div className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                > 
+                <Col className="center" xl="3">
+                  <motion.div className="" variants={modal}>
+                        
+                      <SousCategorie {...{ currentId, setCurrentId, showModal2, setShowModal2 }} />
 
                   </motion.div>
                 </Col>

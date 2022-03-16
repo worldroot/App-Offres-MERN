@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router()
-const Category = require('../models/Sous-categorie')
+const SousCategory = require('../models/Sous-categorie')
+const Category = require('../models/Categorie')
 const {verifyAccessToken} = require('../middleware/verify-token')
 const catid = require('../middleware/souscategorieByid')
 const axios = require('axios')
@@ -10,7 +11,8 @@ const { check, validationResult } = require('express-validator')
 // @desc    Create Category
 // @access  Private Admin
 router.post('/', 
-    [ check('sousnomcat', 'Name is required').trim().not().isEmpty()]
+    [ check('category', 'category is required').trim().not().isEmpty()],
+    [ check('sousnomcat', 'sousnomcat is required').trim().not().isEmpty()]
     ,verifyAccessToken 
     ,async (req, res) => {
 
@@ -31,19 +33,25 @@ router.post('/',
 
         }else{
              
-            const { sousnomcat } = req.body
+            const { sousnomcat, category } = req.body
             try {
-
-                let category = await Category.findOne({ sousnomcat })
-                if (category) {
+                let categoryModel = await Category.findOne({ category })
+                if (!categoryModel) {
+                    return res.status(403).json({
+                        error: true,
+                        msg: 'Category doesnt exist'
+                    })
+                }
+                let souscategory = await SousCategory.findOne({ sousnomcat })
+                if (souscategory) {
                     return res.status(403).json({
                         error: true,
                         msg: 'Sous-Category already exist'
                     })
                 }
-                const newCategory = new Category({ sousnomcat })
-                category = await newCategory.save()
-                res.status(200).json(category)
+                const newCategory = new SousCategory({ category,sousnomcat })
+                souscategory = await newCategory.save()
+                res.status(200).json(souscategory)
           
             } catch (error) {
                 console.log(error)
@@ -63,7 +71,7 @@ router.post('/',
 // @access  Public
 router.get('/all', async (req, res) => {
     try {
-        let data = await Category.find({})
+        let data = await SousCategory.find({})
         res.status(200).json(data)
 
     } catch (error) {
