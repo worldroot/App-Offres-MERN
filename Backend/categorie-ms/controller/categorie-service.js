@@ -68,17 +68,8 @@ router.get('/all', async (req, res) => {
             //lookup for list sous secteur references to secteur with id server in array :
             { $lookup: { from: "souscategories", localField: "_id", foreignField: "category", as: "souscategorie" } },
             //cancel some attribute to displays :
-            { $project: { souscategorie: { category: 0, __v: 0  } } },
-
+            { $project: { souscategorie: { category: 0, __v: 0, _id:0  } } },
             { $project: { icon: 0, __v: 0, slug: 0,} }
-    
-            //Tests aggregate framework
-            //{ $group: { _id: { secteur: "$secteur", nom: "$nom" } } },
-            /* { $unwind:  "$nom" },
-            { $project:  {secteur: 1, nom: 1} } */
-            /*  {$sort:{secteur: 'secteurs'}}, */
-            //{$sort: {secteur: 1}},
-            //{ $group: { _id: { secteur: "$sousSecteur_par_Secteur" } } },
         ])     
                                  
         res.status(200).json(data)

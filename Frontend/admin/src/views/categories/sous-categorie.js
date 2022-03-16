@@ -19,7 +19,7 @@ import {
   import { updateCat, addSousCat } from "redux/cat/catActions";
   import useForm from "helpers/useForm";
   import Modal from "components/ModalBox";
-  const initialFieldValues = { sousnomcat:"",}
+  const initialFieldValues = { sousnomcat:"", category:""}
 
 
   const SousCategorie = ({...props}) => {
@@ -38,6 +38,7 @@ import {
     const validate = () => {
         let temp = {...errors};
         temp.sousnomcat = values.sousnomcat ? "" : "This field is required.";   
+        temp.category = values.category ? "" : "This field is required.";  
         setErrors({...temp,});
         return Object.values(temp).every((p) => p === "");
       };
@@ -45,28 +46,12 @@ import {
     const userExist = localStorage.getItem("user");
     const onSubmit = (e) => {
         e.preventDefault();
-        const onSuccess = () => {
-          resetForm();
-          
-        };
+        const onSuccess = () => { resetForm() };
+
         if (validate()) {
-          if (props.currentId === 0){
-    
               props.create(values, onSuccess);
+              props.setShowModal2(false)   
               resetForm();
-              props.setShowModal2(false)
-             
-          } else {
-            
-            props.update(props.currentId, values, onSuccess);
-            setTimeout(() => {
-                window.location.reload();
-              }, 2500);
-            //dispatch(updateCat(props.currentId, values))
-            
-            
-          }   
-    
         }
       };
   
@@ -75,6 +60,7 @@ import {
     }
 
     const reset = (e) => { resetForm() }
+    const [SC, setSC] = useState(values.category = props.currentSousId);
 
     return(
       <>
@@ -105,6 +91,17 @@ import {
                           type="text"
                           name="sousnomcat"
                           value={values.sousnomcat}
+                          onChange={handleInputChange}
+                        />
+                         
+                      </InputGroup>
+                      <InputGroup className="input-group-alternative">
+                       
+                         <Input hidden
+                          placeholder="Titre de sous-categorie"
+                          type="text"
+                          name="category"
+                          value={SC}
                           onChange={handleInputChange}
                         />
                       </InputGroup>

@@ -5,7 +5,7 @@ import {
     Table,
     Container,
     Col,
-    Button
+    Button,
   } from "reactstrap";
   
   import Header from "../../components/Headers/Header.js";
@@ -42,6 +42,7 @@ import {
     });
     const dispatch = useDispatch()
     const [currentId, setCurrentId] = useState(0);
+    const [currentSousId, setCurrentSousId] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(-1);
 
     useEffect(() => {
@@ -78,13 +79,13 @@ import {
           {/* Page content */}
           <Container className="mt--7" fluid>
           <Row>
-            <Col className="order-xl-1 mb-5 mb-xl-0" xl="9">
+            <Col className="order-xl-1 mb-5 mb-xl-0" xl="12">
                 <div className="col">
                     <Card className="shadow">
                     <CardHeader className="border-0 ">
                         
                         <div className="d-flex justify-content-between">
-                        <h3 className="mb-0">List des categories</h3>
+                        <h3 className="mb-0">List des catégories</h3>
                         { user.role === "super-admin" &&(
                           <>
                             <Row>
@@ -103,7 +104,7 @@ import {
                     <Table className="align-items-center table-flush" responsive>
                         <thead className="thead-light">
                         <tr>
-                            <th scope="col">Categories & Sous-categories</th>
+                            <th scope="col">Catégories</th>
                             { user.role === "super-admin" &&(
                                 <>
                                       <th scope="col">Actions</th>
@@ -117,6 +118,7 @@ import {
                         { user.role === "super-admin" &&(
                         <>
                         {props.List.map((cat, index) => {
+                            //console.log( )
                             return (
                                     <Fragment key={index}>
 
@@ -124,9 +126,11 @@ import {
                                       <td> { currentIndex === index ? (
                                                    <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
                                                 ) : (
+                                                  //homes.map(home => <div>{home.name}</div>)
                                                   <>
+                                                    
                                                     <td className=" border-0"> {cat.nomcat}</td>
-                                                    <td className=" border-0"> {cat.sous}</td>
+                                                    <td className=" border-0"> { cat.souscategorie.map( ({sousnomcat}) => <> <div key={cat} ></div> <span>{sousnomcat}</span> </> ) }</td>
                                                   </>
                                                    
                                                     
@@ -158,7 +162,7 @@ import {
 
                                         <td>
                                           <div>
-                                            <Button className="btn btn-outline-default" size="sm" onClick={() => setShowModal2(true)}>
+                                            <Button className="btn btn-outline-default" size="sm" onClick={() => {setShowModal2(true); setCurrentSousId(cat._id)}}>
                                               <i className="fas fa-plus"></i> Sous-Catégorie
                                             </Button>                                        
                                           </div>
@@ -224,7 +228,7 @@ import {
                 <Col className="center" xl="3">
                   <motion.div className="" variants={modal}>
                         
-                      <SousCategorie {...{ currentId, setCurrentId, showModal2, setShowModal2 }} />
+                      <SousCategorie {...{ currentId, setCurrentId, showModal2, setShowModal2, currentSousId, setCurrentSousId }} />
 
                   </motion.div>
                 </Col>

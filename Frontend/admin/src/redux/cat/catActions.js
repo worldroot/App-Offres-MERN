@@ -108,7 +108,7 @@ export const createSousSuccess = (data) => {
     };
 };
 export const addSousCat = (souscategory) => {
-    const data ={ sousnomcat : souscategory.sousnomcat }
+    const data ={ category: souscategory.category ,sousnomcat : souscategory.sousnomcat }
 
     return(dispatch) => {
         setAuthToken(localStorage.accessToken)
@@ -116,7 +116,7 @@ export const addSousCat = (souscategory) => {
         return axios.post(`${CatmsURL}/api/sous-categorie/`, data)
                     .then((res) => { res.data
 
-            const ndata = { sousnomcat : data.sousnomcat, };
+            const ndata = { category: data.category ,sousnomcat : data.sousnomcat, };
             dispatch(createSousSuccess(ndata));
             toast.success('Ajouté avec succès');
             
