@@ -7,11 +7,11 @@ import { NavItem, NavLink, Nav, Container, Row, Col } from "reactstrap";
 const Login = () => {
   return (
     <>
-      <footer className="bg-darkgrey py-3">
+      <footer className=" bg-danger py-3 fixed-bottom">
         <Container>
           <Row className="align-items-center justify-content-xl-between">
             <Col xl="6">
-              <div className="copyright text-center text-xl-left text-dark">
+              <div className="copyright text-center text-xl-left text-white">
                  Ooredoo {new Date().getFullYear()}{" "}
                 <a
                   className="font-weight-bold ml-1"

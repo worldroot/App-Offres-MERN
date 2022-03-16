@@ -74,11 +74,11 @@ const Login = ({ login, isAuth, user, isLoading }) => {
     <>
         <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-red py-7 py-lg-8">
+        <div className="header bg-red py-xl-9 ">
           <Container>
-            <div className="header-body text-center mb-7">
+            <div className="header-body text-center mb-8">
               <Row className="justify-content-center">
-                <Col lg="5" md="6">
+                <Col lg="7" md="6">
                   
                   <p className="text-lead text-light">
                   </p>
