@@ -6,14 +6,13 @@ import {
     Container,
     Col,
     Button,
-    Badge,
-    Media,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    UncontrolledDropdown
   } from "reactstrap";
   
+  import Accordion from '@mui/material/Accordion';
+  import AccordionSummary from '@mui/material/AccordionSummary';
+  import AccordionDetails from '@mui/material/AccordionDetails';
+  import * as React from 'react';
+  import Typography from '@mui/material/Typography';
   import Header from "../../components/Headers/Header.js";
   import AdminNavbar from "../../components/Navbars/AdminNavbar";
   import Sidebar from "../../components/Sidebar/Sidebar";
@@ -133,9 +132,7 @@ import {
                              { user.role === "admin" &&(
                                 <>
                                       <th scope="col">Catégories</th>
-                                      <th scope="col">Sous-atégories</th>
-                                     
-                                     
+                                      <th scope="col">Sous-atégories</th>   
                                 </>
                             )}
                         </tr>
@@ -163,52 +160,38 @@ import {
                                                 ) : (
                                                   //homes.map(home => <div>{home.name}</div>)
                                                   <>
-                                                     <td className="border-0">
-                                                      <UncontrolledDropdown nav>
-                                                        <DropdownToggle className="pr-0" nav>
-                                                        <Media className="align-items-center">
-                                                            
-                                                          <Media className="ml-2 d-none d-lg-block bg-white">
-                                                            <span className="mb-0 text-sm font-weight-bold">
-                                                              {cat.nomcat}
-                                                            </span>
-                                                          </Media>
-                                                        </Media>
-                                                      </DropdownToggle>
-                                                      <DropdownMenu className="dropdown-menu-arrow bg-white" right>
-                                                            <span className="mx-1 text-dark">Sous-catégories: </span>
-                                                            <DropdownItem divider />
-                                                            { cat.souscategorie.map(
-                                                              ({sousnomcat, _id, index2}) => {
-                                                                  return(
+                                                    <td className=" border-0 ">
+                                                    <Accordion className=" shadow-none">
+                                                        <AccordionSummary 
+                                                            aria-controls="panel1bh-content"
+                                                            expandIcon={<i className="fas fa-angle-down"></i>}>
+                                                              <span className="mb-0 text-sm font-weight-bold">
+                                                                {cat.nomcat}
+                                                              </span>
+                                                        </AccordionSummary>
+                                                       
+                                                        { cat.souscategorie.map(
+                                                              ({sousnomcat, _id}) => 
+                                                                  
+                                                                   
+                                                                      <div key={sousnomcat.id} >  
+                                                                       <AccordionDetails>
+                                                                        <Row className=" border-1 justify-content-between"> 
+                                                                          <span className="my-2">{sousnomcat}</span>
+                                                                          <Typography> 
+                                                                              <Button className=" mx-3 my-1 btn btn-outline-danger" size="sm" onClick={() => onDeleteSous(_id)}>
+                                                                                Supprimer 
+                                                                              </Button>
+                                                                          </Typography>                                                                                                                                      
+                                                                        </Row>  
+                                                                        </AccordionDetails>                                                            
+                                                                      </div>  
                                                                     
-                                                                    <div key={_id} >  
-                                                                    { currentIndex2 === index2 ? (
-                                                                    <>
-
-
-                                                                    </>
-                                                                    
-                                                                    ) : (
-                                                                      <>
-                                                                      <DropdownItem className="bg-white">                                                                      
-                                                                          <span className="mx-1">{sousnomcat}</span>
-                                                                          <Button className="mx-4 btn btn-outline-danger" size="sm" onClick={() => onDeleteSous(_id)}> Supprimer </Button>
-                                                                      </DropdownItem>
-                                                                      </>
-                                                                    )}                                                                    
-                                                                      
-                                                                    </div>  
-
-                                                                  )
-                                                              }
                                                             )}
-                                                            
-                                                      </DropdownMenu>
-                                                      </UncontrolledDropdown>
+                                                        
+                                                    </Accordion>
                                                     </td>
-                                                    <td className="border-0"> 
-                                                    </td>
+                                                    
                                                   </>
                                                    
                                                     

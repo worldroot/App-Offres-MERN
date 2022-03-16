@@ -55,6 +55,7 @@ import {
               props.create(values, onSuccess);
               resetForm();
               props.setShowModal(false)
+              window.location.reload();
              
           } else {
             
