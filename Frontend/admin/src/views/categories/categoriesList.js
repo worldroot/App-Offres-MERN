@@ -6,13 +6,15 @@ import {
     Container,
     Col,
     Button,
+    Badge,
+    
   } from "reactstrap";
   
   import Header from "../../components/Headers/Header.js";
   import AdminNavbar from "../../components/Navbars/AdminNavbar";
   import Sidebar from "../../components/Sidebar/Sidebar";
   import {connect, useDispatch} from 'react-redux';
-  import { getAllCat, deleteCat, updateCat } from "redux/cat/catActions";
+  import { getAllCat, deleteCat, updateCat, deleteSousCat } from "redux/cat/catActions";
   import { Fragment, useEffect, useState } from "react";
   import Categorie from "./categorie.js";
   import SousCategorie from "./sous-categorie.js";
@@ -43,7 +45,9 @@ import {
     const dispatch = useDispatch()
     const [currentId, setCurrentId] = useState(0);
     const [currentSousId, setCurrentSousId] = useState(0);
+
     const [currentIndex, setCurrentIndex] = useState(-1);
+    const [currentIndex2, setCurrentIndex2] = useState(-1);
 
     useEffect(() => {
       props.All();
@@ -53,8 +57,16 @@ import {
         const onSuccess = () => {
           window.location.reload();
         };
-        if(window.confirm("Êtes-vous sûr de vouloir supprimer ?"))
+        if(window.confirm("Catégorie: Êtes-vous sûr de vouloir supprimer ?"))
           dispatch(deleteCat(id, onSuccess))
+      };
+    
+    const onDeleteSous = (id) => {
+        const onSuccess = () => {
+          window.location.reload();
+        };
+        if(window.confirm("Sous-catégorie: Êtes-vous sûr de vouloir supprimer ?"))
+          dispatch(deleteSousCat(id, onSuccess))
       };
 
       const [showModal, setShowModal] = useState(false);
@@ -110,6 +122,7 @@ import {
                                       <th scope="col">Actions</th>
                                       <th scope="col"></th>
                                       <th scope="col"></th>
+                                      <th scope="col"></th>
                                 </>
                             )}
                         </tr>
@@ -124,13 +137,35 @@ import {
 
                                     <tr key={cat.id}>     
                                       <td> { currentIndex === index ? (
-                                                   <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
+                                        <>                                       
+                                          <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{opacity: 0}}
+                                            transition={{  duration: 0.5 }}>
+                                              <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
+                                            </motion.div>
+                                        </>
+                                       
                                                 ) : (
                                                   //homes.map(home => <div>{home.name}</div>)
                                                   <>
                                                     
-                                                    <td className=" border-0"> {cat.nomcat}</td>
-                                                    <td className=" border-0"> { cat.souscategorie.map( ({sousnomcat}) => <> <div key={cat} ></div> <span>{sousnomcat}</span> </> ) }</td>
+                                                    <td className="border-0"> {cat.nomcat}</td>
+                                                    <td className="border-0"> { cat.souscategorie.map(
+                                                        ({sousnomcat, _id}) => {
+                                                            return(
+                                                              
+                                                              <div key={_id} >
+                                                                <Row className="justify-content-between">
+                                                                  <span>{sousnomcat}</span>
+                                                                  <i className="fas fa-times text-danger fa-1x m-1" size="sm" onClick={() => onDeleteSous(_id)}></i>
+                                                                </Row>
+                                                              </div>  
+                                                            )
+                                                        }
+                                                      )}
+                                                    </td>
                                                   </>
                                                    
                                                     
@@ -146,20 +181,23 @@ import {
                                             setCurrentId(cat._id);
                                             setCurrentIndex(index)} }
                                           >
-                                              Edit
+                                              Modifer catégorie
+                                          </Button>
+                                        </td>
+                                        <td>
+                                          <Button
+                                          className="btn-outline-dark" size="sm"
+                                          onClick={() => {
+                                            setCurrentSousId(cat._id);
+                                            setCurrentIndex2(index)} }
+                                          >
+                                              Modifer sous-catégorie
                                           </Button>
                                         </td>
                                        
                                      </>
                                        
                                      )}
-
-                                        <td>
-                                          <div onClick={() => onDLP(cat._id)}>
-                                              <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>
-                                          </div> 
-                                        </td>   
-
                                         <td>
                                           <div>
                                             <Button className="btn btn-outline-default" size="sm" onClick={() => {setShowModal2(true); setCurrentSousId(cat._id)}}>
@@ -167,10 +205,18 @@ import {
                                             </Button>                                        
                                           </div>
                                         </td>   
+                                        <td>
+                                          <div onClick={() => onDLP(cat._id)}>
+                                              <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>
+                                          </div> 
+                                        </td>   
+
+                                       
                                        
 
                                     </tr>
                                     </Fragment>
+                                    
                                 );
 
                                 })}

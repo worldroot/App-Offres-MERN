@@ -122,8 +122,42 @@ export const addSousCat = (souscategory) => {
             
         }).catch((err) =>
             toast.error('ERR'),
-            CAT_ERR
+            ERR_SOUS
             );
     }
+};
+
+export const DLSous = (id) => axios.delete(`${CatmsURL}/api/sous-categorie/` + id);
+export const deleteSousCat = async(id, dispatch) => {
+    DLSous(id)
+    .then((res) => {
+        dispatch({
+            type: DEL_SOUS,
+            payload: id,
+        });
+        toast.error(`Supprimé avec succès !`);
+    }).catch((err) => 
+        console.log(err),
+        ERR_SOUS
+    );
+};
+
+export const UPSous = (id, updated) => axios.put(`${CatmsURL}/api/sous-categorie/` + id, updated);
+export const updateSousCat = (id, data) => (dispatch) => {
+    setAuthToken(localStorage.accessToken)
+    UPSous(id,data)
+    .then((res) => {
+        
+        dispatch({
+            type: UPSous,
+            payload: res.data,
+        });
+        toast.info('Mis à jour avec succés');
+        console.log(id, data)
+        
+    }).catch((err) => 
+        console.log(err),
+        ERR_SOUS
+    );
 };
 

@@ -52,6 +52,10 @@ import {
               props.create(values, onSuccess);
               props.setShowModal2(false)   
               resetForm();
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
         }
       };
   

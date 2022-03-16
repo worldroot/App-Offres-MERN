@@ -68,7 +68,7 @@ router.get('/all', async (req, res) => {
             //lookup for list sous secteur references to secteur with id server in array :
             { $lookup: { from: "souscategories", localField: "_id", foreignField: "category", as: "souscategorie" } },
             //cancel some attribute to displays :
-            { $project: { souscategorie: { category: 0, __v: 0, _id:0  } } },
+            { $project: { souscategorie: { category: 0, __v: 0  } } },
             { $project: { icon: 0, __v: 0, slug: 0,} }
         ])     
                                  
