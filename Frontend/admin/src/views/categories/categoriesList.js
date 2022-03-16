@@ -7,7 +7,11 @@ import {
     Col,
     Button,
     Badge,
-    
+    Media,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledDropdown
   } from "reactstrap";
   
   import Header from "../../components/Headers/Header.js";
@@ -159,21 +163,51 @@ import {
                                                 ) : (
                                                   //homes.map(home => <div>{home.name}</div>)
                                                   <>
-                                                    
-                                                    <td className="border-0"> {cat.nomcat}</td>
-                                                    <td className="border-0"> { cat.souscategorie.map(
-                                                        ({sousnomcat, _id}) => {
-                                                            return(
-                                                              
-                                                              <div key={_id} >
-                                                                <Row className="justify-content-between">
-                                                                  <span className="mx-1">{sousnomcat}</span>
-                                                                  <i className="fas fa-times text-danger fa-1x m-1 p--1" size="sm" onClick={() => onDeleteSous(_id)}></i>
-                                                                </Row>
-                                                              </div>  
-                                                            )
-                                                        }
-                                                      )}
+                                                     <td className="border-0">
+                                                      <UncontrolledDropdown nav>
+                                                        <DropdownToggle className="pr-0" nav>
+                                                        <Media className="align-items-center">
+                                                            
+                                                          <Media className="ml-2 d-none d-lg-block bg-white">
+                                                            <span className="mb-0 text-sm font-weight-bold">
+                                                              {cat.nomcat}
+                                                            </span>
+                                                          </Media>
+                                                        </Media>
+                                                      </DropdownToggle>
+                                                      <DropdownMenu className="dropdown-menu-arrow bg-white" right>
+                                                            <span className="mx-1 text-dark">Sous-catégories: </span>
+                                                            <DropdownItem divider />
+                                                            { cat.souscategorie.map(
+                                                              ({sousnomcat, _id, index2}) => {
+                                                                  return(
+                                                                    
+                                                                    <div key={_id} >  
+                                                                    { currentIndex2 === index2 ? (
+                                                                    <>
+
+
+                                                                    </>
+                                                                    
+                                                                    ) : (
+                                                                      <>
+                                                                      <DropdownItem className="bg-white">                                                                      
+                                                                          <span className="mx-1">{sousnomcat}</span>
+                                                                          <Button className="mx-4 btn btn-outline-danger" size="sm" onClick={() => onDeleteSous(_id)}> Supprimer </Button>
+                                                                      </DropdownItem>
+                                                                      </>
+                                                                    )}                                                                    
+                                                                      
+                                                                    </div>  
+
+                                                                  )
+                                                              }
+                                                            )}
+                                                            
+                                                      </DropdownMenu>
+                                                      </UncontrolledDropdown>
+                                                    </td>
+                                                    <td className="border-0"> 
                                                     </td>
                                                   </>
                                                    
@@ -193,17 +227,6 @@ import {
                                               Modifer catégorie
                                           </Button>
                                         </td>
-                                        <td>
-                                          <Button
-                                          className="btn-outline-dark" size="sm"
-                                          onClick={() => {
-                                            setCurrentSousId(cat._id);
-                                            setCurrentIndex2(index)} }
-                                          >
-                                              Modifer sous-catégorie
-                                          </Button>
-                                        </td>
-                                       
                                      </>
                                        
                                      )}
