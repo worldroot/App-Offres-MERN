@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router()
-const Category = require('../models/Categorie')
+const Category = require('../models/Sous-categorie')
 const {verifyAccessToken} = require('../middleware/verify-token')
-const catid = require('../middleware/categorieByid')
+const catid = require('../middleware/souscategorieByid')
 const axios = require('axios')
 const { check, validationResult } = require('express-validator')
 
@@ -10,7 +10,7 @@ const { check, validationResult } = require('express-validator')
 // @desc    Create Category
 // @access  Private Admin
 router.post('/', 
-    [ check('nomcat', 'Name is required').trim().not().isEmpty()]
+    [ check('sousnomcat', 'Name is required').trim().not().isEmpty()]
     ,verifyAccessToken 
     ,async (req, res) => {
 
@@ -31,17 +31,17 @@ router.post('/',
 
         }else{
              
-            const { nomcat } = req.body
+            const { sousnomcat } = req.body
             try {
 
-                let category = await Category.findOne({ nomcat })
+                let category = await Category.findOne({ sousnomcat })
                 if (category) {
                     return res.status(403).json({
                         error: true,
-                        msg: 'Category already exist'
+                        msg: 'Sous-Category already exist'
                     })
                 }
-                const newCategory = new Category({ nomcat })
+                const newCategory = new Category({ sousnomcat })
                 category = await newCategory.save()
                 res.status(200).json(category)
           
@@ -75,12 +75,6 @@ router.get('/all', async (req, res) => {
     }
 })
 
-// @route   Get api/categorie/:categoryId
-// @desc    Get Single category
-// @access  Public
-router.get('/:categoryId', catid, async (req, res) => {
-    res.json(req.category)
-})
 
 // @route   Put api/categorie/:categoryId
 // @desc    Update Single category
@@ -108,13 +102,13 @@ router.put('/:categoryId',
             }else{
 
                 let category = req.category;
-                const { nomcat } = req.body
-                if (nomcat) category.nomcat = nomcat.trim()
+                const { sousnomcat } = req.body
+                if (sousnomcat) category.sousnomcat = sousnomcat.trim()
 
                 try {
                     category = await category.save()
                     res.status(200).json({
-                        message: `Category : ${category.nomcat} updated successfully`
+                        message: `Sous-Category : ${category.sousnomcat} updated successfully`
                     })
                     
                     } catch (error) {
@@ -161,7 +155,7 @@ router.delete('/:categoryId',
                 try {
                     let deletedCategory = await category.remove()
                     res.status(200).json({
-                        message: `Category : ${deletedCategory.nomcat} deleted successfully`
+                        message: `Category : ${deletedCategory.sousnomcat} deleted successfully`
                     })
                     } catch (error) {
                         console.log(error.message)

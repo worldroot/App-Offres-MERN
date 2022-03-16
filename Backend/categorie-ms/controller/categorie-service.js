@@ -10,7 +10,8 @@ const { check, validationResult } = require('express-validator')
 // @desc    Create Category
 // @access  Private Admin
 router.post('/', 
-    [ check('nomcat', 'Name is required').trim().not().isEmpty()]
+    [ check('nomcat', 'Name is required').trim().not().isEmpty()],
+    [ check('sous', 'Sous Categorie is required').trim().not().isEmpty()]
     ,verifyAccessToken 
     ,async (req, res) => {
 
@@ -31,17 +32,17 @@ router.post('/',
 
         }else{
              
-            const { nomcat } = req.body
+            const { sous,nomcat } = req.body
             try {
 
-                let category = await Category.findOne({ nomcat })
+                let category = await Category.findOne({ nomcat, sous })
                 if (category) {
                     return res.status(403).json({
                         error: true,
                         msg: 'Category already exist'
                     })
                 }
-                const newCategory = new Category({ nomcat })
+                const newCategory = new Category({ nomcat, sous })
                 category = await newCategory.save()
                 res.status(200).json(category)
           
