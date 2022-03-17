@@ -1,6 +1,6 @@
 'use strict';
 
-const catModel = require('../Categorie');
+const catModel = require('../models/Categorie');
 
 module.exports.create = async (cat) => {
     if (!cat)

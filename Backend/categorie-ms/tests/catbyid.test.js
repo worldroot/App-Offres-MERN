@@ -5,7 +5,7 @@ const dbHandler = require('./db-handler');
 require('dotenv').config();
 
 const CatService = require('./test-service')
-const CatModel = require('../Categorie')
+const CatModel = require('../models/Categorie');
 
 /**
  * Connect to a new in-memory database before running any tests.
