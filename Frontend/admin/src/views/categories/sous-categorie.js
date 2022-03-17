@@ -14,11 +14,9 @@ import {
   // core components
   import { Redirect } from 'react-router-dom'
   import { connect, useDispatch } from 'react-redux';
-  import {toast} from 'react-toastify'
   import React, { useState } from "react";
   import { updateCat, addSousCat } from "redux/cat/catActions";
   import useForm from "helpers/useForm";
-  import Modal from "components/ModalBox";
   const initialFieldValues = { sousnomcat:"", category:""}
 
 
@@ -64,7 +62,7 @@ import {
     }
 
     const reset = (e) => { resetForm() }
-    const [SC, setSC] = useState(values.category = props.currentSousId);
+    const [SC, setSC] = useState(values.category = props.currentId);
 
     return(
       <>

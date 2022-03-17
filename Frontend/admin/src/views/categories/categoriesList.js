@@ -239,7 +239,7 @@ import {
                                         <td>
                                           <div>
                                             <Button className="btn btn-outline-default" size="sm" 
-                                                    onClick={() => {setShowModal2(true); setCurrentSousId(cat._id)}}>
+                                                    onClick={() => {setShowModal2(true); setCurrentId(cat._id)}}>
                                               <i className="fas fa-plus"></i> Sous-Catégorie
                                             </Button>                                        
                                           </div>
@@ -317,7 +317,7 @@ import {
                 <Col className="center" xl="3">
                   <motion.div className="" variants={modal}>
                         
-                      <SousCategorie {...{ currentId, setCurrentId, showModal2, setShowModal2, currentSousId, setCurrentSousId }} />
+                      <SousCategorie {...{ currentId, setCurrentId, showModal2, setShowModal2 }} />
 
                   </motion.div>
                 </Col>

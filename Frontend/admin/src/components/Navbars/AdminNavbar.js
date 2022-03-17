@@ -44,11 +44,19 @@ const AdminNavbar = ({ logout }) => {
           
           const refreshToken = localStorage.getItem("refreshToken")
           const decodedToken = decode(accessToken)
+          const decodedRefToken = decode(refreshToken)
 
                 if(decodedToken.exp * 1000 < new Date().getTime()){
-                    
                     dispatch(refreshJwt({refreshToken}))
                   }
+
+                if(decodedRefToken.exp * 1000 < new Date().getTime()){
+                    dispatch(logout())
+                    //history.push('/login')
+                    return <Redirect to='/login'/>;
+                  }
+
+                
         }
       }, []);
     
