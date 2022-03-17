@@ -132,7 +132,7 @@ import {
                                             setCurrentId(user._id);
                                             setShowModal(true)
                                             } }>
-                                                <Button className="btn btn-outline-dark" size="sm"> Bannir </Button>
+                                                <Button className="btn btn-outline-danger" size="sm"> Bannir </Button>
                                             </div> 
                                             </td>         
                                 </tr>

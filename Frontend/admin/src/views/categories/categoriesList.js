@@ -217,9 +217,8 @@ import {
                                                 )
                                             }   
                                      
-                                   { currentId === 0 &&(
-                                     <>
-                                         <td>
+                                   
+                                        <td>
                                           <Button
                                           className="btn-outline-dark" size="sm"
                                           onClick={() => {
@@ -229,9 +228,6 @@ import {
                                               Modifer
                                           </Button>
                                         </td>
-                                     </>
-                                       
-                                     )}
                                         <td>
                                           <div onClick={() => onDLP(cat._id)}>
                                               <Button className="btn btn-outline-danger" size="sm"> Supprimer </Button>

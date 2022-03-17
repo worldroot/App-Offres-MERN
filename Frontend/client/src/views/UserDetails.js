@@ -86,7 +86,7 @@ const UserDetails = (props) => {
     <>
       <div className="main-content flex" >
       <AuthNavbar />
-      <div className="header bg-danger py-7 py-xl-9">
+            <div className="bg-danger py-5 py-xl-9">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
@@ -108,7 +108,7 @@ const UserDetails = (props) => {
                     <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
                       <div className=" justify-content-between">
                       { user.active && (
-                                <span className=" text-info font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
+                                <span className=" text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
                       )}
 
                       { !user.active && (

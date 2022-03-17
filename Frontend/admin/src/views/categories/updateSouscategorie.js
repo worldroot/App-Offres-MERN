@@ -47,7 +47,7 @@ import {
             props.update(props.currentIdS2, values, onSuccess);
             setTimeout(() => {
                 window.location.reload();
-              }, 2000);
+              }, 1000);
         }
       };
   
