@@ -41,8 +41,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
     const accessToken = localStorage.getItem("accessToken")
     if(accessToken){
-      
-
+    
       const refreshToken = localStorage.getItem("refreshToken")
       const decodedRefToken = decode(refreshToken)
      
