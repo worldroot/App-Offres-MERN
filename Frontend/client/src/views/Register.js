@@ -37,7 +37,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
   })
 
   const { nom, prenom, email, password} = data
-
+  const style = { width: "200px" }
   /*
   const history = useHistory()
   setTimeout(() => {
@@ -76,7 +76,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
     <>
     <div className="main-content position-flex">
         <AuthNavbar />
-        <div className="header bg-danger py-7 py-lg-8">
+        <div className="bg-danger py-7 py-lg-8 w-100vh h-100vh">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -92,7 +92,7 @@ const Register = ({register, isAuth, isLoading, user}) => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-3 py-5 bg-danger " xl="6">
+                <Col className="order-xl-1 bg-danger" xl="8">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}
@@ -103,7 +103,8 @@ const Register = ({register, isAuth, isLoading, user}) => {
                                 <i className="fas fa-user fa-fw fa-3x text-white"></i>
                               </div>
                             </Col>
-                            <Col xl="8">
+
+                          <Col xl="8">
                               <div className="flex-grow-1">
                                 <div className="small font-weight-bold text-white-50 mb-0 text-uppercase">Inscrivez-vous pour profiter de tous nos services</div>
                                 <div className="h3 mb-0 text-white">Mon espace</div>
@@ -111,10 +112,9 @@ const Register = ({register, isAuth, isLoading, user}) => {
                             </Col>
                           </Row>
                     
-                      <br></br>
+                          <br></br>
 
-
-                      <Form role="form" onSubmit={onSubmit}>
+                          <Form role="form" onSubmit={onSubmit}>
                             <FormGroup>
                               <InputGroup className="input-group-alternative mb-3">
                                 <InputGroupAddon addonType="prepend">
@@ -180,19 +180,20 @@ const Register = ({register, isAuth, isLoading, user}) => {
                                 </Button>
                             </div>
                           </Form>
-
                       </Col>
                       {/* SIDE 2 */}
-                      <Col className="align-self-center position-sticky" xl="4">  
+                      <Col className="align-self-center sticky" xl="4">  
                           <div className="md-2">
                               
                               <img
                                   className="img-fluid"
+                                  style={ style }
                                   alt="..."
                                   src={OO}
                                 />
                                 <img
                                   className="img-fluid"
+                                  style={ style }
                                   alt="..."
                                   src={ooredoo}
                                 />
@@ -205,7 +206,10 @@ const Register = ({register, isAuth, isLoading, user}) => {
              </Container> 
     </div>
 </div>
-<AuthFooter/>
+      <div className=" fixed-bottom">
+      <AuthFooter/>
+      </div>
+
     </>
   );
 };

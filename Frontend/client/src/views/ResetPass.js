@@ -17,9 +17,8 @@ import {
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import axios from 'axios';
-import { useHistory } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {UsermsURL} from 'helpers/urls'
 import setAuthToken from 'helpers/authToken';
@@ -58,6 +57,7 @@ const ResetPass = () => {
   })
 
   const { password, confirmpass } = data
+  const style = { width: "200px" }
 
   const handleChange = (name) => (event) => {
     setData({ ...data, [name]: event.target.value })
@@ -87,9 +87,6 @@ const ResetPass = () => {
 
   return (
     <>
-    <div className="main-content">
-
-
     { !validUrl && (
             <>
               <div className="header bg-white py-7 py-lg-8"> 
@@ -97,14 +94,13 @@ const ResetPass = () => {
               </div> 
             </>
   
-            )}
+            )}   
 
-
-                      
     { validUrl && (
             <>
-            <AuthNavbar />
-        <div className="header bg-danger py-7 py-lg-8">
+      <div className="main-content position-flex">
+          <AuthNavbar />
+        <div className="header bg-danger py-7 py-lg-8 w-100vh h-100vh">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -120,7 +116,7 @@ const ResetPass = () => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-danger " xl="6">
+                  <Col className="order-xl-1 bg-danger" xl="8">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}
@@ -141,15 +137,13 @@ const ResetPass = () => {
                     
                       <br></br>
 
-
-                      <Form role="form" onSubmit={onSubmit}>
-                           
-                           
+                          <Form role="form" onSubmit={onSubmit}>                 
                             <FormGroup>
                               <InputGroup className="input-group-alternative mb-3">
                                 <InputGroupAddon addonType="prepend">
                                   <InputGroupText>
-                                   <i className="fas fa-key"></i>                                  </InputGroupText>
+                                   <i className="fas fa-key"></i>                                  
+                                   </InputGroupText>
                                 </InputGroupAddon>
                                 <Input
                                   placeholder="Mot de passe"
@@ -187,16 +181,18 @@ const ResetPass = () => {
 
                       </Col>
                       {/* SIDE 2 */}
-                      <Col className="align-self-center" xl="4">  
+                      <Col className="align-self-center sticky" xl="4">  
                           <div className="md-2">
                               
                               <img
                                   className="img-fluid"
+                                  style={ style }
                                   alt="..."
                                   src={OO}
                                 />
                                 <img
                                   className="img-fluid"
+                                  style={ style }
                                   alt="..."
                                   src={ooredoo}
                                 />
@@ -208,11 +204,17 @@ const ResetPass = () => {
                 </Row>
              </Container> 
         </div>
-            <AuthFooter />
+      </div>
+
+
+      <div className=" fixed-bottom">
+        <AuthFooter/>
+      </div>
+  
             </>
             )}
         
-</div>
+
     </>
   );
 };

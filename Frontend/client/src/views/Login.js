@@ -22,14 +22,14 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 import OO from "../assets/img/ccwhite.png"
 import ooredoo from "../assets/img/oo.png"
 
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
 
 const Login = ({ login, isAuth, user }) => {
 
-  
+  let history = useHistory()
   const style = { width: "200px" }
   const [data, setData] = useState({
     email: '',
@@ -69,7 +69,7 @@ const Login = ({ login, isAuth, user }) => {
     <>
       <div className="main-content">
         <AuthNavbar />
-        <div className="bg-danger py-7 py-lg-8">
+        <div className="bg-danger py-7 py-lg-9 w-100vh h-100vh">
         <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -88,7 +88,7 @@ const Login = ({ login, isAuth, user }) => {
             <Container className="mt--8 pb-5">
             <Row className="justify-content-center">
                     
-              <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-danger " xl="8">
+              <Col className="order-xl-1 bg-danger" xl="8">
                 
                 <Row className="mt-3">
                   {/* SIDE 1 */}
@@ -138,13 +138,11 @@ const Login = ({ login, isAuth, user }) => {
                             value={password}
                           />
                         </InputGroup>
-                        <a
-                          className="text-white"
-                          href="/forgot-pass"
-                          //onClick={(e) => e.preventDefault()}
-                        >
-                          <small>Mot de passe oublié ?</small>
-                        </a>
+                          <a disabled className=" text-white" onClick={() => history.push('/forgot-pass')} href="" >
+                               <small>Mot de passe oublié ?</small>
+                          </a>
+                         
+                        
                       </FormGroup>
                     
                       <div className="text-center">
@@ -193,7 +191,10 @@ const Login = ({ login, isAuth, user }) => {
         
         </div> 
       </div>
+      <div className=" fixed-bottom">
       <AuthFooter/>
+      </div>
+     
 
     </>
   );

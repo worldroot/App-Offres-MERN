@@ -33,21 +33,15 @@ import {
         
 
         const refreshToken = localStorage.getItem("refreshToken")
-        /**
-         *  
-
-               let minutes = 1000 * 60 * 40
-        let interval =  setInterval(()=> {
-            refreshJwt({refreshToken})
-        }, minutes)
-
-        return ()=> clearInterval(interval)
-         */
-
-       
         const decodedToken = decode(accessToken)
-            if(decodedToken.exp * 1000 < new Date().getTime()){
+        const decodedRefToken = decode(refreshToken)
+        console.log(decodedRefToken.exp * 1000)
+        console.log(new Date().getTime())
+              if(decodedToken.exp * 1000 < new Date().getTime()){
                 refreshJwt({refreshToken})
+              }
+              if(decodedRefToken.exp * 1000 < new Date().getTime()){
+                return <Redirect to='/login'/>
               }
 
       }

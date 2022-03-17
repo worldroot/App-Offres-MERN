@@ -20,30 +20,39 @@ import {
 const LogoImg = require('../../assets/img/oo.png')
 const ooredoo = require('../../assets/img/oored.png')
 import { logout } from "redux/auth/authActions";
-import {connect} from 'react-redux'
+import {connect, useDispatch} from 'react-redux'
 import { Link, useHistory, Redirect } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import decode from 'jwt-decode'
 
 const AuthNavbar = ({ logout, isAuth }) => {
 
   let history = useHistory()
   const userExist = localStorage.getItem("user")
-
+  const dispatch = useDispatch()
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
 
+  useEffect(() => {
 
+    const accessToken = localStorage.getItem("accessToken")
+    if(accessToken){
+      
 
-    //if (user.role === "admin" ) return <Redirect to='/admin'/>;
-    //if (user.role === "super-admin" ) return <Redirect to='/super-admin'/>;
-    //if (role === 1) return <Redirect to='/dashboard/'/>
+      const refreshToken = localStorage.getItem("refreshToken")
+      const decodedRefToken = decode(refreshToken)
+     
+            if(decodedRefToken.exp * 1000 < new Date().getTime()){
+              dispatch(logout())
+              return <Redirect to='/login'/>
+            }
 
-  
-
+    }
+  }, []);
 
   return (
     <>

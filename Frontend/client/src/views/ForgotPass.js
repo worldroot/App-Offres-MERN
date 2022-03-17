@@ -72,11 +72,13 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
       //if (role === 1) return <Redirect to='/dashboard/'/>;
     }
 
+    const style = { width: "200px" }
+
   return (
     <>
-    <div className="main-content">
+    <div className="main-content position-flex">
         <AuthNavbar />
-        <div className="header bg-danger py-7 py-lg-8">
+        <div className="header bg-danger py-7 py-lg-8 w-100vh h-100vh">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -92,7 +94,7 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
             <Container className="mt--8 pb-5">
                 <Row className="justify-content-center">        
                           
-                  <Col className="order-xl-1 mt-2 mt-md-8 py-5 bg-danger " xl="6">
+                  <Col className="order-xl-1 bg-danger " xl="8">
                     
                     <Row className="mt-3">
                       {/* SIDE 1 */}
@@ -114,7 +116,7 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
                       <br></br>
 
 
-                      <Form role="form" onSubmit={onSubmit}>
+                          <Form role="form" onSubmit={onSubmit}>
                            
                            
                             <FormGroup>
@@ -153,11 +155,13 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
                               
                               <img
                                   className="img-fluid"
+                                  style={ style }
                                   alt="..."
                                   src={OO}
                                 />
                                 <img
                                   className="img-fluid"
+                                  style={ style }
                                   alt="..."
                                   src={ooredoo}
                                 />
@@ -169,8 +173,10 @@ const Register = ({forgotPass, isAuth, isLoading, user}) => {
                 </Row>
              </Container> 
     </div>
-    <AuthFooter />
 </div>
+<div className=" fixed-bottom">
+      <AuthFooter/>
+      </div>
     </>
   );
 };

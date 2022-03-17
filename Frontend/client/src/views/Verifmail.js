@@ -40,7 +40,7 @@ const VerifMail = () => {
   
     return (
       <>
-          <div className="main-content">
+          <div className="main-content position-flex">
 
            
   
@@ -57,7 +57,17 @@ const VerifMail = () => {
             { validUrl && (
             <>
               <AuthNavbar />
-              <div className="header bg-red py-7 py-lg-8"> 
+              <div className="header bg-red py-7 py-lg-8 w-100vh h-100vh"> 
+                <Container>
+                  <div className="header-body text-center mb-7">
+                    <Row className="justify-content-center">
+                      <Col lg="5" md="6">
+                        <p className="text-lead text-light">
+                        </p>
+                      </Col>
+                    </Row>
+                  </div>
+                </Container>
                 <Container classeName="mt--8 pb-5">
                 <Row className="justify-content-center">
                   <Col>
