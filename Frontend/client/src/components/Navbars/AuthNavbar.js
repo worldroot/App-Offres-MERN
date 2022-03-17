@@ -13,8 +13,7 @@ import {
   Nav,
   Container,
   Row,
-  Col,
-  Button,
+  Col
 } from "reactstrap";
 
 const LogoImg = require('../../assets/img/oo.png')
