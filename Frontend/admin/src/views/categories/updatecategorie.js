@@ -75,7 +75,7 @@ import {
   
     return(
       <>      
-              <td className="border-0 p-0">
+              <td className="p-0">
               <Form role="form" onSubmit={onSubmit}>
                       <td className="border-0">
                       <Input

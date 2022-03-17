@@ -145,22 +145,23 @@ import {
                                     <Fragment key={index}>
 
                                     <tr key={cat.id}>     
-                                      <td> { currentIndex === index ? (
-                                        <>                                       
-                                          <motion.div
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{opacity: 0}}
-                                            transition={{  duration: 0.5 }}>
-                                              <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
-                                            </motion.div>
-                                        </>
+                                      { currentIndex === index ? (
+                                                  <>                                       
+                                                    <motion.div
+                                                      initial={{ opacity: 0 }}
+                                                      animate={{ opacity: 1 }}
+                                                      exit={{opacity: 0}}
+                                                      transition={{  duration: 0.5 }}>
+                                                        <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
+                                                      </motion.div>
+                                                  </>
                                        
                                                 ) : (                                                 
-                                                  <>
-                                                    <td className=" border-0 ">
-                                                    <Accordion className=" shadow-none">
-                                                        <AccordionSummary 
+                                                  <td className=""> 
+                                                   
+                                                    <Accordion className="shadow-none">
+                                                     
+                                                         <AccordionSummary 
                                                             aria-controls="panel1bh-content"
                                                             expandIcon={<i className="fas fa-angle-down fa-1x"></i>}>
                                                               <span className="mb-0 text-sm font-weight-bold">
@@ -170,6 +171,8 @@ import {
                                                                 ({cat.souscategorie.length})
                                                               </span>
                                                         </AccordionSummary>
+                                                     
+                                                       
                                                        
                                                         { cat.souscategorie.map(
                                                               ({sousnomcat, _id}, index2) => { 
@@ -187,7 +190,6 @@ import {
                                                                       </>
                                                                       ) : (
                                                                       <>
-                                                                         
                                                                           <AccordionDetails>
                                                                             <Row className="border-1 justify-content-between"> 
                                                                               <span className="my-2 text-gray">{sousnomcat}</span>
@@ -198,24 +200,23 @@ import {
                                                                                   <Button className="btn btn-default" size="sm" 
                                                                                      onClick={() => {
                                                                                       setCurrentIndex2(index2);
-                                                                                      setCurrentIdS2(_id)}}>
+                                                                                      setCurrentIdS2(_id)} }>
                                                                                     <i className="fas fa-pencil-alt"></i>
                                                                                   </Button>
                                                                               </Typography>                                                                                                                                      
                                                                             </Row>  
-                                                                          </AccordionDetails>                                                            
-
+                                                                          </AccordionDetails>                                                       
                                                                       </>
                                                                       )}
                                                                   </Fragment>    
                                                               )}       
                                                             )}
                                                     </Accordion>
-                                                    </td>  
-                                                  </> 
+                                                    
+                                                  </td> 
                                                 )
                                             }   
-                                      </td> 
+                                     
                                    { currentId === 0 &&(
                                      <>
                                          <td>

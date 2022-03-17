@@ -91,14 +91,13 @@ export const updateCat = (id, data) => (dispatch) => {
             payload: res.data,
         });
         toast.info('Mis à jour avec succés');
-        console.log(id, data)
+        //console.log(id, data)
         
     }).catch((err) => 
         console.log(err),
         CAT_ERR
     );
 };
-
 
 //---SOUS-CATEGORIE
 export const createSousSuccess = (data) => {
@@ -149,11 +148,11 @@ export const updateSousCat = (id, data) => (dispatch) => {
     .then((res) => {
         
         dispatch({
-            type: UPSous,
+            type: UP_SOUS,
             payload: res.data,
         });
         toast.info('Mis à jour avec succés');
-        console.log(id, data)
+        //console.log(id, data)
         
     }).catch((err) => 
         console.log(err),
@@ -174,7 +173,7 @@ export const getAllSousCat = () => (dispatch) => {
     .catch(
         (err) =>
         console.log(err),
-        GET_CAT_F
+        GET_SOUS_F
     );
 };
 
