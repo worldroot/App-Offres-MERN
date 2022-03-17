@@ -23,6 +23,11 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
 
   let history = useHistory()
   const userExist = localStorage.getItem("user")
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
 
   return (
@@ -54,8 +59,28 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
             </div>
             <Nav className="ml-auto" navbar>
             { userExist && (
-              
-                <NavItem>
+              <>
+                  
+
+              { userLocal.role === "admin" &&(
+                 <NavItem>
+                    <NavLink to="/admin" className="nav-link-icon" tag={Link}>
+                      <i className="fas fa-tools" />
+                      <span className="nav-link-inner--text">Dashboard</span>
+                    </NavLink>
+                 </NavItem>
+              )} 
+
+              { userLocal.role === "super-admin" &&(
+                  <NavItem>
+                    <NavLink to="/super-admin" className="nav-link-icon" tag={Link}>
+                      <i className="fas fa-tools"></i>
+                      <span className="nav-link-inner--text">Dashboard</span>
+                    </NavLink>
+                  </NavItem>
+              )} 
+
+                  <NavItem>
                     <NavLink className="nav-link-icon" to="/" onClick={ ()=> {
                        logout(),
                        history.push('/login'),
@@ -67,6 +92,8 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                       <span className="nav-link-inner--text">Se déconnecter</span>
                     </NavLink>
                   </NavItem>    
+              </>
+                
             )}
    
               { !userExist && (

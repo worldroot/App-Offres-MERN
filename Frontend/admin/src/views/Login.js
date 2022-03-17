@@ -55,6 +55,11 @@ const Login = ({ login, isAuth, user, isLoading }) => {
   };
 
   const userExist = localStorage.getItem("user")
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   if(isAuth && user){
 
@@ -70,7 +75,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
     <>
         <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-red">
+        <div className="header bg-red h-100vh" fluid>
           <Container>
             <div className="header-body text-center">
               <Row className="justify-content-center">
@@ -156,13 +161,24 @@ const Login = ({ login, isAuth, user, isLoading }) => {
           )}
 
           { userExist && (
-          <Container className="mt--8 pb-5 bg-danger">
-          <Row className="justify-content-center">
-                  
-            <h1 className="text-center text-white">Déjà connecté</h1>
-            
-          </Row>
-          </Container>
+           <Container className="mt-8 pb-9 w-100">
+           <Row className="justify-content-center">
+                   
+             <Col lg="5" md="5">
+               <Card className="bg-secondary shadow border-0">
+                 <CardHeader className="bg-transparent pb-6">
+                   <h1 className="text-center text-dark"> Espace Administration </h1>
+                   <h3 className="text-center text-success"> {userLocal.role} connecté </h3>
+                   <h3 className="text-center text-dark"> {userLocal.email} </h3>
+                
+                 </CardHeader>
+                
+               </Card>
+              
+             </Col>
+             
+           </Row>
+           </Container>
           )}
 
         </div>   
