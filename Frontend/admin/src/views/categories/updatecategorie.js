@@ -57,22 +57,13 @@ import {
           resetForm();
         };
         if (validate()) {
-          if (props.currentId === 0){
-    
-              props.create(values, onSuccess);
-              props.setCurrentIndex(-1) 
-              resetForm();
-             
-          } else {
-            
+          
             props.update(props.currentId, values, onSuccess);
             
             setTimeout(() => {
                 window.location.reload();
               }, 2000);
 
-          }   
-    
         }
       };
   
@@ -109,7 +100,6 @@ import {
   };
   
   const mapActionToProps = {
-    create: addCat,
     update: updateCat,
   };
   

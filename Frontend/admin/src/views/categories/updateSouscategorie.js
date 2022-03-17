@@ -5,27 +5,23 @@ import {
     Input,
   } from "reactstrap";
   // core components
-  import { Redirect } from 'react-router-dom'
-  import { connect, useDispatch } from 'react-redux';
-  import {toast} from 'react-toastify'
+  import { connect } from 'react-redux';
   import React, { useEffect } from "react";
-  import { updateCat, addCat } from "redux/cat/catActions";
-  import useForm from "helpers/useForm";
-  const initialFieldValues = { nomcat:"",}
+  import { updateSousCat } from "redux/cat/catActions";
+  import useForm from "helpers/useForm2";
+  const initialFieldValues = { sousnomcat:"" }
 
   const UpdateSousCategorie = ({...props}) => {
 
-    const dispatch = useDispatch()
-
     useEffect(() => {
-        if (props.currentId !== 0) {
+        if (props.currentIdS2 !== 0) {
           setValues({
-            ...props.List.find((p) => p._id === props.currentId),
+            ...props.List.find((p) => p._id === props.currentIdS2),
           });
           setErrors({});
         }
     
-      }, [props.currentId]);
+      }, [props.currentIdS2]);
 
     var {
         values,
@@ -34,7 +30,7 @@ import {
         setErrors,
         handleInputChange,
         resetForm,
-      } = useForm(initialFieldValues, props.setCurrentId);
+      } = useForm(initialFieldValues, props.currentIdS2);
 
     const validate = () => {
         let temp = {...errors};
@@ -45,45 +41,41 @@ import {
       
     const onSubmit = (e) => {
         e.preventDefault();
-        const onSuccess = () => {
-          
-          resetForm();
-        };
+        const onSuccess = () => { resetForm(); };
         if (validate()) {
-          
-            props.update(props.currentId, values, onSuccess);
             
+            props.update(props.currentIdS2, values, onSuccess);
             setTimeout(() => {
                 window.location.reload();
               }, 2000);
-    
         }
       };
   
-
     const reset = (e) => { 
       resetForm(),
-      props.setCurrentIndex(-1) 
+      props.setCurrentIndex2(-1) 
     }
+
+
   
     return(
       <>      
               <Form role="form" onSubmit={onSubmit}>
                       <td className="border-0">
-                      <Input
+                        <Input
                             type="text"
                             bsSize="sm"
-                            name="nomcat"
-                            value={values.nomcat}
+                            name="sousnomcat"
+                            value={values.sousnomcat}
                             onChange={handleInputChange}
                           />
                       </td>
                      <td className="border-0">
                      <Button className=" btn-outline-success" color="dark" size="sm" type="submit">
-                          Confirmer
+                          <i className="far fa-check-circle"></i>
                       </Button>
                       <Button className="btn-outline-dark" onClick={() => reset()} color="dark" size="sm" type="submit">
-                          Annuler
+                          <i className="far fa-times-circle"></i>
                       </Button>
                      </td>                    
                   </Form>
@@ -93,7 +85,7 @@ import {
   };
   
   const mapActionToProps = {
-    update: updateCat,
+    update: updateSousCat,
   };
   
   const mapStateToProps = (state) => ({

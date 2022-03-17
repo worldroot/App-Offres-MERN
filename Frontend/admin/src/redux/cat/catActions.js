@@ -74,7 +74,7 @@ export const deleteCat = async(id, dispatch) => {
             type: DELETE_CAT,
             payload: id,
         });
-        toast.error(`Supprimé avec succès !`);
+        //toast.error(`Supprimé avec succès !`);
     }).catch((err) => 
         console.log(err),
         CAT_ERR
@@ -158,6 +158,23 @@ export const updateSousCat = (id, data) => (dispatch) => {
     }).catch((err) => 
         console.log(err),
         ERR_SOUS
+    );
+};
+
+export const FetchSous = () => axios.get(`${CatmsURL}/api/sous-categorie/all`);
+export const getAllSousCat = () => (dispatch) => {
+    FetchSous()
+    .then((res) => {
+        
+        dispatch({
+            type: GET_SOUS_S,
+            payload: res.data,
+        })
+    })
+    .catch(
+        (err) =>
+        console.log(err),
+        GET_CAT_F
     );
 };
 
