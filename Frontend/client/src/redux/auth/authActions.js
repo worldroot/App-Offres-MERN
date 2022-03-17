@@ -2,7 +2,7 @@ import {UsermsURL} from '../../helpers/urls'
 import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 
 import { 
     USER_LOADED,
@@ -32,7 +32,7 @@ export const loadUser = () => async (dispatch) => {
 
     try {
 
-        const res = await axios.get(`${UsermsURL}/api/access/getuser`);
+        const res = await axios.get(`${UsermsURL}/api/access/getuser`)
         localStorage.setItem('user', JSON.stringify(res.data));
         
         dispatch({
@@ -41,10 +41,13 @@ export const loadUser = () => async (dispatch) => {
         })
 
     } catch (error) {
+        
         console.log(error)
+        dispatch(logout())
         dispatch({
             type: ERROR
         })
+        
     }
 }
 
@@ -144,7 +147,9 @@ export const refreshJwt = ({
 
     try {
         // Response 
-        const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)  
+       
+        const res =  axios.post(`${UsermsURL}/api/access/refresh-token`, body, config)
+                         
         const {data} = await res
         //console.log(data)
 
@@ -155,8 +160,10 @@ export const refreshJwt = ({
        
                  
     } catch (err) {
-        console.log(err)
+        
         dispatch({ type: REFTOKEN_ERROR })
+        dispatch(logout())
+        
     }
 };
 

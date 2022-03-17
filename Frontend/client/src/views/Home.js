@@ -11,7 +11,6 @@ import {
   
   import { Redirect } from 'react-router-dom'
   import {connect} from 'react-redux'
-  import {toast} from 'react-toastify'
 
   import { refreshJwt } from "redux/auth/authActions";
   import decode from 'jwt-decode'
@@ -35,15 +34,9 @@ import {
         const refreshToken = localStorage.getItem("refreshToken")
         const decodedToken = decode(accessToken)
         const decodedRefToken = decode(refreshToken)
-        console.log(decodedRefToken.exp * 1000)
-        console.log(new Date().getTime())
               if(decodedToken.exp * 1000 < new Date().getTime()){
                 refreshJwt({refreshToken})
               }
-              if(decodedRefToken.exp * 1000 < new Date().getTime()){
-                return <Redirect to='/login'/>
-              }
-
       }
     }, []);
 
