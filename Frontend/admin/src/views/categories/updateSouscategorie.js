@@ -52,7 +52,7 @@ import {
       };
   
     const reset = (e) => { 
-      resetForm(),
+      props.setCurrentIdS2(0),
       props.setCurrentIndex2(-1) 
     }
 

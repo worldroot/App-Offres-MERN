@@ -23,7 +23,7 @@ import {
   import Categorie from "./categorie.js";
   import SousCategorie from "./sous-categorie.js";
   import Updatecategorie from "./updatecategorie.js";
-  import UpdateSouscategorie from "./updateSouscategorie.js";
+  import UpdateSousCategorie from "./updateSouscategorie.js";
 
   import { motion, AnimatePresence } from 'framer-motion';
   import 'components/modal.css'
@@ -182,7 +182,7 @@ import {
                                                                             animate={{ opacity: 1 }}
                                                                             exit={{ opacity: 0 }}
                                                                             transition={{  duration: 0.5 }}>
-                                                                            <UpdateSouscategorie {...{ currentIdS2, setCurrentIdS2, currentIndex2, setCurrentIndex2 }} />
+                                                                            <UpdateSousCategorie {...{ currentIdS2, setCurrentIdS2, currentIndex2, setCurrentIndex2 }} />
                                                                           </motion.div>
                                                                       </>
                                                                       ) : (
