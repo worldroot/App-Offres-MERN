@@ -63,8 +63,9 @@ router.post('/',
 // @access  Public
 router.get('/all', async (req, res) => {
     try {
-        //let data = await Category.find({})
+        
         let data = await Category.aggregate([
+            
             //lookup for list sous secteur references to secteur with id server in array :
             { $lookup: { from: "souscategories", localField: "_id", foreignField: "category", as: "souscategorie" } },
             //cancel some attribute to displays :

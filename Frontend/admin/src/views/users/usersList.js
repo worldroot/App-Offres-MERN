@@ -108,7 +108,14 @@ import {
                                   
                                   <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
                                   <td>{user.banned ? <span className="text-success">Oui</span> : <span className="text-danger" >Non</span> }</td> 
-                              
+                                  <td>
+                                            <div onClick={() => {
+                                            setCurrentId(user._id);
+                                            setShowModal(true)
+                                            } }>
+                                                <Button className="btn btn-outline-danger" size="sm"> Bannir </Button>
+                                            </div> 
+                                            </td>      
                                 </tr>
                               </Fragment>
                               );
