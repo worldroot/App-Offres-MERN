@@ -12,6 +12,8 @@ import {
   import { updateSousCat } from "redux/cat/catActions";
   import useForm from "helpers/useForm2";
   import { motion } from 'framer-motion';
+  import { Typography } from "@mui/material";
+  import AccordionDetails from '@mui/material/AccordionDetails';
   const initialFieldValues = { sousnomcat:"" }
 
   const UpdateSousCategorie = ({...props}) => {
@@ -63,27 +65,34 @@ import {
 
   
     return(
-              <motion.td className="p-0 border-0"
+             
+               <AccordionDetails>
+                  <motion.div 
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{  duration: 0.5 }}>
                   <Form className="d-flex justify-content-between" role="form" onSubmit={onSubmit}>
+                    
                       <Input  type="text"
                             bsSize="sm"
-                            className="mx-4"
+                            className="mx-2"
                             name="sousnomcat"
                             value={values.sousnomcat}
                             onChange={handleInputChange}
                           />
-                      <Button className=" btn-outline-success" color="dark" size="sm" type="submit">
+                      <Typography>
+                        <Button className=" btn-outline-success" color="dark" size="sm" type="submit">
                           <i className="far fa-check-circle"></i>
                       </Button>
                       <Button className="btn-outline-dark" onClick={() => reset()} color="dark" size="sm" type="submit">
                           <i className="far fa-times-circle"></i>
                       </Button>
+                      </Typography>
+                     
                   </Form>
-              </motion.td>
+              </motion.div>
+             </AccordionDetails>           
     );
   };
   
