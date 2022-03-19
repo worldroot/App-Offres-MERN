@@ -12,11 +12,11 @@ import {
     Col,
   } from "reactstrap";
   // core components
-  import { Redirect } from 'react-router-dom'
   import { connect, useDispatch } from 'react-redux';
   import {toast} from 'react-toastify'
   import React, { useEffect } from "react";
-  import { updateCat, addCat } from "redux/cat/catActions";
+  import { updateCat } from "redux/cat/catActions";
+  import { motion } from 'framer-motion';
   import useForm from "helpers/useForm";
   const initialFieldValues = { nomcat:"",}
 
@@ -59,7 +59,7 @@ import {
         if (validate()) {
 
             props.update(props.currentId, values, onSuccess);
-            
+            props.setCurrentIndex(-1) 
             setTimeout(() => {
                 window.location.reload();
               }, 2000);
@@ -75,27 +75,31 @@ import {
   
     return(
       <>      
-              <td className="p-0">
-              <Form role="form" onSubmit={onSubmit}>
-                      <td className="border-0">
+              <motion.td
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{  duration: 0.5 }}>
+                <Form className="d-flex justify-content-between" role="form" onSubmit={onSubmit}>
+                      
                       <Input
                             type="text"
                             bsSize="sm"
                             name="nomcat"
                             value={values.nomcat}
                             onChange={handleInputChange}
+                            className="mx-2"
                           />
-                      </td>
-                     <td className="border-0">
+                    
                      <Button className=" btn-outline-success" color="dark" size="sm" type="submit">
                           Confirmer
                       </Button>
                       <Button className="btn-outline-dark" onClick={() => reset()} color="dark" size="sm" type="submit">
                           Annuler
                       </Button>
-                     </td>                    
+                                     
                   </Form>
-                  </td>
+                </motion.td>
       </>
     );
   };

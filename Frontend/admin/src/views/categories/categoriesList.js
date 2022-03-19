@@ -11,9 +11,7 @@ import {
   import Accordion from '@mui/material/Accordion';
   import AccordionSummary from '@mui/material/AccordionSummary';
   import AccordionDetails from '@mui/material/AccordionDetails';
-  
   import Typography from '@mui/material/Typography';
-
   import Header from "../../components/Headers/Header.js";
   import AdminNavbar from "../../components/Navbars/AdminNavbar";
   import Sidebar from "../../components/Sidebar/Sidebar";
@@ -144,18 +142,9 @@ import {
                             return (
                                     <Fragment key={index}>
 
-                                    <tr key={cat.id}>     
-                                      { currentIndex === index ? (
-                                                  <>                                       
-                                                    <motion.div
-                                                      initial={{ opacity: 0 }}
-                                                      animate={{ opacity: 1 }}
-                                                      exit={{opacity: 0}}
-                                                      transition={{  duration: 0.5 }}>
-                                                        <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
-                                                      </motion.div>
-                                                  </>
-                                       
+                                    <tr>     
+                                      { currentIndex === index ? (  
+                                                <Updatecategorie {...{ currentId, setCurrentId, currentIndex, setCurrentIndex }} />
                                                 ) : (                                                 
                                                   <td className=""> 
                                                    
@@ -172,24 +161,14 @@ import {
                                                               </span>
                                                         </AccordionSummary>
                                                      
-                                                       
-                                                       
                                                         { cat.souscategorie.map(
                                                               ({sousnomcat, _id}, index2) => { 
                                                                 return(
                                                                   <Fragment key={index2}> 
                                                                     { currentIndex2 === index2 ? (
-                                                                      <>
-                                                                         <motion.div
-                                                                            initial={{ opacity: 0 }}
-                                                                            animate={{ opacity: 1 }}
-                                                                            exit={{ opacity: 0 }}
-                                                                            transition={{  duration: 0.5 }}>
-                                                                            <UpdateSousCategorie {...{ currentIdS2, setCurrentIdS2, currentIndex2, setCurrentIndex2 }} />
-                                                                          </motion.div>
-                                                                      </>
+                                                                        <UpdateSousCategorie {...{ currentIdS2, setCurrentIdS2, currentIndex2, setCurrentIndex2 }} />
                                                                       ) : (
-                                                                      <>
+                                                                     
                                                                           <AccordionDetails>
                                                                             <Row className="border-1 justify-content-between"> 
                                                                               <span className="my-2 text-gray">{sousnomcat}</span>
@@ -199,15 +178,17 @@ import {
                                                                                   </Button>
                                                                                   <Button className="btn btn-default" size="sm" 
                                                                                      onClick={() => {
-                                                                                      setCurrentIndex2(index2);
-                                                                                      setCurrentIdS2(_id)} }>
+                                                                                      setCurrentIdS2(_id)
+                                                                                      setCurrentIndex2(index2)
+                                                                                      }}>
                                                                                     <i className="fas fa-pencil-alt"></i>
                                                                                   </Button>
                                                                               </Typography>                                                                                                                                      
                                                                             </Row>  
-                                                                          </AccordionDetails>                                                       
-                                                                      </>
+                                                                          </AccordionDetails>                                        
+                                                                     
                                                                       )}
+                                                                              
                                                                   </Fragment>    
                                                               )}       
                                                             )}
@@ -269,7 +250,7 @@ import {
                                                               )
                                                           }
                                                         )}
-                                                      </td>
+                                        </td>
                                       </tr>
                                   </Fragment>
                                   );
