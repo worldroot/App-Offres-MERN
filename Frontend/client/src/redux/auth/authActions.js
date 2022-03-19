@@ -97,13 +97,6 @@ export const login = ({
     // Config header for axios
     const config = { headers: { 'Content-Type': 'application/json', }, };
 
-    if(!email){
-        toast.warn("Verifier votre e-mail")
-    }
-    if(!password){
-        toast.warn("Verifier votre mot de passe")
-    }
-
     // Set body
     const body = JSON.stringify({
         email,
@@ -114,6 +107,10 @@ export const login = ({
     try {
 
         const res = await axios.post(`${UsermsURL}/api/access/loginuser`, body, config)
+                               .catch(function(error) {
+                                    //console.log(error.response.data.msg);
+                                    toast.warn(error.response.data.msg) 
+                                })
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
@@ -123,7 +120,7 @@ export const login = ({
         
     } catch (err) {
         console.log(err)
-        toast.error("Quelque chose s'est mal passé !")
+        //toast.error("Quelque chose s'est mal passé !")
         dispatch({
             type: LOGIN_FAIL
         })

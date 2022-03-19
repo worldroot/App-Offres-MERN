@@ -92,8 +92,14 @@ router.post('/login',
         if (user.banned) {
           return res.status(403).json({
               error: true,
-              msg: 'Banned Account'
+              msg: 'Vous avez été banni !'
           })
+        }
+        if (user.role === 'user'){
+          return res.status(403).json({
+            error: true,
+            msg: 'Accès Interdit'
+        })
         }
       //Pass Verif
         const isMatch = await user.isValidPassword(password)
@@ -103,6 +109,7 @@ router.post('/login',
               msg: 'Mot de passe incorrect'
             })
         }
+
         const accessToken = await signAccessToken(user.id)
         const refreshToken = await signRefreshToken(user.id)
 
@@ -152,7 +159,7 @@ router.post('/loginuser',
         if (user.banned) {
           return res.status(403).json({
               error: true,
-              msg: 'Banned Account'
+              msg: 'Vous avez été banni !'
           })
         }
 

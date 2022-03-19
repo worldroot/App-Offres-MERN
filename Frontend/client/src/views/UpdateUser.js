@@ -43,20 +43,13 @@ const UpdateUserDetails = ({...props}) => {
 
   const handleSubmit = (e) => {
       e.preventDefault();    
-      if (props.currentId !== 0){
+      dispatch(updateUser(nom, prenom, email))
 
-         dispatch(updateUser(nom, prenom, email))
+      setTimeout(() => {
+        window.location.reload();
+     }, 2000);
 
-         setTimeout(() => {
-           window.location.reload();
-        }, 2000);
-
-         reset()
-
-      } else {  
-        toast.error('Erreur');
-        resetForm();
-      }   
+      reset()
   };
 
   const reset = (e) => { resetForm(); }

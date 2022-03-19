@@ -7,3 +7,6 @@ export const USER_REQ = 'USER REQUEST';
 export const USER_UPDATE = 'USERS UPDATED';
 export const USER_BAN = 'USER_BAN';
 export const USER_BAN_FAIL = 'USER_BAN_FAIL';
+export const UP_ROLE_S = 'UPDATEED S'
+export const UP_ROLE_F = 'UPDATEED F'
+

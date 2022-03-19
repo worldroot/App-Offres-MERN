@@ -10,7 +10,9 @@ import {
     USER_BAN,
     USER_BAN_FAIL,
     USER_ERR,
-    USER_REQ
+    USER_REQ,
+    UP_ROLE_S,
+    UP_ROLE_F
     
 } from './userTypes'
 
@@ -94,18 +96,23 @@ export const banUser = (id, data) => (dispatch) => {
         USER_BAN_FAIL
     );
 };
-/*
-export const deleteUser = async(id, dispatch) =>{
-    DELU(id)
+
+export const UpRole = (id, updated) => axios.put(`${UsermsURL}/api/user/role/` + id, updated);
+export const updateRole = (id, data) => (dispatch) => {
+    setAuthToken(localStorage.accessToken)
+    UpRole(id,data)
     .then((res) => {
-        console.log(res);
+        
         dispatch({
-            type: USER_DEL,
-            payload: id,
-        })
-    }).catch((err) =>
-    console.log(err),
-    USER_ERR
+            type: UP_ROLE_S,
+            payload: res.data,
+        });
+        toast.success('Mis à jour avec succés');
+        console.log(id, data.banned)
+        
+    }).catch((err) => 
+        console.log(err),
+        //toast.error('Erreur '),
+        UP_ROLE_F
     );
-}
-*/
+};

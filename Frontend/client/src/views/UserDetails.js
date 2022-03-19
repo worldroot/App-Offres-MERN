@@ -35,25 +35,11 @@ const UserDetails = (props) => {
     const accessToken = localStorage.getItem("accessToken")
     if(accessToken){
       
-
-      const refreshToken = localStorage.getItem("refreshToken")
-      /**
-       *  const decodedToken = decode(accessToken)
-          if(decodedToken.exp * 1000 < new Date().getTime()){
-              refreshJwt({refreshToken})
-            }
-             let minutes = 1000 * 60 * 40
-      let interval =  setInterval(()=> {
-          refreshJwt({refreshToken})
-      }, minutes)
-
-      return ()=> clearInterval(interval)
-       */
+            const refreshToken = localStorage.getItem("refreshToken")
             const decodedToken = decode(accessToken)
             if(decodedToken.exp * 1000 < new Date().getTime()){
                 refreshJwt({refreshToken})
               }            
-     
     }
   }, []);
 
@@ -86,17 +72,8 @@ const UserDetails = (props) => {
     <>
       <div className="main-content flex" >
       <AuthNavbar />
-            <div className="bg-danger py-5 py-xl-9">
-            <Container>
-              <div className="header-body text-center mb-7">
-                <Row className="justify-content-center">
-                  <Col lg="3" md="3">
-                    <p className="text-lead text-light">
-                    </p>
-                  </Col>
-                </Row>
-              </div>
-            </Container>
+        <div className="bg-danger py-7 py-lg-9 w-100vh h-100vh">
+          
         <Container>
         <Row>
 
@@ -176,8 +153,13 @@ const UserDetails = (props) => {
         </Row>
         </Container>
         </div>
-        <AuthFooter />  
-      </div>                  
+      </div>  
+
+      <div className=" fixed-bottom">
+      <AuthFooter/>
+      </div>
+     
+                     
     </>
   );
 };

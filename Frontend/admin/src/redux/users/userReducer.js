@@ -7,6 +7,8 @@ import {
     USER_REQ,
     USER_BAN,
     USER_BAN_FAIL,
+    UP_ROLE_S,
+    UP_ROLE_F,
 } from './userTypes'
 
 // Intial State
@@ -27,10 +29,13 @@ export default function (state = intialState, action) {
                     return {...state, user: action.payload };
                 case USER_BAN:
                     return {...state, user: action.payload };
+                case UP_ROLE_S:
+                    return {...state, user: action.payload };
                 case USER_DEL:
                     return{...state,
                         uslist: state.uslist.filter(u => u._id !== action.payload)}
                 case USER_ERR:
+                case UP_ROLE_F:
                 case USER_BAN_FAIL:
                 case USER_REQ:
                 case GET_FAIL:

@@ -107,25 +107,21 @@ export const login = ({
     try {
 
         const res = await axios.post(`${UsermsURL}/api/access/login`, body, config)
+                                .catch(function(error) {
+                                    //console.log(error.response.data.msg);
+                                    toast.error(error.response.data.msg) 
+                                })
         
-        if(!res){
-            toast.error('Error !');
-        }else{
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: res.data
-            })
-            dispatch(loadUser())
-            toast.success('Connecté avec succès');
-            
-        }
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: res.data
+                    })
+                    dispatch(loadUser())
+                    toast.success('Connecté avec succès');
         
     } catch (err) {
-
-        toast.error("Quelque chose s'est mal passé !")
-        localStorage.clear();
+        
         console.log(err)
-       
         dispatch({
             type: LOGIN_FAIL
         })

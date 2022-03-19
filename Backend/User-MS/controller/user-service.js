@@ -132,7 +132,7 @@ router.put('/role/:id',
 
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { $set: req.body.role, },
+        { $set: req.body, },
         { new: true }
       );
 

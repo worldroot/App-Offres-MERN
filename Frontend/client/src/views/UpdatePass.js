@@ -59,13 +59,25 @@ const UpdatePass = ({...props}) => {
 <hr className="my-4" />
 
 <FormGroup onSubmit={handleSubmit} >
-          <Row className="align-items-center">
-            <Col xs="8">
-              <h6 className="heading-small text-muted mb-4">
-              Mettre a jour votre mot de passe
-              </h6>
-            </Col>
+    <Row className="align-items-center">
+          <Col xs="8">
+          <h6 className="heading-small text-muted mb-4">
+              User information
+              </h6>          </Col>
+          <Col className="text-right" xs="4">
+            <Button
+                className="btn-outline-success"
+                color="default"
+                size="sm"
+                type="submit"
+              >
+                Confirmer
+              </Button>
+
+             
+          </Col>
         </Row>
+
           <div className="pl-lg-4">
             <Row>
               <Col lg="6">
@@ -100,24 +112,7 @@ const UpdatePass = ({...props}) => {
                 </FormGroup>
               </Col>
             </Row>
-            <Button
-                className="btn-outline-dark"
-                color="default"
-                size="sm"
-                type="submit"
-              >
-                Confirmer
-              </Button>
-
-              <Button
-                className="btn-outline-dark"
-                color="default"
-                size="sm"
-                type="submit"
-                onClick={() => reset()}
-              >
-                Annuler 
-              </Button>
+           
 
           </div>
 
