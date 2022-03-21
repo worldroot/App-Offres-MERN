@@ -28,22 +28,31 @@ const UserService = require('../controller/user-fortest')
 //Tests ... //
 
 describe('User Register ', () => {
-
-    it('can be created correctly', async () => {
+    try {
+         it('can be created correctly', async () => {
         await expect(async () => UserService.create(userComplete))
             .not
             .toThrow();
     });
+    } catch (error) {
+        alert(error)
+    }
+   
 
 });
 
 describe('Tokens ', () => {
-
-    it('can be created correctly', async () => {
-        await expect(async () => UserService.createTokens(userComplete))
-            .not
-            .toThrow();
-    });
+    try {
+        it('can be created correctly', async () => {
+            await expect(async () => UserService.createTokens(userComplete))
+                .not
+                .toThrow();
+        });
+        
+    } catch (error) {
+        alert(error)
+    }
+   
 
 });
 
