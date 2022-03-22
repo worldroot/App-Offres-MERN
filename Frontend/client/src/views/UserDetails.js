@@ -26,6 +26,7 @@ import decode from 'jwt-decode'
 const UserDetails = (props) => {
 
   const [currentId, setCurrentId] = useState(0);
+  const dispatch = useDispatch()
   const user = useSelector(state => state.auth.user);
   const [userLocal] = useState(() => {
     const saved = localStorage.getItem("user");
@@ -50,6 +51,7 @@ const UserDetails = (props) => {
 
 
   useEffect(() => { 
+      
       props.GetUser()
     }, []);
 
@@ -114,8 +116,8 @@ const UserDetails = (props) => {
                             <div className="text-center">
                             <i className="fas fa-user-circle fa-4x text-red"></i>
                             <hr className="my-4" />
-                                <h3>{userLocal.nom} {userLocal.prenom} </h3>
-                                <h3> {userLocal.email} </h3>
+                                <h3>{user.nom} {user.prenom} </h3>
+                                <h3> {user.email} </h3>
                             </div>
                           </div>
                           { userLocal.active && (
