@@ -349,7 +349,7 @@ router.post('/forgot-pass',
     await emailReset(user.email, url, "Réinitialisez votre mot de passe", user.nom) 
 
     // success
-    res.status(200).json({ msg: "Re-send the password, please check your email." });
+    res.status(200).json({ msg: "Reset the password, please check your email." });
     
   } catch (err) {
     res.status(500).json({ msg: err.message });

@@ -16,7 +16,7 @@ const PageNotFound = () => {
     
   
     return (
-            <Container className="mt--8 pb-5">
+            <Container className=" py-lg-6 w-100vh h-100vh">
                 <Row className="justify-content-center">
                   <Col>
                     <div className="text-center">

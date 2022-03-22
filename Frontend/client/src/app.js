@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import Login from 'views/Login';
 import Register from 'views/Register';
 import Home from 'views/Home'
+import page404 from 'components/Loading/PageNotFound'
 import VerifMail from 'views/Verifmail';
 import UserDetails from 'views/UserDetails';
 import ForgotPass from 'views/ForgotPass';
@@ -50,6 +51,7 @@ function App() {
             <Switch>
 
             <Route exact path="/" component={Home}/> 
+            <Route exact path="/404" component={page404}/> 
             <Route exact path="/home" component={Home}/>            
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
@@ -57,7 +59,7 @@ function App() {
             <Route exact path="/forgot-pass" component={ForgotPass}/>
             <Route exact path="/reset-pass/:token" component={ResetPass}/>
             <Route path="/api/access/verify/:token" component={VerifMail}/>
-            <Redirect from="/" to="/home"/>
+            <Redirect from="/" to="/404"/>
             
             </Switch>
         </BrowserRouter>

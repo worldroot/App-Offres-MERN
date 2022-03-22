@@ -62,8 +62,9 @@ const UpdatePass = ({...props}) => {
     <Row className="align-items-center">
           <Col xs="8">
           <h6 className="heading-small text-muted mb-4">
-              User information
-              </h6>          </Col>
+              Mettre à jour le mot de passe
+              </h6>          
+          </Col>
           <Col className="text-right" xs="4">
             <Button
                 className="btn-outline-success"
