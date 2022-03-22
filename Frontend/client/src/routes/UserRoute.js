@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Route, Redirect } from "react-router-dom";
 
 
-function SuperAdminRoute({ component: Component, ...rest }) {
+function AdminRoute({ component: Component, ...rest }) {
 
     const [userLocal] = useState(() => {
         const saved = localStorage.getItem("user");
@@ -14,10 +14,10 @@ function SuperAdminRoute({ component: Component, ...rest }) {
       <Route
         {...rest}
         render={(props) =>
-            userLocal.role === "super-admin" ? <Component {...props} /> : <Redirect to="/admin" />
+            userLocal.role === "user" ? <Component {...props} /> : <Redirect to="/profile" />
         }
       />
     );
   }
 
-export default SuperAdminRoute;
+export default AdminRoute;

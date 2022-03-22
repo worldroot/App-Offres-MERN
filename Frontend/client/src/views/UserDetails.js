@@ -27,7 +27,11 @@ const UserDetails = (props) => {
 
   const [currentId, setCurrentId] = useState(0);
   const user = useSelector(state => state.auth.user);
-
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   const userExist = localStorage.getItem("user");
 
   useEffect(() => {
@@ -84,11 +88,11 @@ const UserDetails = (props) => {
                   <Card className="card-profile shadow">
                     <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
                       <div className=" justify-content-between">
-                      { user.active && (
+                      { userLocal.active && (
                                 <span className=" text-success font-weight-700">Vérifié <i className="far fa-check-circle"></i></span>
                       )}
 
-                      { !user.active && (
+                      { !userLocal.active && (
                         
                         <Button
                         className="my-4 btn-outline-danger"
@@ -110,15 +114,15 @@ const UserDetails = (props) => {
                             <div className="text-center">
                             <i className="fas fa-user-circle fa-4x text-red"></i>
                             <hr className="my-4" />
-                                <h3>{user.nom} {user.prenom} </h3>
-                                <h3> {user.email} </h3>
+                                <h3>{userLocal.nom} {userLocal.prenom} </h3>
+                                <h3> {userLocal.email} </h3>
                             </div>
                           </div>
-                          { user.active && (
+                          { userLocal.active && (
                               <Button
                               className="my-2 btn-outline-dark"
                               color="default"
-                              onClick={() => setCurrentId(user._id)}
+                              onClick={() => setCurrentId(userLocal._id)}
                               size="md"
                             >
                               Editer votre compte

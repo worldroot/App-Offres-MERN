@@ -43,7 +43,7 @@ export const loadUser = () => async (dispatch) => {
     } catch (error) {
         
         console.log(error)
-        dispatch(logout())
+        
         dispatch({
             type: ERROR
         })

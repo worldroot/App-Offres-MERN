@@ -57,7 +57,7 @@ const VerifMail = () => {
             { validUrl && (
             <>
               <AuthNavbar />
-              <div className="header bg-red py-7 py-lg-8 w-100vh h-100vh"> 
+              <div className="header bg-danger py-7 py-lg-8 w-100vh h-100vh"> 
                 <Container>
                   <div className="header-body text-center mb-7">
                     <Row className="justify-content-center">

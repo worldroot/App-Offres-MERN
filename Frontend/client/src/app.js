@@ -14,6 +14,10 @@ import VerifMail from 'views/Verifmail';
 import UserDetails from 'views/UserDetails';
 import ForgotPass from 'views/ForgotPass';
 import ResetPass from 'views/ResetPass';
+import UserRoute from 'routes/UserRoute';
+
+import { refreshJwt } from "redux/auth/authActions";
+import decode from 'jwt-decode'
 
 function App() {
 
@@ -24,6 +28,16 @@ function App() {
   useEffect(() => {
     console.log('app')
     //store.dispatch(loadUser()) 
+    const accessToken = localStorage.getItem("accessToken")
+      if(accessToken){
+        
+        const refreshToken = localStorage.getItem("refreshToken")
+        const decodedToken = decode(accessToken)
+        const decodedRefToken = decode(refreshToken)
+              if(decodedToken.exp * 1000 < new Date().getTime()){
+                store.dispatch(refreshJwt({refreshToken}))
+              }
+      }
   }, [])
 
   //DARK-RED: #C11923
@@ -39,11 +53,11 @@ function App() {
             <Route exact path="/home" component={Home}/>            
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
-            <Route exact path="/profile" component={UserDetails}/>
+            <UserRoute exact path="/profile" component={UserDetails}/>
             <Route exact path="/forgot-pass" component={ForgotPass}/>
             <Route exact path="/reset-pass/:token" component={ResetPass}/>
             <Route path="/api/access/verify/:token" component={VerifMail}/>
-            <Redirect from="/" to="/login"/>
+            <Redirect from="/" to="/home"/>
             
             </Switch>
         </BrowserRouter>

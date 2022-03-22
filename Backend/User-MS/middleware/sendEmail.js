@@ -56,18 +56,18 @@ const emailSender = async (email, url, text) => {
 				  width: 100%;
 				}
 				span {
-				  color: #ffc107;
+				  color: #ec1c23;
 				}
 				button {
 				  padding: 1em 6em;
 				  border-radius: 5px;
 				  border: 0;
-				  background-color: hsl(45, 100%, 51%);
+				  background-color: #ec1c23;
 				  transition: all 0.3s ease-in;
 				  cursor: pointer;
 				}
 				button:hover {
-				  background-color: hsl(45, 70%, 51%);
+				  background-color: #c11923;
 				  transition: all 0.3s ease-in;
 				}
 				.spacing {
@@ -156,18 +156,18 @@ const emailReset = async (email, url, text, nom) => {
 				  width: 100%;
 				}
 				span {
-				  color: #ffc107;
+				  color: #ec1c23;
 				}
 				button {
 				  padding: 1em 6em;
 				  border-radius: 5px;
 				  border: 0;
-				  background-color: hsl(45, 100%, 51%);
+				  background-color: #ec1c23;
 				  transition: all 0.3s ease-in;
 				  cursor: pointer;
 				}
 				button:hover {
-				  background-color: hsl(45, 70%, 51%);
+				  background-color: #c11923;
 				  transition: all 0.3s ease-in;
 				}
 				.spacing {
