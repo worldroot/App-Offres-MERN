@@ -64,7 +64,7 @@ router.put('/updatepwd',
 
     const {password , confirmpass} = req.body  
     if(password !== confirmpass){
-      return res.status(403).send('Passwords are not matched !')
+      return res.status(403).send('Les mots de passe ne correspondent pas !')
 
     }else {
 

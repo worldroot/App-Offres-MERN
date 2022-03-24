@@ -12,7 +12,7 @@ import {
   import { useParams } from 'react-router-dom'
   import axios from "axios";
   import setAuthToken from 'helpers/authToken';
-
+  import {UsermsURL} from 'helpers/urls'
   import {toast} from 'react-toastify'
   
 const VerifMail = () => {
@@ -24,7 +24,7 @@ const VerifMail = () => {
 		const verifyEmailUrl = async () => {
 			try {
         setAuthToken(param.token)
-				const url = `http://localhost:5001/api/access/verify/${param.token}`;
+				const url = `${UsermsURL}/api/access/verify/${param.token}`;
 				await axios.get(url);
 				//console.log(data);
 				setValidUrl(true);

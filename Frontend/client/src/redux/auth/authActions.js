@@ -1,4 +1,4 @@
-import {UsermsURL} from '../../helpers/urls'
+import {UsermsURL} from 'helpers/urls'
 import setAuthToken from 'helpers/authToken';
 import axios from 'axios';
 import { toast } from 'react-toastify';

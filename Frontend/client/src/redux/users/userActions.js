@@ -64,7 +64,11 @@ export const updatePassword = (password, confirmpass) => (dispatch) =>{
         }else{
           try {
     
-            const res = axios.put(`${UsermsURL}/api/user/updatepwd`, body, config)
+            const res = axios.put(`${UsermsURL}/api/user/updatepwd`, body, config) 
+                    .catch(function(error) {
+                    //console.log(error.response.data.msg);
+                    toast.warn(error.response.data.msg) 
+                })
             dispatch({
                 type: UP_PASS_DONE,
                 payload: res.data,

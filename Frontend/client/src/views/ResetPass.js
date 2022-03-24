@@ -41,9 +41,8 @@ const ResetPass = () => {
 			try {
         
 				setAuthToken(param.token)
-				const url = `http://localhost:5001/api/access/${param.token}`;
+				const url = `${UsermsURL}/api/access/${param.token}`;
 				await axios.get(url);
-				console.log(param.token);
 				setValidUrl(true);
 
 			} catch (error) {
