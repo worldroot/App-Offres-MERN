@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/categorie-ms/tests/catbyid.test.js">
-        <testCase name="Categorie getById  should return null if nothing is found" duration="17"/>
-        <testCase name="Categorie getById  should retrieve correct categorie if id matches" duration="5"/>
-    </file>
     <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/categorie-ms/tests/cat.test.js">
-        <testCase name="Create Categorie can be created correctly" duration="9"/>
+        <testCase name="Create Categorie can be created correctly" duration="13"/>
+    </file>
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/categorie-ms/tests/catbyid.test.js">
+        <testCase name="Categorie getById  should return null if nothing is found" duration="18"/>
+        <testCase name="Categorie getById  should retrieve correct categorie if id matches" duration="5"/>
     </file>
 </testExecutions>

@@ -16,7 +16,7 @@ const PageNotFound = () => {
     
   
     return (
-            <Container className=" py-lg-6 w-100vh h-100vh">
+            <Container className="py-lg-6 w-100vh h-100vh">
                 <Row className="justify-content-center">
                   <Col>
                     <div className="text-center">
@@ -27,7 +27,7 @@ const PageNotFound = () => {
                             </a>
                            
                           <div className="circles text-center fluid">
-                            <p>404<br/>
+                            <p className="text-secondary">404<br/>
                             <small>PAGE NOT FOUND</small>
                             </p>
                             <span className="circle big"></span>

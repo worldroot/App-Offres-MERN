@@ -341,7 +341,7 @@ router.post('/forgot-pass',
     
     if (!user)
       return res.status(400).json({ 
-        msg: "This email is not registered in our system." });
+        msg: "email inexistant" });
         
     const accessToken = await signAccessToken(user.id)
     // send email
