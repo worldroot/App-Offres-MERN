@@ -25,6 +25,7 @@ import setAuthToken from 'helpers/authToken';
 
 import '../components/Loading/loading.css'
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
+import PageNotFound from "components/Loading/PageNotFound";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import OO from "../assets/img/ccwhite.png"
 import ooredoo from "../assets/img/oo.png"
@@ -39,7 +40,10 @@ const ResetPass = () => {
 		const verifyUrl = async () => {
 			try {
         
-				const url = `http://localhost:3000/reset-pass/${param.token}`;
+				setAuthToken(param.token)
+				const url = `http://localhost:5001/api/access/${param.token}`;
+				await axios.get(url);
+				console.log(param.token);
 				setValidUrl(true);
 
 			} catch (error) {
@@ -87,9 +91,10 @@ const ResetPass = () => {
 
   return (
     <>
+     <div className="main-content position-flex">
     { !validUrl && (
             <>
-              <div className="header bg-white py-7 py-lg-8"> 
+              <div className="header"> 
                 <PageNotFound/>
               </div> 
             </>
@@ -98,9 +103,9 @@ const ResetPass = () => {
 
     { validUrl && (
             <>
-      <div className="main-content position-flex">
+     
           <AuthNavbar />
-        <div className="header bg-danger py-7 py-lg-8 w-100vh h-100vh">
+          <div className="header bg-danger py-7 py-lg-8 w-100vh h-100vh">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -203,7 +208,7 @@ const ResetPass = () => {
 
                 </Row>
              </Container> 
-        </div>
+        
       </div>
 
 
@@ -214,7 +219,7 @@ const ResetPass = () => {
             </>
             )}
         
-
+      </div>
     </>
   );
 };

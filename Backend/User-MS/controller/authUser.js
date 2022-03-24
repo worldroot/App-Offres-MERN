@@ -355,5 +355,36 @@ router.post('/forgot-pass',
     res.status(500).json({ msg: err.message });
   }
 })
+
+
+// @route   GET/:id/verify/:token
+// @desc    Verif Token
+// @access  Public 
+router.get('/:token', 
+    verifyAccessToken,
+    async(req, res) =>{
+    try {
+      const user = await User.findById(req.user.id).select('-password')
+
+      if(!user) return res.status(400).json({
+        error: true,
+        msg:'Invalid link'
+      })
+
+      res.status(200).json({
+        error: false,
+        msg:'Token Verified'
+      })
+
+    } catch (error) {
+
+      //console.log(error)
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
+
+    }
+})
  
 module.exports = router
