@@ -9,6 +9,10 @@ exports.validateAddOffre = [
     .notEmpty()
     .withMessage('description is required'),
 
+    check('image')
+    .notEmpty()
+    .withMessage('image is required'),
+
     check('dateDebut')
     .notEmpty()
     .withMessage('dateDebut is required'),
@@ -20,7 +24,6 @@ exports.validateAddOffre = [
     check('category')
     .notEmpty()
     .withMessage('category is required'),
-
     
 ];
 

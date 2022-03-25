@@ -86,13 +86,6 @@ router.get('/all', async (req, res) => {
 
 
 
-// @route   Get api/categorie/:categoryId
-// @desc    Get Single category
-// @access  Public
-router.get('/:categoryId', catid, async (req, res) => {
-    res.json(req.category)
-})
-
 // @route   Put api/categorie/:categoryId
 // @desc    Update Single category
 // @access  Private super Admin
@@ -185,6 +178,37 @@ router.delete('/:categoryId',
             }
         })
     
+})
+
+// @route   GET api/user
+// @desc    User Information by token
+// @access  Public 
+router.get('/find/:nomcat',async (req, res) => {
+    try {
+        
+      const {nomcat} =  req.category 
+      const cat = await Category.findOne(nomcat)
+      if (!cat) {
+        return res.status(403).json({
+            error: 'Category not founded'
+            })
+        }
+                    
+        res.json(cat)
+      
+    } catch (error) {
+  
+      res.status(500).json({
+        error: true,
+        msg:'Server error'
+      });
+      console.log(error.message);
+  
+    }
+  })
+
+router.get('/:categoryId', catid, async (req, res) => {
+    res.json(req.category)
 })
 
 
