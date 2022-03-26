@@ -32,47 +32,38 @@ router.post('/',
             let {titre, description, image, dateDebut, dateFin, category, postedBy } = req.body;
             
             axios.get("http://localhost:5002/api/categorie/"+category)
-                 .catch(function(error) {
-                    if (error.response.status === 403) {
-                         return error.response.data
-                        // Request made and server responded
-                        //console.log(error.response.data);
-                        //console.log(error.response.status);
-                        //console.log(error.response.headers);
-                    }
-                })
+                 .then(async (response)=>{
+
+                    let off = await Offre.findOne({titre});
+                    if (off) {
+                        return res.status(400).json({
+                        error: true,
+                        msg: 'Offre existe déjà',
+                        });
+                    }      
+                    const newOffre = new Offre({
+                        titre,
+                        description,
+                        image,
+                        dateDebut,
+                        dateFin,
+                        category:response.data._id,
+                        postedBy:req.user.id
+                        });
+
+                    newOffre.save().then(() => res.json(newOffre))
+                    })
+                  .catch(function(error) {
+                      if(error.response){
+                        res.status(400).json({
+                            error: true,
+                            msg: error.response.data.error
+                        });
+                        console.log(error.message)
+                      }
+                  })
                  
-            let off = await Offre.findOne({titre});
-            if (off) {
-                return res.status(400).json({
-                error: true,
-                msg: 'Offre existe déjà',
-                });
-            }      
-            const newOffre = new Offre({
-                titre,
-                description,
-                image,
-                dateDebut,
-                dateFin,
-                category,
-                postedBy:req.user.id
-                });
-
-            try {
-                newOffre.save()
-                .then(() => res.json(newOffre))
-                
             
-            } catch (error) {
-
-                res.status(500).json({
-                    error: true,
-                    msg:'Server error'
-                });
-                console.log(error.message)
-            
-            }
 
                        
 

@@ -20,10 +20,6 @@ exports.validateAddOffre = [
     check('dateFin')
     .notEmpty()
     .withMessage('dateFin is required'),
-
-    check('category')
-    .notEmpty()
-    .withMessage('category is required'),
     
 ];
 
