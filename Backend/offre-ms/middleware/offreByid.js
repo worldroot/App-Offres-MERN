@@ -15,7 +15,7 @@ module.exports = async function(req, res, next ){
         
         let offre = await Offre
                     .findById(offreId)
-                    .populate('category')
+                    
 
         if(!offre){
             return res.status(403).json({
