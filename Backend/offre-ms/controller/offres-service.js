@@ -27,42 +27,54 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
             })
 
         }else{
+            try {
 
-            let {titre, description, image, dateDebut, dateFin, category, postedBy } = req.body;
+                let {titre, description, image, dateDebut, dateFin, category, postedBy } = req.body;
             
-            axios.get("http://localhost:5002/api/categorie/"+category)
-                 .then(async (response)=>{
-
-                      
-                    const newOffre = new Offre({
-                        titre,
-                        description,
-                        image,
-                        dateDebut,
-                        dateFin,
-                        category:response.data._id,
-                        postedBy:req.user.id
-                        });
-
-                    let off = await Offre.findOne(newOffre.titre);
-                    if (off) {
-                        return res.status(400).json({
-                        error: true,
-                        msg: 'Offre existe déjà',
-                        });
-                    } 
-
-                    newOffre.save().then(() => res.json(newOffre))
-                    })
-                  .catch(function(error) {
-                      if(error.response){
-                        res.status(400).json({
+                axios.get("http://localhost:5002/api/categorie/"+category)
+                     .then(async (response)=>{
+    
+                        const off = await Offre.findOne({titre});
+                        if (off) {
+                            return res.status(400).json({
                             error: true,
-                            msg: error.response.data.error
-                        });
-                        console.log(error.message)
-                      }
-                  }) 
+                            msg: 'Offre existe déjà',
+                            });
+                        } 
+                        const newOffre = new Offre({
+                            titre,
+                            description,
+                            image,
+                            dateDebut,
+                            dateFin,
+                            category:response.data._id,
+                            postedBy:req.user.id
+                            });
+    
+                       
+    
+                        newOffre.save().then(() => res.json(newOffre))
+                        
+                        })
+                      .catch(function(error) {
+                          if(error.response){
+                            res.status(400).json({
+                                error: true,
+                                msg: error.response.data.error
+                            });
+                            console.log(error.message)
+                          }
+                      }) 
+            } catch (error) {
+                res.status(500).json({
+                    error: true,
+                    msg: 'server error'
+                });
+                console.log(error)
+            }
+
+
+
         }
     })
 
@@ -84,7 +96,7 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
         var role = response.data.role
         
         //Add by Super Admin Only
-        if (role !== 'super-admin' && role !== 'admin' ) {
+        if (role !== 'super-admin') {
             return res.status(404).json({
                 error: 'Access Denied !!'
             })
@@ -96,15 +108,13 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
             axios.get("http://localhost:5002/api/categorie/"+category)
                  .then(async (response)=>{
 
-                    
-                    let off = await Offre.findOne({titre});
+                    const off = await Offre.findOne({titre});
                     if (off) {
                         return res.status(400).json({
                         error: true,
-                        msg: 'Offre existe déjà',
+                        msg: "Titre d'offre existe déjà",
                         });
                     } 
-
                     const updateOffre = await Offre.findByIdAndUpdate(
                         req.params.offreId,
                         { $set: {
@@ -117,9 +127,8 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
                             postedBy:req.user.id
                             } },
                         { new: true }
-                    );  
+                    ); 
                     
-                     
                     res.status(200).json(updateOffre)
                     
                     })
