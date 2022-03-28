@@ -164,7 +164,47 @@ router.get('/all', async (req, res) => {
     }
 })
 
+// @route   Delete api/categorie/:categoryId
+// @desc    Delete Single category
+// @access  Private super Admin
+router.delete('/:offreId',
+    offreByid,
+    verifyAccessToken,
+    isRequestValidated,
+    async (req, res) => {
 
+    
+        axios.get("http://localhost:5001/api/user/"+req.user.id)
+        .then(async (response)=>{
+            var role = response.data.role
+            
+            //Delete by Super Admin Only
+            if (role !== 'super-admin') {
+                return res.status(404).json({
+                    error: 'Super Admin resources access denied'
+                })
+    
+            }else{
+                 
+            
+                let offre = req.offre;
+                try {
+                    let deletedOffre = await offre.remove()
+                    res.status(200).json({
+                        message: `Offre : ${deletedOffre.titre} deleted successfully`
+                    })
+                    } catch (error) {
+                        console.log(error.message)
+                        res.status(500).json({
+                            error: true,
+                            msg:'Server error'
+                          });
+                    }
+                
+            }
+        })
+    
+})
 
 
 
