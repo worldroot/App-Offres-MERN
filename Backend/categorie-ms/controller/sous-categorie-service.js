@@ -178,5 +178,9 @@ router.delete('/:categoryId',
     
 })
 
+router.get('/:categoryId', catid, async (req, res) => {
+    res.json(req.category)
+})
+
 
 module.exports = router

@@ -6,7 +6,8 @@ const OffreSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        maxlength: 200
+        maxlength: 200,
+        unique: true
     },
     description: {
         type: String,
@@ -25,9 +26,9 @@ const OffreSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    category: {
+    souscategory: {
         type: ObjectId,
-        ref: 'Category',
+        ref: 'SousCategory',
         required: true
     },
     postedBy: {
@@ -36,9 +37,9 @@ const OffreSchema = new mongoose.Schema({
         required: true,
     },
     status: {
-        type: Boolean,
-        default: false
-    }
+        type: String,
+        enum: ["archived", "published", "pending", "closed"],
+      },
 })
 
 module.exports = mongoose.model("Offre", OffreSchema)

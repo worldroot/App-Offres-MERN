@@ -21,7 +21,7 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
         var role = response.data.role
         
         //Add by Super Admin Only
-        if (role !== 'super-admin' && role !== 'admin' ) {
+        if ( role !== 'admin' ) {
             return res.status(404).json({
                 error: 'Access Denied !!'
             })
@@ -29,42 +29,28 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
         }else{
             try {
 
-                let {titre, description, image, dateDebut, dateFin, category, postedBy } = req.body;
-            
-                axios.get("http://localhost:5002/api/categorie/"+category)
-                     .then(async (response)=>{
-    
-                        const off = await Offre.findOne({titre});
-                        if (off) {
-                            return res.status(400).json({
-                            error: true,
-                            msg: 'Offre existe déjà',
-                            });
-                        } 
-                        const newOffre = new Offre({
-                            titre,
-                            description,
-                            image,
-                            dateDebut,
-                            dateFin,
-                            category:response.data._id,
-                            postedBy:req.user.id
-                            });
-    
-                       
-    
-                        newOffre.save().then(() => res.json(newOffre))
-                        
-                        })
-                      .catch(function(error) {
-                          if(error.response){
-                            res.status(400).json({
-                                error: true,
-                                msg: error.response.data.error
-                            });
-                            console.log(error.message)
-                          }
-                      }) 
+                let {titre, description, image, dateDebut, dateFin, souscategory, status, postedBy } = req.body;
+
+                const off = await Offre.findOne({titre});
+                if (off) {
+                    return res.status(400).json({
+                    error: true,
+                    msg: 'Offre existe déjà',
+                    });
+                } 
+                const newOffre = new Offre({
+                    titre,
+                    description,
+                    image,
+                    dateDebut,
+                    dateFin,
+                    souscategory,
+                    postedBy:req.user.id,
+                    status
+                    });
+
+                newOffre.save().then(() => res.json(newOffre))
+                
             } catch (error) {
                 res.status(500).json({
                     error: true,
@@ -72,9 +58,6 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
                 });
                 console.log(error)
             }
-
-
-
         }
     })
 
@@ -104,64 +87,33 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
         }else{
 
             let {titre, description, image, dateDebut, dateFin, category, postedBy } = req.body;
+            const off = await Offre.findOne({titre});
+            if (off) {
+                return res.status(400).json({
+                error: true,
+                msg: "Titre d'offre existe déjà",
+                });
+            } 
+            const updateOffre = await Offre.findByIdAndUpdate(
+                req.params.offreId,
+                { $set: {
+                    titre,
+                    description,
+                    image,
+                    dateDebut,
+                    dateFin,
+                    category,
+                    postedBy:req.user.id
+                    }
+                  },
+                { new: true }
+            ); 
             
-            axios.get("http://localhost:5002/api/categorie/"+category)
-                 .then(async (response)=>{
-
-                    const off = await Offre.findOne({titre});
-                    if (off) {
-                        return res.status(400).json({
-                        error: true,
-                        msg: "Titre d'offre existe déjà",
-                        });
-                    } 
-                    const updateOffre = await Offre.findByIdAndUpdate(
-                        req.params.offreId,
-                        { $set: {
-                            titre,
-                            description,
-                            image,
-                            dateDebut,
-                            dateFin,
-                            category:response.data._id,
-                            postedBy:req.user.id
-                            } },
-                        { new: true }
-                    ); 
-                    
-                    res.status(200).json(updateOffre)
-                    
-                    })
-                  .catch(function(error) {
-                      if(error.response){
-                        res.status(400).json({
-                            error: true,
-                            msg: error.response.data.error
-                        });
-                        console.log(error.message)
-                      }
-                  }) 
+            res.status(200).json(updateOffre)
         }
     })
 
 
-})
-
-// @route   Get api/offre/all
-// @desc    Get all offre
-// @access  Public
-router.get('/all', async (req, res) => {
-    try {
-        let data = await Offre.find({}) 
-        res.status(200).json(data)
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            error: true,
-            msg:'Server error'
-          });
-    }
 })
 
 // @route   Delete api/categorie/:categoryId
@@ -172,7 +124,6 @@ router.delete('/:offreId',
     verifyAccessToken,
     isRequestValidated,
     async (req, res) => {
-
     
         axios.get("http://localhost:5001/api/user/"+req.user.id)
         .then(async (response)=>{
@@ -186,7 +137,6 @@ router.delete('/:offreId',
     
             }else{
                  
-            
                 let offre = req.offre;
                 try {
                     let deletedOffre = await offre.remove()
@@ -206,6 +156,33 @@ router.delete('/:offreId',
     
 })
 
+
+// @route   Get api/offre/all
+// @desc    Get all offre
+// @access  Public
+router.get('/all', async (req, res) => {
+    try {
+
+          const data = await Offre.find({})
+             const catData = data.map( ({souscategory}) => {
+              
+                axios.get("http://localhost:5002/api/sous-categorie/"+souscategory)
+                .then(async (response)=>{
+                    
+                    res.status(200).json(response.data.sousnomcat)
+                })
+          })
+        
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            error: true,
+            msg:'Server error'
+          });
+    }
+
+})
 
 
 module.exports = router
