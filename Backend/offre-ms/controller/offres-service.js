@@ -6,7 +6,6 @@ const {validateAddOffre, isRequestValidated} = require('../middleware/offreValid
 const axios = require('axios')
 const offreByid = require('../middleware/offreByid')
 
-
 // @route   POST api/appeloffre
 // @desc    Create appel offre
 // @access  Private Admin
@@ -16,8 +15,8 @@ router.post('/',
     isRequestValidated,
     async (req, res) => {
 
-axios.get("http://localhost:5001/api/user/"+req.user.id)
-     .then(async (response)=>{
+ axios.get("http://localhost:5001/api/user/"+req.user.id)
+      .then(async (response)=>{
         var role = response.data.role
         
         //Add by Super Admin Only
@@ -76,48 +75,66 @@ router.put('/:offreId',
 
 axios.get("http://localhost:5001/api/user/"+req.user.id)
      .then(async (response)=>{
+
         var role = response.data.role
+        let {titre, description, image, dateDebut, dateFin, souscategory, status, postedBy} = req.body;
+        var date = new Date()
+        const OF = await Offre.findById(req.params.offreId)
+        const Debut = new Date(OF.dateDebut)
+        const Fin = new Date(OF.dateFin) 
+        const DateToCheck = new Date(date.getTime())
         
-        //Add by Super Admin Only
-        if (role !== 'super-admin') {
+        if (role === 'admin') {
+        //Update by Admin Only
+            try {
+                // Between dates : DateToCheck > Debut && DateToCheck<Fin
+                if(DateToCheck < Debut){
+                    const updateOffre = await Offre.findByIdAndUpdate(
+                        req.params.offreId,
+                            { $set: {
+                                titre,
+                                description,
+                                image,
+                                dateDebut,
+                                dateFin,
+                                souscategory,
+                                postedBy:req.user.id,
+                                status
+                                }
+                            },
+                            { new: true }
+                        ); 
+                    
+                    res.status(200).json(updateOffre)
+                    
+                }else{
+                    res.status(400).json({
+                        error: true,
+                        msg:`Modification avant '${Debut.toDateString()}' est impossible !`                        
+                     });
+                }
+            } catch (error) {
+                console.log(error.message)
+                res.status(500).json({
+                    error: true,
+                    msg:'Server error'
+                    });
+            }
+            
+        }else{
+
             return res.status(404).json({
                 error: 'Access Denied !!'
             })
-
-        }else{
-
-            let {titre, description, image, dateDebut, dateFin, category, postedBy } = req.body;
-            const off = await Offre.findOne({titre});
-            if (off) {
-                return res.status(400).json({
-                error: true,
-                msg: "Titre d'offre existe déjà",
-                });
-            } 
-            const updateOffre = await Offre.findByIdAndUpdate(
-                req.params.offreId,
-                { $set: {
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    category,
-                    postedBy:req.user.id
-                    }
-                  },
-                { new: true }
-            ); 
-            
-            res.status(200).json(updateOffre)
+           
         }
     })
 
 
 })
 
-// @route   Delete api/categorie/:categoryId
-// @desc    Delete Single category
+// @route   Delete api/offre/:categoryId
+// @desc    Delete Single offre
 // @access  Private super Admin
 router.delete('/:offreId',
     offreByid,
@@ -128,30 +145,76 @@ router.delete('/:offreId',
         axios.get("http://localhost:5001/api/user/"+req.user.id)
         .then(async (response)=>{
             var role = response.data.role
-            
-            //Delete by Super Admin Only
-            if (role !== 'super-admin') {
-                return res.status(404).json({
-                    error: 'Super Admin resources access denied'
-                })
-    
-            }else{
+            var date = new Date()
+            const OF = await Offre.findById(req.params.offreId)
+            const Debut = new Date(OF.dateDebut)
+            const Fin = new Date(OF.dateFin) 
+            const DateToCheck = new Date(date.getTime())
+            let offre = req.offre;
+
+            if (role === 'admin') {
+                
+                    if(DateToCheck < Debut){
+                        try {    
+                            let deletedOffre = await offre.remove()
+                            res.status(200).json({
+                                message: `Offre : ${deletedOffre.titre} deleted successfully`
+                            })
+                        } catch (error) {
+                            console.log(error.message)
+                            res.status(500).json({
+                                error: true,
+                                msg:'Server error'
+                            });
+                        }
+                    }else{
+                        res.status(400).json({
+                            error: true,
+                            msg:`Suppression avant '${Debut.toDateString()}' est impossible !`                          
+                         });
+                    }
+
+
+            }else if(role === 'super-admin'){
                  
-                let offre = req.offre;
-                try {
-                    let deletedOffre = await offre.remove()
-                    res.status(200).json({
-                        message: `Offre : ${deletedOffre.titre} deleted successfully`
-                    })
+                if(DateToCheck < Debut){
+                    try {    
+                        let deletedOffre = await offre.remove()
+                        res.status(200).json({
+                            msg: `Offre : ${deletedOffre.titre} deleted successfully`
+                        })
                     } catch (error) {
                         console.log(error.message)
                         res.status(500).json({
                             error: true,
                             msg:'Server error'
-                          });
+                        });
                     }
+                }else if(DateToCheck > Debut && DateToCheck < Fin){
+                    const updateOffre = await Offre.findByIdAndUpdate(
+                        req.params.offreId,
+                            { $set: { status: "archived" } },
+                            { new: true }
+                        ); 
+                    
+                    res.status(200).json(updateOffre)
+
+                }else{
+                    res.status(400).json({
+                        error: true,
+                        msg:`Suppression avant '${Debut.toDateString()}' est impossible !`                       
+                     });
+                }
                 
             }
+            else{
+
+                return res.status(404).json({
+                    error: 'Access Denied !!'
+                })
+               
+            }
+
         })
     
 })
@@ -161,27 +224,21 @@ router.delete('/:offreId',
 // @desc    Get all offre
 // @access  Public
 router.get('/all', async (req, res) => {
+
     try {
 
-          const data = await Offre.find({})
-             const catData = data.map( ({souscategory}) => {
-              
-                axios.get("http://localhost:5002/api/sous-categorie/"+souscategory)
-                .then(async (response)=>{
-                    
-                    res.status(200).json(response.data.sousnomcat)
-                })
-          })
-        
+        const data = await Offre.find({})
+        res.status(200).json(data)
 
     } catch (error) {
+
         console.log(error)
         res.status(500).json({
             error: true,
             msg:'Server error'
-          });
+        });
     }
-
+        
 })
 
 

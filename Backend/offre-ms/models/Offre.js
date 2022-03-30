@@ -29,7 +29,7 @@ const OffreSchema = new mongoose.Schema({
     souscategory: {
         type: ObjectId,
         ref: 'SousCategory',
-        required: true
+        required: true,
     },
     postedBy: {
         type: ObjectId,
