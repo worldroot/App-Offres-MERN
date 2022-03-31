@@ -18,6 +18,7 @@ import Login from 'views/Login';
 import Register from 'views/Register';
 import usersList from 'views/users/usersList';
 import categoriesList from 'views/categories/categoriesList';
+import offreList from 'views/offres/offreList';
 
 function App() {
 
@@ -46,8 +47,8 @@ function App() {
             <AdminRoute exact path="/admin" component={Admin} />
             <SuperRoute exact path="/super-admin" component={SuperAdmin} />
 
-          
             <Route exact path="/userslist" component={usersList} />
+            <Route exact path="/offreslist" component={offreList} />
             <Route exact path="/categorieslist" component={categoriesList} />
             <Redirect from="/" to="/login" />
             

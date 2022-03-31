@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import auth from './auth/authReducer'
 import users from './users/userReducer'
 import categories from './cat/catReducer'
+import offres from './offres/offreReducer'
 
 const intialState = {}
 
@@ -13,7 +14,8 @@ const middleware = [thunk]
 const rootReducer = combineReducers ({
     auth,
     users,
-    categories
+    categories,
+    offres
 });
 
 const store = createStore(

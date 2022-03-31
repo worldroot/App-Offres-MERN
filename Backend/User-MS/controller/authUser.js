@@ -1,6 +1,5 @@
 const express = require('express')
 const User = require('../models/User')
-const Token = require('../models/Token')
 const router = express.Router()
 const createError = require('http-errors')
 const deco = require('jwt-decode')

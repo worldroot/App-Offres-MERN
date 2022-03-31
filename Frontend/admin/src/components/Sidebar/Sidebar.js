@@ -1,33 +1,19 @@
 /*eslint-disable*/
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
   Collapse,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  FormGroup,
   Form,
   Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Media,
   NavbarBrand,
   Navbar,
   NavItem,
   NavLink,
-  Nav,
-  Progress,
-  Table,
   Container,
   Row,
-  Col,
+  Col
 } from "reactstrap";
 
 var ps;
@@ -152,7 +138,7 @@ const LogoImg = require('../../assets/img/oored.png')
                     <span className="text-dark">  Categories</span>
               </NavItem>
               <br/>
-              <NavItem className="pt-0 nav-link" to="/userslist" tag={Link}>
+              <NavItem className="pt-0 nav-link" to="/offreslist" tag={Link}>
                     <i className="fas fa-list-ul text-red mr-2"></i>
                     <span className="text-dark">  Offres</span>
               </NavItem>

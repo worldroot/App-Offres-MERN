@@ -6,6 +6,7 @@ export const DELETE_CAT = 'CAT DELETED';
 export const CAT_ERR = 'CAT ERROR';
 
 export const GET_SOUS_S = 'GET ALL SOUS-CAT'
+export const SOUS_BYID = 'GET OFFRE BY ID'
 export const GET_SOUS_F = 'GET ALL SOUS FAIL'
 export const ADD_SOUS = 'ADD SOUS'
 export const UP_SOUS = 'UPDATE SOUS'

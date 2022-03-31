@@ -10,7 +10,8 @@ import {
     ADD_SOUS,
     UP_SOUS,
     DEL_SOUS,
-    ERR_SOUS
+    ERR_SOUS,
+    SOUS_BYID
 } from './catTypes'
 
 import { CatmsURL } from '../../helpers/urls'
@@ -174,6 +175,23 @@ export const getAllSousCat = () => (dispatch) => {
         (err) =>
         console.log(err),
         GET_SOUS_F
+    );
+};
+
+export const GetById = (id, data) => axios.get(`${CatmsURL}/api/sous-categorie/` + id, data);
+export const getSousById = (id, data) => (dispatch) => {
+
+    GetById(id, data)
+    .then((res) => {
+        
+        dispatch({
+            type: SOUS_BYID,
+            payload: res.data,
+        });
+ 
+    }).catch((err) => 
+        console.log(err),
+        ERR_SOUS
     );
 };
 

@@ -226,10 +226,19 @@ router.delete('/:offreId',
 router.get('/all', async (req, res) => {
 
     try {
-
         const data = await Offre.find({})
-        res.status(200).json(data)
+            data.map( ({souscategory}) => {
+              
+                axios.get("http://localhost:5002/api/sous-categorie/"+souscategory)
+                .then((response)=>{
+                    
+                    var cat = response.data.sousnomcat
+                    console.log(cat)
+                })
+            })
 
+        res.status(200).json(data)
+    
     } catch (error) {
 
         console.log(error)

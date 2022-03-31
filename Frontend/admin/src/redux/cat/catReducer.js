@@ -10,7 +10,8 @@ import {
     ADD_SOUS,
     UP_SOUS,
     DEL_SOUS,
-    ERR_SOUS
+    ERR_SOUS,
+    SOUS_BYID
 } from './catTypes'
 
 // Intial State
@@ -26,22 +27,30 @@ export default function (state = intialState, action){
 
         case GET_CAT_S: return{...state, categories:[...action.payload]}
         case GET_CAT_F:
-        case ADD_CAT: return{...state, categories:[...state.categories, action.payload ]}
-        case UP_CAT: return {...state,
-            categories: state.categories.map(c => c._id === action.payload._id ? action.payload : c)}
-        case DELETE_CAT: return{...state,
+        case ADD_CAT: 
+            return{...state, categories:[...state.categories, action.payload ]}
+        case UP_CAT: 
+            return {...state,
+            categories: state.categories.map(c => c._id === action.payload._id ? action.payload : c)}   
+        case DELETE_CAT: 
+            return{...state,
             categories: state.categories.filter(c => c._id !== action.payload )}
         case CAT_ERR:
 
-        case GET_SOUS_S: return{...state, souscategories:[...action.payload]}
+        case GET_SOUS_S: 
+            return{...state, souscategories:[...action.payload]}
         case GET_SOUS_F:
-        case ADD_SOUS: return{...state, souscategories:[...state.souscategories, action.payload ]}
-        case UP_SOUS: return {...state,
+        case ADD_SOUS: 
+            return{...state, souscategories:[...state.souscategories, action.payload ]}
+        case UP_SOUS: 
+            return {...state,
             souscategories: state.souscategories.map(c => c._id === action.payload._id ? action.payload : c)}
-        case DEL_SOUS: return{...state,
+        case DEL_SOUS: 
+            return{...state,
             souscategories: state.souscategories.filter(c => c._id !== action.payload )}
+        case SOUS_BYID: return {...state,
+                souscategories: state.souscategories.map(c => c._id === action.payload._id ? action.payload : c)}   
         case ERR_SOUS:
-
 
         default:
             return state;
