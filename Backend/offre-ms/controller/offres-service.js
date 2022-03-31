@@ -28,7 +28,7 @@ router.post('/',
         }else{
             try {
 
-                let {titre, description, image, dateDebut, dateFin, souscategory, status, postedBy } = req.body;
+                let {titre, description, image, dateDebut, dateFin, souscategory, category, status, postedBy } = req.body;
 
                 const off = await Offre.findOne({titre});
                 if (off) {
@@ -37,19 +37,29 @@ router.post('/',
                     msg: 'Offre existe déjà',
                     });
                 } 
-                const newOffre = new Offre({
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    souscategory,
-                    postedBy:req.user.id,
-                    status
-                    });
+                axios.get("http://localhost:5002/api/sous-categorie/"+ souscategory)
+                     .then((response)=>{ 
 
-                newOffre.save().then(() => res.json(newOffre))
-                
+                                axios.get("http://localhost:5002/api/categorie/"+ response.data.category)
+                                     .then((response2)=>{ 
+
+                                    const newOffre = new Offre({
+                                        titre,
+                                        description,
+                                        image,
+                                        dateDebut,
+                                        dateFin,
+                                        category:response2.data.nomcat,
+                                        souscategory:response.data.sousnomcat,
+                                        postedBy:req.user.id,
+                                        status
+                                        });
+                    
+                                    newOffre.save().then(() => res.json(newOffre))
+
+                                     })  
+                        })
+                 
             } catch (error) {
                 res.status(500).json({
                     error: true,
@@ -227,27 +237,17 @@ router.get('/all', async (req, res) => {
 
     try {
         const data = await Offre.find({})
-            data.map( ({souscategory}) => {
-              
-                axios.get("http://localhost:5002/api/sous-categorie/"+souscategory)
-                .then((response)=>{
-                    
-                    var cat = response.data.sousnomcat
-                    console.log(cat)
-                })
-            })
-
         res.status(200).json(data)
-    
+
     } catch (error) {
 
-        console.log(error)
+        console.log(error.message)
         res.status(500).json({
             error: true,
             msg:'Server error'
-        });
+            });
     }
-        
+          
 })
 
 
