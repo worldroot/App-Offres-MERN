@@ -16,8 +16,8 @@ router.post('/',
     async (req, res) => {
 
  axios.get("http://localhost:5001/api/user/"+req.user.id)
-      .then(async (response)=>{
-        var role = response.data.role
+      .then(async (responseUser)=>{
+        var role = responseUser.data.role
         
         //Add by Super Admin Only
         if ( role !== 'admin' ) {
@@ -43,19 +43,19 @@ router.post('/',
                                 axios.get("http://localhost:5002/api/categorie/"+ response.data.category)
                                      .then((response2)=>{ 
 
-                                    const newOffre = new Offre({
-                                        titre,
-                                        description,
-                                        image,
-                                        dateDebut,
-                                        dateFin,
-                                        category:response2.data.nomcat,
-                                        souscategory:response.data.sousnomcat,
-                                        postedBy:req.user.id,
-                                        status
-                                        });
-                    
-                                    newOffre.save().then(() => res.json(newOffre))
+                                        const newOffre = new Offre({
+                                            titre,
+                                            description,
+                                            image,
+                                            dateDebut,
+                                            dateFin,
+                                            category:response2.data.nomcat,
+                                            souscategory:response.data.sousnomcat,
+                                            postedBy:responseUser.data.email,
+                                            status
+                                            });
+                        
+                                        newOffre.save().then(() => res.json(newOffre))
 
                                      })  
                         })
@@ -87,7 +87,7 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
      .then(async (response)=>{
 
         var role = response.data.role
-        let {titre, description, image, dateDebut, dateFin, souscategory, status, postedBy} = req.body;
+        let {titre, description, image, dateDebut, dateFin, souscategory, status} = req.body;
         var date = new Date()
         const OF = await Offre.findById(req.params.offreId)
         const Debut = new Date(OF.dateDebut)
@@ -108,7 +108,6 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
                                 dateDebut,
                                 dateFin,
                                 souscategory,
-                                postedBy:req.user.id,
                                 status
                                 }
                             },

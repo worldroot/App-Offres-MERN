@@ -15,9 +15,11 @@ import {
   import { allOffres } from "redux/offres/offreActions";
   import { getSousById } from "redux/cat/catActions";
   import { Fragment, useEffect, useState } from "react";
+  import Offre from "./offre.js";
 
   import { motion, AnimatePresence } from 'framer-motion';
   import 'components/modal.css'
+
   const backdrop = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
@@ -25,7 +27,7 @@ import {
   const modal = {
     hidden: { y: "-100vh", opacity: 0 },
     visible: { 
-      y: "200px", 
+      y: "100px", 
       opacity: 1,
       transition: { delay: 0.5 }
     },
@@ -55,7 +57,7 @@ import {
     return (
       <>
       {/* Layout*/}
-      
+
       <Sidebar
           logo={{
             innerLink: "",
@@ -98,7 +100,6 @@ import {
                                 <th scope="col">Date fin</th>
                                 <th scope="col">Catégories</th>
                                 <th scope="col">Status</th>
-                           
                         </tr>
                         </thead>
                         <tbody>
@@ -108,10 +109,12 @@ import {
                                       <tr key={of._id}>
                                         <td>{of.titre}</td>  
                                         <td>{of.description}</td>  
-                                        <td>{of.image}</td>  
+                                        <td>
+                                          <img className="center"  src={of.image} alt="" /> 
+                                        </td>  
                                         <td>{of.dateDebut.substring(0, 10)}</td>  
                                         <td>{of.dateFin.substring(0, 10)}</td>  
-                                        <td>{of.souscategory}</td>  
+                                        <td>{of.category} - {of.souscategory}</td>  
                                         <td>{of.status}</td>  
                                       </tr>
                                   </Fragment>
@@ -122,6 +125,27 @@ import {
                     </Card>
                 </div>
             </Col>
+
+            {/* Update Catégorie */}
+            <AnimatePresence exitBeforeEnter showModal={showModal} setShowModal={setShowModal}>
+              { showModal && (
+                <motion.div className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                > 
+                <Col className=" fixed-top center" xl="5">
+                  <motion.div className="" variants={modal}>
+                        
+                      <Offre {...{ currentId, setCurrentId, showModal, setShowModal }} />
+
+                  </motion.div>
+                </Col>
+                  
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Row>
           </Container>
         </div>

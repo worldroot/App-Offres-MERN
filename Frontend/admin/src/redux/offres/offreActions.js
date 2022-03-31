@@ -31,3 +31,34 @@ export const allOffres = () => (dispatch) => {
         GET_OFFRE_F
     );
 };
+
+export const createSousSuccess = (data) => {
+    return {
+      type: OFFRE_ADDED,
+      payload: data,
+    };
+};
+export const addOffre = (offre) => {
+    const data ={ titre: offre.titre,
+                  description: offre.description,
+                  image: offre.image, 
+                  dateDebut: offre.dateDebut, 
+                  dateFin: offre.dateFin, 
+                  souscategory: offre.souscategory}
+
+    return(dispatch) => {
+        setAuthToken(localStorage.accessToken)
+        
+        return axios.post(`${OffremsURL}/api/offre/`, data)
+                    .then((res) => { res.data
+
+                    const ndata = { data };
+                    dispatch(createSousSuccess(ndata));
+                    toast.success('Ajouté avec succès');
+            
+                  }).catch((err) =>
+                        toast.error('Erreur !'),
+                        OFFRE_ERROR
+                        );
+    }
+};

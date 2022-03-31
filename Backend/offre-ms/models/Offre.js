@@ -34,13 +34,13 @@ const OffreSchema = new mongoose.Schema({
         type: String,
     },
     postedBy: {
-        type: ObjectId,
-        ref: 'User',
+        type: String,
         required: true,
     },
     status: {
         type: String,
         enum: ["archived", "published", "pending", "closed"],
+        default: "pending"
       },
 })
 
