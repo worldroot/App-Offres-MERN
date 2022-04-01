@@ -87,7 +87,7 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
      .then(async (response)=>{
 
         var role = response.data.role
-        let {titre, description, image, dateDebut, dateFin, souscategory, status} = req.body;
+        let {titre, description, image, dateDebut, dateFin, souscategory, status, postedBy} = req.body;
         var date = new Date()
         const OF = await Offre.findById(req.params.offreId)
         const Debut = new Date(OF.dateDebut)
@@ -108,6 +108,7 @@ axios.get("http://localhost:5001/api/user/"+req.user.id)
                                 dateDebut,
                                 dateFin,
                                 souscategory,
+                                postedBy:req.user.id,
                                 status
                                 }
                             },

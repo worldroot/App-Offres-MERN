@@ -1,249 +1,301 @@
 // reactstrap components
 import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    Form,
-    FormGroup,
-    Input,
-    InputGroup,
-    Row,
-    Col,
-  } from "reactstrap";
-  // core components
-  import { Redirect } from 'react-router-dom'
-  import { connect, useDispatch } from 'react-redux';
-  import {toast} from 'react-toastify'
-  import React, { useState, useEffect } from "react";
-  import { addOffre } from "redux/offres/offreActions";
-  import { getAllSousCat } from "redux/cat/catActions";
-  import useForm from "helpers/useForm";
-  import Modal from "components/ModalBox";
-  import FileBase64 from 'react-file-base64';
-  import { Select, MenuItem, FormControl } from "@mui/material";
-  import './offre.css'
-  const initialFieldValues = { 
-    titre: "",
-    description: "",
-    image: "", 
-    dateDebut: "", 
-    dateFin: "", 
-    souscategory: "",}
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  Form,
+  FormGroup,
+  Input,
+  Media,
+  InputGroup,
+  Row,
+  Col,
+  Label,
+} from "reactstrap";
+// core components
+import { Redirect } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import React, { Fragment, useState, useEffect } from "react";
+import { addOffre } from "redux/offres/offreActions";
+import { getAllCat } from "redux/cat/catActions";
+import useForm from "helpers/useForm";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import "./offre.css";
+const initialFieldValues = {
+  titre: "",
+  description: "",
+  image: "",
+  dateDebut: "",
+  dateFin: "",
+  souscategory: "",
+};
 
+const Offre = ({ ...props }) => {
+  const dispatch = useDispatch();
+  const [data, setData] = useState(initialFieldValues);
+  const {
+    titre,
+    description,
+    image,
+    dateDebut,
+    dateFin,
+    souscategory,
+    category,
+  } = data;
 
-  const Offre = ({...props}) => {
+  useEffect(() => {
+    props.All();
+  }, []);
 
-    const dispatch = useDispatch()
-    const [data, setData] = useState(initialFieldValues)
-    const { titre, description, image, dateDebut, dateFin, souscategory } = data
+  var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
+  const userExist = localStorage.getItem("user");
 
-    useEffect(() => {
-        props.AllSous();
-      }, []);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const onSuccess = () => {
+      resetForm();
+    };
 
-    var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
-    const userExist = localStorage.getItem("user");
+    props.create(data, onSuccess);
+    resetForm();
+    props.setShowModal(false);
+    setTimeout(() => {
+        window.location.reload();
+    }, 200);
+  };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        const onSuccess = () => { resetForm() };
-        if(!titre || !description || !image || !dateDebut || !dateFin || !souscategory) {
-              toast.warn('Verifier vos champs !');
-        }else{
-            props.create(data, onSuccess);
-            resetForm();
-            props.setShowModal(false)
-            setTimeout(() => {
-                window.location.reload();
-            }, 200);
-        }
-        
+  if (!userExist) {
+    return <Redirect to="/login" />;
+  }
+
+  const handleChange = (name) => (event) => {
+    setData({ ...data, [name]: event.target.value });
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+        toast.info("Upload done");
       };
-  
-    if(!userExist){
-      return <Redirect to='/login'/>;
-    }
+      fileReader.onerror = (error) => {
+        reject(error);
+        toast.error("Upload error");
+      };
+    });
+  };
 
-    const handleChange = (name) => (event) => {
-        setData({ ...data, [name]: event.target.value })
-      }
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setData({ ...data, image: base64 });
+  };
 
-    const reset = (e) => { resetForm() }
+  const reset = (e) => {
+    resetForm();
+  };
 
-    return(
-      <>
-              <Card className="card-profile shadow ">
-                <Row className="justify-content-center">
-                  <Col>
-                    <div className="card-profile-image">
-                      <a href="#" onClick={(e) => e.preventDefault()}>
-                       
-                      </a>
-                    </div>
-                  </Col>
-                </Row>
-                <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <div className="d-flex justify-content-between">
-                    
-                  </div>
-                  <h3 className="mb-0">Ajouter une offre</h3>
-                  
-                </CardHeader>
-                <CardBody className="">
-                         
-                  <Form role="form" onSubmit={onSubmit}>
+  return (
+    <>
+      <Card className="card-profile shadow ">
+        <Row className="justify-content-center">
+          <Col>
+            <div className="card-profile-image">
+              <a href="#" onClick={(e) => e.preventDefault()}></a>
+            </div>
+          </Col>
+        </Row>
+        <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+          <div className="d-flex justify-content-between"></div>
+          <h3 className="mb-0">Ajouter une offre</h3>
+        </CardHeader>
+        <CardBody className="">
+          <Form role="form" onSubmit={onSubmit}>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <label className="form-control-label text-dark">Titre</label>
+                  <Input
+                    type="text"
+                    name="titre"
+                    value={titre}
+                    onChange={handleChange("titre")}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
 
-                        <Row>
-                        <Col lg="6">
-                            <FormGroup>
-                            <label className="form-control-label text-dark">
-                                Titre
-                            </label>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Accordion>
+                    <AccordionSummary>
+                      <label className="form-control-label text-dark">
+                        Catégories et sous-catégorie
+                      </label>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {props.ListC.map((cat, index) => {
+                        return (
+                          <Fragment key={index}>
+                            <Accordion className="shadow-none border-0">
+                              <AccordionSummary
+                                
+                                aria-controls="panel1bh-content"
+                                expandIcon={
+                                  <i className="fas fa-angle-down fa-1x"></i>
+                                }
+                              >
+                                <span className="mb-0 text-sm font-weight-bold">
+                                  {cat.nomcat}
+                                </span>
+                                <span className="mx-2 text-sm font-weight-bold text-gray">
+                                  ({cat.souscategorie.length})
+                                </span>
+                              </AccordionSummary>
+                              <AccordionDetails>
                                 <Input
-                                type="text"
-                                name="titre"
-                                value={titre}
-                                onChange={handleChange('titre')}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                            <FormControl fullWidth>
-                            <label className="form-control-label text-dark">
-                                Catégorie
-                            </label>
-                            
-                            <Input type="select" 
-                            name="souscategory"
-                            value={souscategory}
-                            onChange={handleChange('souscategory')}
-                            >
-                                <option value="">Choisis une option</option>
-                                {props.ListSC.map((cat,index) => {
-                                    return ( 
-                                        <option key={index} value={cat._id}>{cat.sousnomcat}</option>
-                                    );
-                                })}
-                        
-                            </Input>
-                            
-                            </FormControl>
-                        </Col>
-                        <Col >
-                            <FormGroup>
-                            <label className="form-control-label text-dark" >
-                                Description
-                            </label>
-                            <Input
-                                type="textarea"
-                                name="description"
-                                value={description}
-                                onChange={handleChange('description')}
-                                />
-                            </FormGroup>
-                        </Col>
-                        </Row>
-                        
-                        <Row>
-                        
-                       
+                                  type="select"
+                                  name="souscategory"
+                                  value={souscategory}
+                                  onChange={handleChange("souscategory")}
+                                >
+                                 <option value="">Choisis une sous-catégorie</option>
+                                  {cat.souscategorie.map(
+                                        ({ sousnomcat, _id }) => {
+                                        return (
+                                            <option key={_id} value={_id}> {sousnomcat} </option>
+                                        );
+                                        }
+                                    )}
+                                </Input>
+                              </AccordionDetails>
+                              
+                            </Accordion>
+                          </Fragment>
+                        );
+                      })}
+                    </AccordionDetails>
+                  </Accordion>
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <label className="form-control-label text-dark">
+                    Description
+                  </label>
+                  <Input
+                    type="textarea"
+                    name="description"
+                    value={description}
+                    onChange={handleChange("description")}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
 
-                        <Col lg="6">
-                            <FormGroup>
-                            <label className="form-control-label text-dark">
-                                Date début
-                            </label>
-                            
-                            <Input
-                                type="date"
-                                name="datedebut"
-                                value={dateDebut}
-                                onChange={handleChange('dateDebut')}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col>
-                            <FormGroup>
-                            <label className="form-control-label text-dark">
-                                Date fin
-                            </label>
-                            <Input
-                                type="date"
-                                name="datefin"
-                                value={dateFin}
-                                onChange={handleChange('dateFin')}
-                                />
-                            </FormGroup>
-                        </Col>
+            <Row>
+              <Col lg="6">
+                <FormGroup>
+                  <label className="form-control-label text-dark">
+                    Date début
+                  </label>
 
-                        <Col lg="6">
-                            <FormGroup>
-                            <label className="form-control-label text-dark">
-                                Image:
-                            </label>
-                            <label className="custom-file-upload ">
-                                 <i class="btn btn-outline-dark btn-sm form-control-label far fa-upload "></i>
-                                <FileBase64
-                                type="file"
-                                multiple={false}
-                                accept=".png, .jpg, .jpeg"
-                                onDone={({ base64 }) => 
-                                        //setItem({ ...item, image: base64 }),
-                                        setData({...data, image: base64},
-                                                setTimeout(() => {
-                                                    toast.info('Photo 100% ')
-                                                    }, 1000) )
-                                    }
-                            />
-                            </label>
-                           
-                           
-                            </FormGroup>
-                        </Col>
-                        <Col>
-                            <FormGroup>
-                           
-                        
-                            <Input disabled
-                                type="text"
-                                name="image"
-                                value={image}
-                                onChange={handleChange('image')}
-                                />
-                            </FormGroup>
-                        </Col>
-                       
-                        </Row>                        
-     
-                    <div className="text-center">
-                              <Button className="my-4 btn-outline-success" color="dark" type="submit">
-                                  Confirmer
-                               </Button>
-                               <Button className="my-4 btn-outline-danger" 
-                                       color="dark" type="submit" onClick={() => props.setShowModal(false)}>
-                                  Annuler
-                               </Button>
-                    </div>
+                  <Input
+                    type="date"
+                    name="datedebut"
+                    value={dateDebut}
+                    onChange={handleChange("dateDebut")}
+                  />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <label className="form-control-label text-dark">
+                    Date fin
+                  </label>
+                  <Input
+                    type="date"
+                    name="datefin"
+                    value={dateFin}
+                    onChange={handleChange("dateFin")}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
 
-                  </Form>
+            <Row>
+              <Col lg="6">
+                <FormGroup>
+                  <label className="custom-file-upload form-control-label btn btn-outline-dark ">
+                    Choisir un fichier
+                    <i className=" mx-2 form-control-label far fa-upload text-md text-white"></i>
+                    <Input
+                      type="file"
+                      multiple="multiple"
+                      name="image"
+                      accept=".jpeg, .png, .jpg"
+                      onChange={(e) => handleFileUpload(e)}
+                    />
+                  </label>
+                </FormGroup>
+              </Col>
+              <Col lg="6">
+                <Input
+                  disabled
+                  className="border-0"
+                  type="text"
+                  name="image"
+                  value={image}
+                  onChange={handleChange("image")}
+                />
+              </Col>
+            </Row>
 
-                  
-                </CardBody>
-              </Card>
-                 
-      </>
-    );
-  };
-  
-  const mapActionToProps = {
-    create: addOffre,
-    AllSous: getAllSousCat
-  };
-  
-  const mapStateToProps = (state) => ({
-    List: state.offres.offres,
-    ListSC: state.categories.souscategories
-  });
-  
-  export default connect ( mapStateToProps, mapActionToProps )(Offre);
+            <div className="text-center">
+              <Button
+                className="my-4 btn-outline-success"
+                color="dark"
+                type="submit"
+              >
+                Confirmer
+              </Button>
+              <Button
+                className="my-4 btn-outline-danger"
+                color="dark"
+                type="submit"
+                onClick={() => props.setShowModal(false)}
+              >
+                Annuler
+              </Button>
+            </div>
+          </Form>
+        </CardBody>
+      </Card>
+    </>
+  );
+};
+
+const mapActionToProps = {
+  create: addOffre,
+  All: getAllCat,
+};
+
+const mapStateToProps = (state) => ({
+  List: state.offres.offres,
+  ListC: state.categories.categories,
+});
+
+export default connect(mapStateToProps, mapActionToProps)(Offre);

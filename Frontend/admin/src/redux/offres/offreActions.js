@@ -46,10 +46,15 @@ export const addOffre = (offre) => {
                   dateFin: offre.dateFin, 
                   souscategory: offre.souscategory}
 
-    return(dispatch) => {
-        setAuthToken(localStorage.accessToken)
-        
-        return axios.post(`${OffremsURL}/api/offre/`, data)
+    if(!data.titre || !data.description || !data.image || !data.dateDebut || !data.dateFin || !data.souscategory ) {
+            toast.warn('Verifier vos champs !');
+      }
+
+      else{
+        return(dispatch) => {
+
+            setAuthToken(localStorage.accessToken)
+            return axios.post(`${OffremsURL}/api/offre/`, data)
                     .then((res) => { res.data
 
                     const ndata = { data };
@@ -60,5 +65,7 @@ export const addOffre = (offre) => {
                         toast.error('Erreur !'),
                         OFFRE_ERROR
                         );
+      }
+        
     }
 };

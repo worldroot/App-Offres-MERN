@@ -106,10 +106,6 @@ const AdminNavbar = ({ logout }) => {
                   </DropdownItem>
               )} 
 
-                 
-
-                    
-
                     <DropdownItem divider />
                     <DropdownItem className="bg-white"
                     onClick={ ()=> {

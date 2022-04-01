@@ -27,7 +27,7 @@ import {
   const modal = {
     hidden: { y: "-100vh", opacity: 0 },
     visible: { 
-      y: "100px", 
+      y: "50px",  
       opacity: 1,
       transition: { delay: 0.5 }
     },
@@ -40,19 +40,13 @@ import {
             const initialValue = JSON.parse(saved);
             return initialValue || "";
         });
-        const dispatch = useDispatch()
         const [currentId, setCurrentId] = useState(0);
-        const [currentIdS2, setCurrentIdS2] = useState(0);
-
-        const [currentIndex, setCurrentIndex] = useState(-1);
-        const [currentIndex2, setCurrentIndex2] = useState(-1);
 
         useEffect(() => {
-            props.All();
+          props.All();
         }, []);
 
         const [showModal, setShowModal] = useState(false);
-        const [showModal2, setShowModal2] = useState(false);
  
     return (
       <>
@@ -99,6 +93,7 @@ import {
                                 <th scope="col">Date début</th>
                                 <th scope="col">Date fin</th>
                                 <th scope="col">Catégories</th>
+                                <th scope="col">Sous-catégories</th>
                                 <th scope="col">Status</th>
                         </tr>
                         </thead>
@@ -110,11 +105,12 @@ import {
                                         <td>{of.titre}</td>  
                                         <td>{of.description}</td>  
                                         <td>
-                                          <img className="center"  src={of.image} alt="" /> 
+                                          <img className=" img-fluid rounded shadow avatar avatar-lg" src={of.image} alt="" /> 
                                         </td>  
                                         <td>{of.dateDebut.substring(0, 10)}</td>  
                                         <td>{of.dateFin.substring(0, 10)}</td>  
-                                        <td>{of.category} - {of.souscategory}</td>  
+                                        <td>{of.category}</td> 
+                                        <td>{of.souscategory}</td>   
                                         <td>{of.status}</td>  
                                       </tr>
                                   </Fragment>
