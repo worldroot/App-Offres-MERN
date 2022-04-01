@@ -68,7 +68,7 @@ const Offre = ({ ...props }) => {
     resetForm();
     props.setShowModal(false);
     setTimeout(() => {
-        window.location.reload();
+      window.location.reload();
     }, 200);
   };
 
@@ -150,7 +150,6 @@ const Offre = ({ ...props }) => {
                           <Fragment key={index}>
                             <Accordion className="shadow-none border-0">
                               <AccordionSummary
-                                
                                 aria-controls="panel1bh-content"
                                 expandIcon={
                                   <i className="fas fa-angle-down fa-1x"></i>
@@ -170,17 +169,21 @@ const Offre = ({ ...props }) => {
                                   value={souscategory}
                                   onChange={handleChange("souscategory")}
                                 >
-                                 <option value="">Choisis une sous-catégorie</option>
+                                  <option value="">
+                                    Choisis une sous-catégorie
+                                  </option>
                                   {cat.souscategorie.map(
-                                        ({ sousnomcat, _id }) => {
-                                        return (
-                                            <option key={_id} value={_id}> {sousnomcat} </option>
-                                        );
-                                        }
-                                    )}
+                                    ({ sousnomcat, _id }) => {
+                                      return (
+                                        <option key={_id} value={_id}>
+                                          {" "}
+                                          {sousnomcat}{" "}
+                                        </option>
+                                      );
+                                    }
+                                  )}
                                 </Input>
                               </AccordionDetails>
-                              
                             </Accordion>
                           </Fragment>
                         );
