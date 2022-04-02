@@ -23,7 +23,7 @@ import { connect, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import React, { Fragment, useState, useEffect } from "react";
 import { addOffre } from "redux/offres/offreActions";
-import { getAllCat } from "redux/cat/catActions";
+import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useForm";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -53,6 +53,7 @@ const Offre = ({ ...props }) => {
 
   useEffect(() => {
     props.All();
+    props.AllSous();
   }, []);
 
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
@@ -69,7 +70,7 @@ const Offre = ({ ...props }) => {
     props.setShowModal(false);
     setTimeout(() => {
       window.location.reload();
-    }, 200);
+    }, 500);
   };
 
   if (!userExist) {
@@ -78,6 +79,9 @@ const Offre = ({ ...props }) => {
 
   const handleChange = (name) => (event) => {
     setData({ ...data, [name]: event.target.value });
+    if (name === "category") {
+      setShowList(true);
+    }
   };
 
   const convertToBase64 = (file) => {
@@ -102,13 +106,11 @@ const Offre = ({ ...props }) => {
 
   const reset = (e) => {
     resetForm();
-    setShowList(false)
-    setData(initialFieldValues)
+    setShowList(false);
+    setData(initialFieldValues);
   };
 
   const [ShowList, setShowList] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-  const [currentIndex2, setCurrentIndex2] = useState(-1);
 
   return (
     <>
@@ -123,7 +125,6 @@ const Offre = ({ ...props }) => {
         <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
           <div className="d-flex justify-content-between"></div>
           <h3 className="mb-0">Ajouter une offre</h3>
-          
         </CardHeader>
         <CardBody className="">
           <Form role="form" onSubmit={onSubmit}>
@@ -152,30 +153,15 @@ const Offre = ({ ...props }) => {
                     type="select"
                     name="category"
                     value={category}
-                    onChange={() => {
-                      handleChange("category"), setShowList(true);
-                    }}
+                    onChange={handleChange("category")}
                   >
-                    <option value="">Choisis une catégorie</option>
+                    <option>Choisis une catégorie</option>
                     {props.ListC.map((cat, index) => {
                       return (
                         <Fragment key={index}>
-                          
-                            <option key={cat._id} value={cat._id}>
-                              {cat.nomcat}
-                            </option>
-                          
-                           {ShowList && (
-                            <>
-                               {cat.souscategorie.map(({ sousnomcat, _id }) => {
-                                return (
-                                  <option key={_id} value={_id}>
-                                    {sousnomcat}
-                                  </option>
-                                );
-                              })}
-                            </>
-                          )}
+                          <option key={cat._id} value={cat._id}>
+                            {cat.nomcat}
+                          </option>
                         </Fragment>
                       );
                     })}
@@ -190,13 +176,24 @@ const Offre = ({ ...props }) => {
                     </label>
                     <Input
                       type="select"
-                      name="category"
+                      name="souscategory"
                       value={souscategory}
-                      onChange={() => {
-                        handleChange("souscategory"), setShowList(true);
-                      }}
+                      onChange={handleChange("souscategory")}
                     >
-                     
+                     <option>Choisis une sous-catégorie</option>
+                      {props.ListSC.filter((sous) => {
+                        if (sous.category === category) {
+                          return sous;
+                        }
+                      }).map((sous, index) => {
+                        return (
+                          <Fragment key={index}>
+                            <option key={sous._id} value={sous._id}>
+                              {sous.sousnomcat}
+                            </option>
+                          </Fragment>
+                        );
+                      })}
                     </Input>
                   </FormGroup>
                 </Col>
@@ -309,11 +306,13 @@ const Offre = ({ ...props }) => {
 const mapActionToProps = {
   create: addOffre,
   All: getAllCat,
+  AllSous: getAllSousCat,
 };
 
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
   ListC: state.categories.categories,
+  ListSC: state.categories.souscategories,
 });
 
 export default connect(mapStateToProps, mapActionToProps)(Offre);

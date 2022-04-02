@@ -1,69 +1,67 @@
 import {
-    Row,
-    Button,
-    Card,
-    CardHeader,
-    Table,
-    Container,
-    Col,
-  } from "reactstrap";
-  
-  import Header from "../../components/Headers/Header.js";
-  import AdminNavbar from "../../components/Navbars/AdminNavbar";
-  import Sidebar from "../../components/Sidebar/Sidebar";
-  import {connect} from 'react-redux';
-  import { getAllUsers } from "redux/users/userActions.js";
-  import { Fragment, useEffect, useState } from "react";
+  Row,
+  Button,
+  Card,
+  CardHeader,
+  Table,
+  Container,
+  Col,
+} from "reactstrap";
 
-  import { motion, AnimatePresence } from 'framer-motion';
-  import 'components/modal.css'
-  import Banuser from "./banuser.js";
-  const backdrop = {
-    visible: { opacity: 1 },
-    hidden: { opacity: 0 },
-  }
-  const modal = {
-    hidden: { y: "-50vh", opacity: 0 },
-    visible: { 
-      y: "200px", 
-      opacity: 1,
-      transition: { delay: 0.5 }
-    },
-  }
-  
-  
-  const UsersList = (props) => {
+import Header from "../../components/Headers/Header.js";
+import AdminNavbar from "../../components/Navbars/AdminNavbar";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { connect } from "react-redux";
+import { getAllUsers } from "redux/users/userActions.js";
+import { Fragment, useEffect, useState } from "react";
 
-    const [user] = useState(() => {
-      const saved = localStorage.getItem("user");
-      const initialValue = JSON.parse(saved);
-      return initialValue || "";
-    });
+import { motion, AnimatePresence } from "framer-motion";
+import "components/modal.css";
+import Banuser from "./banuser.js";
+const backdrop = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+};
+const modal = {
+  hidden: { y: "-50vh", opacity: 0 },
+  visible: {
+    y: "200px",
+    opacity: 1,
+    transition: { delay: 0.5 },
+  },
+};
 
-    useEffect(() => {
-      props.All();
-    }, []);
+const UsersList = (props) => {
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
-    const [showModal, setShowModal] = useState(false);
-    const [currentId, setCurrentId] = useState(0);
-  
-    return (
-      <>
+  useEffect(() => {
+    props.All();
+  }, []);
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentId, setCurrentId] = useState(0);
+
+  return (
+    <>
       {/* Layout*/}
       <Sidebar
-          logo={{
-            innerLink: "",
-            imgSrc: '',
-            imgAlt: "...",
-          }}
-        />
-  
-        <div className="main-content" >
-          <AdminNavbar/>
-  
-          <Header/>
-          {/* Page content */}
-          <Container className="mt--7" fluid>
+        logo={{
+          innerLink: "",
+          imgSrc: "",
+          imgAlt: "...",
+        }}
+      />
+
+      <div className="main-content">
+        <AdminNavbar />
+
+        <Header />
+        {/* Page content */}
+        <Container className="mt--7" fluid>
           <Row>
             <Col className="order-xl-1 mb-5 mb-xl-0" xl="12">
               <div className="col">
@@ -79,116 +77,161 @@ import {
                         <th scope="col">Role</th>
                         <th scope="col">Active</th>
                         <th scope="col">Banned</th>
-                        { user.role === 'super-admin' &&(
-                        <th scope="col">Action</th>
+                        {user.role === "super-admin" && (
+                          <th scope="col">Action</th>
                         )}
-                        { user.role === 'admin' &&(
-                        <th scope="col"></th>
-                        )}
-                        
-                      
-                      
+                        {user.role === "admin" && <th scope="col"></th>}
                       </tr>
                     </thead>
                     <tbody>
-                    { user.role === "admin" &&(
-                      <>
-                      {props.List.filter((user) => {
-                        if(user.role === "user"){
-                            return user
-                        }
-                    }).map((user, index) => {
-                      
-                          return (
-                            <Fragment key={index}>           
+                      {user.role === "admin" && (
+                        <>
+                          {props.List.filter((user) => {
+                            if (user.role === "user") {
+                              return user;
+                            }
+                          }).map((user, index) => {
+                            return (
+                              <Fragment key={index}>
                                 <tr key={user._id}>
                                   <td>{user.email}</td>
-                                  <td>{user.nom} {user.prenom}</td>
-                                  <td>{user.role}</td>
-                                  
-                                  <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
-                                  <td>{user.banned ? <span className="text-success">Oui</span> : <span className="text-danger" >Non</span> }</td> 
                                   <td>
-                                            <div onClick={() => {
-                                            setCurrentId(user._id);
-                                            setShowModal(true)
-                                            } }>
-                                                <Button className="btn btn-outline-danger" size="sm"> Bannir </Button>
-                                            </div> 
-                                            </td>      
-                                </tr>
-                              </Fragment>
-                              );
-                            })}
-                      </>
-                    )}
-                    { user.role === "super-admin" &&(
-                      <>
-                      {props.List.map((user, index) => {
+                                    {user.nom} {user.prenom}
+                                  </td>
+                                  <td>{user.role}</td>
 
-                          return (
-                            <Fragment key={index}>           
-                                <tr key={user._id}>
-                                  <td>{user.email}</td>
-                                  <td>{user.nom} {user.prenom}</td>
-                                  <td>{user.role}</td>
-                                  <td>{user.active ? <i className="far fa-check-circle text-success fa-2x"></i> : <i className="fas fa-ban text-red fa-2x"></i>}</td>
-                                  <td>{user.banned ? <span className=" text-danger ">Oui</span> : <span className=" text-success " >Non</span> }</td> 
                                   <td>
-                                            <div onClick={() => {
-                                            setCurrentId(user._id);
-                                            setShowModal(true)
-                                            } }>
-                                                <Button className="btn btn-outline-danger" size="sm"> Bannir </Button>
-                                            </div> 
-                                            </td>         
+                                    {user.active ? (
+                                      <i className="far fa-check-circle text-success fa-2x"></i>
+                                    ) : (
+                                      <i className="fas fa-ban text-red fa-2x"></i>
+                                    )}
+                                  </td>
+                                  <td>
+                                    {user.banned ? (
+                                      <span className="text-success">Oui</span>
+                                    ) : (
+                                      <span className="text-danger">Non</span>
+                                    )}
+                                  </td>
+                                  <td>
+                                    <div
+                                      onClick={() => {
+                                        setCurrentId(user._id);
+                                        setShowModal(true);
+                                      }}
+                                    >
+                                      <Button
+                                        className="btn btn-outline-danger"
+                                        size="sm"
+                                      >
+                                        {" "}
+                                        Bannir{" "}
+                                      </Button>
+                                    </div>
+                                  </td>
                                 </tr>
                               </Fragment>
-                              );
-                            })}
-                      </>
-                    )}
+                            );
+                          })}
+                        </>
+                      )}
+                      {user.role === "super-admin" && (
+                        <>
+                          {props.List.map((user, index) => {
+                            return (
+                              <Fragment key={index}>
+                                <tr key={user._id}>
+                                  <td>{user.email}</td>
+                                  <td>
+                                    {user.nom} {user.prenom}
+                                  </td>
+                                  <td>{user.role}</td>
+                                  <td>
+                                    {user.active ? (
+                                      <i className="far fa-check-circle text-success fa-2x"></i>
+                                    ) : (
+                                      <i className="fas fa-ban text-red fa-2x"></i>
+                                    )}
+                                  </td>
+                                  <td>
+                                    {user.banned ? (
+                                      <span className=" text-danger ">Oui</span>
+                                    ) : (
+                                      <span className=" text-success ">
+                                        Non
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td>
+                                    <div
+                                      onClick={() => {
+                                        setCurrentId(user._id);
+                                        setShowModal(true);
+                                      }}
+                                    >
+                                      <Button
+                                        className="btn btn-outline-danger"
+                                        size="sm"
+                                      >
+                                        {" "}
+                                        Bannir{" "}
+                                      </Button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </Fragment>
+                            );
+                          })}
+                        </>
+                      )}
                     </tbody>
                   </Table>
                 </Card>
               </div>
             </Col>
-          <AnimatePresence exitBeforeEnter showModal={showModal} setShowModal={setShowModal}>
-              { showModal && (
-                <motion.div className="backdrop"
+            <AnimatePresence
+              exitBeforeEnter
+              showModal={showModal}
+              setShowModal={setShowModal}
+            >
+              {showModal && (
+                <motion.div
+                  className="backdrop"
                   variants={backdrop}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                > 
-                <Col className="center" xl="3">
-                  <motion.div className="" variants={modal}>
-                        
-                      <Banuser {...{ currentId, setCurrentId, showModal, setShowModal }} />
-
-                  </motion.div>
-                </Col>
-                  
+                >
+                  <Col className="center" xl="3">
+                    <motion.div className="" variants={modal}>
+                      <Banuser
+                        {...{
+                          currentId,
+                          setCurrentId,
+                          showModal,
+                          setShowModal,
+                        }}
+                      />
+                    </motion.div>
+                  </Col>
                 </motion.div>
               )}
             </AnimatePresence>
+          </Row>
+        </Container>
+      </div>
+    </>
+  );
+};
 
+const mapStateToProps = (state) => ({
+  List: state.users.uslist,
+  isAuth: state.auth.isAuthenticated,
+});
 
-        </Row>
-</Container>
-        </div>
-       
-      </>
-    );
-  };
-  
-  const mapStateToProps = (state) => ({
-    List: state.users.uslist,
-    isAuth: state.auth.isAuthenticated,
-  });
-  
-  const mapActionToProps = {
-    All: getAllUsers
-  };
-  
-  export default connect (mapStateToProps, mapActionToProps)(UsersList);
+const mapActionToProps = {
+  All: getAllUsers,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(UsersList);
