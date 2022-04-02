@@ -90,7 +90,6 @@ const Offre = ({ ...props }) => {
       };
       fileReader.onerror = (error) => {
         reject(error);
-        toast.error("Upload error");
       };
     });
   };
@@ -103,7 +102,13 @@ const Offre = ({ ...props }) => {
 
   const reset = (e) => {
     resetForm();
+    setShowList(false)
+    setData(initialFieldValues)
   };
+
+  const [ShowList, setShowList] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [currentIndex2, setCurrentIndex2] = useState(-1);
 
   return (
     <>
@@ -118,6 +123,7 @@ const Offre = ({ ...props }) => {
         <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
           <div className="d-flex justify-content-between"></div>
           <h3 className="mb-0">Ajouter une offre</h3>
+          
         </CardHeader>
         <CardBody className="">
           <Form role="form" onSubmit={onSubmit}>
@@ -136,62 +142,65 @@ const Offre = ({ ...props }) => {
             </Row>
 
             <Row>
-              <Col>
+              <Col lg="6">
                 <FormGroup>
-                  <Accordion>
-                    <AccordionSummary>
-                      <label className="form-control-label text-dark">
-                        Catégories et sous-catégorie
-                      </label>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      {props.ListC.map((cat, index) => {
-                        return (
-                          <Fragment key={index}>
-                            <Accordion className="shadow-none border-0">
-                              <AccordionSummary
-                                aria-controls="panel1bh-content"
-                                expandIcon={
-                                  <i className="fas fa-angle-down fa-1x"></i>
-                                }
-                              >
-                                <span className="mb-0 text-sm font-weight-bold">
-                                  {cat.nomcat}
-                                </span>
-                                <span className="mx-2 text-sm font-weight-bold text-gray">
-                                  ({cat.souscategorie.length})
-                                </span>
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                <Input
-                                  type="select"
-                                  name="souscategory"
-                                  value={souscategory}
-                                  onChange={handleChange("souscategory")}
-                                >
-                                  <option value="">
-                                    Choisis une sous-catégorie
+                  <label className="form-control-label text-dark">
+                    Catégories
+                  </label>
+
+                  <Input
+                    type="select"
+                    name="category"
+                    value={category}
+                    onChange={() => {
+                      handleChange("category"), setShowList(true);
+                    }}
+                  >
+                    <option value="">Choisis une catégorie</option>
+                    {props.ListC.map((cat, index) => {
+                      return (
+                        <Fragment key={index}>
+                          
+                            <option key={cat._id} value={cat._id}>
+                              {cat.nomcat}
+                            </option>
+                          
+                           {ShowList && (
+                            <>
+                               {cat.souscategorie.map(({ sousnomcat, _id }) => {
+                                return (
+                                  <option key={_id} value={_id}>
+                                    {sousnomcat}
                                   </option>
-                                  {cat.souscategorie.map(
-                                    ({ sousnomcat, _id }) => {
-                                      return (
-                                        <option key={_id} value={_id}>
-                                          {" "}
-                                          {sousnomcat}{" "}
-                                        </option>
-                                      );
-                                    }
-                                  )}
-                                </Input>
-                              </AccordionDetails>
-                            </Accordion>
-                          </Fragment>
-                        );
-                      })}
-                    </AccordionDetails>
-                  </Accordion>
+                                );
+                              })}
+                            </>
+                          )}
+                        </Fragment>
+                      );
+                    })}
+                  </Input>
                 </FormGroup>
               </Col>
+              {ShowList && (
+                <Col lg="6">
+                  <FormGroup>
+                    <label className="form-control-label text-dark">
+                      Sous-catégories
+                    </label>
+                    <Input
+                      type="select"
+                      name="category"
+                      value={souscategory}
+                      onChange={() => {
+                        handleChange("souscategory"), setShowList(true);
+                      }}
+                    >
+                     
+                    </Input>
+                  </FormGroup>
+                </Col>
+              )}
             </Row>
             <Row>
               <Col>
@@ -242,9 +251,9 @@ const Offre = ({ ...props }) => {
             <Row>
               <Col lg="6">
                 <FormGroup>
-                  <label className="custom-file-upload form-control-label btn btn-outline-dark ">
+                  <label className="custom-file-upload form-control-label btn border-dark text-dark">
                     Choisir un fichier
-                    <i className=" mx-2 form-control-label far fa-upload text-md text-white"></i>
+                    <i className=" mx-2 form-control-label far fa-upload text-md text-dark "></i>
                     <Input
                       type="file"
                       multiple="multiple"
@@ -278,10 +287,16 @@ const Offre = ({ ...props }) => {
               <Button
                 className="my-4 btn-outline-danger"
                 color="dark"
-                type="submit"
                 onClick={() => props.setShowModal(false)}
               >
                 Annuler
+              </Button>
+              <Button
+                className="my-4 btn-outline-dark"
+                color="dark"
+                onClick={() => reset()}
+              >
+                Reset
               </Button>
             </div>
           </Form>
