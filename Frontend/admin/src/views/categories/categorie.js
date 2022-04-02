@@ -119,7 +119,7 @@ import {
                                   Confirmer
                                </Button>
                                <Button className="my-4 btn-outline-danger" 
-                                       color="dark" type="submit" onClick={() => props.setShowModal(false)}>
+                                       color="dark" onClick={() => props.setShowModal(false)}>
                                   Annuler
                                </Button>
                     </div>
