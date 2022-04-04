@@ -71,7 +71,7 @@ export const addOffre = (offre) => {
 };
 
 export const UPO = (id, updated) => axios.put(`${OffremsURL}/api/offre/` + id, updated);
-export const updateSousCat = (id, data) => (dispatch) => {
+export const updateOffre = (id, data) => (dispatch) => {
     setAuthToken(localStorage.accessToken)
     UPO(id,data)
     .then((res) => {
@@ -83,7 +83,7 @@ export const updateSousCat = (id, data) => (dispatch) => {
         toast.info('Mis à jour avec succés');
         
     }).catch((err) => 
-        toast.warn(err.response.data.msg),
+        toast.error(err.response.data.msg),
         OFFRE_ERROR
     );
 };

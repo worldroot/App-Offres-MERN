@@ -104,6 +104,7 @@ const OffreList = ({ ...props }) => {
                       </tr>
                     </thead>
                     {user.role === "admin" && (
+                      
                       <tbody>
                         {props.List.map((of, index) => {
                           return (
@@ -114,7 +115,7 @@ const OffreList = ({ ...props }) => {
                                 <td>
                                   <img
                                     className=" img-fluid rounded shadow avatar avatar-lg"
-                                    src={of.image}
+                                    src={[of.image]}
                                     alt=""
                                   />
                                 </td>
