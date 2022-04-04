@@ -19,6 +19,7 @@ import Offre from "./offre.js";
 
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
+import UpdateOffre from "./updateOffre.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -46,6 +47,7 @@ const OffreList = ({ ...props }) => {
   }, []);
 
   const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
 
   return (
     <>
@@ -86,6 +88,7 @@ const OffreList = ({ ...props }) => {
                       )}
                     </div>
                   </CardHeader>
+
                   <Table className="align-items-center table-flush" responsive>
                     <thead className="thead-light">
                       <tr>
@@ -97,44 +100,104 @@ const OffreList = ({ ...props }) => {
                         <th scope="col">Catégories</th>
                         <th scope="col">Sous-catégories</th>
                         <th scope="col">Status</th>
+                        {user.role === "admin" && <th scope="col">Actions</th>}
                       </tr>
                     </thead>
-                    <tbody>
-                      {props.List.map((of, index) => {
-                        return (
-                          <Fragment key={index}>
-                            <tr key={of._id}>
-                              <td>{of.titre}</td>
-                              <td>{of.description}</td>
-                              <td>
-                                <img
-                                  className=" img-fluid rounded shadow avatar avatar-lg"
-                                  src={of.image}
-                                  alt=""
-                                />
-                              </td>
-                              <td>{of.dateDebut.substring(0, 10)}</td>
-                              <td>{of.dateFin.substring(0, 10)}</td>
-                              <td>{of.category}</td>
-                              <td>{of.souscategory}</td>
-                              <td>
-                                {of.status === "pending" ? (
-                                  <span className=" text-warning">Pending</span>
-                                ) : (
-                                  <span className="text-success">Published</span>
-                                )}
-                              </td>
-                            </tr>
-                          </Fragment>
-                        );
-                      })}
-                    </tbody>
+                    {user.role === "admin" && (
+                      <tbody>
+                        {props.List.map((of, index) => {
+                          return (
+                            <Fragment key={index}>
+                              <tr key={of._id}>
+                                <td>{of.titre}</td>
+                                <td>{of.description}</td>
+                                <td>
+                                  <img
+                                    className=" img-fluid rounded shadow avatar avatar-lg"
+                                    src={of.image}
+                                    alt=""
+                                  />
+                                </td>
+                                <td>{of.dateDebut.substring(0, 10)}</td>
+                                <td>{of.dateFin.substring(0, 10)}</td>
+                                <td>{of.category}</td>
+                                <td>{of.souscategory}</td>
+                                <td>
+                                  {of.status === "pending" ? (
+                                    <span className=" text-warning">
+                                      Pending
+                                    </span>
+                                  ) : (
+                                    <span className="text-success">
+                                      Published
+                                    </span>
+                                  )}
+                                </td>
+
+                                <td>
+                                  <div
+                                    onClick={() => {
+                                      setCurrentId(of._id);
+                                      setShowModal2(true);
+                                    }}
+                                  >
+                                    <Button
+                                      className="btn btn-outline-dark"
+                                      size="sm"
+                                    >
+                                      Modifier
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </Fragment>
+                          );
+                        })}
+                      </tbody>
+                    )}
+
+                    {user.role === "super-admin" && (
+                      <tbody>
+                        {props.List.map((of, index) => {
+                          return (
+                            <Fragment key={index}>
+                              <tr key={of._id}>
+                                <td>{of.titre}</td>
+                                <td>{of.description}</td>
+                                <td>
+                                  <img
+                                    className=" img-fluid rounded shadow avatar avatar-lg"
+                                    src={of.image}
+                                    alt=""
+                                  />
+                                </td>
+                                <td>{of.dateDebut.substring(0, 10)}</td>
+                                <td>{of.dateFin.substring(0, 10)}</td>
+                                <td>{of.category}</td>
+                                <td>{of.souscategory}</td>
+                                <td>
+                                  {of.status === "pending" ? (
+                                    <span className=" text-warning">
+                                      Pending
+                                    </span>
+                                  ) : (
+                                    <span className="text-success">
+                                      Published
+                                    </span>
+                                  )}
+                                </td>
+                              </tr>
+                            </Fragment>
+                          );
+                        })}
+                      </tbody>
+                    )}
                   </Table>
                 </Card>
               </div>
             </Col>
 
-            {/* Update Catégorie */}
+            {/* Add Offre */}
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal}
@@ -156,6 +219,36 @@ const OffreList = ({ ...props }) => {
                           setCurrentId,
                           showModal,
                           setShowModal,
+                        }}
+                      />
+                    </motion.div>
+                  </Col>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Update Offre */}
+            <AnimatePresence
+              exitBeforeEnter
+              showModal={showModal2}
+              setShowModal={setShowModal2}
+            >
+              {showModal2 && (
+                <motion.div
+                  className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  <Col className=" fixed-top center" xl="5">
+                    <motion.div className="" variants={modal}>
+                      <UpdateOffre
+                        {...{
+                          currentId,
+                          setCurrentId,
+                          showModal2,
+                          setShowModal2,
                         }}
                       />
                     </motion.div>

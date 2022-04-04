@@ -11,9 +11,9 @@ const app = express()
 const port = process.env.PORT_OFFRE_MS;
 
 app.use(morgan('dev'))
-app.use(express.json())
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 app.use(cors())
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use("/api/offre", offreRoute)

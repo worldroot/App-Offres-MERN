@@ -25,9 +25,6 @@ import React, { Fragment, useState, useEffect } from "react";
 import { addOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useForm";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import "./offre.css";
 const initialFieldValues = {
   titre: "",
@@ -61,13 +58,9 @@ const Offre = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const onSuccess = () => {
-      resetForm();
-    };
 
-    props.create(data, onSuccess);
-    resetForm();
-    props.setShowModal(false);
+    props.create(data);
+    reset()
     setTimeout(() => {
       window.location.reload();
     }, 500);
