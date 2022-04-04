@@ -248,9 +248,9 @@ const Offre = ({ ...props }) => {
             <Row>
               <Col lg="6">
                 <FormGroup>
-                  <label className="custom-file-upload form-control-label btn border-dark text-dark">
+                  <label className="custom-file-upload form-control-label btn border-info text-info">
                     Choisir un fichier
-                    <i className=" mx-2 form-control-label far fa-upload text-md text-dark "></i>
+                    <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
                     <Input
                       type="file"
                       multiple="multiple"
