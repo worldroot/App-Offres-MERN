@@ -101,7 +101,7 @@ const OffreList = ({ ...props }) => {
                         <th scope="col">Catégories</th>
                         <th scope="col">Sous-catégories</th>
                         <th scope="col">Status</th>
-                        {user.role === "admin" && <th scope="col"></th>}
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     {user.role === "admin" && (

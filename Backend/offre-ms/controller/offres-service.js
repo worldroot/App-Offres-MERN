@@ -126,6 +126,7 @@ router.put(
           dateFin,
           souscategory,
           status,
+          prixdebut,
           postedBy,
         } = req.body;
         var date = new Date();
@@ -148,6 +149,7 @@ router.put(
                     image,
                     dateDebut,
                     dateFin,
+                    prixdebut,
                     souscategory,
                     postedBy: req.user.id,
                     status,

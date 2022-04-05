@@ -115,7 +115,7 @@ const Offre = ({ ...props }) => {
     <>
       <Card className="card-profile shadow ">
         <Row>
-          <Col>
+          <Col className="order-xl-1 mb-5 mb-xl-0">
             <Button
               className="border-0 shadow-none bg-transparent"
               size="sm"
@@ -238,10 +238,9 @@ const Offre = ({ ...props }) => {
                   <label className="form-control-label text-dark">
                     Date début
                   </label>
-
                   <Input
                     type="date"
-                    name="datedebut"
+                    name="dateDebut"
                     min={DatetoCheck}
                     value={dateDebut}
                     onChange={handleChange("dateDebut")}
@@ -255,7 +254,7 @@ const Offre = ({ ...props }) => {
                   </label>
                   <Input
                     type="date"
-                    name="datefin"
+                    name="dateFin"
                     value={dateFin}
                     onChange={handleChange("dateFin")}
                   />
@@ -301,10 +300,9 @@ const Offre = ({ ...props }) => {
               </Button>
               <Button
                 className="my-4 btn-outline-dark"
-                color="dark"
                 onClick={() => reset()}
               >
-                Reset
+               Reset
               </Button>
             </div>
           </Form>

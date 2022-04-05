@@ -84,6 +84,10 @@ const UpdateOffre = ({ ...props }) => {
     setValues({ ...values, [name]: base64 });
   };
 
+  const handleChangeDate = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
   const reset = (e) => {
     resetForm();
     setShowList(false);
@@ -143,7 +147,7 @@ const UpdateOffre = ({ ...props }) => {
                 <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label text-dark">
-                      Prix debut
+                      Prix debut (dt)
                     </label>
                     <Input
                       min={1}
@@ -186,6 +190,7 @@ const UpdateOffre = ({ ...props }) => {
                       value={values.category}
                       onChange={handleInputChange}
                     >
+                      
                       {props.ListC.map((cat, index) => {
                         return (
                           <Fragment key={index}>
@@ -209,6 +214,9 @@ const UpdateOffre = ({ ...props }) => {
                       value={values.souscategory}
                       onChange={handleInputChange}
                     >
+                      <option value={values.souscategory}>
+                        {values.souscategory}
+                      </option>
                       {props.ListSC.filter((sous) => {
                         if (sous.category === values.category) {
                           return sous;
@@ -216,7 +224,7 @@ const UpdateOffre = ({ ...props }) => {
                       }).map((sous, index) => {
                         return (
                           <Fragment key={index}>
-                            <option key={sous._id} value={sous._id}>
+                            <option key={sous._id} value={sous.sousnomcat}>
                               {sous.sousnomcat}
                             </option>
                           </Fragment>
@@ -250,10 +258,11 @@ const UpdateOffre = ({ ...props }) => {
                     </label>
                     <Input
                       type="date"
-                      name="datedebut"
+                      name="dateDebut"
                       min={values.dateDebut.substring(0, 10)}
+                      max={values.dateFin.substring(0, 10)}
                       value={values.dateDebut.substring(0, 10)}
-                      onChange={handleInputChange}
+                      onChange={handleChangeDate("dateDebut")}
                     />
                   </FormGroup>
                 </Col>
@@ -264,10 +273,10 @@ const UpdateOffre = ({ ...props }) => {
                     </label>
                     <Input
                       type="date"
-                      name="datefin"
+                      name="dateFin"
                       min={values.dateFin.substring(0, 10)}
                       value={values.dateFin.substring(0, 10)}
-                      onChange={handleInputChange}
+                      onChange={handleChangeDate("dateFin")}
                     />
                   </FormGroup>
                 </Col>
@@ -308,14 +317,6 @@ const UpdateOffre = ({ ...props }) => {
                   type="submit"
                 >
                   Confirmer
-                </Button>
-
-                <Button
-                  className="my-4 btn-outline-dark"
-                  color="dark"
-                  onClick={() => reset()}
-                >
-                  Reset
                 </Button>
               </div>
             </Form>
