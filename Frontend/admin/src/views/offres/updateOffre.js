@@ -118,7 +118,7 @@ const UpdateOffre = ({ ...props }) => {
           {DatetoCheck < Debut && <h3 className="mb-0">Modifier une offre</h3>}
 
           {DatetoCheck > Debut && (
-            <h3 className="mb-0 text-danger">Impossible de modifier l'offre choisis</h3>
+            <h1 className="mb-0 text-danger">Impossible de modifier l'offre choisis</h1>
           )}
         </CardHeader>
 
@@ -230,7 +230,7 @@ const UpdateOffre = ({ ...props }) => {
                 <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label text-dark">
-                      Date début
+                      Date début: {values.dateDebut.substring(0, 10)}
                     </label>
 
                     <Input
@@ -244,7 +244,7 @@ const UpdateOffre = ({ ...props }) => {
                 <Col>
                   <FormGroup>
                     <label className="form-control-label text-dark">
-                      Date fin
+                      Date fin: {values.dateFin.substring(0, 10)}
                     </label>
                     <Input
                       type="date"
@@ -302,12 +302,6 @@ const UpdateOffre = ({ ...props }) => {
                 </Button>
               </div>
             </Form>
-          )}
-          {DatetoCheck > Debut && (
-            <h2 className="text-center">
-              La date d'aujourd'hui n'est pas avant la date debut d'offre '
-              {values.dateDebut.substring(0, 10)}'
-            </h2>
           )}
         </CardBody>
       </Card>
