@@ -152,6 +152,8 @@ const UpdateOffre = ({ ...props }) => {
                     >
                       <option value="pending">Pending</option>
                       <option value="published">Published</option>
+                      <option value="archived">Archived</option>
+                      
                     </Input>
                   </FormGroup>
                 </Col>
