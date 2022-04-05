@@ -46,6 +46,7 @@ const Offre = ({ ...props }) => {
     dateFin,
     souscategory,
     category,
+    prixdebut,
   } = data;
 
   useEffect(() => {
@@ -58,12 +59,15 @@ const Offre = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    props.create(data);
-    reset()
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    if (prixdebut === "0") {
+      toast.warn("Verifier prix debut !");
+    } else {
+      props.create(data);
+      reset();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
   };
 
   if (!userExist) {
@@ -104,15 +108,21 @@ const Offre = ({ ...props }) => {
   };
 
   const [ShowList, setShowList] = useState(false);
+  var date = new Date();
+  const DatetoCheck = new Date(date.getTime());
 
   return (
     <>
       <Card className="card-profile shadow ">
-        <Row className="justify-content-center">
+        <Row>
           <Col>
-            <div className="card-profile-image">
-              <a href="#" onClick={(e) => e.preventDefault()}></a>
-            </div>
+            <Button
+              className="border-0 shadow-none bg-transparent"
+              size="sm"
+              onClick={() => props.setShowModal(false)}
+            >
+              <i className="fas fa-times fa-2x text-danger"></i>
+            </Button>
           </Col>
         </Row>
         <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
@@ -122,7 +132,7 @@ const Offre = ({ ...props }) => {
         <CardBody className="">
           <Form role="form" onSubmit={onSubmit}>
             <Row>
-              <Col>
+              <Col lg="6">
                 <FormGroup>
                   <label className="form-control-label text-dark">Titre</label>
                   <Input
@@ -130,6 +140,20 @@ const Offre = ({ ...props }) => {
                     name="titre"
                     value={titre}
                     onChange={handleChange("titre")}
+                  />
+                </FormGroup>
+              </Col>
+              <Col lg="6">
+                <FormGroup>
+                  <label className="form-control-label text-dark">
+                    Prix debut (dt)
+                  </label>
+                  <Input
+                    min={1}
+                    type="number"
+                    name="prixdebut"
+                    value={prixdebut}
+                    onChange={handleChange("prixdebut")}
                   />
                 </FormGroup>
               </Col>
@@ -173,7 +197,7 @@ const Offre = ({ ...props }) => {
                       value={souscategory}
                       onChange={handleChange("souscategory")}
                     >
-                     <option>Choisis une sous-catégorie</option>
+                      <option>Choisis une sous-catégorie</option>
                       {props.ListSC.filter((sous) => {
                         if (sous.category === category) {
                           return sous;
@@ -218,6 +242,7 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="date"
                     name="datedebut"
+                    min={DatetoCheck}
                     value={dateDebut}
                     onChange={handleChange("dateDebut")}
                   />
@@ -273,13 +298,6 @@ const Offre = ({ ...props }) => {
                 type="submit"
               >
                 Confirmer
-              </Button>
-              <Button
-                className="my-4 btn-outline-danger"
-                color="dark"
-                onClick={() => props.setShowModal(false)}
-              >
-                Annuler
               </Button>
               <Button
                 className="my-4 btn-outline-dark"

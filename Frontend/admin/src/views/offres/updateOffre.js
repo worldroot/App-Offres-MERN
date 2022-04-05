@@ -55,10 +55,8 @@ const UpdateOffre = ({ ...props }) => {
     e.preventDefault();
 
     props.update(props.currentId, values);
+    props.setShowModal2(false);
     reset();
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
   };
 
   if (!userExist) {
@@ -82,7 +80,8 @@ const UpdateOffre = ({ ...props }) => {
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
-    setData({ ...data, image: base64 });
+    const { name } = e.target;
+    setValues({ ...values, [name]: base64 });
   };
 
   const reset = (e) => {
@@ -95,14 +94,12 @@ const UpdateOffre = ({ ...props }) => {
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
   const Debut = new Date(values.dateDebut);
+
   return (
     <>
-      <Card className="card-profile shadow ">
+      <Card>
         <Row className="justify-content-center">
           <Col>
-            <div className="card-profile-image">
-              <a href="#" onClick={(e) => e.preventDefault()}></a>
-            </div>
             <Button
               className="border-0 shadow-none bg-transparent"
               size="sm"
@@ -118,7 +115,9 @@ const UpdateOffre = ({ ...props }) => {
           {DatetoCheck < Debut && <h3 className="mb-0">Modifier une offre</h3>}
 
           {DatetoCheck > Debut && (
-            <h1 className="mb-0 text-danger">Impossible de modifier l'offre choisis</h1>
+            <h1 className="mb-0 text-danger">
+              Impossible de modifier l'offre choisis
+            </h1>
           )}
         </CardHeader>
 
@@ -126,7 +125,7 @@ const UpdateOffre = ({ ...props }) => {
           {DatetoCheck < Debut && (
             <Form role="form" onSubmit={onSubmit}>
               <Row>
-                <Col lg="6">
+                <Col>
                   <FormGroup>
                     <label className="form-control-label text-dark">
                       Titre
@@ -135,6 +134,22 @@ const UpdateOffre = ({ ...props }) => {
                       type="text"
                       name="titre"
                       value={values.titre}
+                      onChange={handleInputChange}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg="6">
+                  <FormGroup>
+                    <label className="form-control-label text-dark">
+                      Prix debut
+                    </label>
+                    <Input
+                      min={1}
+                      type="number"
+                      name="prixdebut"
+                      value={values.prixdebut}
                       onChange={handleInputChange}
                     />
                   </FormGroup>
@@ -153,7 +168,6 @@ const UpdateOffre = ({ ...props }) => {
                       <option value="pending">Pending</option>
                       <option value="published">Published</option>
                       <option value="archived">Archived</option>
-                      
                     </Input>
                   </FormGroup>
                 </Col>
@@ -232,13 +246,13 @@ const UpdateOffre = ({ ...props }) => {
                 <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label text-dark">
-                      Date début: {values.dateDebut.substring(0, 10)}
+                      Date début
                     </label>
-
                     <Input
                       type="date"
                       name="datedebut"
-                      value={values.dateDebut}
+                      min={values.dateDebut.substring(0, 10)}
+                      value={values.dateDebut.substring(0, 10)}
                       onChange={handleInputChange}
                     />
                   </FormGroup>
@@ -246,12 +260,13 @@ const UpdateOffre = ({ ...props }) => {
                 <Col>
                   <FormGroup>
                     <label className="form-control-label text-dark">
-                      Date fin: {values.dateFin.substring(0, 10)}
+                      Date fin
                     </label>
                     <Input
                       type="date"
                       name="datefin"
-                      value={values.dateFin}
+                      min={values.dateFin.substring(0, 10)}
+                      value={values.dateFin.substring(0, 10)}
                       onChange={handleInputChange}
                     />
                   </FormGroup>

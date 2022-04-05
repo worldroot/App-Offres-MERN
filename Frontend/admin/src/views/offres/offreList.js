@@ -26,9 +26,9 @@ const backdrop = {
   hidden: { opacity: 0 },
 };
 const modal = {
-  hidden: { y: "-100vh", opacity: 0 },
+  hidden: { y: "100vh", opacity: 0 },
   visible: {
-    y: "50px",
+    y: "0px",
     opacity: 1,
     transition: { delay: 0.5 },
   },
@@ -68,7 +68,7 @@ const OffreList = ({ ...props }) => {
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
-            <Col className="order-xl-1 mb-5 mb-xl-0" xl="12">
+            <Col className="order-xl-1 mb-5 mb-xl-0">
               <div className="col">
                 <Card className="shadow">
                   <CardHeader className="border-0 ">
@@ -93,6 +93,7 @@ const OffreList = ({ ...props }) => {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Titre</th>
+                        <th scope="col">Prix début</th>
                         <th scope="col">Description</th>
                         <th scope="col">Image</th>
                         <th scope="col">Date début</th>
@@ -100,7 +101,7 @@ const OffreList = ({ ...props }) => {
                         <th scope="col">Catégories</th>
                         <th scope="col">Sous-catégories</th>
                         <th scope="col">Status</th>
-                        {user.role === "admin" && <th scope="col">Actions</th>}
+                        {user.role === "admin" && <th scope="col"></th>}
                       </tr>
                     </thead>
                     {user.role === "admin" && (
@@ -111,10 +112,11 @@ const OffreList = ({ ...props }) => {
                             <Fragment key={index}>
                               <tr key={of._id}>
                                 <td>{of.titre}</td>
+                                <td>{of.prixdebut} dt</td>
                                 <td>{of.description}</td>
                                 <td>
                                   <img
-                                    className=" img-fluid rounded shadow avatar avatar-lg"
+                                    className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
                                     src={[of.image]}
                                     alt=""
                                   />
@@ -124,12 +126,18 @@ const OffreList = ({ ...props }) => {
                                 <td>{of.category}</td>
                                 <td>{of.souscategory}</td>
                                 <td>
-                                  {of.status === "pending" ? (
+                                  {of.status === "pending" && (
                                     <span className=" text-warning">
                                       Pending
                                     </span>
-                                  ) : (
-                                    <span className="text-success">
+                                  )}
+                                  {of.status === "archived" && (
+                                    <span className=" text-dark">
+                                      Archived
+                                    </span>
+                                  )}
+                                  {of.status === "published" && (
+                                    <span className=" text-success">
                                       Published
                                     </span>
                                   )}
@@ -146,7 +154,7 @@ const OffreList = ({ ...props }) => {
                                       className="btn btn-outline-dark"
                                       size="sm"
                                     >
-                                      Modifier
+                                    <i className="fas fa-pencil-alt"></i>
                                     </Button>
                                   </div>
                                 </td>
@@ -164,6 +172,7 @@ const OffreList = ({ ...props }) => {
                             <Fragment key={index}>
                               <tr key={of._id}>
                                 <td>{of.titre}</td>
+                                <td>{of.prixdebut} dt</td>
                                 <td>{of.description}</td>
                                 <td>
                                   <img

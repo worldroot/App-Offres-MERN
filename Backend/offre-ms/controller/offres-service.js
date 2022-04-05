@@ -22,8 +22,6 @@ router.post(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (responseUser) => {
         var role = responseUser.data.role;
-
-        //Add by Super Admin Only
         if (role !== "admin") {
           return res.status(404).json({
             error: "Access Denied !!",
@@ -37,10 +35,16 @@ router.post(
               dateDebut,
               dateFin,
               souscategory,
+              prixdebut,
               category,
               status,
               postedBy,
             } = req.body;
+
+            var date = new Date();
+            const Debut = new Date(dateDebut);
+            const Fin = new Date(dateFin);
+            const DateToCheck = new Date(date.getTime());
 
             const off = await Offre.findOne({ titre });
             if (off) {
@@ -58,19 +62,35 @@ router.post(
                       response.data.category
                   )
                   .then((response2) => {
-                    const newOffre = new Offre({
-                      titre,
-                      description,
-                      image,
-                      dateDebut,
-                      dateFin,
-                      category: response2.data.nomcat,
-                      souscategory: response.data.sousnomcat,
-                      postedBy: responseUser.data.email,
-                      status,
-                    });
-
-                    newOffre.save().then(() => res.json(newOffre));
+                    if (DateToCheck > Debut && DateToCheck < Fin) {
+                      const newOffre = new Offre({
+                        titre,
+                        description,
+                        image,
+                        dateDebut,
+                        dateFin,
+                        prixdebut,
+                        category: response2.data.nomcat,
+                        souscategory: response.data.sousnomcat,
+                        postedBy: responseUser.data.email,
+                        status: "published",
+                      });
+                      newOffre.save().then(() => res.json(newOffre));
+                    } else {
+                      const newOffre = new Offre({
+                        titre,
+                        description,
+                        image,
+                        dateDebut,
+                        dateFin,
+                        prixdebut,
+                        category: response2.data.nomcat,
+                        souscategory: response.data.sousnomcat,
+                        postedBy: responseUser.data.email,
+                        status: "pending",
+                      });
+                      newOffre.save().then(() => res.json(newOffre));
+                    }
                   });
               });
           } catch (error) {
