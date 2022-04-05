@@ -190,11 +190,11 @@ const UpdateOffre = ({ ...props }) => {
                       value={values.category}
                       onChange={handleInputChange}
                     >
-                      
+                      <option>{values.category}</option>
                       {props.ListC.map((cat, index) => {
                         return (
                           <Fragment key={index}>
-                            <option key={cat._id} value={cat._id}>
+                            <option key={cat._id} value={cat.nomcat}>
                               {cat.nomcat}
                             </option>
                           </Fragment>
