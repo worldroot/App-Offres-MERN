@@ -8,6 +8,9 @@ const SousCategorySchema = new mongoose.Schema({
         ref: 'Category',
         required: true
     },
+    catref: {
+        type: String,
+    },
     sousnomcat: {
         type: String,
         required: true,

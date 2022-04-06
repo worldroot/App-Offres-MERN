@@ -33,9 +33,9 @@ router.post('/',
 
         }else{
              
-            const { sousnomcat, category } = req.body
+            const { sousnomcat, category, catref } = req.body
             try {
-                let categoryModel = await Category.findOne({ category })
+                let categoryModel = await Category.findById(category)
                 if (!categoryModel) {
                     return res.status(403).json({
                         error: true,
@@ -49,7 +49,7 @@ router.post('/',
                         msg: 'Sous-Category already exist'
                     })
                 }
-                const newCategory = new SousCategory({ category,sousnomcat })
+                const newCategory = new SousCategory({ category,sousnomcat, catref:categoryModel.nomcat })
                 souscategory = await newCategory.save()
                 res.status(200).json(souscategory)
           

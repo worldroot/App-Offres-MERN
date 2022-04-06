@@ -125,6 +125,7 @@ router.put(
           dateDebut,
           dateFin,
           souscategory,
+          category,
           status,
           prixdebut,
           postedBy,
@@ -140,6 +141,7 @@ router.put(
           try {
             // Between dates : DateToCheck > Debut && DateToCheck<Fin
             if (DateToCheck < Debut) {
+              
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
@@ -151,7 +153,8 @@ router.put(
                     dateFin,
                     prixdebut,
                     souscategory,
-                    postedBy: req.user.id,
+                    category,
+                    postedBy: req.user.email,
                     status,
                   },
                 },
