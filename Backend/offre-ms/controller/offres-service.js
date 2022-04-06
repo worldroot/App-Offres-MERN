@@ -128,7 +128,6 @@ router.put(
           category,
           status,
           prixdebut,
-          postedBy,
         } = req.body;
         var date = new Date();
         const OF = await Offre.findById(req.params.offreId);
@@ -154,7 +153,6 @@ router.put(
                     prixdebut,
                     souscategory,
                     category,
-                    postedBy: req.user.email,
                     status,
                   },
                 },

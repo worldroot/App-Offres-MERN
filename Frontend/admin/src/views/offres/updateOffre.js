@@ -42,6 +42,7 @@ const UpdateOffre = ({ ...props }) => {
     useForm(initialFieldValues, props.setCurrentId);
 
   const [data, setData] = useState(initialFieldValues);
+  const [Key, setKey] = useState(0);
 
   useEffect(() => {
     props.All();
@@ -190,11 +191,11 @@ const UpdateOffre = ({ ...props }) => {
                       value={values.category}
                       onChange={handleInputChange}
                     >
-                      <option>{values.category}</option>
+                      <option value={values.category} >{values.category}</option>
                       {props.ListC.map((cat, index) => {
                         return (
                           <Fragment key={index}>
-                            <option key={cat._id} value={cat.nomcat}>
+                            <option value={cat.nomcat}>
                               {cat.nomcat}
                             </option>
                           </Fragment>
@@ -214,11 +215,9 @@ const UpdateOffre = ({ ...props }) => {
                       value={values.souscategory}
                       onChange={handleInputChange}
                     >
-                      <option value={values.souscategory}>
-                        {values.souscategory}
-                      </option>
+                      <option value={values.souscategory} >{values.souscategory}</option>
                       {props.ListSC.filter((sous) => {
-                        if (sous.category === values.category) {
+                        if (sous.catref === values.category) {
                           return sous;
                         }
                       }).map((sous, index) => {
