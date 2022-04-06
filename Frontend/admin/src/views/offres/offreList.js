@@ -12,8 +12,7 @@ import Header from "../../components/Headers/Header.js";
 import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { connect, useDispatch } from "react-redux";
-import { allOffres } from "redux/offres/offreActions";
-import { getSousById } from "redux/cat/catActions";
+import { allOffres, deleteOffre } from "redux/offres/offreActions";
 import { Fragment, useEffect, useState } from "react";
 import Offre from "./offre.js";
 
@@ -35,11 +34,14 @@ const modal = {
 };
 
 const OffreList = ({ ...props }) => {
+
+  const dispatch = useDispatch()
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
+
   const [currentId, setCurrentId] = useState(0);
 
   useEffect(() => {
@@ -48,6 +50,16 @@ const OffreList = ({ ...props }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+
+  const onDLF= (id) => {
+    const onSuccess = () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    };
+    if (window.confirm("Offre: Êtes-vous sûr de vouloir supprimer ?"))
+      dispatch(deleteOffre(id, onSuccess));
+  };
 
   return (
     <>
@@ -105,7 +117,6 @@ const OffreList = ({ ...props }) => {
                       </tr>
                     </thead>
                     {user.role === "admin" && (
-                      
                       <tbody>
                         {props.List.map((of, index) => {
                           return (
@@ -113,7 +124,7 @@ const OffreList = ({ ...props }) => {
                               <tr key={of._id}>
                                 <td>{of.titre}</td>
                                 <td>{of.prixdebut} dt</td>
-                                <td>{of.description}</td>
+                                <td>{of.description.substring(0, 10)}...</td>
                                 <td>
                                   <img
                                     className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
@@ -132,9 +143,7 @@ const OffreList = ({ ...props }) => {
                                     </span>
                                   )}
                                   {of.status === "archived" && (
-                                    <span className=" text-dark">
-                                      Archived
-                                    </span>
+                                    <span className=" text-dark">Archived</span>
                                   )}
                                   {of.status === "published" && (
                                     <span className=" text-success">
@@ -144,19 +153,23 @@ const OffreList = ({ ...props }) => {
                                 </td>
 
                                 <td>
-                                  <div
+                                  <Button
+                                    className="btn btn-outline-dark"
+                                    size="sm"
                                     onClick={() => {
                                       setCurrentId(of._id);
                                       setShowModal2(true);
                                     }}
                                   >
-                                    <Button
-                                      className="btn btn-outline-dark"
-                                      size="sm"
-                                    >
                                     <i className="fas fa-pencil-alt"></i>
-                                    </Button>
-                                  </div>
+                                  </Button>
+                                  <Button
+                                    className="btn btn-outline-danger"
+                                    size="sm"
+                                    onClick={() => onDLF(of._id)}
+                                  >
+                                    <i className="fas fa-trash"></i>
+                                  </Button>
                                 </td>
                               </tr>
                             </Fragment>
@@ -186,15 +199,28 @@ const OffreList = ({ ...props }) => {
                                 <td>{of.category}</td>
                                 <td>{of.souscategory}</td>
                                 <td>
-                                  {of.status === "pending" ? (
+                                  {of.status === "pending" && (
                                     <span className=" text-warning">
                                       Pending
                                     </span>
-                                  ) : (
-                                    <span className="text-success">
+                                  )}
+                                  {of.status === "archived" && (
+                                    <span className=" text-dark">Archived</span>
+                                  )}
+                                  {of.status === "published" && (
+                                    <span className=" text-success">
                                       Published
                                     </span>
                                   )}
+                                </td>
+                                <td>
+                                  <Button
+                                    className="btn btn-outline-danger"
+                                    size="sm"
+                                    onClick={() => onDLF(of._id)}
+                                  >
+                                    <i className="fas fa-trash"></i>
+                                  </Button>
                                 </td>
                               </tr>
                             </Fragment>

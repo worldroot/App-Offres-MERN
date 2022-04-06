@@ -29,7 +29,7 @@ import "./offre.css";
 const initialFieldValues = {
   titre: "",
   description: "",
-  image: "",
+  image: [],
   dateDebut: "",
   dateFin: "",
   souscategory: "",
@@ -298,11 +298,8 @@ const Offre = ({ ...props }) => {
               >
                 Confirmer
               </Button>
-              <Button
-                className="my-4 btn-outline-dark"
-                onClick={() => reset()}
-              >
-               Reset
+              <Button className="my-4 btn-outline-dark" onClick={() => reset()}>
+                Reset
               </Button>
             </div>
           </Form>

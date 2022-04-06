@@ -84,3 +84,19 @@ export const updateOffre = (id, data) => (dispatch) => {
     })
     .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
 };
+
+export const DL = (id) => axios.delete(`${OffremsURL}/api/offre/` + id);
+export const deleteOffre = async (id, dispatch) => {
+  DL(id)
+    .then((res) => {
+      dispatch({
+        type: OFFRE_DELETED,
+        payload: id,
+      });
+    })
+    .catch(function(error) {
+      OFFRE_ERROR,
+      console.log(error),
+      toast.warn(error.response.data.msg) 
+    })
+};
