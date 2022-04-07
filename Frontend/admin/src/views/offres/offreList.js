@@ -43,6 +43,7 @@ const OffreList = ({ ...props }) => {
   });
 
   const [currentId, setCurrentId] = useState(0);
+  const [currentObj, setCurrentObj] = useState({});
 
   useEffect(() => {
     props.All();
@@ -157,7 +158,7 @@ const OffreList = ({ ...props }) => {
                                     className="btn btn-outline-dark"
                                     size="sm"
                                     onClick={() => {
-                                      setCurrentId(of._id);
+                                      setCurrentObj(of);
                                       setShowModal2(true);
                                     }}
                                   >
@@ -281,8 +282,8 @@ const OffreList = ({ ...props }) => {
                     <motion.div className="" variants={modal}>
                       <UpdateOffre
                         {...{
-                          currentId,
-                          setCurrentId,
+                          currentObj,
+                          setCurrentObj,
                           showModal2,
                           setShowModal2,
                         }}
