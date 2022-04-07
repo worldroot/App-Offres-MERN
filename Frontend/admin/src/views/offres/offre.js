@@ -97,7 +97,7 @@ const Offre = ({ ...props }) => {
       filePathsPromises.push(convertToBase64(file));
     });
     const filePaths = await Promise.all(filePathsPromises);
-    const mappedFiles = filePaths.map((base64File) => ({ image: base64File }));
+    const mappedFiles = filePaths.map((base64File) => (base64File));
     toast.info("Upload done");
     setData({ ...data, image: mappedFiles });
     console.log(mappedFiles);

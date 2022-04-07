@@ -19,6 +19,7 @@ import Offre from "./offre.js";
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
 import UpdateOffre from "./updateOffre.js";
+import DetailsOffre from "./detailsOffre.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -34,8 +35,7 @@ const modal = {
 };
 
 const OffreList = ({ ...props }) => {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
@@ -51,8 +51,9 @@ const OffreList = ({ ...props }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
 
-  const onDLF= (id) => {
+  const onDLF = (id) => {
     const onSuccess = () => {
       setTimeout(() => {
         window.location.reload();
@@ -106,13 +107,12 @@ const OffreList = ({ ...props }) => {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Titre</th>
-                        <th scope="col">Prix début</th>
+                        <th scope="col">Prix</th>
                         <th scope="col">Description</th>
-                        <th scope="col">Image</th>
+                        <th scope="col">Img</th>
                         <th scope="col">Date début</th>
                         <th scope="col">Date fin</th>
                         <th scope="col">Catégories</th>
-                        <th scope="col">Sous-catégories</th>
                         <th scope="col">Status</th>
                         <th scope="col"></th>
                       </tr>
@@ -123,20 +123,15 @@ const OffreList = ({ ...props }) => {
                           return (
                             <Fragment key={index}>
                               <tr key={of._id}>
-                                <td>{of.titre}</td>
+                                <td>{of.titre.substring(0, 12)}</td>
                                 <td>{of.prixdebut} dt</td>
                                 <td>{of.description.substring(0, 10)}...</td>
-                                <td>
-                                  <img
-                                    className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
-                                    src={of.image}
-                                    alt=""
-                                  />
-                                </td>
+                                <td>( {of.image.length} )</td>
                                 <td>{of.dateDebut.substring(0, 10)}</td>
                                 <td>{of.dateFin.substring(0, 10)}</td>
-                                <td>{of.category}</td>
-                                <td>{of.souscategory}</td>
+                                <td>
+                                  {of.category} - {of.souscategory}
+                                </td>
                                 <td>
                                   {of.status === "pending" && (
                                     <span className=" text-warning">
@@ -154,6 +149,16 @@ const OffreList = ({ ...props }) => {
                                 </td>
 
                                 <td>
+                                  <Button
+                                    className="btn btn-outline-dark"
+                                    size="sm"
+                                    onClick={() => {
+                                      setCurrentObj(of);
+                                      setShowModal3(true);
+                                    }}
+                                  >
+                                    <i className="fas fa-eye"></i>
+                                  </Button>
                                   <Button
                                     className="btn btn-outline-dark"
                                     size="sm"
@@ -293,6 +298,36 @@ const OffreList = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {/* Details Offre */}
+            <AnimatePresence
+              exitBeforeEnter
+              showModal={showModal3}
+              setShowModal={setShowModal3}
+            >
+              {showModal3 && (
+                <motion.div
+                  className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  <Col className=" fixed-top center" xl="5">
+                    <motion.div className="" variants={modal}>
+                      <DetailsOffre
+                        {...{
+                          currentObj,
+                          setCurrentObj,
+                          showModal3,
+                          setShowModal3,
+                        }}
+                      />
+                    </motion.div>
+                  </Col>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Row>
         </Container>
       </div>
@@ -310,3 +345,15 @@ const mapActionToProps = {
 };
 
 export default connect(mapStateToProps, mapActionToProps)(OffreList);
+
+{
+  /* <td>
+  {of.image.map((img) => (
+    <img
+      className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
+      src={img}
+      alt=""
+    />
+  ))}
+</td>; */
+}
