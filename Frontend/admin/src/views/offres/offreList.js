@@ -147,6 +147,17 @@ const OffreList = ({ ...props }) => {
                               </td>
 
                               <td>
+                              <Button
+                                  className="btn btn-outline-success"
+                                  size="sm"
+                                  onClick={() => {
+                                    setCurrentObj(of);
+                                    setShowModal3(true);
+                                  }}
+                                >
+                                  <i className="fas fa-eye"></i>
+                                </Button>
+
                                 {user.role === "admin" && (
                                   <Button
                                     className="btn btn-outline-dark"
@@ -159,17 +170,7 @@ const OffreList = ({ ...props }) => {
                                     <i className="fas fa-pencil-alt"></i>
                                   </Button>
                                 )}
-                                <Button
-                                  className="btn btn-outline-success"
-                                  size="sm"
-                                  onClick={() => {
-                                    setCurrentObj(of);
-                                    setShowModal3(true);
-                                  }}
-                                >
-                                  <i className="fas fa-eye"></i>
-                                </Button>
-
+                                
                                 <Button
                                   className="btn btn-outline-danger"
                                   size="sm"

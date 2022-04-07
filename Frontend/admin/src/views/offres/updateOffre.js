@@ -67,7 +67,6 @@ const UpdateOffre = ({ ...props }) => {
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         resolve(fileReader.result);
-        toast.info("Upload done");
       };
       fileReader.onerror = (error) => {
         reject(error);
@@ -76,16 +75,15 @@ const UpdateOffre = ({ ...props }) => {
   };
 
   const handleFileUpload = async (e) => {
-    const files = [...e.target.files]
-    //const base64 = await convertToBase64([...e.target.files]);
+    const files = [...e.target.files];
     const filePathsPromises = [];
-    files.forEach(file => {
+    files.forEach((file) => {
       filePathsPromises.push(convertToBase64(file));
     });
     const filePaths = await Promise.all(filePathsPromises);
-    const mappedFiles = filePaths.map((base64File) => (base64File));
+    const mappedFiles = filePaths.map((base64File) => base64File);
     toast.info("Upload done");
-    setData({ ...data, image: mappedFiles });
+    setValues({ ...values, image: mappedFiles });
   };
 
   const handleChangeDate = (name) => (event) => {
@@ -197,9 +195,7 @@ const UpdateOffre = ({ ...props }) => {
                       {props.ListC.map((cat, index) => {
                         return (
                           <Fragment key={index}>
-                            <option value={cat.nomcat}>
-                              {cat.nomcat}
-                            </option>
+                            <option value={cat.nomcat}>{cat.nomcat}</option>
                           </Fragment>
                         );
                       })}
@@ -299,17 +295,17 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
                 <Col lg="6">
-                {values.image.map((img, index) => (
-                        <Fragment key={index}>
-                          <label className="form-control-label text-dark mx-4">
-                            <img
-                              className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
-                              src={img}
-                              alt=""
-                            />
-                          </label>
-                        </Fragment>
-                      ))}
+                  {values.image.map((img, index) => (
+                    <Fragment key={index}>
+                      <label className="form-control-label text-dark mx-4">
+                        <img
+                          className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
+                          src={img}
+                          alt=""
+                        />
+                      </label>
+                    </Fragment>
+                  ))}
                 </Col>
               </Row>
 
