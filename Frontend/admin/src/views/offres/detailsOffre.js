@@ -213,16 +213,17 @@ const DetailsOffre = ({ ...props }) => {
                   <FormGroup>
                     <p className="">
                       Image:
-                      {values.image.map((img) => (
-                        <>
-                          <label className="form-control-label text-dark mx-4">
+                      {values.image.map((img, index) => (
+                        <Fragment key={index}>
+                          <label  className="form-control-label text-dark mx-4">
                             <img
+                            
                               className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
                               src={img}
                               alt=""
                             />
                           </label>
-                        </>
+                        </Fragment>
                       ))}
                     </p>
                   </FormGroup>

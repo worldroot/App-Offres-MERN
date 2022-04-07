@@ -117,48 +117,37 @@ const OffreList = ({ ...props }) => {
                         <th scope="col"></th>
                       </tr>
                     </thead>
-                    {user.role === "admin" && (
-                      <tbody>
-                        {props.List.map((of, index) => {
-                          return (
-                            <Fragment key={index}>
-                              <tr key={of._id}>
-                                <td>{of.titre.substring(0, 12)}</td>
-                                <td>{of.prixdebut} dt</td>
-                                <td>{of.description.substring(0, 10)}...</td>
-                                <td>( {of.image.length} )</td>
-                                <td>{of.dateDebut.substring(0, 10)}</td>
-                                <td>{of.dateFin.substring(0, 10)}</td>
-                                <td>
-                                  {of.category} - {of.souscategory}
-                                </td>
-                                <td>
-                                  {of.status === "pending" && (
-                                    <span className=" text-warning">
-                                      Pending
-                                    </span>
-                                  )}
-                                  {of.status === "archived" && (
-                                    <span className=" text-dark">Archived</span>
-                                  )}
-                                  {of.status === "published" && (
-                                    <span className=" text-success">
-                                      Published
-                                    </span>
-                                  )}
-                                </td>
 
-                                <td>
-                                  <Button
-                                    className="btn btn-outline-dark"
-                                    size="sm"
-                                    onClick={() => {
-                                      setCurrentObj(of);
-                                      setShowModal3(true);
-                                    }}
-                                  >
-                                    <i className="fas fa-eye"></i>
-                                  </Button>
+                    <tbody>
+                      {props.List.map((of, index) => {
+                        return (
+                          <Fragment key={index}>
+                            <tr key={of._id}>
+                              <td>{of.titre.substring(0, 12)}</td>
+                              <td>{of.prixdebut} dt</td>
+                              <td>{of.description.substring(0, 10)}...</td>
+                              <td>( {of.image.length} )</td>
+                              <td>{of.dateDebut.substring(0, 10)}</td>
+                              <td>{of.dateFin.substring(0, 10)}</td>
+                              <td>
+                                {of.category} - {of.souscategory}
+                              </td>
+                              <td>
+                                {of.status === "pending" && (
+                                  <span className=" text-warning">Pending</span>
+                                )}
+                                {of.status === "archived" && (
+                                  <span className=" text-dark">Archived</span>
+                                )}
+                                {of.status === "published" && (
+                                  <span className=" text-success">
+                                    Published
+                                  </span>
+                                )}
+                              </td>
+
+                              <td>
+                                {user.role === "admin" && (
                                   <Button
                                     className="btn btn-outline-dark"
                                     size="sm"
@@ -169,71 +158,31 @@ const OffreList = ({ ...props }) => {
                                   >
                                     <i className="fas fa-pencil-alt"></i>
                                   </Button>
-                                  <Button
-                                    className="btn btn-outline-danger"
-                                    size="sm"
-                                    onClick={() => onDLF(of._id)}
-                                  >
-                                    <i className="fas fa-trash"></i>
-                                  </Button>
-                                </td>
-                              </tr>
-                            </Fragment>
-                          );
-                        })}
-                      </tbody>
-                    )}
+                                )}
+                                <Button
+                                  className="btn btn-outline-success"
+                                  size="sm"
+                                  onClick={() => {
+                                    setCurrentObj(of);
+                                    setShowModal3(true);
+                                  }}
+                                >
+                                  <i className="fas fa-eye"></i>
+                                </Button>
 
-                    {user.role === "super-admin" && (
-                      <tbody>
-                        {props.List.map((of, index) => {
-                          return (
-                            <Fragment key={index}>
-                              <tr key={of._id}>
-                                <td>{of.titre}</td>
-                                <td>{of.prixdebut} dt</td>
-                                <td>{of.description}</td>
-                                <td>
-                                  <img
-                                    className=" img-fluid rounded shadow avatar avatar-lg"
-                                    src={of.image}
-                                    alt=""
-                                  />
-                                </td>
-                                <td>{of.dateDebut.substring(0, 10)}</td>
-                                <td>{of.dateFin.substring(0, 10)}</td>
-                                <td>{of.category}</td>
-                                <td>{of.souscategory}</td>
-                                <td>
-                                  {of.status === "pending" && (
-                                    <span className=" text-warning">
-                                      Pending
-                                    </span>
-                                  )}
-                                  {of.status === "archived" && (
-                                    <span className=" text-dark">Archived</span>
-                                  )}
-                                  {of.status === "published" && (
-                                    <span className=" text-success">
-                                      Published
-                                    </span>
-                                  )}
-                                </td>
-                                <td>
-                                  <Button
-                                    className="btn btn-outline-danger"
-                                    size="sm"
-                                    onClick={() => onDLF(of._id)}
-                                  >
-                                    <i className="fas fa-trash"></i>
-                                  </Button>
-                                </td>
-                              </tr>
-                            </Fragment>
-                          );
-                        })}
-                      </tbody>
-                    )}
+                                <Button
+                                  className="btn btn-outline-danger"
+                                  size="sm"
+                                  onClick={() => onDLF(of._id)}
+                                >
+                                  <i className="fas fa-trash"></i>
+                                </Button>
+                              </td>
+                            </tr>
+                          </Fragment>
+                        );
+                      })}
+                    </tbody>
                   </Table>
                 </Card>
               </div>

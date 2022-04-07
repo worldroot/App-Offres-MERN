@@ -76,9 +76,16 @@ const UpdateOffre = ({ ...props }) => {
   };
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setData({ ...data, image: base64 });
+    const files = [...e.target.files]
+    //const base64 = await convertToBase64([...e.target.files]);
+    const filePathsPromises = [];
+    files.forEach(file => {
+      filePathsPromises.push(convertToBase64(file));
+    });
+    const filePaths = await Promise.all(filePathsPromises);
+    const mappedFiles = filePaths.map((base64File) => (base64File));
+    toast.info("Upload done");
+    setData({ ...data, image: mappedFiles });
   };
 
   const handleChangeDate = (name) => (event) => {
@@ -189,8 +196,8 @@ const UpdateOffre = ({ ...props }) => {
                     >
                       {props.ListC.map((cat, index) => {
                         return (
-                          <Fragment key={cat._id}>
-                            <option key={index} value={cat.nomcat}>
+                          <Fragment key={index}>
+                            <option value={cat.nomcat}>
                               {cat.nomcat}
                             </option>
                           </Fragment>
@@ -292,13 +299,17 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
                 <Col lg="6">
-                <img
-                  onChange={(e) => handleFileUpload(e)}
-                  name="image"
-                  className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
-                  src={values.image}
-                  alt=""
-                />
+                {values.image.map((img, index) => (
+                        <Fragment key={index}>
+                          <label className="form-control-label text-dark mx-4">
+                            <img
+                              className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
+                              src={img}
+                              alt=""
+                            />
+                          </label>
+                        </Fragment>
+                      ))}
                 </Col>
               </Row>
 

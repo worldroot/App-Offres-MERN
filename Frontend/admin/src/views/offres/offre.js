@@ -100,7 +100,6 @@ const Offre = ({ ...props }) => {
     const mappedFiles = filePaths.map((base64File) => (base64File));
     toast.info("Upload done");
     setData({ ...data, image: mappedFiles });
-    console.log(mappedFiles);
   };
 
   const reset = (e) => {
