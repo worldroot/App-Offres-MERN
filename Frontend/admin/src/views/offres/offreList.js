@@ -129,7 +129,7 @@ const OffreList = ({ ...props }) => {
                                 <td>
                                   <img
                                     className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
-                                    src={[of.image]}
+                                    src={of.image}
                                     alt=""
                                   />
                                 </td>

@@ -33,7 +33,7 @@ const initialFieldValues = {
 const UpdateOffre = ({ ...props }) => {
   useEffect(() => {
     if (props.currentObj !== {}) {
-      setValues({...props.currentObj });
+      setValues({ ...props.currentObj });
       setErrors({});
     }
   }, [props.currentObj]);
@@ -52,7 +52,6 @@ const UpdateOffre = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     props.update(props.currentObj._id, values);
     props.setShowModal2(false);
     reset();
@@ -78,10 +77,8 @@ const UpdateOffre = ({ ...props }) => {
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    console.log(file);
     const base64 = await convertToBase64(file);
-    const { name } = e.target;
-    setValues({ ...values, [name]: base64 });
+    setData({ ...data, image: base64 });
   };
 
   const handleChangeDate = (name) => (event) => {
@@ -295,14 +292,13 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
                 <Col lg="6">
-                  <Input
-                    disabled
-                    className="border-0"
-                    type="text"
-                    name="image"
-                    value={values.image}
-                    onChange={handleInputChange}
-                  />
+                <img
+                  onChange={(e) => handleFileUpload(e)}
+                  name="image"
+                  className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
+                  src={values.image}
+                  alt=""
+                />
                 </Col>
               </Row>
 

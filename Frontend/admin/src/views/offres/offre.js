@@ -1,9 +1,5 @@
 // reactstrap components
 import {
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
   Button,
   Card,
   CardHeader,
@@ -11,11 +7,8 @@ import {
   Form,
   FormGroup,
   Input,
-  Media,
-  InputGroup,
   Row,
   Col,
-  Label,
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
@@ -89,7 +82,6 @@ const Offre = ({ ...props }) => {
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         resolve(fileReader.result);
-        toast.info("Upload done");
       };
       fileReader.onerror = (error) => {
         reject(error);
@@ -98,9 +90,17 @@ const Offre = ({ ...props }) => {
   };
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setData({ ...data, image: base64 });
+    const files = [...e.target.files]
+    //const base64 = await convertToBase64([...e.target.files]);
+    const filePathsPromises = [];
+    files.forEach(file => {
+      filePathsPromises.push(convertToBase64(file));
+    });
+    const filePaths = await Promise.all(filePathsPromises);
+    const mappedFiles = filePaths.map((base64File) => ({ image: base64File }));
+    toast.info("Upload done");
+    setData({ ...data, image: mappedFiles });
+    console.log(mappedFiles);
   };
 
   const reset = (e) => {
@@ -108,6 +108,7 @@ const Offre = ({ ...props }) => {
     setShowList(false);
     setData(initialFieldValues);
   };
+
 
   const [ShowList, setShowList] = useState(false);
   var date = new Date();
@@ -281,6 +282,7 @@ const Offre = ({ ...props }) => {
                 </FormGroup>
               </Col>
               <Col lg="6">
+                
                 <Input
                   disabled
                   className="border-0"
