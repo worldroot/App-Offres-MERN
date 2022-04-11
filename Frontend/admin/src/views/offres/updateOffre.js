@@ -19,8 +19,6 @@ import { updateOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useFormObj";
 import "./offre.css";
-import Dropzone from "react-dropzone-uploader";
-import { getDroppedOrSelectedFiles } from "html5-file-selector";
 
 const initialFieldValues = {
   titre: "",
@@ -78,7 +76,7 @@ const UpdateOffre = ({ ...props }) => {
   };
 
   const onDelete = async (e) => {
-    const files = values.image
+    const files = values.image;
     const filtered = files.filter((item, index) => index !== e);
     setValues({ ...values, image: filtered });
   };
@@ -301,6 +299,7 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="text-center">
                   <FormGroup>
@@ -320,20 +319,23 @@ const UpdateOffre = ({ ...props }) => {
               </Row>
               <Row className="border rounded border-dark p-2">
                 <Col>
-                  {values.image.map((img, index) => (
-                    <Fragment key={index}>
-                      <label className="form-control-label text-dark mx-1 ">
-                        <img
-                          className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
-                          src={img}
-                          alt=""
-                        />
-                        <i className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
-                           onClick={() => onDelete(index)}
-                        ></i>
-                      </label>
-                    </Fragment>
-                  ))}
+                    {values.image.map((img, index) => {
+                      return (
+                        <Fragment key={index}>
+                            <label className="form-control-label text-dark mx-1 ">
+                              <img
+                                className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
+                                src={img}
+                                alt=""
+                              />
+                              <i
+                                className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
+                                onClick={() => onDelete(index)}
+                              ></i>
+                            </label>
+                        </Fragment>
+                      );
+                    })}
                 </Col>
               </Row>
 

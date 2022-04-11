@@ -102,6 +102,11 @@ const Offre = ({ ...props }) => {
     setData({ ...data, image: mappedFiles });
   };
 
+  const onDelete = async (e) => {
+    const filtered = image.filter((item, index) => index !== e);
+    setData({ ...data, image: filtered });
+  };
+
   const reset = (e) => {
     resetForm();
     setShowList(false);
@@ -111,7 +116,7 @@ const Offre = ({ ...props }) => {
 
   const [ShowList, setShowList] = useState(false);
   var date = new Date();
-  const DatetoCheck = new Date(date.getTime());
+  const DatetoCheck = date.toISOString().substring(0, 10)
 
   return (
     <>
@@ -264,34 +269,42 @@ const Offre = ({ ...props }) => {
               </Col>
             </Row>
 
+                         
             <Row>
-              <Col lg="6">
-                <FormGroup>
-                  <label className="custom-file-upload form-control-label btn border-info text-info">
-                    Choisir un fichier
-                    <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
-                    <Input
-                      type="file"
-                      multiple="multiple"
-                      name="image"
-                      accept=".jpeg, .png, .jpg"
-                      onChange={(e) => handleFileUpload(e)}
-                    />
-                  </label>
-                </FormGroup>
-              </Col>
-              <Col lg="6">
-                
-                <Input
-                  disabled
-                  className="border-0"
-                  type="text"
-                  name="image"
-                  value={image}
-                  onChange={handleChange("image")}
-                />
-              </Col>
-            </Row>
+                <Col className="text-center">
+                  <FormGroup>
+                    <label className="custom-file-upload form-control-label btn border-info text-info">
+                      Choisir un fichier
+                      <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
+                      <Input
+                        type="file"
+                        multiple="multiple"
+                        name="image"
+                        accept=".jpeg, .png, .jpg"
+                        onChange={(e) => handleFileUpload(e)}
+                      />
+                    </label>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  {image.map((img, index) => (
+                    <Fragment key={index}>
+                      <label className="form-control-label text-dark mx-1 ">
+                        <img
+                          className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
+                          src={img}
+                          alt=""
+                        />
+                        <i className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
+                           onClick={() => onDelete(index)}
+                        ></i>
+                      </label>
+                    </Fragment>
+                  ))}
+                </Col>
+              </Row>
 
             <div className="text-center">
               <Button
