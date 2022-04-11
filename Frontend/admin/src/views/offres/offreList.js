@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
 import UpdateOffre from "./updateOffre.js";
 import DetailsOffre from "./detailsOffre.js";
+import UpdateStatus from "./updateStatus.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -52,6 +53,7 @@ const OffreList = ({ ...props }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
 
   const onDLF = (id) => {
     const onSuccess = () => {
@@ -222,9 +224,23 @@ const OffreList = ({ ...props }) => {
                                     <i className="fas fa-eye"></i>
                                   </Button>
 
+                                  {of.status === "archived" &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal4(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
+                                    )}
+
                                   {DatetoCheck > new Date(of.dateDebut) ? (
                                     <>
-                                     
                                       <Button
                                         disabled
                                         className="btn btn-danger"
@@ -236,7 +252,6 @@ const OffreList = ({ ...props }) => {
                                     </>
                                   ) : (
                                     <>
-                                     
                                       <Button
                                         className="btn btn-outline-danger"
                                         size="sm"
@@ -258,7 +273,7 @@ const OffreList = ({ ...props }) => {
               </div>
             </Col>
 
-            {/* Add Offre */}
+            {/* Add Offre Modal-1 */}
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal}
@@ -288,7 +303,7 @@ const OffreList = ({ ...props }) => {
               )}
             </AnimatePresence>
 
-            {/* Update Offre */}
+            {/* Update Offre  Modal-2 */}
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal2}
@@ -318,7 +333,7 @@ const OffreList = ({ ...props }) => {
               )}
             </AnimatePresence>
 
-            {/* Details Offre */}
+            {/* Details Offre Modal-3 */}
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal3}
@@ -347,6 +362,37 @@ const OffreList = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {/* Update Status Modal-4 */}
+            <AnimatePresence
+              exitBeforeEnter
+              showModal={showModal4}
+              setShowModal={setShowModal4}
+            >
+              {showModal4 && (
+                <motion.div
+                  className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  <Col className=" fixed-top center" xl="5">
+                    <motion.div className="" variants={modal}>
+                      <UpdateStatus
+                        {...{
+                          currentObj,
+                          setCurrentObj,
+                          showModal4,
+                          setShowModal4,
+                        }}
+                      />
+                    </motion.div>
+                  </Col>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           </Row>
         </Container>
       </div>
