@@ -106,6 +106,7 @@ const UpdateOffre = ({ ...props }) => {
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
   const Debut = new Date(values.dateDebut);
+  const Today = date.toISOString().substring(0, 10)
 
   return (
     <>
@@ -154,9 +155,10 @@ const UpdateOffre = ({ ...props }) => {
 
           <CardBody>
             <Form role="form" onSubmit={onSubmit}>
+
               <Row>
-                <Col>
-                  <FormGroup>
+                <Col lg="6">
+                <FormGroup>
                     <label className="form-control-label text-dark">
                       Titre
                     </label>
@@ -168,8 +170,6 @@ const UpdateOffre = ({ ...props }) => {
                     />
                   </FormGroup>
                 </Col>
-              </Row>
-              <Row>
                 <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label text-dark">
@@ -185,7 +185,6 @@ const UpdateOffre = ({ ...props }) => {
                     />
                   </FormGroup>
                 </Col>
-
               </Row>
               <Row>
                 <Col lg="6">
@@ -262,7 +261,7 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="date"
                       name="dateDebut"
-                      min={values.dateDebut.substring(0, 10)}
+                      min={Today}
                       max={values.dateFin.substring(0, 10)}
                       value={values.dateDebut.substring(0, 10)}
                       onChange={handleChangeDate("dateDebut")}
@@ -277,7 +276,7 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="date"
                       name="dateFin"
-                      min={values.dateFin.substring(0, 10)}
+                      min={values.dateDebut.substring(0, 10)}
                       value={values.dateFin.substring(0, 10)}
                       onChange={handleChangeDate("dateFin")}
                     />

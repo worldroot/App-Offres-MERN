@@ -45,6 +45,7 @@
     "@emotion/styled": "^11.8.1",
     "@fortawesome/fontawesome-free": "5.15.3",
     "@mui/material": "^5.5.1",
+    "@sefailyasoz/react-carousel": "^1.1.1",
     "axios": "^0.26.0",
     "base-64": "^1.0.0",
     "bootstrap": "^4.6.0",

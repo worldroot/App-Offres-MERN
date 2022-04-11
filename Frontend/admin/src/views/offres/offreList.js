@@ -63,6 +63,10 @@ const OffreList = ({ ...props }) => {
       dispatch(deleteOffre(id, onSuccess));
   };
 
+  var date = new Date();
+  const DatetoCheck = new Date(date.getTime());
+  const Today = date.toISOString().substring(0, 10)
+
   return (
     <>
       {/* Layout*/}
@@ -145,7 +149,7 @@ const OffreList = ({ ...props }) => {
                                   </span>
                                 )}
                               </td>
-
+                              {/* DateToCheck > Debut && DateToCheck < Fin */}
                               <td>
                               <Button
                                   className="btn btn-outline-success"
@@ -159,6 +163,7 @@ const OffreList = ({ ...props }) => {
                                 </Button>
 
                                 {user.role === "admin" && (
+
                                   <Button
                                     className="btn btn-outline-dark"
                                     size="sm"
@@ -169,6 +174,7 @@ const OffreList = ({ ...props }) => {
                                   >
                                     <i className="fas fa-pencil-alt"></i>
                                   </Button>
+
                                 )}
                                 
                                 <Button
