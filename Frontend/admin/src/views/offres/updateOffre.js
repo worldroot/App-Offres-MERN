@@ -77,8 +77,10 @@ const UpdateOffre = ({ ...props }) => {
     });
   };
 
-  const onDelete = () => {
-    setValues({ ...values, image: null });
+  const onDelete = async (e) => {
+    const files = values.image
+    const filtered = files.filter((item, index) => index !== e);
+    setValues({ ...values, image: filtered });
   };
 
   const handleFileUpload = async (e) => {
@@ -320,16 +322,14 @@ const UpdateOffre = ({ ...props }) => {
                 <Col>
                   {values.image.map((img, index) => (
                     <Fragment key={index}>
-                      <label className="form-control-label text-dark mx-2 ">
+                      <label className="form-control-label text-dark mx-1 ">
                         <img
                           className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
                           src={img}
                           alt=""
                         />
-
-                        <i
-                          className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
-                          onClick={() => onDelete()}
+                        <i className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
+                           onClick={() => onDelete(index)}
                         ></i>
                       </label>
                     </Fragment>
