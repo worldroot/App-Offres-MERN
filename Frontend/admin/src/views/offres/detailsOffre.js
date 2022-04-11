@@ -229,6 +229,8 @@ const DetailsOffre = ({ ...props }) => {
                       src={values.image[currentIndex]}
                       alt=""
                     />
+                    <small className=" text-white">Click image to hide</small>
+                    
 
               </motion.div>
             </Col>

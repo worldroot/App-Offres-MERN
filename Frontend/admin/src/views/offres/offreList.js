@@ -65,7 +65,7 @@ const OffreList = ({ ...props }) => {
 
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
-  const Today = date.toISOString().substring(0, 10)
+  const Today = date.toISOString().substring(0, 10);
 
   return (
     <>
@@ -150,41 +150,104 @@ const OffreList = ({ ...props }) => {
                                 )}
                               </td>
                               {/* DateToCheck > Debut && DateToCheck < Fin */}
-                              <td>
-                              <Button
-                                  className="btn btn-outline-success"
-                                  size="sm"
-                                  onClick={() => {
-                                    setCurrentObj(of);
-                                    setShowModal3(true);
-                                  }}
-                                >
-                                  <i className="fas fa-eye"></i>
-                                </Button>
-
-                                {user.role === "admin" && (
-
+                              {user.role === "admin" && (
+                                <td>
                                   <Button
-                                    className="btn btn-outline-dark"
+                                    className="btn btn-outline-success"
                                     size="sm"
                                     onClick={() => {
                                       setCurrentObj(of);
-                                      setShowModal2(true);
+                                      setShowModal3(true);
                                     }}
                                   >
-                                    <i className="fas fa-pencil-alt"></i>
+                                    <i className="fas fa-eye"></i>
                                   </Button>
 
-                                )}
-                                
-                                <Button
-                                  className="btn btn-outline-danger"
-                                  size="sm"
-                                  onClick={() => onDLF(of._id)}
-                                >
-                                  <i className="fas fa-trash"></i>
-                                </Button>
-                              </td>
+                                  {DatetoCheck > new Date(of.dateDebut) ? (
+                                    <>
+                                      <Button
+                                        disabled
+                                        className="btn btn-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal2(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
+                                      <Button
+                                        disabled
+                                        className="btn btn-danger"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-trash"></i>
+                                      </Button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal2(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
+                                      <Button
+                                        className="btn btn-outline-danger"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-trash"></i>
+                                      </Button>
+                                    </>
+                                  )}
+                                </td>
+                              )}
+
+                              {user.role === "super-admin" && (
+                                <td>
+                                  <Button
+                                    className="btn btn-outline-success"
+                                    size="sm"
+                                    onClick={() => {
+                                      setCurrentObj(of);
+                                      setShowModal3(true);
+                                    }}
+                                  >
+                                    <i className="fas fa-eye"></i>
+                                  </Button>
+
+                                  {DatetoCheck > new Date(of.dateDebut) ? (
+                                    <>
+                                     
+                                      <Button
+                                        disabled
+                                        className="btn btn-danger"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-trash"></i>
+                                      </Button>
+                                    </>
+                                  ) : (
+                                    <>
+                                     
+                                      <Button
+                                        className="btn btn-outline-danger"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-trash"></i>
+                                      </Button>
+                                    </>
+                                  )}
+                                </td>
+                              )}
                             </tr>
                           </Fragment>
                         );
@@ -301,15 +364,3 @@ const mapActionToProps = {
 };
 
 export default connect(mapStateToProps, mapActionToProps)(OffreList);
-
-{
-  /* <td>
-  {of.image.map((img) => (
-    <img
-      className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
-      src={img}
-      alt=""
-    />
-  ))}
-</td>; */
-}
