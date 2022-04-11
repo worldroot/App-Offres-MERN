@@ -19,6 +19,9 @@ import { updateOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useFormObj";
 import "./offre.css";
+import Dropzone from "react-dropzone-uploader";
+import { getDroppedOrSelectedFiles } from "html5-file-selector";
+
 const initialFieldValues = {
   titre: "",
   description: "",
@@ -74,15 +77,18 @@ const UpdateOffre = ({ ...props }) => {
     });
   };
 
+  const onDelete = () => {
+    setValues({ ...values, image: null });
+  };
+
   const handleFileUpload = async (e) => {
     const files = [...e.target.files];
-    const filePathsPromises = [];
+    const filePathsPromises = values.image;
     files.forEach((file) => {
       filePathsPromises.push(convertToBase64(file));
     });
     const filePaths = await Promise.all(filePathsPromises);
     const mappedFiles = filePaths.map((base64File) => base64File);
-    toast.info("Upload done");
     setValues({ ...values, image: mappedFiles });
   };
 
@@ -103,32 +109,50 @@ const UpdateOffre = ({ ...props }) => {
 
   return (
     <>
-      <Card>
-        <Row className="justify-content-center">
-          <Col>
-            <Button
-              className="border-0 shadow-none bg-transparent"
-              size="sm"
-              onClick={() => props.setShowModal2(false)}
-            >
-              <i className="fas fa-times fa-2x text-danger"></i>
-            </Button>
-          </Col>
-        </Row>
+      {DatetoCheck > Debut && (
+        <Card>
+          <Row className="justify-content-center">
+            <Col>
+              <Button
+                className="border-0 shadow-none bg-transparent"
+                size="sm"
+                onClick={() => props.setShowModal2(false)}
+              >
+                <i className="fas fa-times fa-2x text-danger"></i>
+              </Button>
+            </Col>
+          </Row>
 
-        <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-          <div className="d-flex justify-content-between"></div>
-          {DatetoCheck < Debut && <h3 className="mb-0">Modifier une offre</h3>}
+          <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+            <div className="d-flex justify-content-between"></div>
 
-          {DatetoCheck > Debut && (
             <h1 className="mb-0 text-danger">
               Impossible de modifier l'offre choisis
             </h1>
-          )}
-        </CardHeader>
+          </CardHeader>
+        </Card>
+      )}
 
-        <CardBody>
-          {DatetoCheck < Debut && (
+      {DatetoCheck < Debut && (
+        <Card className=" overflow-auto h-100vh">
+          <Row className="justify-content-center">
+            <Col>
+              <Button
+                className="border-0 shadow-none bg-transparent"
+                size="sm"
+                onClick={() => props.setShowModal2(false)}
+              >
+                <i className="fas fa-times fa-2x text-danger"></i>
+              </Button>
+            </Col>
+          </Row>
+
+          <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+            <div className="d-flex justify-content-between"></div>
+            <h3 className="mb-0">Modifier une offre</h3>
+          </CardHeader>
+
+          <CardBody>
             <Form role="form" onSubmit={onSubmit}>
               <Row>
                 <Col>
@@ -178,7 +202,6 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
               </Row>
-
               <Row>
                 <Col lg="6">
                   <FormGroup>
@@ -245,7 +268,6 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
               </Row>
-
               <Row>
                 <Col lg="6">
                   <FormGroup>
@@ -277,9 +299,8 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
               </Row>
-
               <Row>
-                <Col lg="6">
+                <Col className="text-center">
                   <FormGroup>
                     <label className="custom-file-upload form-control-label btn border-info text-info">
                       Choisir un fichier
@@ -294,15 +315,22 @@ const UpdateOffre = ({ ...props }) => {
                     </label>
                   </FormGroup>
                 </Col>
-                <Col lg="6">
+              </Row>
+              <Row className="border rounded border-dark p-2">
+                <Col>
                   {values.image.map((img, index) => (
                     <Fragment key={index}>
-                      <label className="form-control-label text-dark mx-4">
+                      <label className="form-control-label text-dark mx-2 ">
                         <img
-                          className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
+                          className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
                           src={img}
                           alt=""
                         />
+
+                        <i
+                          className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
+                          onClick={() => onDelete()}
+                        ></i>
                       </label>
                     </Fragment>
                   ))}
@@ -319,9 +347,9 @@ const UpdateOffre = ({ ...props }) => {
                 </Button>
               </div>
             </Form>
-          )}
-        </CardBody>
-      </Card>
+          </CardBody>
+        </Card>
+      )}
     </>
   );
 };
