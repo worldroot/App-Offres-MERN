@@ -178,29 +178,14 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       min={1}
                       type="number"
+                      step="0.1"
                       name="prixdebut"
                       value={values.prixdebut}
                       onChange={handleInputChange}
                     />
                   </FormGroup>
                 </Col>
-                <Col lg="6">
-                  <FormGroup>
-                    <label className="form-control-label text-dark">
-                      Status
-                    </label>
-                    <Input
-                      type="select"
-                      name="status"
-                      value={values.status}
-                      onChange={handleInputChange}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="published">Published</option>
-                      <option value="archived">Archived</option>
-                    </Input>
-                  </FormGroup>
-                </Col>
+
               </Row>
               <Row>
                 <Col lg="6">

@@ -92,14 +92,14 @@ const Offre = ({ ...props }) => {
   const handleFileUpload = async (e) => {
     const files = [...e.target.files]
     //const base64 = await convertToBase64([...e.target.files]);
-    const filePathsPromises = [];
+    const filePathsPromises = image;
     files.forEach(file => {
       filePathsPromises.push(convertToBase64(file));
     });
     const filePaths = await Promise.all(filePathsPromises);
     const mappedFiles = filePaths.map((base64File) => (base64File));
     toast.info("Upload done");
-    setData({ ...data, image: mappedFiles });
+    setData({ ...data, image: mappedFiles.reverse() });
   };
 
   const onDelete = async (e) => {
@@ -158,6 +158,7 @@ const Offre = ({ ...props }) => {
                   <Input
                     min={1}
                     type="number"
+                    step="0.1"
                     name="prixdebut"
                     value={prixdebut}
                     onChange={handleChange("prixdebut")}
