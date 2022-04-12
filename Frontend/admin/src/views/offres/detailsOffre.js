@@ -16,7 +16,10 @@ import { connect, useDispatch } from "react-redux";
 import React, { Fragment, useState, useEffect } from "react";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useFormObj";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
+import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "components/modal.css";
 import "./offre.css";
 const initialFieldValues = {
@@ -60,8 +63,8 @@ const DetailsOffre = ({ ...props }) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   const ImgStyle = {
-    width: "300px",
-    height: "300px",
+    width: "200px",
+    height: "200px"
   };
 
   if (!userExist) {
@@ -184,21 +187,23 @@ const DetailsOffre = ({ ...props }) => {
             <Row>
               <Col>
                 <FormGroup>
-                  {values.image.map((img, index) => (
-                    <Fragment key={index}>
-                      <label className="form-control-label text-dark mx-4">
-                        <img
+                  <AliceCarousel mouseDragEnabled >
+                    {values.image.map((img, index) => (
+                      <Fragment key={index}>
+                        <div className="text-center">
+                          <img
                           onClick={() => {
                             setShowImg(true), setCurrentIndex(index);
                           }}
-                         
-                          className="img-fluid rounded shadow avatar avatar-lg hover-zoom"
+                          className="img-fluid rounded shadow avatar avatar-lg w-25 h-25"
                           src={img}
                           alt=""
                         />
-                      </label>
-                    </Fragment>
-                  ))}
+                        </div>
+                        
+                      </Fragment>
+                    ))}
+                  </AliceCarousel>
                 </FormGroup>
               </Col>
             </Row>
@@ -221,17 +226,14 @@ const DetailsOffre = ({ ...props }) => {
           >
             <Col className=" fixed-top center" xl="5">
               <motion.div variants={modal}>
-                
-                    <img
-                      onClick={() => setShowImg(false)}
-                      style={ImgStyle}
-                      className="img-fluid rounded shadow avatar avatar-lg w-100 h-100"
-                      src={values.image[currentIndex]}
-                      alt=""
-                    />
-                    <small className=" text-white">Click image to hide</small>
-                    
-
+                <img
+                  onClick={() => setShowImg(false)}
+                  style={ImgStyle}
+                  className="img-fluid rounded shadow avatar avatar-lg"
+                  src={values.image[currentIndex]}
+                  alt=""
+                />
+                <small className=" text-white">Click image to hide</small>
               </motion.div>
             </Col>
           </motion.div>

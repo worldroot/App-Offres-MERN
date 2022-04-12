@@ -19,11 +19,14 @@ import { updateOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useFormObj";
 import "./offre.css";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
+import "react-alice-carousel/lib/scss/alice-carousel.scss";
 
 const initialFieldValues = {
   titre: "",
   description: "",
-  image: "",
+  image: [],
   dateDebut: "",
   dateFin: "",
   souscategory: "",
@@ -50,7 +53,10 @@ const UpdateOffre = ({ ...props }) => {
   }, []);
 
   const userExist = localStorage.getItem("user");
-
+  const ImgStyle = {
+    width: "100px",
+    height: "100px"
+  };
   const onSubmit = (e) => {
     e.preventDefault();
     props.update(props.currentObj._id, values);
@@ -99,14 +105,15 @@ const UpdateOffre = ({ ...props }) => {
   const reset = (e) => {
     resetForm();
     setShowList(false);
-    setData(initialFieldValues);
+    setValues(initialFieldValues);
+
   };
 
   const [ShowList, setShowList] = useState(false);
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
   const Debut = new Date(values.dateDebut);
-  const Today = date.toISOString().substring(0, 10)
+  const Today = date.toISOString().substring(0, 10);
 
   return (
     <>
@@ -155,10 +162,9 @@ const UpdateOffre = ({ ...props }) => {
 
           <CardBody>
             <Form role="form" onSubmit={onSubmit}>
-
               <Row>
                 <Col lg="6">
-                <FormGroup>
+                  <FormGroup>
                     <label className="form-control-label text-dark">
                       Titre
                     </label>
@@ -301,26 +307,24 @@ const UpdateOffre = ({ ...props }) => {
                   </FormGroup>
                 </Col>
               </Row>
-              <Row className="border rounded border-dark p-2">
-                <Col>
-                    {values.image.map((img, index) => {
-                      return (
-                        <Fragment key={index}>
-                            <label className="form-control-label text-dark mx-1 ">
-                              <img
-                                className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
-                                src={img}
-                                alt=""
-                              />
-                              <i
-                                className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
-                                onClick={() => onDelete(index)}
-                              ></i>
-                            </label>
-                        </Fragment>
-                      );
-                    })}
-                </Col>
+              <Row>
+              {values.image.map((img, index) => (
+                      <Fragment key={index}>
+                        <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
+                          
+                          <img
+                            style={ImgStyle}
+                            className=" p-md--1 img-fluid rounded shadow avatar avatar-lg mx-2"
+                            src={img}
+                            alt=""
+                          />
+                          <i
+                            className="btn btn-sm btn-danger shadow-none--hover shadow-none fas fa-times mx--4 top--5"
+                            onClick={() => onDelete(index)}
+                          ></i>
+                        </label>
+                      </Fragment>
+                    ))}
               </Row>
 
               <div className="text-center">

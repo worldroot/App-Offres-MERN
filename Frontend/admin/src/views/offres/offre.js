@@ -32,6 +32,12 @@ const initialFieldValues = {
 
 const Offre = ({ ...props }) => {
   const dispatch = useDispatch();
+
+  const ImgStyle = {
+    width: "100px",
+    height: "100px"
+  };
+
   const [data, setData] = useState(initialFieldValues);
   const {
     titre,
@@ -59,9 +65,10 @@ const Offre = ({ ...props }) => {
     } else {
       props.create(data);
       reset();
+      props.setShowModal(false);
       setTimeout(() => {
         window.location.reload();
-      }, 500);
+      }, 800);
     }
   };
 
@@ -90,15 +97,16 @@ const Offre = ({ ...props }) => {
   };
 
   const handleFileUpload = async (e) => {
-    const files = [...e.target.files]
+    const files = [...e.target.files];
     //const base64 = await convertToBase64([...e.target.files]);
     const filePathsPromises = image;
-    files.forEach(file => {
+    files.forEach((file) => {
       filePathsPromises.push(convertToBase64(file));
     });
     const filePaths = await Promise.all(filePathsPromises);
-    const mappedFiles = filePaths.map((base64File) => (base64File));
+    const mappedFiles = filePaths.map((base64File) => base64File);
     toast.info("Upload done");
+    setShowImg(true);
     setData({ ...data, image: mappedFiles.reverse() });
   };
 
@@ -111,22 +119,26 @@ const Offre = ({ ...props }) => {
     resetForm();
     setShowList(false);
     setData(initialFieldValues);
+    const filtered = image.filter((item, index) => index !== e);
+    setData({ ...data, image: filtered });
   };
 
-
   const [ShowList, setShowList] = useState(false);
+  const [ShowImg, setShowImg] = useState(false);
   var date = new Date();
-  const DatetoCheck = date.toISOString().substring(0, 10)
+  const DatetoCheck = date.toISOString().substring(0, 10);
 
   return (
     <>
-      <Card className="card-profile shadow ">
+      <Card className="card-profile shadow overflow-auto h-100vh ">
         <Row>
           <Col className="order-xl-1 mb-5 mb-xl-0">
             <Button
               className="border-0 shadow-none bg-transparent"
               size="sm"
-              onClick={() => props.setShowModal(false)}
+              onClick={() => {
+                props.setShowModal(false), setShowImg(false);
+              }}
             >
               <i className="fas fa-times fa-2x text-danger"></i>
             </Button>
@@ -166,7 +178,6 @@ const Offre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
-
             <Row>
               <Col lg="6">
                 <FormGroup>
@@ -239,7 +250,6 @@ const Offre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
-
             <Row>
               <Col lg="6">
                 <FormGroup>
@@ -263,49 +273,55 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="date"
                     name="dateFin"
+                    min={DatetoCheck}
                     value={dateFin}
                     onChange={handleChange("dateFin")}
                   />
                 </FormGroup>
               </Col>
             </Row>
-
-                         
             <Row>
-                <Col className="text-center">
-                  <FormGroup>
-                    <label className="custom-file-upload form-control-label btn border-info text-info">
-                      Choisir un fichier
-                      <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
-                      <Input
-                        type="file"
-                        multiple="multiple"
-                        name="image"
-                        accept=".jpeg, .png, .jpg"
-                        onChange={(e) => handleFileUpload(e)}
-                      />
-                    </label>
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  {image.map((img, index) => (
-                    <Fragment key={index}>
-                      <label className="form-control-label text-dark mx-1 ">
-                        <img
-                          className=" p-md--1 img-fluid rounded shadow avatar avatar-lg"
-                          src={img}
-                          alt=""
-                        />
-                        <i className="btn btn-sm shadow-none fas fa-times pointer-event text-red"
-                           onClick={() => onDelete(index)}
-                        ></i>
-                      </label>
-                    </Fragment>
-                  ))}
-                </Col>
-              </Row>
+              <Col className="text-center">
+                <FormGroup>
+                  <label className="custom-file-upload form-control-label btn border-info text-info">
+                    Choisir un fichier
+                    <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
+                    <Input
+                      type="file"
+                      multiple="multiple"
+                      name="image"
+                      accept=".jpeg, .png, .jpg"
+                      onChange={(e) => handleFileUpload(e)}
+                    />
+                  </label>
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <>
+                {ShowImg && (
+                  <>
+                    {image.map((img, index) => (
+                      <Fragment key={index}>
+                        <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
+                          
+                          <img
+                            style={ImgStyle}
+                            className=" p-md--1 img-fluid rounded shadow avatar avatar-lg mx-2"
+                            src={img}
+                            alt=""
+                          />
+                          <i
+                            className="btn btn-sm btn-danger shadow-none--hover shadow-none fas fa-times mx--4 top--5"
+                            onClick={() => onDelete(index)}
+                          ></i>
+                        </label>
+                      </Fragment>
+                    ))}
+                  </>
+                )}
+              </>
+            </Row>
 
             <div className="text-center">
               <Button
