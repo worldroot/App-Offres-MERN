@@ -118,9 +118,8 @@ const Offre = ({ ...props }) => {
   const reset = (e) => {
     resetForm();
     setShowList(false);
+    setShowImg(false)
     setData(initialFieldValues);
-    const filtered = image.filter((item, index) => index !== e);
-    setData({ ...data, image: filtered });
   };
 
   const [ShowList, setShowList] = useState(false);

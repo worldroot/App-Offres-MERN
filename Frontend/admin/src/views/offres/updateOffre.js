@@ -19,20 +19,9 @@ import { updateOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useFormObj";
 import "./offre.css";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
-import "react-alice-carousel/lib/scss/alice-carousel.scss";
 
-const initialFieldValues = {
-  titre: "",
-  description: "",
-  image: [],
-  dateDebut: "",
-  dateFin: "",
-  souscategory: "",
-  category: "",
-  prixdebut: "",
-};
+
+const initialFieldValues = { image: [] };
 
 const UpdateOffre = ({ ...props }) => {
   useEffect(() => {
@@ -105,8 +94,11 @@ const UpdateOffre = ({ ...props }) => {
   const reset = (e) => {
     resetForm();
     setShowList(false);
-    setValues(initialFieldValues);
-
+    setValues(initialFieldValues); 
+    props.setShowModal2(false)
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
   };
 
   const [ShowList, setShowList] = useState(false);
@@ -148,7 +140,7 @@ const UpdateOffre = ({ ...props }) => {
               <Button
                 className="border-0 shadow-none bg-transparent"
                 size="sm"
-                onClick={() => props.setShowModal2(false)}
+                onClick={() => reset()}
               >
                 <i className="fas fa-times fa-2x text-danger"></i>
               </Button>
@@ -335,6 +327,7 @@ const UpdateOffre = ({ ...props }) => {
                 >
                   Confirmer
                 </Button>
+               
               </div>
             </Form>
           </CardBody>

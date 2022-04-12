@@ -228,11 +228,11 @@ const DetailsOffre = ({ ...props }) => {
               <motion.div variants={modal}>
                 <img
                   onClick={() => setShowImg(false)}
-                  style={ImgStyle}
-                  className="img-fluid rounded shadow avatar avatar-lg"
+                  className="img-fluid rounded shadow avatar avatar-lg w-auto h-auto"
                   src={values.image[currentIndex]}
                   alt=""
                 />
+                <br></br>
                 <small className=" text-white">Click image to hide</small>
               </motion.div>
             </Col>
