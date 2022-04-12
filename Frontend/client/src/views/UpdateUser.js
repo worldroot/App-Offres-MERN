@@ -74,7 +74,7 @@ const UpdateUserDetails = ({...props}) => {
                   </Col>
         </Row>
       </CardHeader>
-      <CardBody className="pt-0 pt-md">
+      <CardBody>
         <Form onSubmit={handleSubmit} >
           <Row className="align-items-center">
             <Col xs="8">
