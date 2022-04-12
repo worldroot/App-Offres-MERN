@@ -21,7 +21,7 @@ import useForm from "helpers/useFormObj";
 import "./offre.css";
 
 const initialFieldValues = {
-  status: ""
+  status: "",
 };
 
 const UpdateOffre = ({ ...props }) => {
@@ -48,13 +48,12 @@ const UpdateOffre = ({ ...props }) => {
   const DatetoCheck = new Date(date.getTime());
   const Debut = new Date(values.dateDebut);
   const Fin = new Date(values.dateDebut);
-  
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (DatetoCheck > Debut && DatetoCheck < Fin) {
       setValues({ ...values, status: "published" });
-      
-    }else{
+    } else {
       setValues({ ...values, status: "pending" });
     }
     props.update(props.currentObj._id, values);
@@ -73,42 +72,32 @@ const UpdateOffre = ({ ...props }) => {
 
   return (
     <>
+      <Card>
+        <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+          <div className="d-flex justify-content-between"></div>
+          <h3 className="mb-0">Modifier status d'offre</h3>
+        </CardHeader>
 
-        <Card >
-          <Row className="justify-content-center">
-            <Col>
-             
-            </Col>
-          </Row>
-
-          <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-            <div className="d-flex justify-content-between"></div>
-            <h3 className="mb-0">Modifier status d'offre</h3>
-          </CardHeader>
-
-          <CardBody>
-            <Form role="form" onSubmit={onSubmit}>
-
-
-              <div className="text-center">
-                <Button
-                  className="my-4 btn-outline-success"
-                  color="dark"
-                  type="submit"
-                >
-                  Oui
-                </Button>
-                <Button
+        <CardBody>
+          <Form role="form" onSubmit={onSubmit}>
+            <div className="text-center">
+              <Button
+                className="my-4 btn-outline-success"
+                color="dark"
+                type="submit"
+              >
+                Oui
+              </Button>
+              <Button
                 className="my-4 btn-outline-danger"
                 onClick={() => props.setShowModal4(false)}
               >
-               Non
+                Non
               </Button>
-              </div>
-            </Form>
-          </CardBody>
-        </Card>
-   
+            </div>
+          </Form>
+        </CardBody>
+      </Card>
     </>
   );
 };

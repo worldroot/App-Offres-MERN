@@ -140,7 +140,6 @@ router.put(
           try {
             // Between dates : DateToCheck > Debut && DateToCheck<Fin
             if (DateToCheck < Debut) {
-              
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
@@ -173,24 +172,23 @@ router.put(
               msg: "Server error",
             });
           }
-        } else if (role === "super-admin"){
-
+        } else if (role === "super-admin") {
           if (DateToCheck > Debut && DateToCheck < Fin) {
+            const updateOffre = await Offre.findByIdAndUpdate(
+              req.params.offreId,
+              { $set: { status: "published" } },
+              { new: true }
+            );
+            res.status(200).json(updateOffre);
+          } else if (DateToCheck < Debut) {
             const updateOffre = await Offre.findByIdAndUpdate(
               req.params.offreId,
               { $set: { status: "pending" } },
               { new: true }
             );
-
             res.status(200).json(updateOffre);
-          }else{
-            res.status(500).json({
-              error: true,
-              msg: "Server error",
-            });
           }
-          
-        }else {
+        } else {
           return res.status(404).json({
             error: "Access Denied !!",
           });
