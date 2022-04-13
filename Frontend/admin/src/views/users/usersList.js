@@ -13,6 +13,7 @@ import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { connect, useDispatch } from "react-redux";
 import { getAllUsers } from "redux/users/userActions.js";
+import { refreshJwt } from "redux/auth/authActions";
 import { Fragment, useEffect, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";

@@ -22,6 +22,7 @@ import {
   getAllSousCat,
   deleteSousCat,
 } from "redux/cat/catActions";
+import { refreshJwt } from "redux/auth/authActions";
 import { Fragment, useEffect, useState } from "react";
 import Categorie from "./categorie.js";
 import SousCategorie from "./sous-categorie.js";

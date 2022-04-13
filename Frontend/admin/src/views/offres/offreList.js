@@ -13,6 +13,7 @@ import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { connect, useDispatch } from "react-redux";
 import { allOffres, deleteOffre } from "redux/offres/offreActions";
+import { refreshJwt } from "redux/auth/authActions";
 import { Fragment, useEffect, useState } from "react";
 import Offre from "./offre.js";
 
@@ -37,7 +38,7 @@ const modal = {
 };
 
 const OffreList = ({ ...props }) => {
-  
+
   const dispatch = useDispatch();
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -177,6 +178,8 @@ const OffreList = ({ ...props }) => {
                                     <i className="fas fa-eye"></i>
                                   </Button>
 
+                                 
+
                                   {DatetoCheck > new Date(of.dateDebut) ? (
                                     <>
                                       <Button
@@ -201,6 +204,7 @@ const OffreList = ({ ...props }) => {
                                     </>
                                   ) : (
                                     <>
+                                    
                                       <Button
                                         className="btn btn-outline-dark"
                                         size="sm"
