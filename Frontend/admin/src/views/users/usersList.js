@@ -11,12 +11,13 @@ import {
 import Header from "../../components/Headers/Header.js";
 import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { getAllUsers } from "redux/users/userActions.js";
 import { Fragment, useEffect, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
+import decode from 'jwt-decode'
 import Banuser from "./banuser.js";
 const backdrop = {
   visible: { opacity: 1 },
@@ -32,14 +33,25 @@ const modal = {
 };
 
 const UsersList = (props) => {
+
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
-
   useEffect(() => {
     props.All();
+  }, []);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const decodedToken = decode(accessToken);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken }));
+      }
+    }
   }, []);
 
   const [showModal, setShowModal] = useState(false);

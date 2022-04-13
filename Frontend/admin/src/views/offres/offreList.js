@@ -21,6 +21,7 @@ import "components/modal.css";
 import UpdateOffre from "./updateOffre.js";
 import DetailsOffre from "./detailsOffre.js";
 import UpdateStatus from "./updateStatus.js";
+import decode from "jwt-decode";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -36,7 +37,19 @@ const modal = {
 };
 
 const OffreList = ({ ...props }) => {
+  
   const dispatch = useDispatch();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const decodedToken = decode(accessToken);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken }));
+      }
+    }
+  }, []);
+
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
@@ -61,8 +74,7 @@ const OffreList = ({ ...props }) => {
         window.location.reload();
       }, 500);
     };
-    if (window.confirm("Offre: Êtes-vous sûr de vouloir supprimer ?"))
-      dispatch(deleteOffre(id, onSuccess));
+    if (window.confirm("Êtes-vous sûr ?")) dispatch(deleteOffre(id, onSuccess));
   };
 
   var date = new Date();
@@ -239,18 +251,22 @@ const OffreList = ({ ...props }) => {
                                       </Button>
                                     )}
 
-                                  {DatetoCheck > new Date(of.dateDebut) ? (
-                                    <>
+                                  {of.status === "pending" &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
                                       <Button
-                                        disabled
-                                        className="btn btn-danger"
+                                        className="btn btn-outline-dark"
                                         size="sm"
-                                        onClick={() => onDLF(of._id)}
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal4(true);
+                                        }}
                                       >
-                                        <i className="fas fa-trash"></i>
+                                        <i className="fas fa-pencil-alt"></i>
                                       </Button>
-                                    </>
-                                  ) : (
+                                    )}
+
+                                  {DatetoCheck < new Date(of.dateDebut) && (
                                     <>
                                       <Button
                                         className="btn btn-outline-danger"
@@ -261,6 +277,18 @@ const OffreList = ({ ...props }) => {
                                       </Button>
                                     </>
                                   )}
+
+                                  {of.status !== "archived" &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-archive "></i>
+                                      </Button>
+                                    )}
                                 </td>
                               )}
                             </tr>
@@ -392,7 +420,6 @@ const OffreList = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
-
           </Row>
         </Container>
       </div>

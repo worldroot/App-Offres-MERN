@@ -30,6 +30,8 @@ import UpdateSousCategorie from "./updateSouscategorie.js";
 
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
+import decode from 'jwt-decode'
+
 const backdrop = {
   visible: { opacity: 1 },
   hidden: { opacity: 0 },
@@ -50,6 +52,16 @@ const CategoriesList = ({ ...props }) => {
     return initialValue || "";
   });
   const dispatch = useDispatch();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const decodedToken = decode(accessToken);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken }));
+      }
+    }
+  }, []);
   const [currentId, setCurrentId] = useState(0);
   const [currentIdS2, setCurrentIdS2] = useState(0);
 
