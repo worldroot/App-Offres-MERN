@@ -49,8 +49,7 @@ export const addOffre = (offre) => {
     !data.image ||
     !data.dateDebut ||
     !data.dateFin ||
-    !data.souscategory ||
-    !data.prixdebut
+    !data.souscategory
   ) {
     toast.warn("Verifier vos champs !");
   } else {

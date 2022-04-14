@@ -6,6 +6,12 @@ import {
   Container,
   Col,
   Button,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
 } from "reactstrap";
 
 import Header from "../../components/Headers/Header.js";
@@ -38,7 +44,6 @@ const modal = {
 };
 
 const OffreList = ({ ...props }) => {
-
   const dispatch = useDispatch();
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -57,6 +62,7 @@ const OffreList = ({ ...props }) => {
     return initialValue || "";
   });
 
+  const [Search, setSearch] = useState("");
   const [currentId, setCurrentId] = useState(0);
   const [currentObj, setCurrentObj] = useState({});
 
@@ -99,10 +105,29 @@ const OffreList = ({ ...props }) => {
 
         <Header />
         {/* Page content */}
+
         <Container className="mt--7" fluid>
           <Row>
             <Col className="order-xl-1 mb-5 mb-xl-0">
               <div className="col">
+                <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto mb-2">
+                  <FormGroup className="mb-0">
+                    <InputGroup className="input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="fas fa-search" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Rechercher par titre"
+                        type="text"
+                        onChange={(event) => {
+                          setSearch(event.target.value);
+                        }}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Form>
                 <Card className="shadow">
                   <CardHeader className="border-0 ">
                     <div className="d-flex justify-content-between">
@@ -138,7 +163,17 @@ const OffreList = ({ ...props }) => {
                     </thead>
 
                     <tbody>
-                      {props.List.map((of, index) => {
+                      {props.List.filter((of) => {
+                        if (Search === "") {
+                          return of;
+                        } else if (
+                          of.titre
+                            .toLowerCase()
+                            .includes(Search.toLocaleLowerCase())
+                        ) {
+                          return of;
+                        }
+                      }).map((of, index) => {
                         return (
                           <Fragment key={index}>
                             <tr key={of._id}>
@@ -178,8 +213,6 @@ const OffreList = ({ ...props }) => {
                                     <i className="fas fa-eye"></i>
                                   </Button>
 
-                                 
-
                                   {DatetoCheck > new Date(of.dateDebut) ? (
                                     <>
                                       <Button
@@ -204,7 +237,6 @@ const OffreList = ({ ...props }) => {
                                     </>
                                   ) : (
                                     <>
-                                    
                                       <Button
                                         className="btn btn-outline-dark"
                                         size="sm"

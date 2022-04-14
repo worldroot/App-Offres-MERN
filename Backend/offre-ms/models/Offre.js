@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema;
 
 const OffreSchema = new mongoose.Schema({
     titre: {
@@ -12,8 +11,7 @@ const OffreSchema = new mongoose.Schema({
         required: true,
     },
     prixdebut: {
-        type: String,
-        required: true,
+        type: String
     },
     image: {
         type: Array,
