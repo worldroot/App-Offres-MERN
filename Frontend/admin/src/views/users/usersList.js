@@ -151,7 +151,11 @@ const UsersList = (props) => {
                       )}
                       {user.role === "super-admin" && (
                         <>
-                          {props.List.map((user, index) => {
+                          {props.List.filter((user) => {
+                            if (user.role !== "super-admin") {
+                              return user;
+                            }
+                          }).map((user, index) => {
                             return (
                               <Fragment key={index}>
                                 <tr key={user._id}>
