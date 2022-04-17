@@ -27,7 +27,7 @@ const initialFieldValues = {
   dateFin: "",
   souscategory: "",
   category: "",
-  prixdebut: "",
+  prixdebut: "-",
 };
 
 const Offre = ({ ...props }) => {
@@ -60,16 +60,14 @@ const Offre = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (prixdebut === "0") {
-      toast.warn("Verifier prix debut !");
-    } else {
+
       props.create(data);
       reset();
       props.setShowModal(false);
       setTimeout(() => {
         window.location.reload();
-      }, 800);
-    }
+      }, 1000);
+    
   };
 
   if (!userExist) {

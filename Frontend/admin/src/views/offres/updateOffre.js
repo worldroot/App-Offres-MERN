@@ -14,7 +14,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { updateOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useFormObj";
@@ -24,6 +24,7 @@ import "./offre.css";
 const initialFieldValues = { image: [] };
 
 const UpdateOffre = ({ ...props }) => {
+
   useEffect(() => {
     if (props.currentObj !== {}) {
       setValues({ ...props.currentObj });
@@ -34,7 +35,7 @@ const UpdateOffre = ({ ...props }) => {
   var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFieldValues, props.setCurrentObj);
 
-  const [data, setData] = useState(initialFieldValues);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     props.All();
@@ -96,9 +97,7 @@ const UpdateOffre = ({ ...props }) => {
     setShowList(false);
     setValues(initialFieldValues); 
     props.setShowModal2(false)
-    setTimeout(() => {
-      window.location.reload();
-    }, 300);
+    inputRef.current.value = null;
   };
 
   const [ShowList, setShowList] = useState(false);
@@ -289,6 +288,7 @@ const UpdateOffre = ({ ...props }) => {
                       Choisir un fichier
                       <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
                       <Input
+                        ref={inputRef}
                         type="file"
                         multiple="multiple"
                         name="image"

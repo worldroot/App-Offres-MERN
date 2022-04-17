@@ -86,7 +86,176 @@ const OffreList = ({ ...props }) => {
 
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
-  const Today = date.toISOString().substring(0, 10);
+  const DisplayList = props.List.filter((of) => {
+    if (Search === "") {
+      return of;
+    } else if (
+      of.titre
+        .toLowerCase()
+        .includes(Search.toLocaleLowerCase())
+    ) {
+      return of;
+    }
+  }).map((of, index) => {
+    return (
+      <Fragment key={index}>
+        <tr key={of._id}>
+          <td>{of.titre.substring(0, 12)}</td>
+          <td>{of.prixdebut} dt</td>
+          <td>{of.description.substring(0, 10)}...</td>
+          <td>( {of.image.length} )</td>
+          <td>{of.dateDebut.substring(0, 10)}</td>
+          <td>{of.dateFin.substring(0, 10)}</td>
+          <td>
+            {of.category} - {of.souscategory}
+          </td>
+          <td>
+            {of.status === "pending" && (
+              <span className=" text-warning">Pending</span>
+            )}
+            {of.status === "archived" && (
+              <span className=" text-dark">Archived</span>
+            )}
+            {of.status === "published" && (
+              <span className=" text-success">
+                Published
+              </span>
+            )}
+          </td>
+          {/* DateToCheck > Debut && DateToCheck < Fin */}
+          {user.role === "admin" && (
+            <td>
+              <Button
+                className="btn btn-outline-success"
+                size="sm"
+                onClick={() => {
+                  setCurrentObj(of);
+                  setShowModal3(true);
+                }}
+              >
+                <i className="fas fa-eye"></i>
+              </Button>
+              {DatetoCheck < new Date(of.dateDebut) && (
+                <Button
+                  className="btn btn-outline-dark"
+                  size="sm"
+                  onClick={() => {
+                    setCurrentObj(of);
+                    setShowModal2(true);
+                  }}
+                >
+                  <i className="fas fa-pencil-alt"></i>
+                </Button>
+              )}
+
+              {of.status === "archived" && (
+                <Button
+                  className="btn btn-outline-dark"
+                  size="sm"
+                  onClick={() => {
+                    setCurrentObj(of);
+                    setShowModal2(true);
+                  }}
+                >
+                  <i className="fas fa-pencil-alt"></i>
+                </Button>
+              )}
+
+              {DatetoCheck < new Date(of.dateDebut) ? (
+                <>
+                  <Button
+                    className="btn btn-outline-danger"
+                    size="sm"
+                    onClick={() => onDLF(of._id)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  disabled
+                  className="btn btn-dark"
+                  size="sm"
+                  onClick={() => onDLF(of._id)}
+                >
+                  <i className="fas fa-trash"></i>
+                </Button>
+              )}
+            </td>
+          )}
+
+          {user.role === "super-admin" && (
+            <td>
+              <Button
+                className="btn btn-outline-success"
+                size="sm"
+                onClick={() => {
+                  setCurrentObj(of);
+                  setShowModal3(true);
+                }}
+              >
+                <i className="fas fa-eye"></i>
+              </Button>
+
+              {of.status === "archived" &&
+                DatetoCheck > new Date(of.dateDebut) &&
+                DatetoCheck < new Date(of.dateFin) && (
+                  <Button
+                    className="btn btn-outline-dark"
+                    size="sm"
+                    onClick={() => {
+                      setCurrentObj(of);
+                      setShowModal4(true);
+                    }}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </Button>
+                )}
+
+              {of.status === "pending" &&
+                DatetoCheck > new Date(of.dateDebut) &&
+                DatetoCheck < new Date(of.dateFin) && (
+                  <Button
+                    className="btn btn-outline-dark"
+                    size="sm"
+                    onClick={() => {
+                      setCurrentObj(of);
+                      setShowModal4(true);
+                    }}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </Button>
+                )}
+
+              {DatetoCheck < new Date(of.dateDebut) && (
+                <>
+                  <Button
+                    className="btn btn-outline-danger"
+                    size="sm"
+                    onClick={() => onDLF(of._id)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </Button>
+                </>
+              )}
+
+              {of.status !== "archived" &&
+                DatetoCheck > new Date(of.dateDebut) &&
+                DatetoCheck < new Date(of.dateFin) && (
+                  <Button
+                    className="btn btn-outline-dark"
+                    size="sm"
+                    onClick={() => onDLF(of._id)}
+                  >
+                    <i className="fas fa-archive "></i>
+                  </Button>
+                )}
+            </td>
+          )}
+        </tr>
+      </Fragment>
+    );
+  })
 
   return (
     <>
@@ -163,176 +332,7 @@ const OffreList = ({ ...props }) => {
                     </thead>
 
                     <tbody>
-                      {props.List.filter((of) => {
-                        if (Search === "") {
-                          return of;
-                        } else if (
-                          of.titre
-                            .toLowerCase()
-                            .includes(Search.toLocaleLowerCase())
-                        ) {
-                          return of;
-                        }
-                      }).map((of, index) => {
-                        return (
-                          <Fragment key={index}>
-                            <tr key={of._id}>
-                              <td>{of.titre.substring(0, 12)}</td>
-                              <td>{of.prixdebut} dt</td>
-                              <td>{of.description.substring(0, 10)}...</td>
-                              <td>( {of.image.length} )</td>
-                              <td>{of.dateDebut.substring(0, 10)}</td>
-                              <td>{of.dateFin.substring(0, 10)}</td>
-                              <td>
-                                {of.category} - {of.souscategory}
-                              </td>
-                              <td>
-                                {of.status === "pending" && (
-                                  <span className=" text-warning">Pending</span>
-                                )}
-                                {of.status === "archived" && (
-                                  <span className=" text-dark">Archived</span>
-                                )}
-                                {of.status === "published" && (
-                                  <span className=" text-success">
-                                    Published
-                                  </span>
-                                )}
-                              </td>
-                              {/* DateToCheck > Debut && DateToCheck < Fin */}
-                              {user.role === "admin" && (
-                                <td>
-                                  <Button
-                                    className="btn btn-outline-success"
-                                    size="sm"
-                                    onClick={() => {
-                                      setCurrentObj(of);
-                                      setShowModal3(true);
-                                    }}
-                                  >
-                                    <i className="fas fa-eye"></i>
-                                  </Button>
-                                  {DatetoCheck < new Date(of.dateDebut) && (
-                                    <Button
-                                      className="btn btn-outline-dark"
-                                      size="sm"
-                                      onClick={() => {
-                                        setCurrentObj(of);
-                                        setShowModal2(true);
-                                      }}
-                                    >
-                                      <i className="fas fa-pencil-alt"></i>
-                                    </Button>
-                                  )}
-
-                                  {of.status === "archived" && (
-                                    <Button
-                                      className="btn btn-outline-dark"
-                                      size="sm"
-                                      onClick={() => {
-                                        setCurrentObj(of);
-                                        setShowModal2(true);
-                                      }}
-                                    >
-                                      <i className="fas fa-pencil-alt"></i>
-                                    </Button>
-                                  )}
-
-                                  {DatetoCheck < new Date(of.dateDebut) ? (
-                                    <>
-                                      <Button
-                                        className="btn btn-outline-danger"
-                                        size="sm"
-                                        onClick={() => onDLF(of._id)}
-                                      >
-                                        <i className="fas fa-trash"></i>
-                                      </Button>
-                                    </>
-                                  ) : (
-                                    <Button
-                                      disabled
-                                      className="btn btn-dark"
-                                      size="sm"
-                                      onClick={() => onDLF(of._id)}
-                                    >
-                                      <i className="fas fa-trash"></i>
-                                    </Button>
-                                  )}
-                                </td>
-                              )}
-
-                              {user.role === "super-admin" && (
-                                <td>
-                                  <Button
-                                    className="btn btn-outline-success"
-                                    size="sm"
-                                    onClick={() => {
-                                      setCurrentObj(of);
-                                      setShowModal3(true);
-                                    }}
-                                  >
-                                    <i className="fas fa-eye"></i>
-                                  </Button>
-
-                                  {of.status === "archived" &&
-                                    DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal4(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
-
-                                  {of.status === "pending" &&
-                                    DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal4(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
-
-                                  {DatetoCheck < new Date(of.dateDebut) && (
-                                    <>
-                                      <Button
-                                        className="btn btn-outline-danger"
-                                        size="sm"
-                                        onClick={() => onDLF(of._id)}
-                                      >
-                                        <i className="fas fa-trash"></i>
-                                      </Button>
-                                    </>
-                                  )}
-
-                                  {of.status !== "archived" &&
-                                    DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => onDLF(of._id)}
-                                      >
-                                        <i className="fas fa-archive "></i>
-                                      </Button>
-                                    )}
-                                </td>
-                              )}
-                            </tr>
-                          </Fragment>
-                        );
-                      })}
+                      {DisplayList}
                     </tbody>
                   </Table>
                 </Card>
