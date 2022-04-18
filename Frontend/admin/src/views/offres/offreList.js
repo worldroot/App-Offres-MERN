@@ -12,6 +12,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Pagination,
 } from "reactstrap";
 
 import Header from "../../components/Headers/Header.js";
@@ -20,7 +21,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { connect, useDispatch } from "react-redux";
 import { allOffres, deleteOffre } from "redux/offres/offreActions";
 import { refreshJwt } from "redux/auth/authActions";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useMemo } from "react";
 import ReactPaginate from "react-paginate";
 import Offre from "./offre.js";
 
@@ -46,7 +47,10 @@ const modal = {
 };
 
 const OffreList = ({ ...props }) => {
-  const dispatch = useDispatch();
+  useEffect(() => {
+    props.All();
+  }, []);
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
@@ -64,12 +68,9 @@ const OffreList = ({ ...props }) => {
     return initialValue || "";
   });
 
+  const dispatch = useDispatch();
   const [currentId, setCurrentId] = useState(0);
   const [currentObj, setCurrentObj] = useState({});
-
-  useEffect(() => {
-    props.All();
-  }, []);
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -90,12 +91,32 @@ const OffreList = ({ ...props }) => {
 
   const [Search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const Data = props.List;
   const offresPerPage = 3;
   const pagesVisited = pageNumber * offresPerPage;
-  const pageCount = Math.ceil(props.List.length / offresPerPage);
+  const pageCount = Math.ceil(Data.length / offresPerPage);
+
   const changePage = ({ selected }) => {
-    setPageNumber(selected);
+    setCurrentPage(selected);
   };
+
+  const offresData = useMemo(() => {
+    let computed = Data;
+
+    if (Search) {
+      computed = computed.filter((of) =>
+        of.titre.toLowerCase().includes(Search.toLowerCase())
+      );
+    }
+
+    setPageNumber(computed.length);
+
+    return computed.slice(
+      (currentPage - 1) * offresPerPage,
+      (currentPage - 1) * offresPerPage + offresPerPage
+    );
+  }, [Data, currentPage, Search]);
 
   return (
     <>
@@ -131,8 +152,7 @@ const OffreList = ({ ...props }) => {
                         placeholder="Rechercher par titre"
                         type="text"
                         onChange={(event) => {
-                          setSearch(event.target.value),
-                          setPageNumber(1);
+                          setSearch(event.target.value), setPageNumber(1);
                         }}
                       />
                     </InputGroup>
@@ -173,22 +193,7 @@ const OffreList = ({ ...props }) => {
                     </thead>
 
                     <tbody>
-                      {props.List.slice(
-                        pagesVisited,
-                        pagesVisited + offresPerPage
-                      )
-                        .filter((of) => {
-                          if (Search === "") {
-                            return of;
-                          } else if (
-                            of.titre
-                              .toLowerCase()
-                              .includes(Search.toLocaleLowerCase())
-                          ) {
-                            return of;
-                          }
-                        })
-                        .map((of, index) => {
+                      {offresData.map((of, index) => {
                           return (
                             <Fragment key={index}>
                               <tr key={of._id}>
@@ -352,15 +357,11 @@ const OffreList = ({ ...props }) => {
                     </tbody>
                   </Table>
                 </Card>
-
                 <ReactPaginate
                   previousLabel={"<<"}
                   nextLabel={">>"}
                   pageCount={pageCount}
                   onPageChange={changePage}
-                  previousLinkClassName={"previousBttn"}
-                  nextLinkClassName={"nextBttn"}
-                  disabledClassName={"paginationDisabled"}
                   containerClassName={"pagination"}
                   activeClassName={"active"}
                 />
