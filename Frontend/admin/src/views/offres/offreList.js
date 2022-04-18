@@ -12,17 +12,16 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Pagination,
 } from "reactstrap";
 
 import Header from "../../components/Headers/Header.js";
 import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import PaginationComponent from "components/Pagination.js";
 import { connect, useDispatch } from "react-redux";
 import { allOffres, deleteOffre } from "redux/offres/offreActions";
 import { refreshJwt } from "redux/auth/authActions";
 import { Fragment, useEffect, useState, useMemo } from "react";
-import ReactPaginate from "react-paginate";
 import Offre from "./offre.js";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -93,13 +92,8 @@ const OffreList = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
-  const offresPerPage = 3;
+  const offresPerPage = 2;
   const pagesVisited = pageNumber * offresPerPage;
-  const pageCount = Math.ceil(Data.length / offresPerPage);
-
-  const changePage = ({ selected }) => {
-    setCurrentPage(selected);
-  };
 
   const offresData = useMemo(() => {
     let computed = Data;
@@ -152,7 +146,7 @@ const OffreList = ({ ...props }) => {
                         placeholder="Rechercher par titre"
                         type="text"
                         onChange={(event) => {
-                          setSearch(event.target.value), setPageNumber(1);
+                          setSearch(event.target.value), setCurrentPage(1);
                         }}
                       />
                     </InputGroup>
@@ -194,176 +188,172 @@ const OffreList = ({ ...props }) => {
 
                     <tbody>
                       {offresData.map((of, index) => {
-                          return (
-                            <Fragment key={index}>
-                              <tr key={of._id}>
-                                <td>{of.titre.substring(0, 12)}</td>
-                                <td>{of.prixdebut} dt</td>
-                                <td>{of.description.substring(0, 10)}...</td>
-                                <td>( {of.image.length} )</td>
-                                <td>{of.dateDebut.substring(0, 10)}</td>
-                                <td>{of.dateFin.substring(0, 10)}</td>
+                        return (
+                          <Fragment key={index}>
+                            <tr key={of._id}>
+                              <td>{of.titre.substring(0, 12)}</td>
+                              <td>{of.prixdebut} dt</td>
+                              <td>{of.description.substring(0, 10)}...</td>
+                              <td>( {of.image.length} )</td>
+                              <td>{of.dateDebut.substring(0, 10)}</td>
+                              <td>{of.dateFin.substring(0, 10)}</td>
+                              <td>
+                                {of.category} - {of.souscategory}
+                              </td>
+                              <td>
+                                {of.status === "pending" && (
+                                  <span className=" text-warning">Pending</span>
+                                )}
+                                {of.status === "archived" && (
+                                  <span className=" text-dark">Archived</span>
+                                )}
+                                {of.status === "published" && (
+                                  <span className=" text-success">
+                                    Published
+                                  </span>
+                                )}
+                              </td>
+                              {/* DateToCheck > Debut && DateToCheck < Fin */}
+                              {user.role === "admin" && (
                                 <td>
-                                  {of.category} - {of.souscategory}
-                                </td>
-                                <td>
-                                  {of.status === "pending" && (
-                                    <span className=" text-warning">
-                                      Pending
-                                    </span>
-                                  )}
-                                  {of.status === "archived" && (
-                                    <span className=" text-dark">Archived</span>
-                                  )}
-                                  {of.status === "published" && (
-                                    <span className=" text-success">
-                                      Published
-                                    </span>
-                                  )}
-                                </td>
-                                {/* DateToCheck > Debut && DateToCheck < Fin */}
-                                {user.role === "admin" && (
-                                  <td>
+                                  <Button
+                                    className="btn btn-outline-success"
+                                    size="sm"
+                                    onClick={() => {
+                                      setCurrentObj(of);
+                                      setShowModal3(true);
+                                    }}
+                                  >
+                                    <i className="fas fa-eye"></i>
+                                  </Button>
+                                  {DatetoCheck < new Date(of.dateDebut) && (
                                     <Button
-                                      className="btn btn-outline-success"
+                                      className="btn btn-outline-dark"
                                       size="sm"
                                       onClick={() => {
                                         setCurrentObj(of);
-                                        setShowModal3(true);
+                                        setShowModal2(true);
                                       }}
                                     >
-                                      <i className="fas fa-eye"></i>
+                                      <i className="fas fa-pencil-alt"></i>
                                     </Button>
-                                    {DatetoCheck < new Date(of.dateDebut) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal2(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
+                                  )}
 
-                                    {of.status === "archived" && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal2(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
+                                  {of.status === "archived" && (
+                                    <Button
+                                      className="btn btn-outline-dark"
+                                      size="sm"
+                                      onClick={() => {
+                                        setCurrentObj(of);
+                                        setShowModal2(true);
+                                      }}
+                                    >
+                                      <i className="fas fa-pencil-alt"></i>
+                                    </Button>
+                                  )}
 
-                                    {DatetoCheck < new Date(of.dateDebut) ? (
-                                      <>
-                                        <Button
-                                          className="btn btn-outline-danger"
-                                          size="sm"
-                                          onClick={() => onDLF(of._id)}
-                                        >
-                                          <i className="fas fa-trash"></i>
-                                        </Button>
-                                      </>
-                                    ) : (
+                                  {DatetoCheck < new Date(of.dateDebut) ? (
+                                    <>
                                       <Button
-                                        disabled
-                                        className="btn btn-dark"
+                                        className="btn btn-outline-danger"
                                         size="sm"
                                         onClick={() => onDLF(of._id)}
                                       >
                                         <i className="fas fa-trash"></i>
                                       </Button>
-                                    )}
-                                  </td>
-                                )}
-                                {user.role === "super-admin" && (
-                                  <td>
+                                    </>
+                                  ) : (
                                     <Button
-                                      className="btn btn-outline-success"
+                                      disabled
+                                      className="btn btn-dark"
                                       size="sm"
-                                      onClick={() => {
-                                        setCurrentObj(of);
-                                        setShowModal3(true);
-                                      }}
+                                      onClick={() => onDLF(of._id)}
                                     >
-                                      <i className="fas fa-eye"></i>
+                                      <i className="fas fa-trash"></i>
                                     </Button>
+                                  )}
+                                </td>
+                              )}
+                              {user.role === "super-admin" && (
+                                <td>
+                                  <Button
+                                    className="btn btn-outline-success"
+                                    size="sm"
+                                    onClick={() => {
+                                      setCurrentObj(of);
+                                      setShowModal3(true);
+                                    }}
+                                  >
+                                    <i className="fas fa-eye"></i>
+                                  </Button>
 
-                                    {of.status === "archived" &&
-                                      DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) && (
-                                        <Button
-                                          className="btn btn-outline-dark"
-                                          size="sm"
-                                          onClick={() => {
-                                            setCurrentObj(of);
-                                            setShowModal4(true);
-                                          }}
-                                        >
-                                          <i className="fas fa-pencil-alt"></i>
-                                        </Button>
-                                      )}
-
-                                    {of.status === "pending" &&
-                                      DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) && (
-                                        <Button
-                                          className="btn btn-outline-dark"
-                                          size="sm"
-                                          onClick={() => {
-                                            setCurrentObj(of);
-                                            setShowModal4(true);
-                                          }}
-                                        >
-                                          <i className="fas fa-pencil-alt"></i>
-                                        </Button>
-                                      )}
-
-                                    {DatetoCheck < new Date(of.dateDebut) && (
-                                      <>
-                                        <Button
-                                          className="btn btn-outline-danger"
-                                          size="sm"
-                                          onClick={() => onDLF(of._id)}
-                                        >
-                                          <i className="fas fa-trash"></i>
-                                        </Button>
-                                      </>
+                                  {of.status === "archived" &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal4(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
                                     )}
 
-                                    {of.status !== "archived" &&
-                                      DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) && (
-                                        <Button
-                                          className="btn btn-outline-dark"
-                                          size="sm"
-                                          onClick={() => onDLF(of._id)}
-                                        >
-                                          <i className="fas fa-archive "></i>
-                                        </Button>
-                                      )}
-                                  </td>
-                                )}
-                              </tr>
-                            </Fragment>
-                          );
-                        })}
+                                  {of.status === "pending" &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal4(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
+                                    )}
+
+                                  {DatetoCheck < new Date(of.dateDebut) && (
+                                    <>
+                                      <Button
+                                        className="btn btn-outline-danger"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-trash"></i>
+                                      </Button>
+                                    </>
+                                  )}
+
+                                  {of.status !== "archived" &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => onDLF(of._id)}
+                                      >
+                                        <i className="fas fa-archive "></i>
+                                      </Button>
+                                    )}
+                                </td>
+                              )}
+                            </tr>
+                          </Fragment>
+                        );
+                      })}
                     </tbody>
                   </Table>
                 </Card>
-                <ReactPaginate
-                  previousLabel={"<<"}
-                  nextLabel={">>"}
-                  pageCount={pageCount}
-                  onPageChange={changePage}
-                  containerClassName={"pagination"}
-                  activeClassName={"active"}
+                <PaginationComponent
+                  total={pageNumber}
+                  itemsPerPage={offresPerPage}
+                  currentPage={currentPage}
+                  onPageChange={(page) => setCurrentPage(page)}
                 />
               </div>
             </Col>
