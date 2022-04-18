@@ -1,0 +1,35 @@
+.pagination {
+    display: flex;
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+   }
+   
+   .pagination a {
+    cursor: default;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #212529;
+    color: #212529;
+    margin-left: 10px;
+   }
+   
+   .pagination li:not(.disabled) a:hover {
+    background-color: #fff;
+    cursor: pointer;
+   }
+   
+   .pagination li a {
+    font-weight: bold;
+   }
+   
+   .pagination li.active a {
+    color: #fff;
+    background: #212529;
+   }
+   
+   .pagination li.disabled a {
+    pointer-events: none;
+    color: rgb(198, 197, 202);
+    border: 1px solid rgb(198, 197, 202);
+   }
