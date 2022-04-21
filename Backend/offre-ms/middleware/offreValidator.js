@@ -27,6 +27,16 @@ exports.validateAddOffre = [
     
 ];
 
+exports.validateDemande = [
+    check('prix')
+    .notEmpty()
+    .withMessage('prix is required'),
+
+    check('offre')
+    .notEmpty()
+    .withMessage('offre is required'),    
+];
+
 exports.isRequestValidated = (req, res, next) => {
     const errors = validationResult(req);
     if(errors.array().length > 0){

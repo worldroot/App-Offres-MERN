@@ -4,6 +4,7 @@ const cors = require('cors')
 const connectDB = require('./db/db')
 const bodyParser = require('body-parser')
 const offreRoute = require('./controller/offres-service')
+const demandeRoute = require('./controller/demande-service')
 require('dotenv').config()
 connectDB()
 
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use("/api/offre", offreRoute)
+app.use("/api/demande", demandeRoute)
 
 
 //404
