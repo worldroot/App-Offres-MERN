@@ -26,7 +26,6 @@ import Offre from "./offre.js";
 
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
-import "./pagination.css";
 import UpdateOffre from "./updateOffre.js";
 import DetailsOffre from "./detailsOffre.js";
 import UpdateStatus from "./updateStatus.js";
@@ -92,7 +91,7 @@ const OffreList = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
-  const offresPerPage = 2;
+  const offresPerPage = 5;
   const pagesVisited = pageNumber * offresPerPage;
 
   const offresData = useMemo(() => {
@@ -175,9 +174,8 @@ const OffreList = ({ ...props }) => {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Titre</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Img</th>
+                        <th scope="col">Prix Dt</th>
+                        <th scope="col">Images</th>
                         <th scope="col">Date début</th>
                         <th scope="col">Date fin</th>
                         <th scope="col">Catégories</th>
@@ -192,8 +190,7 @@ const OffreList = ({ ...props }) => {
                           <Fragment key={index}>
                             <tr key={of._id}>
                               <td>{of.titre.substring(0, 12)}</td>
-                              <td>{of.prixdebut} dt</td>
-                              <td>{of.description.substring(0, 10)}...</td>
+                              <td>{of.prixdebut}</td>
                               <td>( {of.image.length} )</td>
                               <td>{of.dateDebut.substring(0, 10)}</td>
                               <td>{of.dateFin.substring(0, 10)}</td>
@@ -205,11 +202,16 @@ const OffreList = ({ ...props }) => {
                                   <span className=" text-warning">Pending</span>
                                 )}
                                 {of.status === "archived" && (
-                                  <span className=" text-dark">Archived</span>
+                                  <span className=" text-gray">Archived</span>
                                 )}
                                 {of.status === "published" && (
                                   <span className=" text-success">
                                     Published
+                                  </span>
+                                )}
+                                {of.status === "closed" && (
+                                  <span className=" text-dark">
+                                    Closed
                                   </span>
                                 )}
                               </td>
