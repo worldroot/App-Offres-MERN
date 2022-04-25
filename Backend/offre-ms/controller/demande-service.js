@@ -22,6 +22,9 @@ router.post(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (responseUser) => {
         var role = responseUser.data.role;
+        var date = new Date();
+        const DateToCheck = new Date(date.getTime());
+
         if (role !== "user") {
           return res.status(404).json({
             error: "Access Denied !!",
@@ -37,19 +40,29 @@ router.post(
                 msg: "Offre doesnt exist",
               });
             } else {
-              if (prix < offreModel.prixdebut) {
+              if (
+                DateToCheck > offreModel.dateDebut &&
+                DateToCheck < offreModel.dateFin
+              ) {
+                if (prix < offreModel.prixdebut) {
+                  return res.status(403).json({
+                    error: true,
+                    msg: "Vérifier votre prix",
+                  });
+                } else {
+                  const newDem = new Demande({
+                    offre,
+                    prix,
+                    userInfos: responseUser.data.email,
+                    userId: responseUser.data._id,
+                  });
+                  newDem.save().then(() => res.json(newDem));
+                }
+              } else {
                 return res.status(403).json({
                   error: true,
-                  msg: "Demande impossible",
+                  msg: "Demande impossible !",
                 });
-              } else {
-                const newDem = new Demande({
-                  offre,
-                  prix,
-                  userInfos: responseUser.data.email,
-                  userId: responseUser.data._id,
-                });
-                newDem.save().then(() => res.json(newDem));
               }
             }
           } catch (error) {
