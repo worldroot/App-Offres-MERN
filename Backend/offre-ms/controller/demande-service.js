@@ -32,7 +32,6 @@ router.post(
         } else {
           try {
             let { offre, prix, userInfos, userId } = req.body;
-
             let offreModel = await Offre.findById(offre);
             if (!offreModel) {
               return res.status(403).json({
