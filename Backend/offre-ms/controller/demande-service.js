@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Demande = require("../models/Demande");
 const axios = require("axios");
+const NodeRSA = require('node-rsa');
+const key = new NodeRSA({b: 512});
 const { verifyAccessToken } = require("../middleware/verify-token");
 const {
   validateDemande,
@@ -49,9 +51,10 @@ router.post(
                     msg: "Vérifier votre prix",
                   });
                 } else {
+                  const encrypted = key.encrypt(prix, 'base64');
                   const newDem = new Demande({
                     offre,
-                    prix,
+                    prix: encrypted,
                     userInfos: responseUser.data.email,
                     userId: responseUser.data._id,
                   });
