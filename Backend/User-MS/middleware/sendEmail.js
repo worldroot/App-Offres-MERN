@@ -1,25 +1,21 @@
 const nodemailer = require("nodemailer");
 
-
 const emailSender = async (email, url, text) => {
-	try {
-		const transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			service: process.env.SERVICE,
-			port: Number(process.env.EMAIL_PORT),
-			secure: Boolean(process.env.SECURE),
-			auth: {
-				user: "appoffres.ooredoo@gmail.com",
-				pass: "pfe2022ooredoo",
-			},
-		});
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+        user: "6adcb0b3bc15c3",
+        pass: "c170a6da93e22e",
+      },
+    });
 
-        
-		await transporter.sendMail({
-			from: process.env.USER,
-			to: email,
-			subject: "Activate your account",
-			html:`
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: email,
+      subject: "Activate your account",
+      html: `
 			<html lang="en">
 			<head>
 			  <meta charset="UTF-8" />
@@ -92,34 +88,33 @@ const emailSender = async (email, url, text) => {
 			</body>
 		  </html>
 			`,
-		});
-		console.log("email sent successfully");
-	} catch (error) {
-		console.log("email not sent!");
-		console.log(error);
-		return error;
-	}
+    });
+    console.log("email sent successfully");
+  } catch (error) {
+    console.log("email not sent!");
+    console.log(error);
+    return error;
+  }
 };
 
 const emailReset = async (email, url, text, nom) => {
-	try {
-		const transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			service: process.env.SERVICE,
-			port: Number(process.env.EMAIL_PORT),
-			secure: Boolean(process.env.SECURE),
-			auth: {
-				user: "appoffres.ooredoo@gmail.com",
-				pass: "pfe2022ooredoo",
-			},
-		});
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      service: process.env.SERVICE,
+      port: Number(process.env.EMAIL_PORT),
+      secure: Boolean(process.env.SECURE),
+      auth: {
+        user: "appoffres.ooredoo@gmail.com",
+        pass: "pfe2022ooredoo",
+      },
+    });
 
-        
-		await transporter.sendMail({
-			from: process.env.USER,
-			to: email,
-			subject: "Réinitialiser votre mot de passe",
-			html:`
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: email,
+      subject: "Réinitialiser votre mot de passe",
+      html: `
 			<html lang="en">
 			<head>
 			  <meta charset="UTF-8" />
@@ -192,13 +187,13 @@ const emailReset = async (email, url, text, nom) => {
 			</body>
 		  </html>
 			`,
-		});
-		console.log("reset email sent successfully");
-	} catch (error) {
-		console.log("reset email not sent!");
-		console.log(error);
-		return error;
-	}
+    });
+    console.log("reset email sent successfully");
+  } catch (error) {
+    console.log("reset email not sent!");
+    console.log(error);
+    return error;
+  }
 };
 
 module.exports = { emailSender, emailReset };

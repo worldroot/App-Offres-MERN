@@ -65,8 +65,7 @@ export const register = ({
         nom,
         prenom,
         email,
-        password,
-        role
+        password
     });
     
     dispatch({ type: SET_LOADING })

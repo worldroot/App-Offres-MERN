@@ -1,6 +1,6 @@
-const nodemailer = require("node-mailer");
+const nodemailer = require("nodemailer");
 
-const emailReset = async (email, key, text, offre, user ) => {
+const emailKey = async (email, Deckey, text, user ) => {
 	try {
 		const transporter = nodemailer.createTransport({
 			host: "smtp.gmail.com",
@@ -78,10 +78,10 @@ const emailReset = async (email, key, text, offre, user ) => {
 			  <div class="container">
 				<div class="wrapper">
 				  <div class="card">
-					<h1><span>Offre </span>${offre}</h1>
+					
 					<p>Demande par ${user}</p>
                     <h3>${text}</h3>
-                    <h3>${key}</h3>
+                    <h3>${Deckey}</h3>
 				  </div>
 				</div>
 			  </div>
@@ -97,4 +97,4 @@ const emailReset = async (email, key, text, offre, user ) => {
 	}
 };
 
-module.exports = { emailReset };
+module.exports = { emailKey };
