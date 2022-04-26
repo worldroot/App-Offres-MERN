@@ -3,9 +3,7 @@ const router = express.Router();
 const Demande = require("../models/Demande");
 const axios = require("axios");
 const NodeRSA = require("node-rsa");
-const fs = require("fs")
-const crypto = require("crypto")
-const key = new NodeRSA({ b: 1024 });
+const key = new NodeRSA({ b: 384 });
 const { emailKey } = require("../middleware/demandeMailer");
 const { verifyAccessToken } = require("../middleware/verify-token");
 const {
@@ -57,8 +55,9 @@ router.post(
                 } else {
                   var PublicKey = key.exportKey("public");
                   var PrivateKey = key.exportKey("private");
-
+                  console.log(PrivateKey);
                   let key_public = new NodeRSA(PublicKey);
+                  
                   emailKey(
                     email,
                     PrivateKey,
@@ -66,7 +65,9 @@ router.post(
                     email
                   );
 
-                  const encrypted = key_public.encrypt(prix, "base64");
+                  var encrypted = key_public.encrypt(prix, 'base64');
+                  console.log(encrypted);
+
                   const newDem = new Demande({
                     offre,
                     prix: encrypted,
@@ -106,20 +107,20 @@ router.put(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (response) => {
         var role = response.data.role;
-        let { key } = req.body;
+        let {key} = req.body;
         let DemandeModel = await Demande.findById(req.params.demandeId);
         var date = new Date();
         const OF = await Offre.findById(DemandeModel.offre);
         const Debut = new Date(OF.dateDebut);
         const Fin = new Date(OF.dateFin);
         const DateToCheck = new Date(date.getTime());
-
+        
         if (role === "admin") {
           //Update by Admin Only
           try {
             let AdminKey = new NodeRSA(key);
-            const decrypted = AdminKey.decrypt(DemandeModel.prix, "utf8");
-
+            var decrypted = AdminKey.decrypt(DemandeModel.prix, 'utf8');
+            console.log(decrypted);
             const up = await Demande.findByIdAndUpdate(
               req.params.demandeId,
               { $set: { prix: decrypted }, },
