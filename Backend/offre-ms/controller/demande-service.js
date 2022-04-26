@@ -25,7 +25,7 @@ router.post(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (responseUser) => {
         var role = responseUser.data.role;
-        var emailmail = responseUser.data.email;
+        var email = responseUser.data.email;
         var date = new Date();
         const DateToCheck = new Date(date.getTime());
 
@@ -55,10 +55,9 @@ router.post(
                 } else {
                   var PublicKey = key.exportKey('public')
                   var PrivateKey = key.exportKey('private')
-                  let key_public = new NodeRSA(PublicKey)
-                  let Deckey = new NodeRSA(PrivateKey)
 
-                  emailKey(email, Deckey, `Décryptage clé //${offreModel.titre}`, userInfos  ) 
+                  let key_public = new NodeRSA(PublicKey)
+                  emailKey(email, PrivateKey, `Décryptage clé pour l'offre: ${offreModel.titre}`, email  ) 
 
                   const encrypted = key_public.encrypt(prix, 'base64');
                   const newDem = new Demande({

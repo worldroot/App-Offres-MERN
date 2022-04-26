@@ -1,15 +1,13 @@
 const nodemailer = require("nodemailer");
 
-const emailKey = async (email, Deckey, text, user ) => {
+const emailKey = async (email, key, text, user ) => {
 	try {
 		const transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			service: process.env.SERVICE,
-			port: Number(process.env.EMAIL_PORT),
-			secure: Boolean(process.env.SECURE),
+			host: "smtp.mailtrap.io",
+			port: 2525,
 			auth: {
-				user: "appoffres.ooredoo@gmail.com",
-				pass: "pfe2022ooredoo",
+			  user: "6adcb0b3bc15c3",
+			  pass: "c170a6da93e22e",
 			},
 		});
 
@@ -81,7 +79,7 @@ const emailKey = async (email, Deckey, text, user ) => {
 					
 					<p>Demande par ${user}</p>
                     <h3>${text}</h3>
-                    <h3>${Deckey}</h3>
+                    <h3>${key}</h3>
 				  </div>
 				</div>
 			  </div>
