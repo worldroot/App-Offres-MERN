@@ -2,16 +2,18 @@ const express = require("express");
 const router = express.Router();
 const Demande = require("../models/Demande");
 const axios = require("axios");
-const NodeRSA = require('node-rsa');
-const key = new NodeRSA({b: 512});
-const { emailKey } = require("../middleware/demandeMailer")
+const NodeRSA = require("node-rsa");
+const fs = require("fs")
+const crypto = require("crypto")
+const key = new NodeRSA({ b: 1024 });
+const { emailKey } = require("../middleware/demandeMailer");
 const { verifyAccessToken } = require("../middleware/verify-token");
 const {
   validateDemande,
   isRequestValidated,
 } = require("../middleware/offreValidator");
 const Offre = require("../models/Offre");
-
+const demandeByid = require("../middleware/demandeByid");
 // @route   POST api/appeloffre
 // @desc    Create demande offre
 // @access  User
@@ -53,13 +55,18 @@ router.post(
                     msg: "Vérifier votre prix",
                   });
                 } else {
-                  var PublicKey = key.exportKey('public')
-                  var PrivateKey = key.exportKey('private')
+                  var PublicKey = key.exportKey("public");
+                  var PrivateKey = key.exportKey("private");
 
-                  let key_public = new NodeRSA(PublicKey)
-                  emailKey(email, PrivateKey, `Décryptage clé pour l'offre: ${offreModel.titre}`, email  ) 
+                  let key_public = new NodeRSA(PublicKey);
+                  emailKey(
+                    email,
+                    PrivateKey,
+                    `Décryptage clé pour l'offre: ${offreModel.titre}`,
+                    email
+                  );
 
-                  const encrypted = key_public.encrypt(prix, 'base64');
+                  const encrypted = key_public.encrypt(prix, "base64");
                   const newDem = new Demande({
                     offre,
                     prix: encrypted,
@@ -93,16 +100,16 @@ router.post(
 router.put(
   "/:demandeId",
   verifyAccessToken,
-  validateDemande,
   isRequestValidated,
   async (req, res) => {
     axios
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (response) => {
         var role = response.data.role;
-        let { offre ,prix, key } = req.body;
+        let { key } = req.body;
+        let DemandeModel = await Demande.findById(req.params.demandeId);
         var date = new Date();
-        const OF = await Offre.findById(offre);
+        const OF = await Offre.findById(DemandeModel.offre);
         const Debut = new Date(OF.dateDebut);
         const Fin = new Date(OF.dateFin);
         const DateToCheck = new Date(date.getTime());
@@ -110,25 +117,15 @@ router.put(
         if (role === "admin") {
           //Update by Admin Only
           try {
-            // Between dates : DateToCheck > Debut && DateToCheck<Fin
-            if (DateToCheck < Debut) {
-              const updateDem= await Demande.findByIdAndUpdate(
-                req.params.demandeId,
-                {
-                  $set: {
-                   prix
-                  },
-                },
-                { new: true }
-              );
+            let AdminKey = new NodeRSA(key);
+            const decrypted = AdminKey.decrypt(DemandeModel.prix, "utf8");
 
-              res.status(200).json(updateDem);
-            } else {
-              res.status(400).json({
-                error: true,
-                msg: `Modification avant '${Debut.toDateString()}' est impossible !`,
-              });
-            }
+            const up = await Demande.findByIdAndUpdate(
+              req.params.demandeId,
+              { $set: { prix: decrypted }, },
+              { new: true }
+            );
+            res.status(200).json(up);
           } catch (error) {
             console.log(error.message);
             res.status(500).json({
