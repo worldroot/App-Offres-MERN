@@ -12,6 +12,8 @@ const {
 } = require("../middleware/offreValidator");
 const Offre = require("../models/Offre");
 const demandeByid = require("../middleware/demandeByid");
+
+
 // @route   POST api/appeloffre
 // @desc    Create demande offre
 // @access  User
@@ -55,19 +57,16 @@ router.post(
                 } else {
                   var PublicKey = key.exportKey("public");
                   var PrivateKey = key.exportKey("private");
-                  console.log(PrivateKey);
+
                   let key_public = new NodeRSA(PublicKey);
-                  
                   emailKey(
                     email,
-                    PrivateKey,
+                    PrivateKey.toString(),
                     `Décryptage clé pour l'offre: ${offreModel.titre}`,
                     email
                   );
 
-                  var encrypted = key_public.encrypt(prix, 'base64');
-                  console.log(encrypted);
-
+                  var encrypted = key_public.encrypt(prix, "base64");
                   const newDem = new Demande({
                     offre,
                     prix: encrypted,
@@ -107,23 +106,33 @@ router.put(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (response) => {
         var role = response.data.role;
-        let {key} = req.body;
         let DemandeModel = await Demande.findById(req.params.demandeId);
         var date = new Date();
         const OF = await Offre.findById(DemandeModel.offre);
         const Debut = new Date(OF.dateDebut);
         const Fin = new Date(OF.dateFin);
         const DateToCheck = new Date(date.getTime());
-        
+
         if (role === "admin") {
           //Update by Admin Only
           try {
+            const key = '-----BEGIN RSA PRIVATE KEY-----\n'+
+            'MIH0AgEAAjEAji7rxjTp5/UVxdqpveoQMoVY9qdjKA7YQNwYb627KrFVOpSmvF8b\n'+
+            'PlelsdZtfIXBAgMBAAECMQCFdAL3CilV/5NNHx1dVTmYwdKryJboPW1M/H7pv6pH\n'+
+            '+YCZK4rgEE8ICpt0efE20HUCGQDrUpQSxTGfjE9W0IMxIFwEtT4QZ4bnfGMCGQCa\n'+
+            'rTzOJXotANJsTaiZmA2PTQAC/qsu1IsCGGz92FtBPhSZlf2tobXVOQltMIvEh3Ub\n'+
+            '5QIZAI3DrXE7RCkvEa0V2Cs+A1+NsS8NfpOjVQIZAIcclWX4X1GvYgf6hfdTFSoV\n'+
+            '/1MkdHQnGw==\n'+
+            '-----END RSA PRIVATE KEY-----'
+            const encrypted = DemandeModel.prix;
             let AdminKey = new NodeRSA(key);
-            var decrypted = AdminKey.decrypt(DemandeModel.prix, 'utf8');
+            var decrypted = AdminKey.decrypt(encrypted, "utf8");
+            console.log(AdminKey);
             console.log(decrypted);
+
             const up = await Demande.findByIdAndUpdate(
               req.params.demandeId,
-              { $set: { prix: decrypted }, },
+              { $set: { prix: decrypted } },
               { new: true }
             );
             res.status(200).json(up);
