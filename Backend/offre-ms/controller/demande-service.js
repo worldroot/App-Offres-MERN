@@ -5,16 +5,9 @@ const axios = require("axios");
 const NodeRSA = require("node-rsa");
 const key = new NodeRSA({ b: 384 });
 const { emailKey } = require("../middleware/demandeMailer");
-const {
-  ToCrypte,
-  ToDecrypte,
-  PrivateKey,
-} = require("../middleware/Cryptage");
+const { ToCrypte, ToDecrypte, PrivateKey } = require("../middleware/Cryptage");
 const { verifyAccessToken } = require("../middleware/verify-token");
-const {
-  validateDemande,
-  isRequestValidated,
-} = require("../middleware/offreValidator");
+const { validateDemande, isRequestValidated } = require("../middleware/offreValidator");
 const Offre = require("../models/Offre");
 const demandeByid = require("../middleware/demandeByid");
 
@@ -43,16 +36,16 @@ router.post(
           try {
             let { offre, prix, userInfos, userId } = req.body;
             let offreModel = await Offre.findById(offre);
+            const Debut = new Date(offreModel.dateDebut);
+            const Fin = new Date(offreModel.dateFin);
+            const AdminMail = offreModel.postedBy
             if (!offreModel) {
               return res.status(403).json({
                 error: true,
                 msg: "Offre doesnt exist",
               });
             } else {
-              if (
-                DateToCheck > offreModel.dateDebut &&
-                DateToCheck < offreModel.dateFin
-              ) {
+              if (DateToCheck > Debut && DateToCheck < Fin) {
                 if (prix < offreModel.prixdebut) {
                   return res.status(403).json({
                     error: true,
@@ -60,7 +53,7 @@ router.post(
                   });
                 } else {
                   emailKey(
-                    email,
+                    AdminMail,
                     PrivateKey,
                     `Décryptage clé pour l'offre: ${offreModel.titre}`,
                     email
@@ -115,14 +108,21 @@ router.put(
         if (role === "admin") {
           //Update by Admin Only
           try {
-            let { key } = req.body;
-            const decrypted = ToDecrypte(key,DemandeModel.prix);
-            const up = await Demande.findByIdAndUpdate(
-              req.params.demandeId,
-              { $set: { prix: decrypted } },
-              { new: true }
-            );
-            res.status(200).json(up);
+            if (DateToCheck > Fin) {
+              let { key } = req.body;
+              const decrypted = ToDecrypte(key, DemandeModel.prix);
+              const up = await Demande.findByIdAndUpdate(
+                req.params.demandeId,
+                { $set: { prix: decrypted } },
+                { new: true }
+              );
+              res.status(200).json(up);
+            } else {
+              res.status(400).json({
+                error: true,
+                msg: "Décryptage Impossible",
+              });
+            }
           } catch (error) {
             console.log(error.message);
             res.status(500).json({
