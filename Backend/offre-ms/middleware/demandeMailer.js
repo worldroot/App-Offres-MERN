@@ -70,6 +70,17 @@ const emailKey = async (email, key, text, user ) => {
 				.spacing {
 				  margin-top: 5rem;
 				}
+				textarea {
+					width: 100%;
+					height: 200px;
+					padding: 12px 20px;
+					box-sizing: border-box;
+					border: 2px solid #ccc;
+					border-radius: 4px;
+					background-color: #f8f8f8;
+					font-size: 16px;
+					resize: none;
+				  }
 			  </style>
 			</head>
 			<body>
@@ -79,7 +90,7 @@ const emailKey = async (email, key, text, user ) => {
 					
 					<p>Demande par ${user}</p>
                     <h3>${text}</h3>
-                    <h3>${key}</h3>
+                    <textarea disabled>${key}</textarea>
 				  </div>
 				</div>
 			  </div>
