@@ -8,7 +8,6 @@ const { emailKey } = require("../middleware/demandeMailer");
 const {
   ToCrypte,
   ToDecrypte,
-  VerifyKey,
   PrivateKey,
 } = require("../middleware/Cryptage");
 const { verifyAccessToken } = require("../middleware/verify-token");
@@ -116,21 +115,14 @@ router.put(
         if (role === "admin") {
           //Update by Admin Only
           try {
-            const verif = VerifyKey(req.body);
-            if (verif) {
-              const decrypted = ToDecrypte(DemandeModel.prix);
-              const up = await Demande.findByIdAndUpdate(
-                req.params.demandeId,
-                { $set: { prix: decrypted } },
-                { new: true }
-              );
-              res.status(200).json(up);
-            } else {
-              res.status(404).json({
-                error: true,
-                msg: "Key Invalid",
-              });
-            }
+            let { key } = req.body;
+            const decrypted = ToDecrypte(key,DemandeModel.prix);
+            const up = await Demande.findByIdAndUpdate(
+              req.params.demandeId,
+              { $set: { prix: decrypted } },
+              { new: true }
+            );
+            res.status(200).json(up);
           } catch (error) {
             console.log(error.message);
             res.status(500).json({
