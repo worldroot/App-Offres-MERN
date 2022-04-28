@@ -91,6 +91,7 @@ const emailKey = async (email, key, text, user ) => {
 					<p>Demande par ${user}</p>
                     <h3>${text}</h3>
                     <textarea disabled>${key}</textarea>
+					<small>Copier tout le text !</small>
 				  </div>
 				</div>
 			  </div>

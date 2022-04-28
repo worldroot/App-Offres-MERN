@@ -36,10 +36,15 @@ const UserSchema = new mongoose.Schema({
       },
       banned: {
         type: Boolean,
-        default: false}
+        default: false
+      },
+      listOffres: {
+        type: Array,
+        items: { type: String, unique:true }
+      }
 
     },
-        { timestamps: true }
+    { timestamps: true }
 );
 
 UserSchema.pre('save', async function (next) {

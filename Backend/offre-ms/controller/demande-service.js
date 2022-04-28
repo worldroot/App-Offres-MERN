@@ -7,7 +7,10 @@ const key = new NodeRSA({ b: 384 });
 const { emailKey } = require("../middleware/demandeMailer");
 const { ToCrypte, ToDecrypte, PrivateKey } = require("../middleware/Cryptage");
 const { verifyAccessToken } = require("../middleware/verify-token");
-const { validateDemande, isRequestValidated } = require("../middleware/offreValidator");
+const {
+  validateDemande,
+  isRequestValidated,
+} = require("../middleware/offreValidator");
 const Offre = require("../models/Offre");
 const demandeByid = require("../middleware/demandeByid");
 
@@ -34,43 +37,52 @@ router.post(
           });
         } else {
           try {
-            let { offre, prix, userInfos, userId } = req.body;
+            let { offre, prix } = req.body;
+            const user = await Demande.findOne(req.user.email);
+            const OffreEx = await Demande.findById(offre);
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
-            const AdminMail = offreModel.postedBy
+            const AdminMail = offreModel.postedBy;
             if (!offreModel) {
               return res.status(403).json({
                 error: true,
                 msg: "Offre doesnt exist",
               });
             } else {
-              if (DateToCheck > Debut && DateToCheck < Fin) {
-                if (prix < offreModel.prixdebut) {
+              if (!OffreEx && !user) {
+                if (DateToCheck > Debut && DateToCheck < Fin) {
+                  if (prix < offreModel.prixdebut) {
+                    return res.status(403).json({
+                      error: true,
+                      msg: "Vérifier votre prix",
+                    });
+                  } else {
+                    emailKey(
+                      AdminMail,
+                      PrivateKey,
+                      `Décryptage clé pour l'offre: ${offreModel.titre}`,
+                      email
+                    );
+                    const encrypted = ToCrypte(prix);
+                    const newDem = new Demande({
+                      offre,
+                      prix: encrypted,
+                      userInfos: responseUser.data.email,
+                      userId: responseUser.data._id,
+                    });
+                    newDem.save().then(() => res.json(newDem));
+                  }
+                } else {
                   return res.status(403).json({
                     error: true,
-                    msg: "Vérifier votre prix",
+                    msg: "Demande impossible !",
                   });
-                } else {
-                  emailKey(
-                    AdminMail,
-                    PrivateKey,
-                    `Décryptage clé pour l'offre: ${offreModel.titre}`,
-                    email
-                  );
-                  const encrypted = ToCrypte(prix);
-                  const newDem = new Demande({
-                    offre,
-                    prix: encrypted,
-                    userInfos: responseUser.data.email,
-                    userId: responseUser.data._id,
-                  });
-                  newDem.save().then(() => res.json(newDem));
                 }
               } else {
                 return res.status(403).json({
                   error: true,
-                  msg: "Demande impossible !",
+                  msg: "Offre et utilisateur existe !",
                 });
               }
             }
@@ -134,6 +146,43 @@ router.put(
           return res.status(404).json({
             error: "Access Denied !!",
           });
+        }
+      });
+  }
+);
+
+// @route   Delete api/demande/:demandeId
+// @desc    Delete Single demande
+// @access
+router.delete(
+  "/:demandeId",
+  isRequestValidated,
+  verifyAccessToken,
+  async (req, res) => {
+    axios
+      .get("http://localhost:5001/api/user/" + req.user.id)
+      .then(async (response) => {
+        var role = response.data.role;
+        if (role !== "user") {
+          return res.status(404).json({
+            error: "Access Denied",
+          });
+        } else {
+          try {
+            await Demande.findByIdAndDelete(req.params.demandeId);
+            res.status(200).json({
+              message: `Deleted successfully`,
+            });
+            res.status(200).json({
+              message: `Deleted successfully`,
+            });
+          } catch (error) {
+            console.log(error.message);
+            res.status(500).json({
+              error: true,
+              msg: "Server error",
+            });
+          }
         }
       });
   }
