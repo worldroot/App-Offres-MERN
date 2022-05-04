@@ -293,26 +293,38 @@ router.get("/all", async (req, res) => {
 // @route   Get api/categorie/all
 // @desc    Get all categories
 // @access  Public
-router.get('/alldemandes', async (req, res) => {
+router.get("/alldemandes", verifyAccessToken, async (req, res) => {
   try {
-      
-      let data = await Offre.aggregate([
-          //lookup for list :
-          { $lookup: { from: "demandes", localField: "_id", foreignField: "offre", as: "demandes" } },
-          //cancel some attribute to displays :
-          { $project: { demandes: { offre: 0, __v: 0, updatedAt:0  } } },
-          { $project: { icon: 0, __v: 0, slug: 0, image: 0} }
-      ])     
-                               
-      res.status(200).json(data)
+    axios
+      .get("http://localhost:5001/api/user/" + req.user.id)
+      .then(async (response) => {
+        var role = response.data.role;
+        if (role == "user") {
+          let data = await Offre.aggregate([
+            //lookup for list :
+            {
+              $lookup: {
+                from: "demandes",
+                localField: "_id",
+                foreignField: "offre",
+                as: "demandes",
+              },
+            },
+            //cancel some attribute to displays :
+            { $project: { demandes: { offre: 0, __v: 0, updatedAt: 0 } } },
+            { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
+          ]);
 
+          res.status(200).json(data);
+        }
+      });
   } catch (error) {
-      console.log(error)
-      res.status(500).json({
-          error: true,
-          msg:'Server error'
-        });
+    console.log(error);
+    res.status(500).json({
+      error: true,
+      msg: "Server error",
+    });
   }
-})
+});
 
 module.exports = router;

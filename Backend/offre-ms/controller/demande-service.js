@@ -194,4 +194,28 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.get("/byuser", verifyAccessToken, async (req, res) => {
+  try {
+    axios
+      .get("http://localhost:5001/api/user/" + req.user.id)
+      .then(async (response) => {
+        var role = response.data.role;
+        if (role === "user") {
+          const data = await Demande.aggregate([
+            {
+              $match: { userInfos: response.data.email },
+            },
+          ]);
+          res.status(200).json(data);
+        }
+      });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      error: true,
+      msg: "Server error",
+    });
+  }
+});
+
 module.exports = router;
