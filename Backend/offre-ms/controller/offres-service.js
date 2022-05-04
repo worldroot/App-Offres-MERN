@@ -297,7 +297,6 @@ router.get('/alldemandes', async (req, res) => {
   try {
       
       let data = await Offre.aggregate([
-          
           //lookup for list :
           { $lookup: { from: "demandes", localField: "_id", foreignField: "offre", as: "demandes" } },
           //cancel some attribute to displays :

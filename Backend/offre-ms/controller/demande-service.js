@@ -50,39 +50,32 @@ router.post(
                 msg: "Offre doesnt exist",
               });
             } else {
-              if (!OffreEx && !user) {
-                if (DateToCheck > Debut && DateToCheck < Fin) {
-                  if (prix < offreModel.prixdebut) {
-                    return res.status(403).json({
-                      error: true,
-                      msg: "Vérifier votre prix",
-                    });
-                  } else {
-                    emailKey(
-                      AdminMail,
-                      PrivateKey,
-                      `Décryptage clé pour l'offre: ${offreModel.titre}`,
-                      email
-                    );
-                    const encrypted = ToCrypte(prix);
-                    const newDem = new Demande({
-                      offre,
-                      prix: encrypted,
-                      userInfos: responseUser.data.email,
-                      userId: responseUser.data._id,
-                    });
-                    newDem.save().then(() => res.json(newDem));
-                  }
-                } else {
+              if (DateToCheck > Debut && DateToCheck < Fin) {
+                if (prix < offreModel.prixdebut) {
                   return res.status(403).json({
                     error: true,
-                    msg: "Demande impossible !",
+                    msg: "Vérifier votre prix",
                   });
+                } else {
+                  emailKey(
+                    AdminMail,
+                    PrivateKey,
+                    `Décryptage clé pour l'offre: ${offreModel.titre}`,
+                    email
+                  );
+                  const encrypted = ToCrypte(prix);
+                  const newDem = new Demande({
+                    offre,
+                    prix: encrypted,
+                    userInfos: responseUser.data.email,
+                    userId: responseUser.data._id,
+                  });
+                  newDem.save().then(() => res.json(newDem));
                 }
               } else {
                 return res.status(403).json({
                   error: true,
-                  msg: "Offre et utilisateur existe !",
+                  msg: "Demande impossible !",
                 });
               }
             }
@@ -170,9 +163,6 @@ router.delete(
         } else {
           try {
             await Demande.findByIdAndDelete(req.params.demandeId);
-            res.status(200).json({
-              message: `Deleted successfully`,
-            });
             res.status(200).json({
               message: `Deleted successfully`,
             });
