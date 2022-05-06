@@ -9,18 +9,17 @@ import {
   Container,
   Row,
   Col,
+  Table,
 } from "reactstrap";
 
-import { useDispatch, useSelector } from "react-redux";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Demandesuser } from "redux/offres/offreActions";
+import { connect } from "react-redux";
 
 const DemandesByUser = ({ ...props }) => {
-
-  const user = useSelector((state) => state.auth.user);
-
-  const reset = (e) => {
-    resetForm();
-  };
+  useEffect(() => {
+    props.All();
+  }, []);
 
   return (
     <>
@@ -42,10 +41,48 @@ const DemandesByUser = ({ ...props }) => {
           </Row>
         </CardHeader>
         <CardBody>
+          <Table
+            className="align-items-center table-flush bg-transparent"
+            responsive
+          >
+            <thead className="text-gray">
+              <tr>
+                <th scope="col">Offre</th>
+                <th scope="col">Date de demande</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody className="text-dark">
+              {props.List.map((dm, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{dm.offre}</td>
+                    <td>{dm.createdAt.substring(0, 10)}</td>
+                    <td>
+                      {" "}
+                      <Button
+                        className="btn btn-outline-danger"
+                        size="sm"
+                        onClick={() => onDL(dm._id)}
+                      >Annuler</Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
         </CardBody>
       </Card>
     </>
   );
 };
+const mapStateToProps = (state) => ({
+  List: state.offres.demandes,
+  isAuth: state.auth.isAuthenticated,
+});
 
-export default DemandesByUser;
+const mapActionToProps = {
+  All: Demandesuser,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(DemandesByUser);

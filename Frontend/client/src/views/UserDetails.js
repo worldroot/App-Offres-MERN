@@ -121,7 +121,7 @@ const UserDetails = (props) => {
                                   onClick={() => {setCurrentId(userLocal._id), setShow(false) }}
                                   size="sm"
                                 >
-                                  Editer votre compte
+                                  Editer compte
                                 </Button>
                                 <Button
                                   className="my-2 btn-outline-dark"
@@ -129,7 +129,7 @@ const UserDetails = (props) => {
                                   onClick={() => {setCurrentId(0), setShow(true) }}
                                   size="sm"
                                 >
-                                  Traiter vos demandes
+                                  Traiter demandes
                                 </Button>
                               </div>
                             </>

@@ -371,4 +371,8 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
   }
 });
 
+router.get("/:offreId", offreByid, async (req, res) => {
+  res.json(req.offre);
+});
+
 module.exports = router;

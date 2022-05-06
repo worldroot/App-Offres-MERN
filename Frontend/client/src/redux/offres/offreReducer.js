@@ -1,23 +1,36 @@
 import {
-    GET_OFFRE_S,
-    GET_OFFRE_F,
-    OFFRE_ERROR
-} from "./offreTypes"
+  GET_OFFRE_S,
+  GET_OFFRE_F,
+  GET_DEMANDE_S,
+  GET_DEMANDE_F,
+  DEMANDE_ERROR,
+  DEL_DEMANDE,
+  OFFRE_ERROR,
+} from "./offreTypes";
 
 const intialState = {
-    offres: [],
-    error: null,
-  };
+  offres: [],
+  demandes: [],
+  error: null,
+};
 
-  export default function (state = intialState, action){
-    switch(action.type){
+export default function (state = intialState, action) {
+  switch (action.type) {
+    case GET_OFFRE_S:
+      return { ...state, offres: [...action.payload] };
+    case GET_DEMANDE_S:
+      return { ...state, demandes: [...action.payload] };
+    case DEL_DEMANDE:
+      return {
+        ...state,
+        offres: state.demandes.filter((c) => c._id !== action.payload),
+      };
+    case DEMANDE_ERROR:
+    case OFFRE_ERROR:
+    case GET_OFFRE_F:
+    case GET_DEMANDE_F:
 
-        case GET_OFFRE_S: 
-            return{...state, offres:[...action.payload]}
-        case OFFRE_ERROR:
-        case GET_OFFRE_F:
-            
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 }
