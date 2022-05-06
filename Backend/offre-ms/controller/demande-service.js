@@ -202,9 +202,7 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
         var role = response.data.role;
         if (role === "user") {
           const data = await Demande.aggregate([
-            {
-              $match: { userInfos: response.data.email },
-            },
+            { $match: { userInfos: response.data.email } },
           ]);
           res.status(200).json(data);
         }

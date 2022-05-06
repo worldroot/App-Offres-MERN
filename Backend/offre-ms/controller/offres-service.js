@@ -295,29 +295,21 @@ router.get("/all", async (req, res) => {
 // @access  Public
 router.get("/alldemandes", async (req, res) => {
   try {
-    axios
-      .get("http://localhost:5001/api/user/" + req.user.id)
-      .then(async (response) => {
-        var role = response.data.role;
-        if (role == "user") {
-          let data = await Offre.aggregate([
-            //lookup for list :
-            {
-              $lookup: {
-                from: "demandes",
-                localField: "_id",
-                foreignField: "offre",
-                as: "demandes",
-              },
-            },
-            //cancel some attribute to displays :
-            { $project: { demandes: { offre: 0, __v: 0, updatedAt: 0 } } },
-            { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
-          ]);
-
-          res.status(200).json(data);
-        }
-      });
+    let data = await Offre.aggregate([
+      //lookup for list :
+      {
+        $lookup: {
+          from: "demandes",
+          localField: "_id",
+          foreignField: "offre",
+          as: "demandes",
+        },
+      },
+      //cancel some attribute to displays :
+      { $project: { demandes: { __v: 0, updatedAt: 0 } } },
+      { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
+    ]);
+    res.status(200).json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -344,13 +336,18 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
                 as: "demandes",
               },
             },
+            //{$match: { demandes: { userInfos: response.data.email} }},
             //cancel some attribute to displays :
-            { $project: { demandes: { offre: 0, __v: 0, updatedAt: 0 } } },
+            //{ $match: { _id:  } },
+            { $project: { demandes: { __v: 0, updatedAt: 0 } } },
             { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
+            /* pipeline: [
+              {
+                $match: { userInfos: response.data.email },
+              },
+            ], */
           ]);
-          let selected = await list.find( { demandes: {$elemMatch: {userInfos: "ohendd@gamesev.ml"}} } )
-          
-          res.status(200).json(selected);
+          res.status(200).json(list);
         }
       });
   } catch (error) {
