@@ -7,7 +7,7 @@ import { OffremsURL } from "helpers/urls";
 import axios from "axios";
 
 //Actions
-export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
+export const Fetch = () => axios.get(`${OffremsURL}/api/offre/allpublished`);
 export const allOffres = () => (dispatch) => {
   Fetch()
     .then((res) => {
