@@ -11,7 +11,7 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Button
+  Button,
 } from "reactstrap";
 
 import React, { Fragment, useEffect, useMemo, useState } from "react";
@@ -95,24 +95,29 @@ const Offres = ({ ...props }) => {
                 return (
                   <Fragment key={index}>
                     <Col>
-                      <Card className="m-2">
+                      <Card className="m-1">
                         <CardBody className="text-dark">
-                          <div className="text-center pb-2">
+                          <div className="text-center">
                             <img
-                              className="img-fluid rounded shadow avatar avatar-lg w-50 h-50"
+                              className="img-fluid rounded avatar avatar-lg w-50 h-50"
                               src={of.image[0]}
                               alt=""
                             />
                           </div>
-                          <h3>{of.titre}</h3>
-                          <Row><small>Prix debut (dt): {of.prixdebut}</small></Row>
+                          <Row><h3>{of.titre}</h3></Row>
                           <Row><small>Categorie: {of.category}</small></Row>
-                          
-                          
+                          <Row><small>Prix debut (dt): {of.prixdebut}</small></Row>
+                          <Row><small className="text-danger">Date Debut: {of.dateDebut.substring(0, 10)}</small></Row>
+                          <Row><small className="text-danger">Date Limite: {of.dateFin.substring(0, 10)}</small></Row>
                         </CardBody>
-                        <CardFooter>
-                            
-                            <Button></Button>
+                        <CardFooter className="text-center">
+                          <Button
+                            className="btn-outline-default"
+                            color="dark"
+                            type="submit"
+                          >
+                            Confirmer
+                          </Button>
                         </CardFooter>
                       </Card>
                     </Col>

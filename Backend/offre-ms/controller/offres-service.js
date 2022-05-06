@@ -277,6 +277,18 @@ router.delete(
 // @route   Get api/offre/all
 // @desc    Get all offre
 // @access  Public
+router.get("/allpublished", async (req, res) => {
+  try {
+    const data = await Offre.find({status: "published"});
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      error: true,
+      msg: "Server error",
+    });
+  }
+});
 router.get("/all", async (req, res) => {
   try {
     const data = await Offre.find({});
