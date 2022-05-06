@@ -10,15 +10,17 @@ import {
   InputGroupText,
   Card,
   CardBody,
-  CardGroup,
+  CardFooter,
+  Button
 } from "reactstrap";
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { allOffres } from "redux/offres/offreActions";
 import { connect } from "react-redux";
+import PaginationComponent from "components/Pagination.js";
 
 const Offres = ({ ...props }) => {
   useEffect(() => {
@@ -29,7 +31,26 @@ const Offres = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
-  const offresPerPage = 5;
+  const offresPerPage = 3;
+
+  const offresData = useMemo(() => {
+    let computed = Data;
+
+    if (Search) {
+      computed = computed.filter(
+        (of) =>
+          of.titre.toLowerCase().includes(Search.toLowerCase()) ||
+          of.category.includes(Search)
+      );
+    }
+
+    setPageNumber(computed.length);
+
+    return computed.slice(
+      (currentPage - 1) * offresPerPage,
+      (currentPage - 1) * offresPerPage + offresPerPage
+    );
+  }, [Data, currentPage, Search]);
 
   return (
     <>
@@ -47,34 +68,34 @@ const Offres = ({ ...props }) => {
                 <h1 className="text-center text-red">Les appels d'offres</h1>
               </motion.div>
             </Row>
-            <div className="text-center">
 
-            <Form className="navbar-search navbar-search-dark mr-3x mb-2 mt-2">
-              <FormGroup className="mb-0">
-                <InputGroup className="input-group-alternative border-dark">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="fas fa-search text-dark" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    className="text-dark"
-                    type="text"
-                    onChange={(event) => {
-                      setSearch(event.target.value), setCurrentPage(1);
-                    }}
-                  />
-                </InputGroup>
-              </FormGroup>
-            </Form>
+            <Row className="justify-content-center">
+              <Form className="navbar-search navbar-search-dark mb-2 mt-2">
+                <FormGroup className="mb-0">
+                  <InputGroup className="input-group-alternative border-dark">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="fas fa-search text-dark" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      className="text-dark"
+                      type="text"
+                      onChange={(event) => {
+                        setSearch(event.target.value), setCurrentPage(1);
+                      }}
+                    />
+                  </InputGroup>
+                </FormGroup>
+              </Form>
+            </Row>
 
-            </div>
             <Row xs={1} md={3} className="g-4">
-              {Data.map((of, index) => {
+              {offresData.map((of, index) => {
                 return (
                   <Fragment key={index}>
                     <Col>
-                      <Card className="m-2 bg-white">
+                      <Card className="m-2">
                         <CardBody className="text-dark">
                           <div className="text-center pb-2">
                             <img
@@ -83,19 +104,28 @@ const Offres = ({ ...props }) => {
                               alt=""
                             />
                           </div>
-                          <Row>
-                            <Col>
-                              <h3>{of.titre}</h3>
-                              <small>Prix debut (dt): {of.prixdebut}</small>
-                            </Col>
-                          </Row>
+                          <h3>{of.titre}</h3>
+                          <Row><small>Prix debut (dt): {of.prixdebut}</small></Row>
+                          <Row><small>Categorie: {of.category}</small></Row>
+                          
+                          
                         </CardBody>
+                        <CardFooter>
+                            
+                            <Button></Button>
+                        </CardFooter>
                       </Card>
                     </Col>
                   </Fragment>
                 );
               })}
             </Row>
+            <PaginationComponent
+              total={pageNumber}
+              itemsPerPage={offresPerPage}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </Container>
         </div>
 
