@@ -210,9 +210,7 @@ const OffreList = ({ ...props }) => {
                                   </span>
                                 )}
                                 {of.status === "closed" && (
-                                  <span className=" text-dark">
-                                    Closed
-                                  </span>
+                                  <span className=" text-dark">Closed</span>
                                 )}
                               </td>
                               {/* DateToCheck > Debut && DateToCheck < Fin */}

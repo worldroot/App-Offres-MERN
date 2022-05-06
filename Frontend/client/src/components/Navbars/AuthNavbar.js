@@ -14,7 +14,7 @@ import {
   Container,
   Row,
   Col,
-  Button
+  Button,
 } from "reactstrap";
 
 const LogoImg = require("../../assets/img/oo.png");
@@ -73,17 +73,13 @@ const AuthNavbar = ({ logout, isAuth }) => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink className="nav-link-icon" to="/offres" tag={Link}>
+                  <span className="nav-link-inner--text text-red">Offres</span>
+                </NavLink>
+              </NavItem>
               {userExist && (
                 <>
-                 <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      to="/offres"
-                      tag={Link}
-                    >
-                    <h2 className="text-red border-bottom border-danger">Offres</h2>
-                    </NavLink>
-                  </NavItem>
                   <UncontrolledDropdown nav>
                     <DropdownToggle className="pr-0" nav>
                       <Media className="align-items-center">

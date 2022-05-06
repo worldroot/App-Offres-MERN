@@ -40,7 +40,7 @@ const UserDetails = (props) => {
       const refreshToken = localStorage.getItem("refreshToken");
       const decodedToken = decode(accessToken);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
-        refreshJwt({ refreshToken });
+        dispatch(refreshJwt({ refreshToken }));
       }
     }
   }, []);
@@ -154,8 +154,7 @@ const UserDetails = (props) => {
 
 const mapActionToProps = {
   GetUser: loadUser,
-  ResendEmail: resend,
-  RefToken: refreshJwt,
+  ResendEmail: resend
 };
 
 const mapStateToProps = (state) => ({
