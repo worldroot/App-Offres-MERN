@@ -38,8 +38,6 @@ router.post(
         } else {
           try {
             let { offre, prix } = req.body;
-            const user = await Demande.findOne(req.user.email);
-            const OffreEx = await Demande.findById(offre);
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
@@ -201,6 +199,7 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
       .then(async (response) => {
         var role = response.data.role;
         if (role === "user") {
+          //let offreModel = await Offre.findById(offre);
           const data = await Demande.aggregate([
             { $match: { userInfos: response.data.email } },
           ]);

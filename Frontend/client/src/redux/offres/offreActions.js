@@ -2,8 +2,6 @@ import {
   GET_OFFRE_S,
   GET_OFFRE_F,
   GET_DEMANDE_S,
-  GET_DEMANDE_F,
-  DEMANDE_ERROR,
   GET_ONE
 } from "./offreTypes";
 
