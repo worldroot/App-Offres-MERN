@@ -3,12 +3,14 @@ import {
   GET_OFFRE_F,
   GET_DEMANDE_S,
   GET_DEMANDE_F,
-  DEMANDE_ERROR
+  DEMANDE_ERROR,
+  GET_ONE
 } from "./offreTypes";
 
+import axios from "axios";
 import { OffremsURL } from "helpers/urls";
 import setAuthToken from '../../helpers/authToken';
-import axios from "axios";
+
 
 //Actions
 export const Fetch = () => axios.get(`${OffremsURL}/api/offre/allpublished`);
@@ -24,11 +26,11 @@ export const allOffres = () => (dispatch) => {
 };
 
 export const One = (id) => axios.get(`${OffremsURL}/api/offre/` + id);
-export const getByID = () => (dispatch) => {
+export const getById = (id) => (dispatch) => {
   One(id)
     .then((res) => {
       dispatch({
-        type: GET_OFFRE_S,
+        type: GET_ONE,
         payload: res.data,
       });
     })

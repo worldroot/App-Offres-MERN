@@ -175,9 +175,8 @@ const UserDetails = (props) => {
         </div>
       </div>
 
-      <div className=" fixed-bottom">
         <AuthFooter />
-      </div>
+  
     </>
   );
 };

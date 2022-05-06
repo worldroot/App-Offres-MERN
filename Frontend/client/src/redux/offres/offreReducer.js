@@ -6,9 +6,11 @@ import {
   DEMANDE_ERROR,
   DEL_DEMANDE,
   OFFRE_ERROR,
+  GET_ONE,
 } from "./offreTypes";
 
 const intialState = {
+  one: [],
   offres: [],
   demandes: [],
   error: null,
@@ -25,6 +27,8 @@ export default function (state = intialState, action) {
         ...state,
         offres: state.demandes.filter((c) => c._id !== action.payload),
       };
+    case GET_ONE:
+      return { ...state, one: [...action.payload] };
     case DEMANDE_ERROR:
     case OFFRE_ERROR:
     case GET_OFFRE_F:
