@@ -60,13 +60,7 @@ const Offres = ({ ...props }) => {
           {/* Content */}
           <Container className="mt--8  py-xl-7">
             <Row className="justify-content-center">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5 }}
-              >
-                <h1 className="text-center text-red">Les appels d'offres</h1>
-              </motion.div>
+              <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
 
             <Row className="justify-content-center">
@@ -94,33 +88,53 @@ const Offres = ({ ...props }) => {
               {offresData.map((of, index) => {
                 return (
                   <Fragment key={index}>
-                    <Col>
-                      <Card className="m-1">
-                        <CardBody className="text-dark">
-                          <div className="text-center">
-                            <img
-                              className="img-fluid rounded avatar avatar-lg w-50 h-50"
-                              src={of.image[0]}
-                              alt=""
-                            />
-                          </div>
-                          <Row><h3>{of.titre}</h3></Row>
-                          <Row><small>Categorie: {of.category}</small></Row>
-                          <Row><small>Prix debut (dt): {of.prixdebut}</small></Row>
-                          <Row><small className="text-danger">Date Debut: {of.dateDebut.substring(0, 10)}</small></Row>
-                          <Row><small className="text-danger">Date Limite: {of.dateFin.substring(0, 10)}</small></Row>
-                        </CardBody>
-                        <CardFooter className="text-center">
-                          <Button
-                            className="btn-outline-default"
-                            color="dark"
-                            type="submit"
-                          >
-                            Confirmer
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    </Col>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 1.5 }}
+                    >
+                      <Col>
+                        <Card className="m-1">
+                          <CardBody className="text-dark">
+                            <div className="text-center">
+                              <img
+                                className="img-fluid rounded avatar avatar-lg w-50 h-50"
+                                src={of.image[0]}
+                                alt=""
+                              />
+                            </div>
+                            <Row>
+                              <h3>{of.titre}</h3>
+                            </Row>
+                            <Row>
+                              <small>Categorie: {of.category}</small>
+                            </Row>
+                            <Row>
+                              <small>Prix debut (dt): {of.prixdebut}</small>
+                            </Row>
+                            <Row>
+                              <small className="text-danger">
+                                Date Debut: {of.dateDebut.substring(0, 10)}
+                              </small>
+                            </Row>
+                            <Row>
+                              <small className="text-danger">
+                                Date Limite: {of.dateFin.substring(0, 10)}
+                              </small>
+                            </Row>
+                          </CardBody>
+                          <CardFooter className="text-center">
+                            <Button
+                              className="btn-outline-default"
+                              color="dark"
+                              type="submit"
+                            >
+                              Confirmer
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      </Col>
+                    </motion.div>
                   </Fragment>
                 );
               })}

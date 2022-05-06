@@ -352,7 +352,7 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
             //cancel some attribute to displays :
             //{ $match: { _id:  } },
             { $project: { demandes: { __v: 0, updatedAt: 0 } } },
-            { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
+            { $project: { icon: 0, __v: 0, slug: 0, image: 0 } }
             /* pipeline: [
               {
                 $match: { userInfos: response.data.email },

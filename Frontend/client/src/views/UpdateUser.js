@@ -143,7 +143,6 @@ const UpdateUserDetails = ({...props}) => {
                 className="btn-outline-dark"
                 color="default"
                 size="sm"
-                type="submit"
                 onClick={() => reset()}
               >
                 Annuler 

@@ -22,9 +22,10 @@ import { toast } from "react-toastify";
 import UpdateUserDetails from "./UpdateUser";
 import { motion, AnimatePresence } from "framer-motion";
 import decode from "jwt-decode";
+import DemandesByUser from "./offres/DemandesByUser";
 
 const UserDetails = (props) => {
-  const [currentId, setCurrentId] = useState(0);
+  
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [userLocal] = useState(() => {
@@ -48,6 +49,9 @@ const UserDetails = (props) => {
   useEffect(() => {
     props.GetUser();
   }, []);
+
+  const [currentId, setCurrentId] = useState(0);
+  const [Show, setShow] = useState(false);
 
   const verif = () => {
     try {
@@ -109,14 +113,26 @@ const UserDetails = (props) => {
                             </div>
                           </div>
                           {userLocal.active && (
-                            <Button
-                              className="my-2 btn-outline-dark"
-                              color="default"
-                              onClick={() => setCurrentId(userLocal._id)}
-                              size="md"
-                            >
-                              Editer votre compte
-                            </Button>
+                            <>
+                              <div className="text-center">
+                                <Button
+                                  className="my-2 btn-outline-dark"
+                                  color="default"
+                                  onClick={() => {setCurrentId(userLocal._id), setShow(false) }}
+                                  size="sm"
+                                >
+                                  Editer votre compte
+                                </Button>
+                                <Button
+                                  className="my-2 btn-outline-dark"
+                                  color="default"
+                                  onClick={() => {setCurrentId(0), setShow(true) }}
+                                  size="sm"
+                                >
+                                  Traiter vos demandes
+                                </Button>
+                              </div>
+                            </>
                           )}
                         </div>
                       </Row>
@@ -139,6 +155,20 @@ const UserDetails = (props) => {
                     </>
                   )}
                 </AnimatePresence>
+                <AnimatePresence>
+                  {Show && (
+                    <>
+                      <motion.div
+                        initial={{ x: "100vw" }}
+                        animate={{ x: 0 }}
+                        transition={{ type: "spring", stiffness: 100 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <DemandesByUser {...{ Show, setShow }} />
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </Col>
             </Row>
           </Container>
@@ -154,7 +184,7 @@ const UserDetails = (props) => {
 
 const mapActionToProps = {
   GetUser: loadUser,
-  ResendEmail: resend
+  ResendEmail: resend,
 };
 
 const mapStateToProps = (state) => ({
