@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 import React, { useEffect, useState } from "react";
-import { Demandesuser, getById } from "redux/offres/offreActions";
+import { Demandesuser, deleteDem } from "redux/offres/offreActions";
 import { connect, useDispatch } from "react-redux";
 import axios from "axios";
 import { OffremsURL } from "helpers/urls";
@@ -34,6 +34,15 @@ const DemandesByUser = ({ ...props }) => {
       });
     });
   });
+
+  const onDL = (id) => {
+    const onSuccess = () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    };
+    if (window.confirm("Êtes-vous sûr ?")) dispatch(deleteDem(id, onSuccess));
+  };
 
   return (
     <>

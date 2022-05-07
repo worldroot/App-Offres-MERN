@@ -62,7 +62,7 @@ export const Demandesuser = () => (dispatch) => {
 };
 
 export const DL = (id) => axios.delete(`${OffremsURL}/api/demande/` + id);
-export const deleteOffre = async (id, dispatch) => {
+export const deleteDem = async (id, dispatch) => {
   DL(id)
     .then((res) => {
       dispatch({
