@@ -34,7 +34,6 @@ const DemandesByUser = ({ ...props }) => {
       });
     });
   });
-  console.log(Titre);
 
   return (
     <>

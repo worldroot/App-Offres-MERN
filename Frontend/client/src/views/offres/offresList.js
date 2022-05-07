@@ -18,18 +18,26 @@ import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-import { allOffres } from "redux/offres/offreActions";
+import { allOffres, Demandesuser } from "redux/offres/offreActions";
 import { connect } from "react-redux";
 import PaginationComponent from "components/Pagination.js";
 
 const Offres = ({ ...props }) => {
   useEffect(() => {
     props.All();
+    props.AllDem();
   }, []);
+
+  useEffect(() => {
+    props.DemList.map((dm) => {
+      setOffreID(dm.offre);
+    });
+  });
 
   const [Search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [OffreID, setOffreID] = useState("");
   const Data = props.List;
   const offresPerPage = 3;
 
@@ -124,13 +132,23 @@ const Offres = ({ ...props }) => {
                             </Row>
                           </CardBody>
                           <CardFooter className="text-center">
-                            <Button
-                              className="btn-outline-default"
-                              color="dark"
-                              type="submit"
-                            >
-                              Confirmer
-                            </Button>
+                            {OffreID === of._id ? (
+                              <Row className="justify-content-center">
+                                <small className="text-gray">
+                                  Demande deja exist
+                                </small>
+                              </Row>
+                            ) : (
+                              <Row className="justify-content-center">
+                                <Button
+                                  className="btn-outline-danger"
+                                  color="dark"
+                                  type="submit"
+                                >
+                                  Confirmer
+                                </Button>
+                              </Row>
+                            )}
                           </CardFooter>
                         </Card>
                       </Col>
@@ -156,11 +174,13 @@ const Offres = ({ ...props }) => {
 
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
+  DemList: state.offres.demandes,
   isAuth: state.auth.isAuthenticated,
 });
 
 const mapActionToProps = {
   All: allOffres,
+  AllDem: Demandesuser,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Offres);
