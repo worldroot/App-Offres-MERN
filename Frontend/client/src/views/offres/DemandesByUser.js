@@ -17,6 +17,7 @@ import { Demandesuser, getById } from "redux/offres/offreActions";
 import { connect, useDispatch } from "react-redux";
 import axios from "axios";
 import { OffremsURL } from "helpers/urls";
+import "../../components/Loading/loading.css";
 
 const DemandesByUser = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -28,14 +29,12 @@ const DemandesByUser = ({ ...props }) => {
   const [Titre, setTitre] = useState("");
   useEffect(() => {
     props.List.map((dm) => {
-      axios.get(`${OffremsURL}/api/offre/` + dm.offre).then((res) => {setTitre(res.data.titre)});
+      axios.get(`${OffremsURL}/api/offre/` + dm.offre).then((res) => {
+        setTitre(res.data.titre);
+      });
     });
   }, []);
   console.log(Titre);
-
-
-  
-  
 
   return (
     <>
@@ -57,39 +56,43 @@ const DemandesByUser = ({ ...props }) => {
           </Row>
         </CardHeader>
         <CardBody>
-          <Table
-            className="align-items-center table-flush bg-transparent"
-            responsive
-          >
-            <thead className="text-gray">
-              <tr>
-                <th scope="col">Offre</th>
-                <th scope="col">Prix (Dt)</th>
-                <th scope="col">Date de creation</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody className="text-dark">
-              {props.List.map((dm, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{Titre}</td>
-                    <td>####</td>
-                    <td>{dm.createdAt.substring(0, 10)}</td>
-                    <td>
-                      <Button
-                        className="btn btn-outline-danger"
-                        size="sm"
-                        onClick={() => onDL(dm._id)}
-                      >
-                        Annuler
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+          {Titre === "" ? (
+            <div className="text-center">
+              <div id="loading"></div>
+            </div>
+          ) : (
+            <Table
+              className="align-items-center table-flush bg-transparent"
+              responsive
+            >
+              <thead className="text-gray">
+                <tr>
+                  <th scope="col">Offre</th>
+                  <th scope="col">Date de creation</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody className="text-dark">
+                {props.List.map((dm, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{Titre}</td>
+                      <td>{dm.createdAt.substring(0, 10)}</td>
+                      <td>
+                        <Button
+                          className="btn btn-outline-danger"
+                          size="sm"
+                          onClick={() => onDL(dm._id)}
+                        >
+                          Annuler
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          )}
         </CardBody>
       </Card>
     </>
