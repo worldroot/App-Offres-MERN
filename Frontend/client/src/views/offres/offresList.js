@@ -12,6 +12,10 @@ import {
   CardBody,
   CardFooter,
   Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 
 import React, { Fragment, useEffect, useMemo, useState } from "react";
@@ -35,6 +39,7 @@ const Offres = ({ ...props }) => {
   });
 
   const [Search, setSearch] = useState("");
+  const [Cat, setCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [OffreID, setOffreID] = useState("");
@@ -90,6 +95,23 @@ const Offres = ({ ...props }) => {
                   </InputGroup>
                 </FormGroup>
               </Form>
+              <Form className="navbar-search navbar-search-dark mb-2 mt-2 mx-2">
+                <FormGroup className="mb-0">
+                  <InputGroup className="input-group-alternative border-dark">
+                    
+                    <Input
+                      className="text-dark"
+                      type="select"
+                      onChange={(event) => {
+                        setSearch(event.target.value), setCurrentPage(1);
+                      }}
+                    >
+                      <option>Choisis une catégorie</option>
+                    </Input>
+                  </InputGroup>
+                </FormGroup>
+              </Form>
+              
             </Row>
 
             <Row xs={1} md={3} className="g-4">
