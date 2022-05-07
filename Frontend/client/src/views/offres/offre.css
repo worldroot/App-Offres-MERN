@@ -1,0 +1,18 @@
+  .custom-file-upload {
+
+    display: inline-block;
+
+    cursor: pointer;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+
+  .img-wrapper{
+    overflow:hidden;
+  }
+  
+  img.hover-zoom:hover {
+    transform: scale(1.55);
+  }

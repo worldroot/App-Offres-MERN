@@ -19,12 +19,28 @@ import {
 } from "reactstrap";
 
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { allOffres, Demandesuser } from "redux/offres/offreActions";
 import { connect } from "react-redux";
 import PaginationComponent from "components/Pagination.js";
+import { motion, AnimatePresence } from "framer-motion";
+import "../../components/Loading/loading.css";
+import "components/modal.css";
+import DetailsOffre from "./detailsOffre";
+
+const backdrop = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+};
+const modal = {
+  hidden: { y: "100vh", opacity: 0 },
+  visible: {
+    y: "0px",
+    opacity: 1,
+    transition: { delay: 0.5 },
+  },
+};
 
 const Offres = ({ ...props }) => {
   useEffect(() => {
@@ -38,6 +54,9 @@ const Offres = ({ ...props }) => {
     });
   });
 
+  const [showModal, setShowModal] = useState(false);
+  const [currentObj, setCurrentObj] = useState({});
+  
   const [Search, setSearch] = useState("");
   const [Cat, setCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
@@ -98,7 +117,6 @@ const Offres = ({ ...props }) => {
               <Form className="navbar-search navbar-search-dark mb-2 mt-2 mx-2">
                 <FormGroup className="mb-0">
                   <InputGroup className="input-group-alternative border-dark">
-                    
                     <Input
                       className="text-dark"
                       type="select"
@@ -111,7 +129,6 @@ const Offres = ({ ...props }) => {
                   </InputGroup>
                 </FormGroup>
               </Form>
-              
             </Row>
 
             <Row xs={1} md={3} className="g-4">
@@ -152,6 +169,16 @@ const Offres = ({ ...props }) => {
                                 Date Limite: {of.dateFin.substring(0, 10)}
                               </small>
                             </Row>
+                            <Row>
+                              <Button
+                                className="btn-outline-dark"
+                                color="dark"
+                                onClick={()=>{setShowModal(true)}}
+                                size="sm"
+                              >
+                                Details
+                              </Button>
+                            </Row>
                           </CardBody>
                           <CardFooter className="text-center">
                             {OffreID === of._id ? (
@@ -167,7 +194,7 @@ const Offres = ({ ...props }) => {
                                   color="dark"
                                   type="submit"
                                 >
-                                  Confirmer
+                                  Ajouter une demande
                                 </Button>
                               </Row>
                             )}
@@ -185,6 +212,36 @@ const Offres = ({ ...props }) => {
               currentPage={currentPage}
               onPageChange={(page) => setCurrentPage(page)}
             />
+
+            <AnimatePresence
+              exitBeforeEnter
+              showModal={showModal}
+              setShowModal={setShowModal}
+            >
+              {showModal && (
+                <motion.div
+                  className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  <Col className=" fixed-top center" xl="5">
+                    <motion.div className="" variants={modal}>
+                      <DetailsOffre
+                       {...{
+                          currentObj,
+                          setCurrentObj,
+                          showModal,
+                          setShowModal,
+                        }}
+                      />
+                    
+                    </motion.div>
+                  </Col>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Container>
         </div>
 

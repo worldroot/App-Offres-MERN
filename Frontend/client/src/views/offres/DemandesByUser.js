@@ -25,7 +25,6 @@ const DemandesByUser = ({ ...props }) => {
     props.All();
   }, []);
 
-  const [offreId, setOffreId] = useState(0);
   const [Titre, setTitre] = useState("");
   useEffect(() => {
     props.List.map((dm) => {
