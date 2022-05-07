@@ -5,12 +5,13 @@ import {
   GET_DEMANDE_F,
   DEMANDE_ERROR,
   DEL_DEMANDE,
+  GET_OFFDEMS,
   OFFRE_ERROR,
   GET_ONE,
 } from "./offreTypes";
 
 const intialState = {
-  one: [],
+  offdems: [],
   offres: [],
   demandes: [],
   error: null,
@@ -20,6 +21,8 @@ export default function (state = intialState, action) {
   switch (action.type) {
     case GET_OFFRE_S:
       return { ...state, offres: [...action.payload] };
+    case GET_OFFDEMS:
+      return { ...state, offdems: [...action.payload] };
     case GET_DEMANDE_S:
       return { ...state, demandes: [...action.payload] };
     case DEL_DEMANDE:

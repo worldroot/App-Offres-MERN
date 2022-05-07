@@ -2,7 +2,8 @@ import {
   GET_OFFRE_S,
   GET_OFFRE_F,
   GET_DEMANDE_S,
-  GET_ONE
+  GET_ONE,
+  GET_OFFDEMS
 } from "./offreTypes";
 
 import axios from "axios";
@@ -17,6 +18,18 @@ export const allOffres = () => (dispatch) => {
     .then((res) => {
       dispatch({
         type: GET_OFFRE_S,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err), GET_OFFRE_F);
+};
+
+export const FetchOfDe = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
+export const allOffDems = () => (dispatch) => {
+  FetchOfDe()
+    .then((res) => {
+      dispatch({
+        type: GET_OFFDEMS,
         payload: res.data,
       });
     })
