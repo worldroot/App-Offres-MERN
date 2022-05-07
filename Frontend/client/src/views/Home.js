@@ -1,114 +1,98 @@
-import {
-    Row,
-    Col,
-    Container
-  } from "reactstrap";
-  
-  import React, { useEffect, useState } from 'react';
-  import {motion} from 'framer-motion'
-  import AuthNavbar from "components/Navbars/AuthNavbar.js";
-  import AuthFooter from "components/Footers/AuthFooter.js";
-  
-  import { Redirect } from 'react-router-dom'
-  import {connect} from 'react-redux'
+import { Row, Col, Container } from "reactstrap";
 
-  import { refreshJwt } from "redux/auth/authActions";
-  import decode from 'jwt-decode'
-  
-  const Home = ({ refreshJwt }) => {
-  
-  
-    const userExist = localStorage.getItem("user")
-    const [user] = useState(() => {
-      const saved = localStorage.getItem("user");
-      const initialValue = JSON.parse(saved);
-      return initialValue || "";
-    });
-  
-    useEffect(() => {
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import AuthNavbar from "components/Navbars/AuthNavbar.js";
+import AuthFooter from "components/Footers/AuthFooter.js";
 
-      const accessToken = localStorage.getItem("accessToken")
-      if(accessToken){
-        
+import { Redirect } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
 
-        const refreshToken = localStorage.getItem("refreshToken")
-        const decodedToken = decode(accessToken)
-        const decodedRefToken = decode(refreshToken)
-              if(decodedToken.exp * 1000 < new Date().getTime()){
-                refreshJwt({refreshToken})
-              }
+import { refreshJwt } from "redux/auth/authActions";
+import decode from "jwt-decode";
+
+const Home = () => {
+  const userExist = localStorage.getItem("user");
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
+  const dispatch =  useDispatch()
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const decodedToken = decode(accessToken);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken })) 
       }
-    }, []);
+    }
+  });
 
-    useEffect(() => {
-      if(localStorage.getItem("accessToken") === null){
-        return <Redirect to='/login'/>; 
-      }
-    }, [])
-      
-  
-    return (
-      <>
-          <div className="main-content">
-          <AuthNavbar />
-          <div className=" py-xl-9">
-            <Container>
-              <div className="header-body text-center mb-7">
-                <Row className="justify-content-center">
-                  <Col lg="5" md="6">
-                    <p className="text-lead text-light"></p>
-                  </Col>
-                </Row>
-              </div>
-            </Container>
-  
-            {/* Content */}
-            { !userExist && (
+  useEffect(() => {
+    if (localStorage.getItem("accessToken") === null) {
+      return <Redirect to="/login" />;
+    }
+  }, []);
+
+  return (
+    <>
+      <div className="main-content">
+        <AuthNavbar />
+        <div className=" py-xl-9">
+          <Container>
+            <div className="header-body text-center mb-7">
+              <Row className="justify-content-center">
+                <Col lg="5" md="6">
+                  <p className="text-lead text-light"></p>
+                </Col>
+              </Row>
+            </div>
+          </Container>
+
+          {/* Content */}
+          {!userExist && (
             <>
               <Container className="mt--8 pb-8 py-xl-9">
                 <Row className="justify-content-center">
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{  duration: 1.5 }}>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1.5 }}
+                  >
                     <h1 className="text-center text-red">Acceuil</h1>
-                  </motion.div>  
+                  </motion.div>
                 </Row>
               </Container>
-  
-              
-              </>
-  
-            )}
-  
-            { userExist && (
-  
+            </>
+          )}
+
+          {userExist && (
             <Container className="mt--8 pb-8 py-xl-9">
-            <Row className="justify-content-center">
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{  duration: 1.5 }}>
-                <h1 className="text-center text-red">Bienvenue</h1>
-              </motion.div>   
-            </Row>
+              <Row className="justify-content-center">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1.5 }}
+                >
+                  <h1 className="text-center text-red">Bienvenue</h1>
+                </motion.div>
+              </Row>
             </Container>
-            )}
-  
-          </div>   
-          <div className=" fixed-bottom">
-              <AuthFooter/> 
-          </div>
-            
+          )}
         </div>
-  
-      </>
-    );
-  };
-  
-  const mapToStateProps = (state) => ({
-    isAuth: state.auth.isAuthenticated,
-    user: state.auth.user
-  });
-  
-  export default connect(mapToStateProps, {refreshJwt} ) (Home);
+        <div className=" fixed-bottom">
+          <AuthFooter />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const mapToStateProps = (state) => ({
+  isAuth: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
+
+export default connect(mapToStateProps)(Home);

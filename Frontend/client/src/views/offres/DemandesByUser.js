@@ -33,7 +33,7 @@ const DemandesByUser = ({ ...props }) => {
         setTitre(res.data.titre);
       });
     });
-  }, []);
+  });
   console.log(Titre);
 
   return (
@@ -56,7 +56,11 @@ const DemandesByUser = ({ ...props }) => {
           </Row>
         </CardHeader>
         <CardBody>
-          {Titre === "" ? (
+          {props.List.length === 0 ? (
+            <div className="text-center">
+              <h2 className="mb-0 text-dark">Aucune demande</h2>
+            </div>
+          ) : Titre === "" ? (
             <div className="text-center">
               <div id="loading"></div>
             </div>
