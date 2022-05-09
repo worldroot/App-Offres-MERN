@@ -60,10 +60,6 @@ const DetailsOffre = ({ ...props }) => {
     height: "200px"
   };
 
-  if (!userExist) {
-    return <Redirect to="/login" />;
-  }
-
   return (
     <>
       <Card>

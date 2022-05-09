@@ -50,20 +50,22 @@ const Offres = ({ ...props }) => {
   }, []);
 
   useEffect(() => {
+    console.log();
     props.DemList.map((dm) => {
-      setOffreID(dm.offre);
+      setVerif(dm.offre);
     });
   });
-
+  const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
 
+  const [verif, setVerif] = useState([]);
+  console.log(verif);
   const [Search, setSearch] = useState("");
-  const [Cat, setCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [OffreID, setOffreID] = useState([]);
+
   const Data = props.List;
   const offresPerPage = 3;
 
@@ -184,25 +186,29 @@ const Offres = ({ ...props }) => {
                               </Button>
                             </Row>
                           </CardBody>
-                          <CardFooter className="text-center">
-                            {OffreID === of._id ? (
-                              <Row className="justify-content-center">
-                                <small className="text-gray">
-                                  Demande deja exist
-                                </small>
-                              </Row>
-                            ) : (
-                              <Row className="justify-content-center">
-                                <Button
-                                  className="btn-outline-danger"
-                                  color="dark"
-                                  onClick={()=>{setShowModal2(true), setCurrentObj(of) }}
-                                >
-                                  Ajouter une demande
-                                </Button>
-                              </Row>
-                            )}
-                          </CardFooter>
+                          {userExist && (
+                            <CardFooter className="text-center">
+                              {verif === of._id ? (
+                                <Row className="justify-content-center">
+                                  <small className="text-gray">
+                                    Demande deja exist
+                                  </small>
+                                </Row>
+                              ) : (
+                                <Row className="justify-content-center">
+                                  <Button
+                                    className="btn-outline-danger"
+                                    color="dark"
+                                    onClick={() => {
+                                      setShowModal2(true), setCurrentObj(of);
+                                    }}
+                                  >
+                                    Ajouter une demande
+                                  </Button>
+                                </Row>
+                              )}
+                            </CardFooter>
+                          )}
                         </Card>
                       </Col>
                     </motion.div>
@@ -276,7 +282,6 @@ const Offres = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
-
           </Container>
         </div>
 
