@@ -11,10 +11,10 @@ import {
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import React, { Fragment, useState, useEffect } from "react";
 import useForm from "helpers/useFormObj";
-import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/scss/alice-carousel.scss";

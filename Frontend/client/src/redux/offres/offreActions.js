@@ -3,7 +3,10 @@ import {
   GET_OFFRE_F,
   GET_DEMANDE_S,
   GET_ONE,
-  GET_OFFDEMS
+  GET_OFFDEMS,
+  OFFRE_ERROR,
+  OFFRE_DELETED,
+
 } from "./offreTypes";
 
 import axios from "axios";
