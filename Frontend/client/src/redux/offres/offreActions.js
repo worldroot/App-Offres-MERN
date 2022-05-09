@@ -5,14 +5,14 @@ import {
   GET_ONE,
   GET_OFFDEMS,
   OFFRE_ERROR,
-  OFFRE_DELETED,
-
+  DEL_DEMANDE,
+  ADD_DEMANDE,
 } from "./offreTypes";
 
 import axios from "axios";
 import { OffremsURL } from "helpers/urls";
-import setAuthToken from '../../helpers/authToken';
-
+import setAuthToken from "../../helpers/authToken";
+import { toast } from "react-toastify";
 
 //Actions
 export const Fetch = () => axios.get(`${OffremsURL}/api/offre/allpublished`);
@@ -53,7 +53,7 @@ export const getById = (id) => (dispatch) => {
 
 export const FetchDem = () => axios.get(`${OffremsURL}/api/demande/byuser`);
 export const Demandesuser = () => (dispatch) => {
-  setAuthToken(localStorage.accessToken)
+  setAuthToken(localStorage.accessToken);
   FetchDem()
     .then((res) => {
       dispatch({
@@ -64,23 +64,46 @@ export const Demandesuser = () => (dispatch) => {
     .catch((err) => console.log(err), GET_OFFRE_F);
 };
 
+export const createSuccess = (data) => {
+  return {
+    type: ADD_DEMANDE,
+    payload: data,
+  };
+};
+
+export const AddDem = (demande) => {
+  const data = { prix: demande.prix, offre: demande.offre };
+  if (!data.prix || !data.offre) {
+    toast.warn("Verifier vos champs !");
+  } else {
+    return (dispatch) => {
+      setAuthToken(localStorage.accessToken);
+      axios
+        .post(`${OffremsURL}/api/demande/`, data)
+        .then((res) => {
+          dispatch(createSuccess(res.data));
+          toast.success("Ajouté avec succès");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch(function (error) {
+          OFFRE_ERROR, console.log(error), toast.error(error.response.data.msg);
+        });
+    };
+  }
+};
+
 export const DL = (id) => axios.delete(`${OffremsURL}/api/demande/` + id);
 export const deleteDem = async (id, dispatch) => {
   DL(id)
     .then((res) => {
       dispatch({
-        type: OFFRE_DELETED,
+        type: DEL_DEMANDE,
         payload: id,
       });
     })
-    .catch(function(error) {
-      OFFRE_ERROR,
-      console.log(error),
-      toast.warn(error.response.data.msg) 
-    })
+    .catch(function (error) {
+      OFFRE_ERROR, console.log(error), toast.warn(error.response.data.msg);
+    });
 };
-
-
-
-
-

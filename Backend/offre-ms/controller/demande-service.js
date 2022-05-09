@@ -202,6 +202,7 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
           //let offreModel = await Offre.findById(offre);
           const data = await Demande.aggregate([
             { $match: { userInfos: response.data.email } },
+
           ]);
           res.status(200).json(data);
         }

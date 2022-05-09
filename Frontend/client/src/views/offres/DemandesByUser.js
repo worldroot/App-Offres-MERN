@@ -26,13 +26,6 @@ const DemandesByUser = ({ ...props }) => {
   }, []);
 
   const [Titre, setTitre] = useState("");
-  useEffect(() => {
-    props.List.map((dm) => {
-      axios.get(`${OffremsURL}/api/offre/` + dm.offre).then((res) => {
-        setTitre(res.data.titre);
-      });
-    });
-  });
 
   const onDL = (id) => {
     const onSuccess = () => {
@@ -87,7 +80,7 @@ const DemandesByUser = ({ ...props }) => {
                 {props.List.map((dm, index) => {
                   return (
                     <tr key={index}>
-                      <td>{Titre}</td>
+                      <td>{dm.offre}</td>
                       <td>{dm.createdAt.substring(0, 10)}</td>
                       <td>
                         <Button

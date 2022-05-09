@@ -28,6 +28,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../components/Loading/loading.css";
 import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
+import AjoutDemande from "./ajoutDemande";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -55,13 +56,14 @@ const Offres = ({ ...props }) => {
   });
 
   const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
-  
+
   const [Search, setSearch] = useState("");
   const [Cat, setCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [OffreID, setOffreID] = useState("");
+  const [OffreID, setOffreID] = useState([]);
   const Data = props.List;
   const offresPerPage = 3;
 
@@ -173,7 +175,9 @@ const Offres = ({ ...props }) => {
                               <Button
                                 className="btn-outline-dark"
                                 color="dark"
-                                onClick={()=>{setShowModal(true), setCurrentObj(of)}}
+                                onClick={() => {
+                                  setShowModal(true), setCurrentObj(of);
+                                }}
                                 size="sm"
                               >
                                 Details
@@ -192,7 +196,7 @@ const Offres = ({ ...props }) => {
                                 <Button
                                   className="btn-outline-danger"
                                   color="dark"
-                                  type="submit"
+                                  onClick={()=>{setShowModal2(true), setCurrentObj(of) }}
                                 >
                                   Ajouter une demande
                                 </Button>
@@ -206,7 +210,15 @@ const Offres = ({ ...props }) => {
                 );
               })}
             </Row>
-           
+            <Row>
+              <PaginationComponent
+                total={pageNumber}
+                itemsPerPage={offresPerPage}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </Row>
+
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal}
@@ -223,26 +235,47 @@ const Offres = ({ ...props }) => {
                   <Col className=" fixed-top center" xl="5">
                     <motion.div className="" variants={modal}>
                       <DetailsOffre
-                       {...{
+                        {...{
                           currentObj,
                           setCurrentObj,
                           showModal,
                           setShowModal,
                         }}
                       />
-                    
                     </motion.div>
                   </Col>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <PaginationComponent
-              total={pageNumber}
-              itemsPerPage={offresPerPage}
-              currentPage={currentPage}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+            <AnimatePresence
+              exitBeforeEnter
+              showModal={showModal2}
+              setShowModal={setShowModal2}
+            >
+              {showModal2 && (
+                <motion.div
+                  className="backdrop"
+                  variants={backdrop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  <Col className="fixed-top center" xl="5">
+                    <motion.div className="" variants={modal}>
+                      <AjoutDemande
+                        {...{
+                          currentObj,
+                          setCurrentObj,
+                          showModal2,
+                          setShowModal2,
+                        }}
+                      />
+                    </motion.div>
+                  </Col>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
           </Container>
         </div>

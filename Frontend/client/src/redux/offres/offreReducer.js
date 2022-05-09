@@ -8,6 +8,7 @@ import {
   GET_OFFDEMS,
   OFFRE_ERROR,
   GET_ONE,
+  ADD_DEMANDE,
 } from "./offreTypes";
 
 const intialState = {
@@ -25,13 +26,13 @@ export default function (state = intialState, action) {
       return { ...state, offdems: [...action.payload] };
     case GET_DEMANDE_S:
       return { ...state, demandes: [...action.payload] };
+    case ADD_DEMANDE:
+      return { ...state, ...action.payload };
     case DEL_DEMANDE:
       return {
         ...state,
-        offres: state.demandes.filter((c) => c._id !== action.payload),
+        demandes: state.demandes.filter((c) => c._id !== action.payload),
       };
-    case GET_ONE:
-      return { ...state, one: [...action.payload] };
     case DEMANDE_ERROR:
     case OFFRE_ERROR:
     case GET_OFFRE_F:
