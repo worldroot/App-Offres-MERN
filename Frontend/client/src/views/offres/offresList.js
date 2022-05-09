@@ -173,7 +173,7 @@ const Offres = ({ ...props }) => {
                               <Button
                                 className="btn-outline-dark"
                                 color="dark"
-                                onClick={()=>{setShowModal(true)}}
+                                onClick={()=>{setShowModal(true), setCurrentObj(of)}}
                                 size="sm"
                               >
                                 Details
@@ -206,13 +206,7 @@ const Offres = ({ ...props }) => {
                 );
               })}
             </Row>
-            <PaginationComponent
-              total={pageNumber}
-              itemsPerPage={offresPerPage}
-              currentPage={currentPage}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
-
+           
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal}
@@ -242,6 +236,14 @@ const Offres = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            <PaginationComponent
+              total={pageNumber}
+              itemsPerPage={offresPerPage}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+
           </Container>
         </div>
 

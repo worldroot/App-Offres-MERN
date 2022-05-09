@@ -6,16 +6,15 @@ import {
   CardBody,
   Form,
   FormGroup,
-  Input,
   Row,
-  Col,
+  Col
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import React, { Fragment, useState, useEffect } from "react";
 import useForm from "helpers/useFormObj";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/scss/alice-carousel.scss";
@@ -131,7 +130,7 @@ const DetailsOffre = ({ ...props }) => {
                   <p>
                     Date début :
                     <label className="form-control-label text-dark mx-2">
-                      
+                      {values.dateDebut.substring(0, 10)}
                     </label>
                   </p>
                 </FormGroup>
@@ -141,7 +140,7 @@ const DetailsOffre = ({ ...props }) => {
                   <p>
                     Date fin :
                     <label className="form-control-label text-dark mx-2">
-                      
+                      {values.dateFin.substring(0, 10)}
                     </label>
                   </p>
                 </FormGroup>
