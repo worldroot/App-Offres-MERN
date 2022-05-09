@@ -50,18 +50,22 @@ const Offres = ({ ...props }) => {
   }, []);
 
   useEffect(() => {
-    console.log();
-    props.DemList.map((dm) => {
-      setVerif(dm.offre);
+    props.List.map((of) => {
+      props.DemList.map((dm) => {
+        if (dm.offre === of._id) {
+          return setVerif(dm.offre);
+        }
+      });
     });
-  });
+  }, []);
+  const [Exist, setExist] = useState(false);
+  console.log(Exist);
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
 
-  const [verif, setVerif] = useState([]);
-  console.log(verif);
+  const [verif, setVerif] = useState("");
   const [Search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,7 +75,6 @@ const Offres = ({ ...props }) => {
 
   const offresData = useMemo(() => {
     let computed = Data;
-
     if (Search) {
       computed = computed.filter(
         (of) =>
@@ -79,9 +82,7 @@ const Offres = ({ ...props }) => {
           of.category.includes(Search)
       );
     }
-
     setPageNumber(computed.length);
-
     return computed.slice(
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
