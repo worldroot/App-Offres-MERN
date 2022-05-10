@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Demande = require("../models/Demande");
+const Offre = require("../models/Offre");
 const axios = require("axios");
 const NodeRSA = require("node-rsa");
 const key = new NodeRSA({ b: 384 });
@@ -11,7 +12,7 @@ const {
   validateDemande,
   isRequestValidated,
 } = require("../middleware/offreValidator");
-const Offre = require("../models/Offre");
+
 const demandeByid = require("../middleware/demandeByid");
 
 // @route   POST api/appeloffre
@@ -202,9 +203,50 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
           //let offreModel = await Offre.findById(offre);
           const data = await Demande.aggregate([
             { $match: { userInfos: response.data.email } },
-
           ]);
           res.status(200).json(data);
+        }
+      });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      error: true,
+      msg: "Server error",
+    });
+  }
+});
+
+router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
+  try {
+    axios
+      .get("http://localhost:5001/api/user/" + req.user.id)
+      .then(async (response) => {
+        var role = response.data.role;
+        if (role === "user") {
+          //let offreModel = await Offre.findById(offre);
+          const DemData = await Demande.aggregate([
+            { $match: { userInfos: response.data.email } },
+          ]);
+          if (DemData.length === 0) {
+            const OffreData = await Offre.find({ status: "published" });
+            res.status(200).json({ OffreData, status: false });
+          } else {
+            const allOffres = await Offre.find({ status: "published" });
+            Offre.find({ status: "published" }).exec((err, offres) => {
+              offres.forEach((of) => {
+                Demande.aggregate([
+                  { $match: { userInfos: response.data.email } },
+                ]).exec((err, dems) => {
+                  dems.forEach((dm) => {
+                    let offre = dm.offre
+                    let id = of._id
+                    let data = Offre.find({ _id: offre });
+                    res.status(200).json(data);
+                  });
+                });
+              });
+            });
+          }
         }
       });
   } catch (error) {

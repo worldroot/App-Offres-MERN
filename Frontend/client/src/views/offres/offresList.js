@@ -50,8 +50,8 @@ const Offres = ({ ...props }) => {
   }, []);
 
   useEffect(() => {
-    props.List.map((of) => {
-      props.DemList.map((dm) => {
+    props.List.forEach((of) => {
+      props.DemList.forEach((dm) => {
         if (dm.offre === of._id) {
           return setVerif(dm.offre);
         }
