@@ -229,23 +229,32 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
           ]);
           if (DemData.length === 0) {
             const OffreData = await Offre.find({ status: "published" });
-            res.status(200).json({ OffreData, status: false });
+            res.status(200).json(OffreData);
           } else {
             const allOffres = await Offre.find({ status: "published" });
-            Offre.find({ status: "published" }).exec((err, offres) => {
-              offres.forEach((of) => {
-                Demande.aggregate([
-                  { $match: { userInfos: response.data.email } },
-                ]).exec((err, dems) => {
-                  dems.forEach((dm) => {
-                    let offre = dm.offre
-                    let id = of._id
-                    let data = Offre.find({ _id: offre });
-                    res.status(200).json(data);
+            var resultsEx = [];
+            const data = Offre.find({ status: "published" }).exec(
+              (err, offres) => {
+                offres.forEach((of) => {
+                  Demande.aggregate([
+                    { $match: { userInfos: response.data.email } },
+                  ]).exec((err, dems) => {
+                    dems.forEach((dm) => {
+                      //dm.offre === of._id
+                      if (dm.offre === of._id) {
+                        console.log("=================YES===================");
+                        console.log(dm.offre);
+                      } else {
+                        console.log("===================NO=================");
+                        console.log(of._id);
+                        console.log(dm.offre);
+                      }
+                    });
                   });
                 });
-              });
-            });
+              }
+            );
+            res.status(200).json(allOffres);
           }
         }
       });
