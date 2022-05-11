@@ -224,22 +224,47 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
         var role = response.data.role;
         if (role === "user") {
           //let offreModel = await Offre.findById(offre);
-          const DemData = await Demande.aggregate([
+          const DemandeData = await Demande.aggregate([
             { $match: { userInfos: response.data.email } },
           ]);
-          if (DemData.length === 0) {
-            const OffreData = await Offre.find({ status: "published" });
+          const OffreData = await Offre.find({ status: "published" });
+          if (DemandeData.length === 0) {
             res.status(200).json(OffreData);
           } else {
-            const allOffres = await Offre.find({ status: "published" });
-            var resultsEx = [];
-            const data = Offre.find({ status: "published" }).exec(
+            var results = [];
+            for (const off of OffreData) {
+              const offID = off._id;
+              for (const dem of DemandeData) {
+                const demOff = dem.offre;
+                console.log({ offre: offID.toString() });
+                console.log({ dem: demOff.toString() });
+                if (offID.toString() === demOff.toString()) {
+                  const Yes = Offre.aggregate([
+                    { $match: { _id: demOff } },
+                    {
+                      $addFields: {
+                        exist: true,
+                      },
+                    },
+                  ]);
+                  console.log("Yes");
+                  
+                } else {
+                  const No = Offre.find({ _id: demOff });
+                  console.log("No");
+                  
+                }
+              }
+            }
+            res.status(200).json(results);
+
+            /* const data = Offre.find({ status: "published" }).exec(
               (err, offres) => {
                 offres.forEach((of) => {
                   Demande.aggregate([
                     { $match: { userInfos: response.data.email } },
                   ]).exec((err, dems) => {
-                    dems.forEach((dm) => {
+                    dems.forEach(async  (dm) => {
                       //dm.offre === of._id
                       if (dm.offre === of._id) {
                         console.log("=================YES===================");
@@ -253,8 +278,7 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
                   });
                 });
               }
-            );
-            res.status(200).json(allOffres);
+            ); */
           }
         }
       });
