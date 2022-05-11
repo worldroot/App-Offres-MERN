@@ -40,7 +40,6 @@ const UserSchema = new mongoose.Schema({
       },
       listOffres: {
         type: Array,
-        items: { type: String, unique:true }
       }
 
     },

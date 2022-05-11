@@ -231,54 +231,32 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
           if (DemandeData.length === 0) {
             res.status(200).json(OffreData);
           } else {
-            var results = [];
+            var r = []
+            var r2 = []
             for (const off of OffreData) {
               const offID = off._id;
               for (const dem of DemandeData) {
-                const demOff = dem.offre;
-                console.log({ offre: offID.toString() });
-                console.log({ dem: demOff.toString() });
-                if (offID.toString() === demOff.toString()) {
-                  const Yes = Offre.aggregate([
-                    { $match: { _id: demOff } },
-                    {
-                      $addFields: {
-                        exist: true,
-                      },
-                    },
-                  ]);
-                  console.log("Yes");
-                  
-                } else {
-                  const No = Offre.find({ _id: demOff });
-                  console.log("No");
-                  
-                }
+                axios
+                  .get("http://localhost:5003/api/offre/" + offID)
+                  .then(async (response) => {
+                    const data = response.data;
+                    const demOff = dem.offre;
+                    console.log({ offre: offID.toString() });
+                    console.log({ dem: demOff.toString() });
+                    if (offID.toString() === demOff.toString()) {
+                      //res.status(200).json({ data, exist: true });
+                      //const offreExist = Offre.find({})
+                      r.push({ data, exist: true })
+                      
+                    } else{
+                      r2.push({ data, exist: false })
+                      return res.status(200).json({r,r2});
+                    }
+                    
+                  });
               }
             }
-            res.status(200).json(results);
-
-            /* const data = Offre.find({ status: "published" }).exec(
-              (err, offres) => {
-                offres.forEach((of) => {
-                  Demande.aggregate([
-                    { $match: { userInfos: response.data.email } },
-                  ]).exec((err, dems) => {
-                    dems.forEach(async  (dm) => {
-                      //dm.offre === of._id
-                      if (dm.offre === of._id) {
-                        console.log("=================YES===================");
-                        console.log(dm.offre);
-                      } else {
-                        console.log("===================NO=================");
-                        console.log(of._id);
-                        console.log(dm.offre);
-                      }
-                    });
-                  });
-                });
-              }
-            ); */
+            
           }
         }
       });
