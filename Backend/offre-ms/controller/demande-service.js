@@ -226,7 +226,7 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
           //res.json(DemandeData)
           //console.log(DemandeData);
           const OffreData = await Offre.find({ status: "published" });
-
+          
           var list = [];
           if (DemandeData.length === 0) {
             res.status(200).json(OffreData);
@@ -236,7 +236,7 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
               for (let j = 0; j < DemandeData.length; j++) {
                 const demande = DemandeData[j];
                 if (demande.offre.toString() === offre._id.toString()) {
-                  const exist = await Offre.aggregate([
+                 /*  const exist = await Offre.aggregate([
                     { $match: { titre: offre.titre } },
                     {
                       $addFields: {
@@ -244,21 +244,15 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
                       },
                     },
                   ]);
-                  list.push(exist);
+                  list.push(exist); */
+                  var objt = { offre, exist: true };
+                  list.push(objt);
                 } else {
-                  const nonexist = await Offre.aggregate([
-                    { $match: { titre: offre.titre } },
-                    {
-                      $addFields: {
-                        exist: false,
-                      },
-                    },
-                  ]);
-                  list.push(nonexist);
+                  var obj = { offre, exist: false };
+                  list.push(obj);
                 }
               }
             }
-           
             res.status(200).json(list);
           }
         }
