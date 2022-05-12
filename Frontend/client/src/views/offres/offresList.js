@@ -48,38 +48,26 @@ const Offres = ({ ...props }) => {
     props.All();
     props.AllDem();
   }, []);
-
-  useEffect(() => {
-    props.List.forEach((of) => {
-      props.DemList.forEach((dm) => {
-        if (dm.offre === of._id) {
-          return setVerif(dm.offre);
-        }
-      });
-    });
-  }, []);
-  const [Exist, setExist] = useState(false);
-  console.log(Exist);
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
-
-  const [verif, setVerif] = useState("");
   const [Search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const Data = props.List;
+  console.log("====================================");
+  console.log(Data);
   const offresPerPage = 3;
 
   const offresData = useMemo(() => {
     let computed = Data;
     if (Search) {
       computed = computed.filter(
-        (of) =>
-          of.titre.toLowerCase().includes(Search.toLowerCase()) ||
-          of.category.includes(Search)
+        (i) =>
+          i.offre.titre.toLowerCase().includes(Search.toLowerCase()) ||
+          i.offre.category.includes(Search)
       );
     }
     setPageNumber(computed.length);
@@ -151,27 +139,30 @@ const Offres = ({ ...props }) => {
                             <div className="text-center">
                               <img
                                 className="img-fluid rounded avatar avatar-lg w-50 h-50"
-                                src={of.image[0]}
+                                src={of.offre.image[0]}
                                 alt=""
                               />
                             </div>
                             <Row>
-                              <h3>{of.titre}</h3>
+                              <h3>{of.offre.titre}</h3>
                             </Row>
                             <Row>
-                              <small>Categorie: {of.category}</small>
+                              <small>Categorie: {of.offre.category}</small>
                             </Row>
                             <Row>
-                              <small>Prix debut (dt): {of.prixdebut}</small>
-                            </Row>
-                            <Row>
-                              <small className="text-danger">
-                                Date Debut: {of.dateDebut.substring(0, 10)}
+                              <small>
+                                Prix debut (dt): {of.offre.prixdebut}
                               </small>
                             </Row>
                             <Row>
                               <small className="text-danger">
-                                Date Limite: {of.dateFin.substring(0, 10)}
+                                Date Debut:{" "}
+                                {of.offre.dateDebut.substring(0, 10)}
+                              </small>
+                            </Row>
+                            <Row>
+                              <small className="text-danger">
+                                Date Limite: {of.offre.dateFin.substring(0, 10)}
                               </small>
                             </Row>
                             <Row>
@@ -189,7 +180,7 @@ const Offres = ({ ...props }) => {
                           </CardBody>
                           {userExist && (
                             <CardFooter className="text-center">
-                              {verif === of._id ? (
+                              {of.exist ? (
                                 <Row className="justify-content-center">
                                   <small className="text-gray">
                                     Demande deja exist
@@ -201,7 +192,8 @@ const Offres = ({ ...props }) => {
                                     className="btn-outline-danger"
                                     color="dark"
                                     onClick={() => {
-                                      setShowModal2(true), setCurrentObj(of);
+                                      setShowModal2(true),
+                                        setCurrentObj(of.offre);
                                     }}
                                   >
                                     Ajouter une demande

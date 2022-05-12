@@ -15,9 +15,11 @@ import setAuthToken from "../../helpers/authToken";
 import { toast } from "react-toastify";
 
 //Actions
-export const Fetch = () => axios.get(`${OffremsURL}/api/offre/allpublished`);
+//export const Fetch = () => axios.get(`${OffremsURL}/api/demande/filter/ofdem`);
 export const allOffres = () => (dispatch) => {
-  Fetch()
+  setAuthToken(localStorage.accessToken);
+  return axios
+    .get(`${OffremsURL}/api/demande/filter/ofdem`)
     .then((res) => {
       dispatch({
         type: GET_OFFRE_S,

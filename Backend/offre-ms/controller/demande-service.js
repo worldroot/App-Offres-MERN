@@ -223,38 +223,37 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
         if (role === "user") {
           //let offreModel = await Offre.findById(offre);
           const DemandeData = await Demande.find({ userId: response.data._id });
-          //res.json(DemandeData)
-          //console.log(DemandeData);
           const OffreData = await Offre.find({ status: "published" });
-          
+
           var list = [];
-          if (DemandeData.length === 0) {
-            res.status(200).json(OffreData);
-          } else {
-            for (let i = 0; i < OffreData.length; i++) {
-              const offre = OffreData[i];
-              for (let j = 0; j < DemandeData.length; j++) {
-                const demande = DemandeData[j];
-                if (demande.offre.toString() === offre._id.toString()) {
-                 /*  const exist = await Offre.aggregate([
-                    { $match: { titre: offre.titre } },
-                    {
-                      $addFields: {
-                        exist: true,
-                      },
-                    },
-                  ]);
-                  list.push(exist); */
-                  var objt = { offre, exist: true };
-                  list.push(objt);
-                } else {
-                  var obj = { offre, exist: false };
-                  list.push(obj);
-                }
+          for (let i = 0; i < OffreData.length; i++) {
+            const offre = OffreData[i];
+            if (DemandeData.length === 0) {
+              var dems = { offre, exist: false };
+              list.push(dems);
+            }
+            for (let j = 0; j < DemandeData.length; j++) {
+              const demande = DemandeData[j];
+              if (demande.offre.toString() === offre._id.toString()) {
+                var objt = { offre, exist: true };
+                list.push(objt);
+              } else {
+                var obj = { offre, exist: false };
+                list.push(obj);
               }
             }
-            res.status(200).json(list);
           }
+          res.status(200).json(list);
+          /*  const exist = await Offre.aggregate([
+                  { $match: { titre: offre.titre } },
+                  {
+                    $addFields: {
+                      exist: true,
+                    },
+                  },
+                ]);
+          list.push(exist);
+           */
         }
       });
   } catch (error) {
