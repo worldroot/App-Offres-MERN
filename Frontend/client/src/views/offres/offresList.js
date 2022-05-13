@@ -170,7 +170,7 @@ const Offres = ({ ...props }) => {
                                 className="btn-outline-dark"
                                 color="dark"
                                 onClick={() => {
-                                  setShowModal(true), setCurrentObj(of);
+                                  setShowModal(true), setCurrentObj(of.offre);
                                 }}
                                 size="sm"
                               >
