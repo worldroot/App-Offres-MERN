@@ -279,8 +279,9 @@ router.delete(
 // @access  Public
 router.get("/allpublished", async (req, res) => {
   try {
-    const data = await Offre.find({status: "published"});
-    res.status(200).json(data);
+    const offre = await Offre.find({ status: "published" });
+    res.status(200).json(offre);
+
   } catch (error) {
     console.log(error.message);
     res.status(500).json({
@@ -352,7 +353,7 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
             //cancel some attribute to displays :
             //{ $match: { _id:  } },
             { $project: { demandes: { __v: 0, updatedAt: 0 } } },
-            { $project: { icon: 0, __v: 0, slug: 0, image: 0 } }
+            { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
             /* pipeline: [
               {
                 $match: { userInfos: response.data.email },

@@ -222,38 +222,23 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
         var role = response.data.role;
         if (role === "user") {
           //let offreModel = await Offre.findById(offre);
-          const DemandeData = await Demande.find({ userId: response.data._id });
+          const DemandeData = await Demande.aggregate([
+            { $match: { userInfos: response.data.email } },
+          ]);
           const OffreData = await Offre.find({ status: "published" });
-
           var list = [];
-          for (let i = 0; i < OffreData.length; i++) {
-            const offre = OffreData[i];
+
+          OffreData.forEach(async (offre, index) => {
             if (DemandeData.length === 0) {
               var dems = { offre, exist: false };
               list.push(dems);
             }
-            for (let j = 0; j < DemandeData.length; j++) {
-              const demande = DemandeData[j];
-              if (demande.offre.toString() === offre._id.toString()) {
-                var objt = { offre, exist: true };
-                list.push(objt);
-              } else {
-                var obj = { offre, exist: false };
-                list.push(obj);
-              }
+            var a = await demandeParcour(DemandeData, { offre, exist: false });
+            list.push(a);
+            if (index === OffreData.length - 1) {
+              res.status(200).json(list);
             }
-          }
-          res.status(200).json(list);
-          /*  const exist = await Offre.aggregate([
-                  { $match: { titre: offre.titre } },
-                  {
-                    $addFields: {
-                      exist: true,
-                    },
-                  },
-                ]);
-          list.push(exist);
-           */
+          });
         }
       });
   } catch (error) {
@@ -264,5 +249,21 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
     });
   }
 });
+
+const demandeParcour = (DemandeData, offre) =>
+  new Promise((resolve, reject) => {
+    for (let i = 0; i < DemandeData.length; i++) {
+      const demande = DemandeData[i];
+      if (demande.offre.toString() === offre.offre._id.toString()) {
+        /*         console.log("=IF-TRUE=");
+        console.log(offre.offre._id);
+        console.log(demande.offre);
+        console.log("========="); */
+        var a = { offre: offre.offre, exist: true };
+        return resolve(a);
+      }
+    }
+    return resolve(offre);
+  });
 
 module.exports = router;
