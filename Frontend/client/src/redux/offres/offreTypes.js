@@ -1,12 +1,19 @@
+export const GET_OFFRE = "LOADING OFFRES"
 export const GET_OFFRE_S = "GET OFFRE SUCCESS"
-export const GET_OFFDEMS = "GET OFFRE & DEMANDES"
-export const GET_ONE = "GET ONE OFFRE "
 export const GET_OFFRE_F = "GET OFFRE FAILED"
+
+export const GET_OFFDEMS = "LOADING OFFRE & DEMANDES"
+export const GET_OFFDEMS_S = "GET OFFDEMS SUCC"
+export const GET_OFFDEMS_F = "GET OFFDEMS FAIL"
+
+export const GET_ONE = "GET ONE OFFRE "
+
 export const OFFRE_ERROR = "ERROR OFFRE"
 
-
+export const GET_DEMANDE = "LOADING DEMANDE"
 export const GET_DEMANDE_S = "GET DEMANDE BY USER"
 export const GET_DEMANDE_F = "GET DEMANDE FAIL"
+
 export const ADD_DEMANDE = "DEMANDE ADDED"
 export const DEL_DEMANDE = "DEMANDE DELETED"
 export const DEMANDE_ERROR = "ERROR DEMANDE"

@@ -7,6 +7,11 @@ import {
   OFFRE_ERROR,
   DEL_DEMANDE,
   ADD_DEMANDE,
+  GET_OFFRE,
+  GET_OFFDEMS_S,
+  GET_OFFDEMS_F,
+  GET_DEMANDE,
+  GET_DEMANDE_F,
 } from "./offreTypes";
 
 import axios from "axios";
@@ -18,18 +23,20 @@ import { toast } from "react-toastify";
 //export const Fetch = () => axios.get(`${OffremsURL}/api/demande/filter/ofdem`);
 export const allOffres = () => (dispatch) => {
   setAuthToken(localStorage.accessToken);
+  dispatch({type: GET_OFFDEMS})
   return axios
     .get(`${OffremsURL}/api/demande/filter/ofdem`)
     .then((res) => {
       dispatch({
-        type: GET_OFFRE_S,
+        type: GET_OFFDEMS_S,
         payload: res.data,
       });
     })
-    .catch((err) => console.log(err), GET_OFFRE_F);
+    .catch((err) => console.log(err), GET_OFFDEMS_F);
 };
 
 export const allPub = () => (dispatch) => {
+  dispatch({type: GET_OFFRE})
   return axios
     .get(`${OffremsURL}/api/offre/allpublished`)
     .then((res) => {
@@ -43,14 +50,15 @@ export const allPub = () => (dispatch) => {
 
 export const FetchOfDe = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
 export const allOffDems = () => (dispatch) => {
+  dispatch({type: GET_DEMANDE})
   FetchOfDe()
     .then((res) => {
       dispatch({
-        type: GET_OFFDEMS,
+        type: GET_DEMANDE_S,
         payload: res.data,
       });
     })
-    .catch((err) => console.log(err), GET_OFFRE_F);
+    .catch((err) => console.log(err), GET_DEMANDE_F);
 };
 
 export const One = (id) => axios.get(`${OffremsURL}/api/offre/` + id);

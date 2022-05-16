@@ -9,6 +9,10 @@ import {
   OFFRE_ERROR,
   GET_ONE,
   ADD_DEMANDE,
+  GET_OFFRE,
+  GET_OFFDEMS_S,
+  GET_DEMANDE,
+  GET_OFFDEMS_F,
 } from "./offreTypes";
 
 const intialState = {
@@ -21,12 +25,24 @@ const intialState = {
 
 export default function (state = intialState, action) {
   switch (action.type) {
+    case GET_OFFRE:
+      return { ...state, offres: [], loading: true };
     case GET_OFFRE_S:
-      return { ...state, offres: [...action.payload] };
+      return { ...state, offres: [...action.payload], loading: false };
+    case GET_OFFRE_F:
+
     case GET_OFFDEMS:
-      return { ...state, offdems: [...action.payload] };
+      return { ...state, offdems: [], loading: true };
+    case GET_OFFDEMS_S:
+      return { ...state, offdems: [...action.payload], loading: false };
+    case GET_OFFDEMS_F:
+
+    case GET_DEMANDE:
+      return { ...state, demandes: [], loading: true  };
     case GET_DEMANDE_S:
-      return { ...state, demandes: [...action.payload] };
+      return { ...state, demandes: [...action.payload], loading: false  };
+    case GET_DEMANDE_F:
+
     case ADD_DEMANDE:
       return { ...state, ...action.payload };
     case DEL_DEMANDE:
@@ -34,10 +50,9 @@ export default function (state = intialState, action) {
         ...state,
         demandes: state.demandes.filter((c) => c._id !== action.payload),
       };
+
     case DEMANDE_ERROR:
     case OFFRE_ERROR:
-    case GET_OFFRE_F:
-    case GET_DEMANDE_F:
 
     default:
       return state;
