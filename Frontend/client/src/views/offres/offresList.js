@@ -12,16 +12,12 @@ import {
   CardBody,
   CardFooter,
   Button,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
 } from "reactstrap";
 
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-import { allOffres, Demandesuser } from "redux/offres/offreActions";
+import { allOffres, Demandesuser, allPub } from "redux/offres/offreActions";
 import { connect } from "react-redux";
 import PaginationComponent from "components/Pagination.js";
 import { motion, AnimatePresence } from "framer-motion";
@@ -45,8 +41,12 @@ const modal = {
 
 const Offres = ({ ...props }) => {
   useEffect(() => {
-    props.All();
-    props.AllDem();
+    if (userExist) {
+      props.All();
+      props.AllDem();
+    } else {
+      props.AllPub();
+    }
   }, []);
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
@@ -55,27 +55,35 @@ const Offres = ({ ...props }) => {
   const [Search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const Data = props.List;
-  console.log("====================================");
-  console.log(Data);
   const offresPerPage = 3;
 
   const offresData = useMemo(() => {
-    let computed = Data;
-    if (Search) {
-      computed = computed.filter(
-        (i) =>
-          i.offre.titre.toLowerCase().includes(Search.toLowerCase()) ||
-          i.offre.category.includes(Search)
+    if (userExist) {
+      let computed = props.List;
+      if (Search) {
+        computed = computed.filter((i) =>
+          i.offre.titre.toLowerCase().includes(Search.toLowerCase())
+        );
+      }
+      setPageNumber(computed.length);
+      return computed.slice(
+        (currentPage - 1) * offresPerPage,
+        (currentPage - 1) * offresPerPage + offresPerPage
+      );
+    } else {
+      let computed = props.Listpub;
+      if (Search) {
+        computed = computed.filter((i) =>
+          i.titre.toLowerCase().includes(Search.toLowerCase())
+        );
+      }
+      setPageNumber(computed.length);
+      return computed.slice(
+        (currentPage - 1) * offresPerPage,
+        (currentPage - 1) * offresPerPage + offresPerPage
       );
     }
-    setPageNumber(computed.length);
-    return computed.slice(
-      (currentPage - 1) * offresPerPage,
-      (currentPage - 1) * offresPerPage + offresPerPage
-    );
-  }, [Data, currentPage, Search]);
+  }, [currentPage, Search]);
 
   return (
     <>
@@ -125,89 +133,136 @@ const Offres = ({ ...props }) => {
             </Row>
 
             <Row xs={1} md={3} className="g-4">
-              {offresData.map((of, index) => {
-                return (
-                  <Fragment key={index}>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1.5 }}
-                    >
-                      <Col>
-                        <Card className="m-1">
-                          <CardBody className="text-dark">
-                            <div className="text-center">
-                              <img
-                                className="img-fluid rounded avatar avatar-lg w-50 h-50"
-                                src={of.offre.image[0]}
-                                alt=""
-                              />
-                            </div>
-                            <Row>
-                              <h3>{of.offre.titre}</h3>
-                            </Row>
-                            <Row>
-                              <small>Categorie: {of.offre.category}</small>
-                            </Row>
-                            <Row>
-                              <small>
-                                Prix debut (dt): {of.offre.prixdebut}
-                              </small>
-                            </Row>
-                            <Row>
-                              <small className="text-danger">
-                                Date Debut:{" "}
-                                {of.offre.dateDebut.substring(0, 10)}
-                              </small>
-                            </Row>
-                            <Row>
-                              <small className="text-danger">
-                                Date Limite: {of.offre.dateFin.substring(0, 10)}
-                              </small>
-                            </Row>
-                            <Row>
-                              <Button
-                                className="btn-outline-dark"
-                                color="dark"
-                                onClick={() => {
-                                  setShowModal(true), setCurrentObj(of.offre);
-                                }}
-                                size="sm"
-                              >
-                                Details
-                              </Button>
-                            </Row>
-                          </CardBody>
-                          {userExist && (
-                            <CardFooter className="text-center">
-                              {of.exist ? (
-                                <Row className="justify-content-center">
-                                  <small className="text-gray">
-                                    Demande deja exist
-                                  </small>
-                                </Row>
-                              ) : (
-                                <Row className="justify-content-center">
-                                  <Button
-                                    className="btn-outline-danger"
-                                    color="dark"
-                                    onClick={() => {
-                                      setShowModal2(true),
-                                        setCurrentObj(of.offre);
-                                    }}
-                                  >
-                                    Ajouter une demande
-                                  </Button>
-                                </Row>
-                              )}
-                            </CardFooter>
-                          )}
-                        </Card>
-                      </Col>
-                    </motion.div>
-                  </Fragment>
-                );
-              })}
+              {!userExist &&
+                offresData.map((of, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5 }}
+                      >
+                        <Col>
+                          <Card className="m-1">
+                            <CardBody className="text-dark">
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid rounded avatar avatar-lg w-50 h-50"
+                                  src={of.image[0]}
+                                  alt=""
+                                />
+                              </div>
+                              <Row>
+                                <h3>{of.titre}</h3>
+                              </Row>
+                              <Row>
+                                <small>Categorie: {of.category}</small>
+                              </Row>
+                              <Row>
+                                <small>Prix debut (dt): {of.prixdebut}</small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Debut: {of.dateDebut.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Limite: {of.dateFin.substring(0, 10)}
+                                </small>
+                              </Row>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </motion.div>
+                    </Fragment>
+                  );
+                })}
+              {userExist &&
+                offresData.map((of, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5 }}
+                      >
+                        <Col>
+                          <Card className="m-1">
+                            <CardBody className="text-dark">
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid rounded avatar avatar-lg w-50 h-50"
+                                  src={of.offre.image[0]}
+                                  alt=""
+                                />
+                              </div>
+                              <Row>
+                                <h3>{of.offre.titre}</h3>
+                              </Row>
+                              <Row>
+                                <small>Categorie: {of.offre.category}</small>
+                              </Row>
+                              <Row>
+                                <small>
+                                  Prix debut (dt): {of.offre.prixdebut}
+                                </small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Debut:{" "}
+                                  {of.offre.dateDebut.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Limite:{" "}
+                                  {of.offre.dateFin.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <Button
+                                  className="btn-outline-dark"
+                                  color="dark"
+                                  onClick={() => {
+                                    setShowModal(true), setCurrentObj(of.offre);
+                                  }}
+                                  size="sm"
+                                >
+                                  Details
+                                </Button>
+                              </Row>
+                            </CardBody>
+                            {userExist && (
+                              <CardFooter className="text-center">
+                                {of.exist ? (
+                                  <Row className="justify-content-center">
+                                    <small className="text-gray">
+                                      Demande deja exist
+                                    </small>
+                                  </Row>
+                                ) : (
+                                  <Row className="justify-content-center">
+                                    <Button
+                                      className="btn-outline-danger"
+                                      color="dark"
+                                      onClick={() => {
+                                        setShowModal2(true),
+                                          setCurrentObj(of.offre);
+                                      }}
+                                    >
+                                      Ajouter une demande
+                                    </Button>
+                                  </Row>
+                                )}
+                              </CardFooter>
+                            )}
+                          </Card>
+                        </Col>
+                      </motion.div>
+                    </Fragment>
+                  );
+                })}
             </Row>
             <Row>
               <PaginationComponent
@@ -286,12 +341,14 @@ const Offres = ({ ...props }) => {
 
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
+  Listpub: state.offres.offres,
   DemList: state.offres.demandes,
   isAuth: state.auth.isAuthenticated,
 });
 
 const mapActionToProps = {
   All: allOffres,
+  AllPub: allPub,
   AllDem: Demandesuser,
 };
 

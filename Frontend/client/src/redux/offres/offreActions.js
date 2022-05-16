@@ -29,6 +29,18 @@ export const allOffres = () => (dispatch) => {
     .catch((err) => console.log(err), GET_OFFRE_F);
 };
 
+export const allPub = () => (dispatch) => {
+  return axios
+    .get(`${OffremsURL}/api/offre/allpublished`)
+    .then((res) => {
+      dispatch({
+        type: GET_OFFRE_S,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err), GET_OFFRE_F);
+};
+
 export const FetchOfDe = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
 export const allOffDems = () => (dispatch) => {
   FetchOfDe()
