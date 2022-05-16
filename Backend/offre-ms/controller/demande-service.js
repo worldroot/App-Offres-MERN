@@ -63,6 +63,7 @@ router.post(
                   const encrypted = ToCrypte(prix);
                   const newDem = new Demande({
                     offre,
+                    titreOffre: offreModel.titre,
                     prix: encrypted,
                     userInfos: responseUser.data.email,
                     userId: responseUser.data._id,
@@ -198,10 +199,7 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
       .then(async (response) => {
         var role = response.data.role;
         if (role === "user") {
-          //let offreModel = await Offre.findById(offre);
-          const data = await Demande.aggregate([
-            { $match: { userInfos: response.data.email } },
-          ]);
+          const data = await Demande.find({ userInfos: response.data.email });
           res.status(200).json(data);
         }
       });
@@ -232,9 +230,13 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
             if (DemandeData.length === 0) {
               var dems = { offre, exist: false };
               list.push(dems);
+            } else {
+              var a = await demandeParcour(DemandeData, {
+                offre,
+                exist: false,
+              });
+              list.push(a);
             }
-            var a = await demandeParcour(DemandeData, { offre, exist: false });
-            list.push(a);
             if (index === OffreData.length - 1) {
               res.status(200).json(list);
             }
@@ -255,7 +257,8 @@ const demandeParcour = (DemandeData, offre) =>
     for (let i = 0; i < DemandeData.length; i++) {
       const demande = DemandeData[i];
       if (demande.offre.toString() === offre.offre._id.toString()) {
-        /*         console.log("=IF-TRUE=");
+        /*         
+        console.log("=IF-TRUE=");
         console.log(offre.offre._id);
         console.log(demande.offre);
         console.log("========="); */
