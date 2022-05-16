@@ -52,7 +52,7 @@ const Offres = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
-  console.log();
+
   const offresData = useMemo(() => {
     let computed = props.Listpub;
     if (Search) {
@@ -165,7 +165,10 @@ const Offres = ({ ...props }) => {
                                   {of.dateFin.substring(0, 10)}
                                 </small>
                               </Row>
-                              <Row>
+                             
+                            </CardBody>
+                            <CardFooter className="border-0">
+                            <Row>
                                 <a
                                   className="card-link text-underline text-gray"
                                   style={{ cursor: "pointer" }}
@@ -176,7 +179,7 @@ const Offres = ({ ...props }) => {
                                   <small>Details</small>
                                 </a>
                               </Row>
-                            </CardBody>
+                            </CardFooter>
                             
                           </Card>
                         </Col>

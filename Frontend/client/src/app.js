@@ -20,6 +20,7 @@ import UserRoute from "routes/UserRoute";
 import { refreshJwt } from "redux/auth/authActions";
 import decode from "jwt-decode";
 import offresList from "views/offres/offresList";
+import offresListPub from "views/offres/offresList-pub";
 
 function App() {
   if (localStorage.accessToken) {
@@ -58,6 +59,7 @@ function App() {
           <Route exact path="/reset-pass/:token" component={ResetPass} />
           <Route path="/api/access/verify/:token" component={VerifMail} />
           <Route exact path="/offres" component={offresList} />
+          <Route exact path="/published" component={offresListPub} />
           <Redirect from="/" to="/404" />
         </Switch>
       </BrowserRouter>
