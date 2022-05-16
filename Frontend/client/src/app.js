@@ -47,7 +47,7 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <ToastContainer />
+        <ToastContainer position="bottom-right" />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/404" component={page404} />
