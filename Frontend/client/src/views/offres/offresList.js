@@ -33,7 +33,7 @@ const backdrop = {
 const modal = {
   hidden: { y: "100vh", opacity: 0 },
   visible: {
-    y: "0px",
+    y: "50px",
     opacity: 1,
     transition: { delay: 0.5 },
   },
@@ -85,6 +85,11 @@ const Offres = ({ ...props }) => {
     }
   }, [currentPage, Search]);
 
+  const sty = {
+    height: 450,
+    width: 350
+  };
+
   return (
     <>
       <div className="main-content">
@@ -132,52 +137,7 @@ const Offres = ({ ...props }) => {
               </Form>
             </Row>
 
-            <Row xs={1} md={3} className="g-4">
-              {!userExist &&
-                offresData.map((of, index) => {
-                  return (
-                    <Fragment key={index}>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1.5 }}
-                      >
-                        <Col>
-                          <Card className="m-1">
-                            <CardBody className="text-dark">
-                              <div className="text-center">
-                                <img
-                                  className="img-fluid rounded avatar avatar-lg w-50 h-50"
-                                  src={of.image[0]}
-                                  alt=""
-                                />
-                              </div>
-                              <Row>
-                                <h3>{of.titre}</h3>
-                              </Row>
-                              <Row>
-                                <small>Categorie: {of.category}</small>
-                              </Row>
-                              <Row>
-                                <small>Prix debut (dt): {of.prixdebut}</small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Debut: {of.dateDebut.substring(0, 10)}
-                                </small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Limite: {of.dateFin.substring(0, 10)}
-                                </small>
-                              </Row>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </motion.div>
-                    </Fragment>
-                  );
-                })}
+            <Row xs={1} md={3} className="g-4">       
               {userExist &&
                 offresData.map((of, index) => {
                   return (
@@ -188,7 +148,7 @@ const Offres = ({ ...props }) => {
                         transition={{ duration: 1.5 }}
                       >
                         <Col>
-                          <Card className="m-1">
+                          <Card className="m-1" style={sty}>
                             <CardBody className="text-dark">
                               <div className="text-center">
                                 <img
@@ -221,16 +181,12 @@ const Offres = ({ ...props }) => {
                                 </small>
                               </Row>
                               <Row>
-                                <Button
-                                  className="btn-outline-dark"
-                                  color="dark"
-                                  onClick={() => {
+                                <a className="card-link text-underline text-gray"
+                                style={{cursor:"pointer"}}
+                                onClick={() => {
                                     setShowModal(true), setCurrentObj(of.offre);
-                                  }}
-                                  size="sm"
-                                >
-                                  Details
-                                </Button>
+                                  }}><small>Details</small></a>
+                                
                               </Row>
                             </CardBody>
                             {userExist && (
