@@ -25,6 +25,7 @@ import "../../components/Loading/loading.css";
 import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
+import { Redirect } from "react-router-dom";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -52,9 +53,10 @@ const Offres = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
+  const data = props.Listpub
 
   const offresData = useMemo(() => {
-    let computed = props.Listpub;
+    let computed = data;
     if (Search) {
       computed = computed.filter((i) =>
         i.offre.titre.toLowerCase().includes(Search.toLowerCase())
@@ -65,12 +67,16 @@ const Offres = ({ ...props }) => {
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
-  }, [currentPage, Search]);
+  }, [data ,currentPage, Search]);
 
   const sty = {
     height: 400,
     width: 350,
   };
+
+  if (userExist) return <Redirect to='/offres'/>;
+
+  if(!offresData) return <p>Pas d'offre disponible</p>
 
   return (
     <>
@@ -118,7 +124,7 @@ const Offres = ({ ...props }) => {
                 </FormGroup>
               </Form>
             </Row>
-            {props.Listpub.length === 0 ? (
+            {!offresData ? (
               <div className="text-center">
                 <div id="loading"></div>
               </div>
@@ -136,7 +142,7 @@ const Offres = ({ ...props }) => {
                           <Card className="m-1" style={sty}>
                             <CardBody className="text-dark">
                               <div className="text-center">
-                                <img
+                              <img
                                   className="img-fluid rounded avatar avatar-lg w-50 h-50"
                                   src={of.image[0]}
                                   alt=""

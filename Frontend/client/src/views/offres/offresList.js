@@ -52,6 +52,7 @@ const Offres = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
+  const data = props.List;
   const offresData = useMemo(() => {
     let computed = props.List;
     if (Search) {
@@ -64,16 +65,20 @@ const Offres = ({ ...props }) => {
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
-  }, [currentPage, Search]);
+  }, [data, currentPage, Search]);
 
   const sty = {
     height: 450,
     width: 350,
   };
 
+  const img = {
+    height: 170,
+    width: 170,
+  };
+
   return (
     <>
-      
       <div className="main-content">
         <AuthNavbar />
         <div className=" py-xl-9">
@@ -118,7 +123,7 @@ const Offres = ({ ...props }) => {
                 </FormGroup>
               </Form>
             </Row>
-              {userExist && props.List.length === 0 ? (
+            {userExist && offresData.length === 0 ? (
               <div className="text-center">
                 <div id="loading"></div>
               </div>
@@ -130,14 +135,15 @@ const Offres = ({ ...props }) => {
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1.5 }}
+                        transition={{ duration: 1 }}
                       >
                         <Col>
                           <Card className="m-1" style={sty}>
                             <CardBody className="text-dark">
                               <div className="text-center">
                                 <img
-                                  className="img-fluid rounded avatar avatar-lg w-50 h-50"
+                                  style={img}
+                                  className="img-fluid rounded avatar avatar-lg "
                                   src={of.offre.image[0]}
                                   alt=""
                                 />
@@ -209,7 +215,6 @@ const Offres = ({ ...props }) => {
                 })}
               </Row>
             )}
-           
 
             <Row>
               <PaginationComponent

@@ -12,6 +12,7 @@ import {
 } from "./offreTypes";
 
 const intialState = {
+  loading: false,
   offdems: [],
   offres: [],
   demandes: [],

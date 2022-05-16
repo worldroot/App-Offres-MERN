@@ -77,6 +77,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                 <>
                   <NavItem>
                     <NavLink className="nav-link-icon" to="/offres" tag={Link}>
+                      <i className="fab fa-buffer text-red"></i>
                       <span className="nav-link-inner--text text-red">
                         Offres
                       </span>
@@ -118,8 +119,13 @@ const AuthNavbar = ({ logout, isAuth }) => {
               {!userExist && (
                 <>
                   <NavItem>
-                    <NavLink className="nav-link-icon" to="/published" tag={Link}>
-                      <span className="nav-link-inner--text text-red">
+                    <NavLink
+                      className="nav-link-icon"
+                      to="/published"
+                      tag={Link}
+                    >
+                      <i className="fab fa-buffer text-red"></i>
+                      <span className="nav-link-inner--text text-red ">
                         Offres
                       </span>
                     </NavLink>
