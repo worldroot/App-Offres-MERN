@@ -14,7 +14,7 @@ import {
   Button,
 } from "reactstrap";
 
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { allOffres, Demandesuser } from "redux/offres/offreActions";
@@ -44,6 +44,7 @@ const Offres = ({ ...props }) => {
   useEffect(() => {
     props.All();
   }, []);
+  const Load = useRef(props.isLoading);
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -53,6 +54,7 @@ const Offres = ({ ...props }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
   const data = props.List;
+
   const offresData = useMemo(() => {
     let computed = props.List;
     if (Search) {
@@ -87,143 +89,145 @@ const Offres = ({ ...props }) => {
             <Row className="justify-content-center">
               <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
-
-            <Row className="justify-content-center">
-              <Form className="navbar-search navbar-search-dark mb-2 mt-2">
-                <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative border-dark">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="fas fa-search text-dark" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input
-                      className="text-dark"
-                      type="text"
-                      onChange={(event) => {
-                        setSearch(event.target.value), setCurrentPage(1);
-                      }}
-                    />
-                  </InputGroup>
-                </FormGroup>
-              </Form>
-              <Form className="navbar-search navbar-search-dark mb-2 mt-2 mx-2">
-                <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative border-dark">
-                    <Input
-                      className="text-dark"
-                      type="select"
-                      onChange={(event) => {
-                        setSearch(event.target.value), setCurrentPage(1);
-                      }}
-                    >
-                      <option>Choisis une catégorie</option>
-                    </Input>
-                  </InputGroup>
-                </FormGroup>
-              </Form>
-            </Row>
-            {userExist && offresData.length === 0 ? (
+            {props.isLoading ? (
               <div className="text-center">
                 <div id="loading"></div>
               </div>
             ) : (
-              <Row xs={1} md={3} className="g-4">
-                {offresData.map((of, index) => {
-                  return (
-                    <Fragment key={index}>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1 }}
-                      >
-                        <Col>
-                          <Card className="m-1" style={sty}>
-                            <CardBody className="text-dark">
-                              <div className="text-center">
-                                <img
-                                  style={img}
-                                  className="img-fluid rounded avatar avatar-lg "
-                                  src={of.offre.image[0]}
-                                  alt=""
-                                />
-                              </div>
-                              <Row>
-                                <h3>{of.offre.titre}</h3>
-                              </Row>
-                              <Row>
-                                <small>Categorie: {of.offre.category}</small>
-                              </Row>
-                              <Row>
-                                <small>
-                                  Prix debut (dt): {of.offre.prixdebut}
-                                </small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Debut:{" "}
-                                  {of.offre.dateDebut.substring(0, 10)}
-                                </small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Limite:{" "}
-                                  {of.offre.dateFin.substring(0, 10)}
-                                </small>
-                              </Row>
-                              <Row>
-                                <a
-                                  className="card-link text-underline text-gray"
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    setShowModal(true), setCurrentObj(of.offre);
-                                  }}
-                                >
-                                  <small>Details</small>
-                                </a>
-                              </Row>
-                            </CardBody>
-                            {userExist && (
-                              <CardFooter className="text-center">
-                                {of.exist ? (
-                                  <Row className="justify-content-center">
-                                    <small className="text-gray">
-                                      Demande deja exist
-                                    </small>
-                                  </Row>
-                                ) : (
-                                  <Row className="justify-content-center">
-                                    <Button
-                                      className="btn-outline-danger"
-                                      color="dark"
-                                      onClick={() => {
-                                        setShowModal2(true),
-                                          setCurrentObj(of.offre);
-                                      }}
-                                    >
-                                      Ajouter une demande
-                                    </Button>
-                                  </Row>
-                                )}
-                              </CardFooter>
-                            )}
-                          </Card>
-                        </Col>
-                      </motion.div>
-                    </Fragment>
-                  );
-                })}
-              </Row>
-            )}
+              <>
+                <Row className="justify-content-center">
+                  <Form className="navbar-search navbar-search-dark mb-2 mt-2">
+                    <FormGroup className="mb-0">
+                      <InputGroup className="input-group-alternative border-dark">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="fas fa-search text-dark" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          className="text-dark"
+                          type="text"
+                          onChange={(event) => {
+                            setSearch(event.target.value), setCurrentPage(1);
+                          }}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                  </Form>
+                  <Form className="navbar-search navbar-search-dark mb-2 mt-2 mx-2">
+                    <FormGroup className="mb-0">
+                      <InputGroup className="input-group-alternative border-dark">
+                        <Input
+                          className="text-dark"
+                          type="select"
+                          onChange={(event) => {
+                            setSearch(event.target.value), setCurrentPage(1);
+                          }}
+                        >
+                          <option>Choisis une catégorie</option>
+                        </Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Form>
+                </Row>
 
-            <Row>
-              <PaginationComponent
-                total={pageNumber}
-                itemsPerPage={offresPerPage}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </Row>
+                <Row xs={1} md={3} className="g-4">
+                  {offresData.map((of, index) => {
+                    return (
+                      <Fragment key={index}>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 1 }}
+                        >
+                          <Col>
+                            <Card className="m-1" style={sty}>
+                              <CardBody className="text-dark">
+                                <div className="text-center">
+                                  <img
+                                    style={img}
+                                    className="img-fluid rounded avatar avatar-lg "
+                                    src={of.offre.image[0]}
+                                    alt=""
+                                  />
+                                </div>
+                                <Row>
+                                  <h3>{of.offre.titre}</h3>
+                                </Row>
+                                <Row>
+                                  <small>Categorie: {of.offre.category}</small>
+                                </Row>
+                                <Row>
+                                  <small>
+                                    Prix debut (dt): {of.offre.prixdebut}
+                                  </small>
+                                </Row>
+                                <Row>
+                                  <small className="text-danger">
+                                    Date Debut:{" "}
+                                    {of.offre.dateDebut.substring(0, 10)}
+                                  </small>
+                                </Row>
+                                <Row>
+                                  <small className="text-danger">
+                                    Date Limite:{" "}
+                                    {of.offre.dateFin.substring(0, 10)}
+                                  </small>
+                                </Row>
+                                <Row>
+                                  <a
+                                    className="card-link text-underline text-gray"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+                                      setShowModal(true),
+                                        setCurrentObj(of.offre);
+                                    }}
+                                  >
+                                    <small>Details</small>
+                                  </a>
+                                </Row>
+                              </CardBody>
+                              {userExist && (
+                                <CardFooter className="text-center">
+                                  {of.exist ? (
+                                    <Row className="justify-content-center">
+                                      <small className="text-gray">
+                                        Demande deja exist
+                                      </small>
+                                    </Row>
+                                  ) : (
+                                    <Row className="justify-content-center">
+                                      <Button
+                                        className="btn-outline-danger"
+                                        color="dark"
+                                        onClick={() => {
+                                          setShowModal2(true),
+                                            setCurrentObj(of.offre);
+                                        }}
+                                      >
+                                        Ajouter une demande
+                                      </Button>
+                                    </Row>
+                                  )}
+                                </CardFooter>
+                              )}
+                            </Card>
+                          </Col>
+                        </motion.div>
+                      </Fragment>
+                    );
+                  })}
+                </Row>
+                <Row>
+                  <PaginationComponent
+                    total={pageNumber}
+                    itemsPerPage={offresPerPage}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+                </Row>
+              </>
+            )}
 
             <AnimatePresence
               exitBeforeEnter
@@ -292,8 +296,9 @@ const Offres = ({ ...props }) => {
 };
 
 const mapStateToProps = (state) => ({
-  List: state.offres.offres,
+  List: state.offres.offdems,
   isAuth: state.auth.isAuthenticated,
+  isLoading: state.offres.loading,
 });
 
 const mapActionToProps = {

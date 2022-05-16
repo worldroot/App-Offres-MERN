@@ -23,34 +23,38 @@ import { toast } from "react-toastify";
 //export const Fetch = () => axios.get(`${OffremsURL}/api/demande/filter/ofdem`);
 export const allOffres = () => (dispatch) => {
   setAuthToken(localStorage.accessToken);
-  dispatch({type: GET_OFFDEMS})
-  return axios
-    .get(`${OffremsURL}/api/demande/filter/ofdem`)
-    .then((res) => {
-      dispatch({
-        type: GET_OFFDEMS_S,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err), GET_OFFDEMS_F);
+  dispatch({ type: GET_OFFDEMS });
+  setTimeout(() => {
+    return axios
+      .get(`${OffremsURL}/api/demande/filter/ofdem`)
+      .then((res) => {
+        dispatch({
+          type: GET_OFFDEMS_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFDEMS_F);
+  }, 500);
 };
 
 export const allPub = () => (dispatch) => {
-  dispatch({type: GET_OFFRE})
-  return axios
-    .get(`${OffremsURL}/api/offre/allpublished`)
-    .then((res) => {
-      dispatch({
-        type: GET_OFFRE_S,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err), GET_OFFRE_F);
+  dispatch({ type: GET_OFFRE });
+  setTimeout(() => {
+    return axios
+      .get(`${OffremsURL}/api/offre/allpublished`)
+      .then((res) => {
+        dispatch({
+          type: GET_OFFRE_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFRE_F);
+  }, 500);
 };
 
 export const FetchOfDe = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
 export const allOffDems = () => (dispatch) => {
-  dispatch({type: GET_DEMANDE})
+  dispatch({ type: GET_DEMANDE });
   FetchOfDe()
     .then((res) => {
       dispatch({

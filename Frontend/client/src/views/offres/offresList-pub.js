@@ -53,7 +53,7 @@ const Offres = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
-  const data = props.Listpub
+  const data = props.Listpub;
 
   const offresData = useMemo(() => {
     let computed = data;
@@ -67,16 +67,16 @@ const Offres = ({ ...props }) => {
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
-  }, [data ,currentPage, Search]);
+  }, [data, currentPage, Search]);
 
   const sty = {
     height: 400,
     width: 350,
   };
 
-  if (userExist) return <Redirect to='/offres'/>;
+  if (userExist) return <Redirect to="/offres" />;
 
-  if(!offresData) return <p>Pas d'offre disponible</p>
+  if (!offresData) return <p>Pas d'offre disponible</p>;
 
   return (
     <>
@@ -88,7 +88,12 @@ const Offres = ({ ...props }) => {
             <Row className="justify-content-center">
               <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
-
+           {props.isLoading ? (
+              <div className="text-center">
+                <div id="loading"></div>
+              </div>
+            ) : (
+              <>
             <Row className="justify-content-center">
               <Form className="navbar-search navbar-search-dark mb-2 mt-2">
                 <FormGroup className="mb-0">
@@ -124,86 +129,76 @@ const Offres = ({ ...props }) => {
                 </FormGroup>
               </Form>
             </Row>
-            {!offresData ? (
-              <div className="text-center">
-                <div id="loading"></div>
-              </div>
-            ) : (
-              <Row xs={1} md={3} className="g-4">
-                {offresData.map((of, index) => {
-                  return (
-                    <Fragment key={index}>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1.5 }}
-                      >
-                        <Col>
-                          <Card className="m-1" style={sty}>
-                            <CardBody className="text-dark">
-                              <div className="text-center">
-                              <img
-                                  className="img-fluid rounded avatar avatar-lg w-50 h-50"
-                                  src={of.image[0]}
-                                  alt=""
-                                />
-                              </div>
-                              <Row>
-                                <h3>{of.titre}</h3>
-                              </Row>
-                              <Row>
-                                <small>Categorie: {of.category}</small>
-                              </Row>
-                              <Row>
-                                <small>
-                                  Prix debut (dt): {of.prixdebut}
-                                </small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Debut:{" "}
-                                  {of.dateDebut.substring(0, 10)}
-                                </small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Limite:{" "}
-                                  {of.dateFin.substring(0, 10)}
-                                </small>
-                              </Row>
-                             
-                            </CardBody>
-                            <CardFooter className="border-0">
-                            <Row>
-                                <a
-                                  className="card-link text-underline text-gray"
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    setShowModal(true), setCurrentObj(of);
-                                  }}
-                                >
-                                  <small>Details</small>
-                                </a>
-                              </Row>
-                            </CardFooter>
-                            
-                          </Card>
-                        </Col>
-                      </motion.div>
-                    </Fragment>
-                  );
-                })}
-              </Row>
+ 
+                <Row xs={1} md={3} className="g-4">
+                  {offresData.map((of, index) => {
+                    return (
+                      <Fragment key={index}>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 1.5 }}
+                        >
+                          <Col>
+                            <Card className="m-1" style={sty}>
+                              <CardBody className="text-dark">
+                                <div className="text-center">
+                                  <img
+                                    className="img-fluid rounded avatar avatar-lg w-50 h-50"
+                                    src={of.image[0]}
+                                    alt=""
+                                  />
+                                </div>
+                                <Row>
+                                  <h3>{of.titre}</h3>
+                                </Row>
+                                <Row>
+                                  <small>Categorie: {of.category}</small>
+                                </Row>
+                                <Row>
+                                  <small>Prix debut (dt): {of.prixdebut}</small>
+                                </Row>
+                                <Row>
+                                  <small className="text-danger">
+                                    Date Debut: {of.dateDebut.substring(0, 10)}
+                                  </small>
+                                </Row>
+                                <Row>
+                                  <small className="text-danger">
+                                    Date Limite: {of.dateFin.substring(0, 10)}
+                                  </small>
+                                </Row>
+                              </CardBody>
+                              <CardFooter className="border-0">
+                                <Row>
+                                  <a
+                                    className="card-link text-underline text-gray"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+                                      setShowModal(true), setCurrentObj(of);
+                                    }}
+                                  >
+                                    <small>Details</small>
+                                  </a>
+                                </Row>
+                              </CardFooter>
+                            </Card>
+                          </Col>
+                        </motion.div>
+                      </Fragment>
+                    );
+                  })}
+                </Row>
+                <Row>
+                  <PaginationComponent
+                    total={pageNumber}
+                    itemsPerPage={offresPerPage}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+                </Row>
+              </>
             )}
-
-            <Row>
-              <PaginationComponent
-                total={pageNumber}
-                itemsPerPage={offresPerPage}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </Row>
 
             <AnimatePresence
               exitBeforeEnter
@@ -262,7 +257,6 @@ const Offres = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
-
           </Container>
         </div>
 
@@ -275,6 +269,7 @@ const Offres = ({ ...props }) => {
 const mapStateToProps = (state) => ({
   Listpub: state.offres.offres,
   isAuth: state.auth.isAuthenticated,
+  isLoading: state.offres.loading,
 });
 
 const mapActionToProps = {
