@@ -71,7 +71,7 @@ const DemandesByUser = ({ ...props }) => {
             >
               <thead className="text-gray">
                 <tr>
-                  <th scope="col">Offre</th>
+                  <th scope="col">Titre d'offre</th>
                   <th scope="col">Date de creation</th>
                   <th scope="col"></th>
                 </tr>
@@ -80,7 +80,7 @@ const DemandesByUser = ({ ...props }) => {
                 {props.List.map((dm, index) => {
                   return (
                     <tr key={index}>
-                      <td>{dm.offre}</td>
+                      <td>{dm.titreOffre}</td>
                       <td>{dm.createdAt.substring(0, 10)}</td>
                       <td>
                         <Button
