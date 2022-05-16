@@ -37,11 +37,7 @@ const UserSchema = new mongoose.Schema({
       banned: {
         type: Boolean,
         default: false
-      },
-      listOffres: {
-        type: Array,
       }
-
     },
     { timestamps: true }
 );
