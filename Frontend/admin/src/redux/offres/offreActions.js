@@ -10,6 +10,9 @@ import {
   GET_OFFDEMS,
   GET_OFFDEMS_S,
   GET_OFFDEMS_F,
+  DECRYPTING,
+  DECRYPTING_S,
+  DECRYPTING_F,
 } from "./offreTypes";
 
 import { OffremsURL } from "helpers/urls";
@@ -21,7 +24,7 @@ import axios from "axios";
 export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
 export const allOffres = () => (dispatch) => {
   dispatch({ type: GET_OFFRE });
-  setTimeout(() => {
+
     Fetch()
       .then((res) => {
         dispatch({
@@ -29,25 +32,8 @@ export const allOffres = () => (dispatch) => {
           payload: res.data,
         });
       })
-      .catch((err) => console.log(err), GET_OFFRE_F),
-      1000;
-  });
-};
-
-export const FetchOffDems = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
-export const allOffresDems = () => (dispatch) => {
-  dispatch({ type: GET_OFFDEMS });
-  setTimeout(() => {
-    FetchOffDems()
-      .then((res) => {
-        dispatch({
-          type: GET_OFFDEMS_S,
-          payload: res.data,
-        });
-      })
-      .catch((err) => console.log(err), GET_OFFDEMS_F),
-      1000;
-  });
+      .catch((err) => console.log(err), GET_OFFRE_F)
+      
 };
 
 export const createSousSuccess = (data) => {
@@ -93,8 +79,7 @@ export const addOffre = (offre) => {
   }
 };
 
-export const UPO = (id, updated) =>
-  axios.put(`${OffremsURL}/api/offre/` + id, updated);
+export const UPO = (id, updated) => axios.put(`${OffremsURL}/api/offre/` + id, updated);
 export const updateOffre = (id, data) => (dispatch) => {
   setAuthToken(localStorage.accessToken);
   UPO(id, data)
@@ -120,4 +105,35 @@ export const deleteOffre = async (id, dispatch) => {
     .catch(function (error) {
       OFFRE_ERROR, console.log(error), toast.warn(error.response.data.msg);
     });
+};
+
+export const FetchOffDems = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
+export const allOffresDems = () => (dispatch) => {
+  dispatch({ type: GET_OFFDEMS });
+  setTimeout(() => {
+    FetchOffDems()
+      .then((res) => {
+        dispatch({
+          type: GET_OFFDEMS_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFDEMS_F),
+      1000;
+  });
+};
+
+export const DecDems = (id, updated) => axios.put(`${OffremsURL}/api/offre/` + id, updated);
+export const decryptDemande = (id, data) => (dispatch) => {
+  dispatch({type: DECRYPTING})
+  setAuthToken(localStorage.accessToken);
+  DecDems(id, data)
+    .then((res) => {
+      dispatch({
+        type: DECRYPTING_S,
+        payload: res.data,
+      });
+      toast.success("Demande décryptée avec succés");
+    })
+    .catch((err) => toast.error(err.response.data.msg), DECRYPTING_F);
 };

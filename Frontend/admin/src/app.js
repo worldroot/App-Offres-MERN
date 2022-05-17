@@ -38,7 +38,7 @@ function App() {
   return (
     <Provider store={store}>
           <BrowserRouter>
-          <ToastContainer />
+          <ToastContainer position="bottom-right" />
             <Switch>
 
             <Route exact path="/" component={Login} />           

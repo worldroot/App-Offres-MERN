@@ -13,19 +13,16 @@ import {
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
 import React, { Fragment, useState, useEffect } from "react";
-import { getAllCat, getAllSousCat } from "redux/cat/catActions";
-import useForm from "helpers/useFormObj";
-import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
-import "react-alice-carousel/lib/scss/alice-carousel.scss";
+import { motion, AnimatePresence } from "framer-motion";
+import { allOffresDems } from "redux/offres/offreActions";
 import "components/modal.css";
 import "./offre.css";
-const initialFieldValues = {};
+import { connect, useDispatch } from "react-redux";
+import useForm from "helpers/useFormObj";
+const initialFieldValues = { key: "" };
 
-const DetailsOffre = ({ ...props }) => {
+const DetailsDemande = ({ ...props }) => {
   const backdrop = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
@@ -35,22 +32,26 @@ const DetailsOffre = ({ ...props }) => {
     visible: { opacity: 1 },
   };
 
+  const dispatch = useDispatch();
+  const [data, setData] = useState(initialFieldValues);
+  const { key } = data;
+  const handleChange = (name) => (event) => {
+    setData({ ...data, [name]: event.target.value });
+  };
+
   const Offre = props.currentObj;
-  var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
-  useForm(initialFieldValues, props.setCurrentObj);
-
-  useEffect(() => {
-    if (props.currentObj !== {}) {
-      setValues({ ...props.currentObj });
-      setErrors({});
-    }
-  }, [props.currentObj]);
-
   const userExist = localStorage.getItem("user");
 
   if (!userExist) {
     return <Redirect to="/login" />;
   }
+
+  const [showModal, setShowModal] = useState(false);
+
+  const reset = (e) => {
+    props.setShowDemande(false);
+    setData(initialFieldValues);
+  };
 
   return (
     <>
@@ -60,14 +61,14 @@ const DetailsOffre = ({ ...props }) => {
             <Button
               className="border-0 shadow-none bg-transparent"
               size="sm"
-              onClick={() => props.setShowDemande(false)}
+              onClick={() => reset()}
             >
               <i className="fas fa-times fa-2x text-danger"></i>
             </Button>
           </Col>
         </Row>
 
-        <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+        <CardHeader className="text-center border-0 ">
           <div className="d-flex justify-content-between"></div>
           <h3 className="mb-0">Details d'offre - {Offre.titre}</h3>
           <small>
@@ -106,10 +107,73 @@ const DetailsOffre = ({ ...props }) => {
                             <Button
                               className="btn btn-outline-success"
                               size="sm"
+                              onClick={() => {
+                                setShowModal(true);
+                              }}
                             >
                               Décrypter
                             </Button>
                           </td>
+                        </tr>
+                        <tr>
+                          <AnimatePresence
+                            exitBeforeEnter
+                            showModal={showModal}
+                            setShowModal={setShowModal}
+                          >
+                            {showModal && (
+                              <motion.div
+                                className="backdrop"
+                                variants={backdrop}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                              >
+                                <Col className=" fixed-top center" xl="6">
+                                  <motion.div className="" variants={modal}>
+                                    <Card>
+                                      <CardHeader className="text-center border-0">
+                                        <div className="d-flex justify-content-between"></div>
+                                        <h3 className="mb-0 text-dark">
+                                          Décryptage pour {dm.userInfos}
+                                        </h3>
+                                      </CardHeader>
+
+                                      <CardBody>
+                                        <Form role="form">
+                                          <Row className=" justify-content-center">
+                                            Copier le Key reçu par mail
+                                            <Input
+                                              type="textarea"
+                                              name="key"
+                                              value={key}
+                                              onChange={handleChange("key")}
+                                            />
+                                            <Button
+                                              className="my-4 btn-outline-success"
+                                              color="dark"
+                                              type="submit"
+                                            >
+                                              Confirmer
+                                            </Button>
+                                            <Button
+                                              className="my-4 btn-outline-danger"
+                                              onClick={() => {
+                                                setShowModal(false),
+                                                  setData(initialFieldValues);
+                                              }}
+                                            >
+                                              Annuler
+                                            </Button>
+                                          </Row>
+                                        </Form>
+                                      </CardBody>
+                                    </Card>
+                                  </motion.div>
+                                </Col>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </tr>
                       </Fragment>
                     );
@@ -124,4 +188,14 @@ const DetailsOffre = ({ ...props }) => {
   );
 };
 
-export default DetailsOffre;
+const mapStateToProps = (state) => ({
+  List: state.offres.offdems,
+  isLoading: state.offres.loading,
+  isAuth: state.auth.isAuthenticated,
+});
+
+const mapActionToProps = {
+  All: allOffresDems,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(DetailsDemande);

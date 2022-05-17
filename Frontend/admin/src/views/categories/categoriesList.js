@@ -256,8 +256,7 @@ const CategoriesList = ({ ...props }) => {
                                         className="btn btn-outline-danger"
                                         size="sm"
                                       >
-                                        {" "}
-                                        Supprimer{" "}
+                                        Supprimer
                                       </Button>
                                     </div>
                                   </td>
@@ -292,7 +291,6 @@ const CategoriesList = ({ ...props }) => {
                                 <tr key={cat._id}>
                                   <td>{cat.nomcat}</td>
                                   <td>
-                                    {" "}
                                     {cat.souscategorie.map(
                                       ({ sousnomcat, _id }) => {
                                         return (

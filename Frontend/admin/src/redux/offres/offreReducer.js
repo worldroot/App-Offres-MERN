@@ -10,6 +10,9 @@ import {
   GET_OFFDEMS,
   GET_OFFDEMS_S,
   GET_OFFDEMS_F,
+  DECRYPTING_S,
+  DECRYPTING,
+  DECRYPTING_F,
 } from "./offreTypes";
 
 const intialState = {
@@ -21,7 +24,6 @@ const intialState = {
 
 export default function (state = intialState, action) {
   switch (action.type) {
-
     case GET_OFFRE:
       return { ...state, offres: [], loading: true };
     case GET_OFFRE_S:
@@ -29,9 +31,9 @@ export default function (state = intialState, action) {
     case GET_OFFRE_F:
 
     case GET_OFFDEMS:
-        return {...state, offdems: [], loading: true}
+      return { ...state, offdems: [], loading: true };
     case GET_OFFDEMS_S:
-        return {...state, offdems: [...action.payload], loading: false}
+      return { ...state, offdems: [...action.payload], loading: false };
     case GET_OFFDEMS_F:
 
     case OFFRE_ADDED:
@@ -55,6 +57,17 @@ export default function (state = intialState, action) {
         ...state,
         offres: state.offres.filter((c) => c._id !== action.payload),
       };
+    case DECRYPTING:
+      return { ...state, loading: true };
+    case DECRYPTING_S:
+      return {
+        ...state,
+        offres: state.offres.map((c) =>
+          c._id === action.payload._id ? action.payload : c
+        ),
+        loading: false,
+      };
+    case DECRYPTING_F:
     case OFFRE_ERROR:
 
     default:

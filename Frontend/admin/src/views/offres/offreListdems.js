@@ -40,7 +40,7 @@ const backdrop = {
 const modal = {
   hidden: { y: "100vh", opacity: 0 },
   visible: {
-    y: "0px",
+    y: "50px",
     opacity: 1,
     transition: { delay: 0.5 },
   },
@@ -69,12 +69,8 @@ const OffreListDemandes = ({ ...props }) => {
   });
 
   const dispatch = useDispatch();
-  const [currentId, setCurrentId] = useState(0);
   const [currentObj, setCurrentObj] = useState({});
-
-  const [showModal, setShowModal] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
-  const [showModal4, setShowModal4] = useState(false);
   const [showDemande, setShowDemande] = useState(false);
 
   const onDLF = (id) => {
@@ -309,6 +305,7 @@ const OffreListDemandes = ({ ...props }) => {
                   </motion.div>
                 )}
               </AnimatePresence>
+
             </Row>
           </Container>
         )}
