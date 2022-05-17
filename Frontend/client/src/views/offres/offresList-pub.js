@@ -22,7 +22,6 @@ import React, { Fragment, useEffect, useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { allPub } from "redux/offres/offreActions";
@@ -263,7 +262,7 @@ const Offres = ({ ...props }) => {
                     );
                   })}
                 </Row>
-                <Row>
+                <Row className="justify-content-center">
                   <PaginationComponent
                     total={pageNumber}
                     itemsPerPage={offresPerPage}

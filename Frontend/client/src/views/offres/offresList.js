@@ -12,12 +12,19 @@ import {
   CardBody,
   CardFooter,
   Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
 } from "reactstrap";
 
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-import { allOffres, Demandesuser } from "redux/offres/offreActions";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import { allOffres } from "redux/offres/offreActions";
+import { getAllCat } from "redux/cat/catActions";
 import { connect } from "react-redux";
 import PaginationComponent from "components/Pagination.js";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,12 +49,14 @@ const modal = {
 const Offres = ({ ...props }) => {
   useEffect(() => {
     props.All();
+    props.AllCat();
   }, []);
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
   const [Search, setSearch] = useState("");
+  const [SearchCat, setSearchCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
@@ -60,12 +69,17 @@ const Offres = ({ ...props }) => {
         i.offre.titre.toLowerCase().includes(Search.toLowerCase())
       );
     }
+    if (SearchCat) {
+      computed = computed.filter((i) =>
+        i.offre.souscategory.toLowerCase().includes(SearchCat.toLowerCase())
+      );
+    }
     setPageNumber(computed.length);
     return computed.slice(
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
-  }, [data, currentPage, Search]);
+  }, [data, currentPage, Search, SearchCat]);
 
   const sty = {
     height: 450,
@@ -94,7 +108,7 @@ const Offres = ({ ...props }) => {
             ) : (
               <>
                 <Row className="justify-content-center">
-                  <Form className="navbar-search navbar-search-dark mb-2 mt-2">
+                  <Form className="mb-2 mt-2">
                     <FormGroup className="mb-0">
                       <InputGroup className="input-group-alternative border-dark">
                         <InputGroupAddon addonType="prepend">
@@ -112,18 +126,72 @@ const Offres = ({ ...props }) => {
                       </InputGroup>
                     </FormGroup>
                   </Form>
-                  <Form className="navbar-search navbar-search-dark mb-2 mt-2 mx-2">
+                  <Form className="mb-2 mt-2 mx-2">
                     <FormGroup className="mb-0">
-                      <InputGroup className="input-group-alternative border-dark">
-                        <Input
-                          className="text-dark"
-                          type="select"
-                          onChange={(event) => {
-                            setSearch(event.target.value), setCurrentPage(1);
-                          }}
+                      <InputGroup className="border-dark ">
+                        <UncontrolledDropdown
+                          className="border-dark rounded border-darker shadow-none"
+                          direction="right"
                         >
-                          <option>Choisis une catégorie</option>
-                        </Input>
+                          <DropdownToggle caret>
+                            <i className="mx-1 fas fa-sort text-dark" />
+                            Filtrage par catégorie
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            {props.ListCat.map((cat, index) => {
+                              return (
+                                <Fragment key={index}>
+                                  <Accordion className="shadow-none">
+                                    <AccordionSummary
+                                      aria-controls="panel1bh-content"
+                                      expandIcon={
+                                        <i className="fas fa-angle-down fa-1x"></i>
+                                      }
+                                    >
+                                      <span className="mb-0 text-sm font-weight-bold">
+                                        {cat.nomcat}
+                                      </span>
+                                      {/*  <span className="mx-2 text-sm font-weight-bold text-gray">
+                                        ({cat.souscategorie.length})
+                                      </span> */}
+                                    </AccordionSummary>
+                                    {cat.souscategorie.map(
+                                      ({ sousnomcat }, index2) => {
+                                        return (
+                                          <Fragment key={index2}>
+                                            <AccordionDetails>
+                                              <Row className="border-1 justify-content-between mx-3">
+                                                <Input
+                                                  className="text-dark"
+                                                  type="checkbox"
+                                                  value={sousnomcat}
+                                                  onChange={(event) => {
+                                                    if (event.target.checked) {
+                                                      setSearchCat(
+                                                        event.target.value
+                                                      );
+                                                      setCurrentPage(1);
+                                                    } else {
+                                                      setSearchCat("");
+                                                      setCurrentPage(1);
+                                                    }
+                                                  }}
+                                                />
+                                                <small className="text-gray">
+                                                  {sousnomcat}
+                                                </small>
+                                              </Row>
+                                            </AccordionDetails>
+                                          </Fragment>
+                                        );
+                                      }
+                                    )}
+                                  </Accordion>
+                                </Fragment>
+                              );
+                            })}
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
                       </InputGroup>
                     </FormGroup>
                   </Form>
@@ -153,7 +221,10 @@ const Offres = ({ ...props }) => {
                                   <h3>{of.offre.titre}</h3>
                                 </Row>
                                 <Row>
-                                  <small>Categorie: {of.offre.category}</small>
+                                  <small>
+                                    Categorie: {of.offre.category} -{" "}
+                                    {of.offre.souscategory}
+                                  </small>
                                 </Row>
                                 <Row>
                                   <small>
@@ -216,7 +287,7 @@ const Offres = ({ ...props }) => {
                     );
                   })}
                 </Row>
-                <Row>
+                <Row className="justify-content-center">
                   <PaginationComponent
                     total={pageNumber}
                     itemsPerPage={offresPerPage}
@@ -295,12 +366,14 @@ const Offres = ({ ...props }) => {
 
 const mapStateToProps = (state) => ({
   List: state.offres.offdems,
+  ListCat: state.category.categories,
   isAuth: state.auth.isAuthenticated,
   isLoading: state.offres.loading,
 });
 
 const mapActionToProps = {
   All: allOffres,
+  AllCat: getAllCat,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Offres);
