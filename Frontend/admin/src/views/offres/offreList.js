@@ -30,6 +30,7 @@ import UpdateOffre from "./updateOffre.js";
 import DetailsOffre from "./detailsOffre.js";
 import UpdateStatus from "./updateStatus.js";
 import decode from "jwt-decode";
+import "../../components/Loading/loading.css";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -127,357 +128,367 @@ const OffreList = ({ ...props }) => {
 
         <Header />
         {/* Page content */}
+        {props.isLoading ? (
+          <div className="text-center my-3">
+            <div id="loading"></div>
+          </div>
+        ) : (
+          <Container className="mt--7" fluid>
+            <Row>
+              <Col className="order-xl-1 mb-5 mb-xl-0">
+                <div className="col">
+                  <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto mb-2">
+                    <FormGroup className="mb-0">
+                      <InputGroup className="input-group-alternative">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="fas fa-search" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Rechercher par titre"
+                          type="text"
+                          onChange={(event) => {
+                            setSearch(event.target.value), setCurrentPage(1);
+                          }}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                  </Form>
+                  <Card className="shadow">
+                    <CardHeader className="border-0 ">
+                      <div className="d-flex justify-content-between">
+                        <h3 className="mb-0">List des offres</h3>
+                        {user.role === "admin" && (
+                          <>
+                            <Row>
+                              <Button
+                                size="sm"
+                                onClick={() => setShowModal(true)}
+                              >
+                                <i className="fas fa-plus"></i> Offre
+                              </Button>
+                            </Row>
+                          </>
+                        )}
+                      </div>
+                    </CardHeader>
 
-        <Container className="mt--7" fluid>
-          <Row>
-            <Col className="order-xl-1 mb-5 mb-xl-0">
-              <div className="col">
-                <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto mb-2">
-                  <FormGroup className="mb-0">
-                    <InputGroup className="input-group-alternative">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="fas fa-search" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder="Rechercher par titre"
-                        type="text"
-                        onChange={(event) => {
-                          setSearch(event.target.value), setCurrentPage(1);
-                        }}
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                </Form>
-                <Card className="shadow">
-                  <CardHeader className="border-0 ">
-                    <div className="d-flex justify-content-between">
-                      <h3 className="mb-0">List des offres</h3>
-                      {user.role === "admin" && (
-                        <>
-                          <Row>
-                            <Button
-                              size="sm"
-                              onClick={() => setShowModal(true)}
-                            >
-                              <i className="fas fa-plus"></i> Offre
-                            </Button>
-                          </Row>
-                        </>
-                      )}
-                    </div>
-                  </CardHeader>
+                    <Table
+                      className="align-items-center table-flush"
+                      responsive
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          <th scope="col">Titre</th>
+                          <th scope="col">Prix Dt</th>
+                          <th scope="col">Images</th>
+                          <th scope="col">Date début</th>
+                          <th scope="col">Date fin</th>
+                          <th scope="col">Catégories</th>
+                          <th scope="col">Status</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
 
-                  <Table className="align-items-center table-flush" responsive>
-                    <thead className="thead-light">
-                      <tr>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Prix Dt</th>
-                        <th scope="col">Images</th>
-                        <th scope="col">Date début</th>
-                        <th scope="col">Date fin</th>
-                        <th scope="col">Catégories</th>
-                        <th scope="col">Status</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {offresData.map((of, index) => {
-                        return (
-                          <Fragment key={index}>
-                            <tr key={of._id}>
-                              <td>{of.titre.substring(0, 12)}</td>
-                              <td>{of.prixdebut}</td>
-                              <td>( {of.image.length} )</td>
-                              <td>{of.dateDebut.substring(0, 10)}</td>
-                              <td>{of.dateFin.substring(0, 10)}</td>
-                              <td>
-                                {of.category} - {of.souscategory}
-                              </td>
-                              <td>
-                                {of.status === "pending" && (
-                                  <span className=" text-warning">Pending</span>
-                                )}
-                                {of.status === "archived" && (
-                                  <span className=" text-gray">Archived</span>
-                                )}
-                                {of.status === "published" && (
-                                  <span className=" text-success">
-                                    Published
-                                  </span>
-                                )}
-                                {of.status === "closed" && (
-                                  <span className=" text-dark">Closed</span>
-                                )}
-                              </td>
-                              {/* DateToCheck > Debut && DateToCheck < Fin */}
-                              {user.role === "admin" && (
+                      <tbody>
+                        {offresData.map((of, index) => {
+                          return (
+                            <Fragment key={index}>
+                              <tr key={of._id}>
+                                <td>{of.titre.substring(0, 12)}</td>
+                                <td>{of.prixdebut}</td>
+                                <td>( {of.image.length} )</td>
+                                <td>{of.dateDebut.substring(0, 10)}</td>
+                                <td>{of.dateFin.substring(0, 10)}</td>
                                 <td>
-                                  <Button
-                                    className="btn btn-outline-success"
-                                    size="sm"
-                                    onClick={() => {
-                                      setCurrentObj(of);
-                                      setShowModal3(true);
-                                    }}
-                                  >
-                                    <i className="fas fa-eye"></i>
-                                  </Button>
-                                  {DatetoCheck < new Date(of.dateDebut) && (
-                                    <Button
-                                      className="btn btn-outline-dark"
-                                      size="sm"
-                                      onClick={() => {
-                                        setCurrentObj(of);
-                                        setShowModal2(true);
-                                      }}
-                                    >
-                                      <i className="fas fa-pencil-alt"></i>
-                                    </Button>
+                                  {of.category} - {of.souscategory}
+                                </td>
+                                <td>
+                                  {of.status === "pending" && (
+                                    <span className=" text-warning">
+                                      Pending
+                                    </span>
                                   )}
-
                                   {of.status === "archived" && (
+                                    <span className=" text-gray">Archived</span>
+                                  )}
+                                  {of.status === "published" && (
+                                    <span className=" text-success">
+                                      Published
+                                    </span>
+                                  )}
+                                  {of.status === "closed" && (
+                                    <span className=" text-dark">Closed</span>
+                                  )}
+                                </td>
+                                {/* DateToCheck > Debut && DateToCheck < Fin */}
+                                {user.role === "admin" && (
+                                  <td>
                                     <Button
-                                      className="btn btn-outline-dark"
+                                      className="btn btn-outline-success"
                                       size="sm"
                                       onClick={() => {
                                         setCurrentObj(of);
-                                        setShowModal2(true);
+                                        setShowModal3(true);
                                       }}
                                     >
-                                      <i className="fas fa-pencil-alt"></i>
+                                      <i className="fas fa-eye"></i>
                                     </Button>
-                                  )}
-
-                                  {DatetoCheck < new Date(of.dateDebut) ? (
-                                    <>
+                                    {DatetoCheck < new Date(of.dateDebut) && (
                                       <Button
-                                        className="btn btn-outline-danger"
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal2(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
+                                    )}
+
+                                    {of.status === "archived" && (
+                                      <Button
+                                        className="btn btn-outline-dark"
+                                        size="sm"
+                                        onClick={() => {
+                                          setCurrentObj(of);
+                                          setShowModal2(true);
+                                        }}
+                                      >
+                                        <i className="fas fa-pencil-alt"></i>
+                                      </Button>
+                                    )}
+
+                                    {DatetoCheck < new Date(of.dateDebut) ? (
+                                      <>
+                                        <Button
+                                          className="btn btn-outline-danger"
+                                          size="sm"
+                                          onClick={() => onDLF(of._id)}
+                                        >
+                                          <i className="fas fa-trash"></i>
+                                        </Button>
+                                      </>
+                                    ) : (
+                                      <Button
+                                        disabled
+                                        className="btn btn-dark"
                                         size="sm"
                                         onClick={() => onDLF(of._id)}
                                       >
                                         <i className="fas fa-trash"></i>
                                       </Button>
-                                    </>
-                                  ) : (
+                                    )}
+                                  </td>
+                                )}
+                                {user.role === "super-admin" && (
+                                  <td>
                                     <Button
-                                      disabled
-                                      className="btn btn-dark"
+                                      className="btn btn-outline-success"
                                       size="sm"
-                                      onClick={() => onDLF(of._id)}
+                                      onClick={() => {
+                                        setCurrentObj(of);
+                                        setShowModal3(true);
+                                      }}
                                     >
-                                      <i className="fas fa-trash"></i>
+                                      <i className="fas fa-eye"></i>
                                     </Button>
-                                  )}
-                                </td>
-                              )}
-                              {user.role === "super-admin" && (
-                                <td>
-                                  <Button
-                                    className="btn btn-outline-success"
-                                    size="sm"
-                                    onClick={() => {
-                                      setCurrentObj(of);
-                                      setShowModal3(true);
-                                    }}
-                                  >
-                                    <i className="fas fa-eye"></i>
-                                  </Button>
 
-                                  {of.status === "archived" &&
-                                    DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal4(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
+                                    {of.status === "archived" &&
+                                      DatetoCheck > new Date(of.dateDebut) &&
+                                      DatetoCheck < new Date(of.dateFin) && (
+                                        <Button
+                                          className="btn btn-outline-dark"
+                                          size="sm"
+                                          onClick={() => {
+                                            setCurrentObj(of);
+                                            setShowModal4(true);
+                                          }}
+                                        >
+                                          <i className="fas fa-pencil-alt"></i>
+                                        </Button>
+                                      )}
+
+                                    {of.status === "pending" &&
+                                      DatetoCheck > new Date(of.dateDebut) &&
+                                      DatetoCheck < new Date(of.dateFin) && (
+                                        <Button
+                                          className="btn btn-outline-dark"
+                                          size="sm"
+                                          onClick={() => {
+                                            setCurrentObj(of);
+                                            setShowModal4(true);
+                                          }}
+                                        >
+                                          <i className="fas fa-pencil-alt"></i>
+                                        </Button>
+                                      )}
+
+                                    {DatetoCheck < new Date(of.dateDebut) && (
+                                      <>
+                                        <Button
+                                          className="btn btn-outline-danger"
+                                          size="sm"
+                                          onClick={() => onDLF(of._id)}
+                                        >
+                                          <i className="fas fa-trash"></i>
+                                        </Button>
+                                      </>
                                     )}
 
-                                  {of.status === "pending" &&
-                                    DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal4(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
+                                    {of.status !== "archived" &&
+                                      DatetoCheck > new Date(of.dateDebut) &&
+                                      DatetoCheck < new Date(of.dateFin) && (
+                                        <Button
+                                          className="btn btn-outline-dark"
+                                          size="sm"
+                                          onClick={() => onDLF(of._id)}
+                                        >
+                                          <i className="fas fa-archive "></i>
+                                        </Button>
+                                      )}
+                                  </td>
+                                )}
+                              </tr>
+                            </Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </Card>
+                  <PaginationComponent
+                    total={pageNumber}
+                    itemsPerPage={offresPerPage}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+                </div>
+              </Col>
 
-                                  {DatetoCheck < new Date(of.dateDebut) && (
-                                    <>
-                                      <Button
-                                        className="btn btn-outline-danger"
-                                        size="sm"
-                                        onClick={() => onDLF(of._id)}
-                                      >
-                                        <i className="fas fa-trash"></i>
-                                      </Button>
-                                    </>
-                                  )}
+              {/* Add Offre Modal-1 */}
+              <AnimatePresence
+                exitBeforeEnter
+                showModal={showModal}
+                setShowModal={setShowModal}
+              >
+                {showModal && (
+                  <motion.div
+                    className="backdrop"
+                    variants={backdrop}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                  >
+                    <Col className=" fixed-top center" xl="5">
+                      <motion.div className="" variants={modal}>
+                        <Offre
+                          {...{
+                            currentId,
+                            setCurrentId,
+                            showModal,
+                            setShowModal,
+                          }}
+                        />
+                      </motion.div>
+                    </Col>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                                  {of.status !== "archived" &&
-                                    DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => onDLF(of._id)}
-                                      >
-                                        <i className="fas fa-archive "></i>
-                                      </Button>
-                                    )}
-                                </td>
-                              )}
-                            </tr>
-                          </Fragment>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                </Card>
-                <PaginationComponent
-                  total={pageNumber}
-                  itemsPerPage={offresPerPage}
-                  currentPage={currentPage}
-                  onPageChange={(page) => setCurrentPage(page)}
-                />
-              </div>
-            </Col>
+              {/* Update Offre  Modal-2 */}
+              <AnimatePresence
+                exitBeforeEnter
+                showModal={showModal2}
+                setShowModal={setShowModal2}
+              >
+                {showModal2 && (
+                  <motion.div
+                    className="backdrop"
+                    variants={backdrop}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                  >
+                    <Col className=" fixed-top center" xl="5">
+                      <motion.div className="" variants={modal}>
+                        <UpdateOffre
+                          {...{
+                            currentObj,
+                            setCurrentObj,
+                            showModal2,
+                            setShowModal2,
+                          }}
+                        />
+                      </motion.div>
+                    </Col>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            {/* Add Offre Modal-1 */}
-            <AnimatePresence
-              exitBeforeEnter
-              showModal={showModal}
-              setShowModal={setShowModal}
-            >
-              {showModal && (
-                <motion.div
-                  className="backdrop"
-                  variants={backdrop}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  <Col className=" fixed-top center" xl="5">
-                    <motion.div className="" variants={modal}>
-                      <Offre
-                        {...{
-                          currentId,
-                          setCurrentId,
-                          showModal,
-                          setShowModal,
-                        }}
-                      />
-                    </motion.div>
-                  </Col>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              {/* Details Offre Modal-3 */}
+              <AnimatePresence
+                exitBeforeEnter
+                showModal={showModal3}
+                setShowModal={setShowModal3}
+              >
+                {showModal3 && (
+                  <motion.div
+                    className="backdrop"
+                    variants={backdrop}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                  >
+                    <Col className=" fixed-top center" xl="5">
+                      <motion.div className="" variants={modal}>
+                        <DetailsOffre
+                          {...{
+                            currentObj,
+                            setCurrentObj,
+                            showModal3,
+                            setShowModal3,
+                          }}
+                        />
+                      </motion.div>
+                    </Col>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            {/* Update Offre  Modal-2 */}
-            <AnimatePresence
-              exitBeforeEnter
-              showModal={showModal2}
-              setShowModal={setShowModal2}
-            >
-              {showModal2 && (
-                <motion.div
-                  className="backdrop"
-                  variants={backdrop}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  <Col className=" fixed-top center" xl="5">
-                    <motion.div className="" variants={modal}>
-                      <UpdateOffre
-                        {...{
-                          currentObj,
-                          setCurrentObj,
-                          showModal2,
-                          setShowModal2,
-                        }}
-                      />
-                    </motion.div>
-                  </Col>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Details Offre Modal-3 */}
-            <AnimatePresence
-              exitBeforeEnter
-              showModal={showModal3}
-              setShowModal={setShowModal3}
-            >
-              {showModal3 && (
-                <motion.div
-                  className="backdrop"
-                  variants={backdrop}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  <Col className=" fixed-top center" xl="5">
-                    <motion.div className="" variants={modal}>
-                      <DetailsOffre
-                        {...{
-                          currentObj,
-                          setCurrentObj,
-                          showModal3,
-                          setShowModal3,
-                        }}
-                      />
-                    </motion.div>
-                  </Col>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Update Status Modal-4 */}
-            <AnimatePresence
-              exitBeforeEnter
-              showModal={showModal4}
-              setShowModal={setShowModal4}
-            >
-              {showModal4 && (
-                <motion.div
-                  className="backdrop"
-                  variants={backdrop}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  <Col className=" fixed-top center" xl="5">
-                    <motion.div className="" variants={modal}>
-                      <UpdateStatus
-                        {...{
-                          currentObj,
-                          setCurrentObj,
-                          showModal4,
-                          setShowModal4,
-                        }}
-                      />
-                    </motion.div>
-                  </Col>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </Row>
-        </Container>
+              {/* Update Status Modal-4 */}
+              <AnimatePresence
+                exitBeforeEnter
+                showModal={showModal4}
+                setShowModal={setShowModal4}
+              >
+                {showModal4 && (
+                  <motion.div
+                    className="backdrop"
+                    variants={backdrop}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                  >
+                    <Col className=" fixed-top center" xl="5">
+                      <motion.div className="" variants={modal}>
+                        <UpdateStatus
+                          {...{
+                            currentObj,
+                            setCurrentObj,
+                            showModal4,
+                            setShowModal4,
+                          }}
+                        />
+                      </motion.div>
+                    </Col>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Row>
+          </Container>
+        )}
       </div>
     </>
   );
@@ -485,6 +496,7 @@ const OffreList = ({ ...props }) => {
 
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
+  isLoading: state.offres.loading,
   isAuth: state.auth.isAuthenticated,
 });
 

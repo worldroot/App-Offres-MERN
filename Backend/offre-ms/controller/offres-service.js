@@ -320,7 +320,7 @@ router.get("/alldemandes", async (req, res) => {
       },
       //cancel some attribute to displays :
       { $project: { demandes: { __v: 0, updatedAt: 0 } } },
-      { $project: { icon: 0, __v: 0, slug: 0, image: 0 } },
+      { $project: { icon: 0, __v: 0, slug: 0 } },
     ]);
     res.status(200).json(data);
   } catch (error) {

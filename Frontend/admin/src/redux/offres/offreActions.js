@@ -6,6 +6,7 @@ import {
   OFFRE_UPDATED,
   OFFRE_DELETED,
   OFFRE_ERROR,
+  GET_OFFRE,
 } from "./offreTypes";
 
 import { OffremsURL } from "helpers/urls";
@@ -16,6 +17,7 @@ import axios from "axios";
 //Actions
 export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
 export const allOffres = () => (dispatch) => {
+  dispatch({type: GET_OFFRE})
   Fetch()
     .then((res) => {
       dispatch({
