@@ -12,12 +12,21 @@ import {
   CardBody,
   CardFooter,
   Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 
 import React, { Fragment, useEffect, useMemo, useState } from "react";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { allPub } from "redux/offres/offreActions";
+import { getAllCat } from "redux/cat/catActions";
 import { connect } from "react-redux";
 import PaginationComponent from "components/Pagination.js";
 import { motion, AnimatePresence } from "framer-motion";
@@ -43,6 +52,7 @@ const modal = {
 const Offres = ({ ...props }) => {
   useEffect(() => {
     props.AllPub();
+    props.AllCat();
   }, []);
 
   const userExist = localStorage.getItem("user");
@@ -50,6 +60,7 @@ const Offres = ({ ...props }) => {
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
   const [Search, setSearch] = useState("");
+  const [SearchCat, setSearchCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 3;
@@ -59,7 +70,12 @@ const Offres = ({ ...props }) => {
     let computed = data;
     if (Search) {
       computed = computed.filter((i) =>
-        i.offre.titre.toLowerCase().includes(Search.toLowerCase())
+        i.titre.toLowerCase().includes(Search.toLowerCase())
+      );
+    }
+    if (SearchCat) {
+      computed = computed.filter((i) =>
+        i.souscategory.toLowerCase().includes(SearchCat.toLowerCase())
       );
     }
     setPageNumber(computed.length);
@@ -67,7 +83,7 @@ const Offres = ({ ...props }) => {
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
-  }, [data, currentPage, Search]);
+  }, [data, currentPage, Search, SearchCat]);
 
   const sty = {
     height: 400,
@@ -88,48 +104,101 @@ const Offres = ({ ...props }) => {
             <Row className="justify-content-center">
               <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
-           {props.isLoading ? (
+            {props.isLoading ? (
               <div className="text-center">
                 <div id="loading"></div>
               </div>
             ) : (
               <>
-            <Row className="justify-content-center">
-              <Form className="navbar-search navbar-search-dark mb-2 mt-2">
-                <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative border-dark">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="fas fa-search text-dark" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input
-                      className="text-dark"
-                      type="text"
-                      onChange={(event) => {
-                        setSearch(event.target.value), setCurrentPage(1);
-                      }}
-                    />
-                  </InputGroup>
-                </FormGroup>
-              </Form>
-              <Form className="navbar-search navbar-search-dark mb-2 mt-2 mx-2">
-                <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative border-dark">
-                    <Input
-                      className="text-dark"
-                      type="select"
-                      onChange={(event) => {
-                        setSearch(event.target.value), setCurrentPage(1);
-                      }}
-                    >
-                      <option>Choisis une catégorie</option>
-                    </Input>
-                  </InputGroup>
-                </FormGroup>
-              </Form>
-            </Row>
- 
+                <Row className="justify-content-center">
+                  <Form className="mb-2 mt-2">
+                    <FormGroup className="mb-0">
+                      <InputGroup className="input-group-alternative border-dark">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="fas fa-search text-dark" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          className="text-dark"
+                          type="text"
+                          onChange={(event) => {
+                            setSearch(event.target.value), setCurrentPage(1);
+                          }}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                  </Form>
+                  <Form className="mb-2 mt-2 mx-2">
+                    <FormGroup className="mb-0">
+                      <FormGroup className="border-dark">
+                        <UncontrolledDropdown
+                          className=" border-dark rounded border-darker shadow-none"
+                          direction="right"
+                        >
+                          <DropdownToggle caret>
+                            Choisis une catégorie
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            {props.ListCat.map((cat, index) => {
+                              return (
+                                <Fragment key={index}>
+                                  <Accordion className="shadow-none">
+                                    <AccordionSummary
+                                      aria-controls="panel1bh-content"
+                                      expandIcon={
+                                        <i className="fas fa-angle-down fa-1x"></i>
+                                      }
+                                    >
+                                      <span className="mb-0 text-sm font-weight-bold">
+                                        {cat.nomcat}
+                                      </span>
+                                      {/*  <span className="mx-2 text-sm font-weight-bold text-gray">
+                                        ({cat.souscategorie.length})
+                                      </span> */}
+                                    </AccordionSummary>
+                                    {cat.souscategorie.map(
+                                      ({ sousnomcat }, index2) => {
+                                        return (
+                                          <Fragment key={index2}>
+                                            <AccordionDetails>
+                                              <Row className="border-1 justify-content-between mx-3">
+                                                <Input
+                                                  className="text-dark"
+                                                  type="checkbox"
+                                                  value={sousnomcat}
+                                                  onChange={(event) => {
+                                                    if (event.target.checked) {
+                                                      setSearchCat(
+                                                        event.target.value
+                                                      );
+                                                      setCurrentPage(1);
+                                                    } else {
+                                                      setSearchCat("");
+                                                      setCurrentPage(1);
+                                                    }
+                                                  }}
+                                                />
+                                                <span className="text-gray">
+                                                  {sousnomcat}
+                                                </span>
+                                              </Row>
+                                            </AccordionDetails>
+                                          </Fragment>
+                                        );
+                                      }
+                                    )}
+                                  </Accordion>
+                                </Fragment>
+                              );
+                            })}
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
+                      </FormGroup>
+                    </FormGroup>
+                  </Form>
+                </Row>
+
                 <Row xs={1} md={3} className="g-4">
                   {offresData.map((of, index) => {
                     return (
@@ -153,7 +222,9 @@ const Offres = ({ ...props }) => {
                                   <h3>{of.titre}</h3>
                                 </Row>
                                 <Row>
-                                  <small>Categorie: {of.category}</small>
+                                  <small>
+                                    Categorie: {of.category} - {of.souscategory}
+                                  </small>
                                 </Row>
                                 <Row>
                                   <small>Prix debut (dt): {of.prixdebut}</small>
@@ -268,12 +339,14 @@ const Offres = ({ ...props }) => {
 
 const mapStateToProps = (state) => ({
   Listpub: state.offres.offres,
+  ListCat: state.category.categories,
   isAuth: state.auth.isAuthenticated,
   isLoading: state.offres.loading,
 });
 
 const mapActionToProps = {
   AllPub: allPub,
+  AllCat: getAllCat,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Offres);
