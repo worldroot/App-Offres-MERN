@@ -54,12 +54,13 @@ function App() {
           <Route exact path="/home" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <UserRoute exact path="/profile" component={UserDetails} />
           <Route exact path="/forgot-pass" component={ForgotPass} />
           <Route exact path="/reset-pass/:token" component={ResetPass} />
           <Route path="/api/access/verify/:token" component={VerifMail} />
-          <Route exact path="/offres" component={offresList} />
           <Route exact path="/published" component={offresListPub} />
+
+          <UserRoute exact path="/offres" component={offresList} />
+          <UserRoute exact path="/profile" component={UserDetails} />
           <Redirect from="/" to="/404" />
         </Switch>
       </BrowserRouter>
