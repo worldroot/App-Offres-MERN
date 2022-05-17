@@ -25,7 +25,6 @@ import "../../components/Loading/loading.css";
 import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
-import OffresListPub from "./offresList-pub";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -44,7 +43,6 @@ const Offres = ({ ...props }) => {
   useEffect(() => {
     props.All();
   }, []);
-  const Load = useRef(props.isLoading);
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
