@@ -20,28 +20,34 @@ import axios from "axios";
 //Actions
 export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
 export const allOffres = () => (dispatch) => {
-  dispatch({type: GET_OFFRE})
-  Fetch()
-    .then((res) => {
-      dispatch({
-        type: GET_OFFRE_S,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err), GET_OFFRE_F);
+  dispatch({ type: GET_OFFRE });
+  setTimeout(() => {
+    Fetch()
+      .then((res) => {
+        dispatch({
+          type: GET_OFFRE_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFRE_F),
+      1000;
+  });
 };
 
 export const FetchOffDems = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
 export const allOffresDems = () => (dispatch) => {
-  dispatch({type: GET_OFFDEMS})
-  FetchOffDems()
-    .then((res) => {
-      dispatch({
-        type: GET_OFFDEMS_S,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err), GET_OFFDEMS_F);
+  dispatch({ type: GET_OFFDEMS });
+  setTimeout(() => {
+    FetchOffDems()
+      .then((res) => {
+        dispatch({
+          type: GET_OFFDEMS_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFDEMS_F),
+      1000;
+  });
 };
 
 export const createSousSuccess = (data) => {
@@ -111,9 +117,7 @@ export const deleteOffre = async (id, dispatch) => {
         payload: id,
       });
     })
-    .catch(function(error) {
-      OFFRE_ERROR,
-      console.log(error),
-      toast.warn(error.response.data.msg) 
-    })
+    .catch(function (error) {
+      OFFRE_ERROR, console.log(error), toast.warn(error.response.data.msg);
+    });
 };

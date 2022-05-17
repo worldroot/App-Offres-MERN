@@ -23,17 +23,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "components/modal.css";
 import "./offre.css";
-const initialFieldValues = {
-  titre: "",
-  description: "",
-  image: [],
-  dateDebut: "",
-  dateFin: "",
-  souscategory: "",
-  category: "",
-  prixdebut: "",
-  demandes: [],
-};
+const initialFieldValues = {};
 
 const DetailsOffre = ({ ...props }) => {
   const backdrop = {
@@ -45,6 +35,10 @@ const DetailsOffre = ({ ...props }) => {
     visible: { opacity: 1 },
   };
 
+  const Offre = props.currentObj;
+  var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+  useForm(initialFieldValues, props.setCurrentObj);
+
   useEffect(() => {
     if (props.currentObj !== {}) {
       setValues({ ...props.currentObj });
@@ -52,22 +46,7 @@ const DetailsOffre = ({ ...props }) => {
     }
   }, [props.currentObj]);
 
-  var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
-    useForm(initialFieldValues, props.setCurrentObj);
-
-  useEffect(() => {
-    props.All();
-    props.AllSous();
-  }, []);
-
   const userExist = localStorage.getItem("user");
-  const [showImg, setShowImg] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-
-  const ImgStyle = {
-    width: "200px",
-    height: "200px",
-  };
 
   if (!userExist) {
     return <Redirect to="/login" />;
@@ -90,8 +69,10 @@ const DetailsOffre = ({ ...props }) => {
 
         <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
           <div className="d-flex justify-content-between"></div>
-          <h3 className="mb-0">Details d'offre - {values.titre}</h3>
-          <small>Prix à partir de  <p className="text-red">{values.prixdebut} dt</p> </small>
+          <h3 className="mb-0">Details d'offre - {Offre.titre}</h3>
+          <small>
+            Prix à partir de <p className="text-red">{Offre.prixdebut} dt</p>{" "}
+          </small>
         </CardHeader>
 
         <CardBody className=" justify-content-center">
@@ -108,7 +89,7 @@ const DetailsOffre = ({ ...props }) => {
                 </thead>
 
                 <tbody>
-                  {props.currentObj.demandes.map((dm, index) => {
+                  {Offre.demandes.map((dm, index) => {
                     return (
                       <Fragment key={index}>
                         <tr key={dm._id}>
@@ -143,15 +124,4 @@ const DetailsOffre = ({ ...props }) => {
   );
 };
 
-const mapActionToProps = {
-  All: getAllCat,
-  AllSous: getAllSousCat,
-};
-
-const mapStateToProps = (state) => ({
-  List: state.offres.offres,
-  ListC: state.categories.categories,
-  ListSC: state.categories.souscategories,
-});
-
-export default connect(mapStateToProps, mapActionToProps)(DetailsOffre);
+export default DetailsOffre;

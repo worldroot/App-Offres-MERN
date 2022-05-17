@@ -159,18 +159,6 @@ const OffreListDemandes = ({ ...props }) => {
                     <CardHeader className="border-0 ">
                       <div className="d-flex justify-content-between">
                         <h3 className="mb-0">List des demandes</h3>
-                        {user.role === "admin" && (
-                          <>
-                            <Row>
-                              <Button
-                                size="sm"
-                                onClick={() => setShowModal(true)}
-                              >
-                                <i className="fas fa-plus"></i> Offre
-                              </Button>
-                            </Row>
-                          </>
-                        )}
                       </div>
                     </CardHeader>
 
