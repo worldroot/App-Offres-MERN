@@ -7,6 +7,9 @@ import {
   OFFRE_DELETED,
   OFFRE_ERROR,
   GET_OFFRE,
+  GET_OFFDEMS,
+  GET_OFFDEMS_S,
+  GET_OFFDEMS_F,
 } from "./offreTypes";
 
 import { OffremsURL } from "helpers/urls";
@@ -26,6 +29,19 @@ export const allOffres = () => (dispatch) => {
       });
     })
     .catch((err) => console.log(err), GET_OFFRE_F);
+};
+
+export const FetchOffDems = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
+export const allOffresDems = () => (dispatch) => {
+  dispatch({type: GET_OFFDEMS})
+  FetchOffDems()
+    .then((res) => {
+      dispatch({
+        type: GET_OFFDEMS_S,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err), GET_OFFDEMS_F);
 };
 
 export const createSousSuccess = (data) => {

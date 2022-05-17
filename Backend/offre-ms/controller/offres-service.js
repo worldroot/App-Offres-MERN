@@ -310,6 +310,7 @@ router.get("/alldemandes", async (req, res) => {
   try {
     let data = await Offre.aggregate([
       //lookup for list :
+      { $match: { status: "closed" } },
       {
         $lookup: {
           from: "demandes",
@@ -340,6 +341,7 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
         var role = response.data.role;
         if (role === "user") {
           let list = await Offre.aggregate([
+             { $match: { userInfos: response.data.email } },
             //lookup for list :
             {
               $lookup: {

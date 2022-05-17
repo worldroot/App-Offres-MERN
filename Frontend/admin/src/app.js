@@ -19,6 +19,7 @@ import Register from 'views/Register';
 import usersList from 'views/users/usersList';
 import categoriesList from 'views/categories/categoriesList';
 import offreList from 'views/offres/offreList';
+import offreListdems from 'views/offres/offreListdems';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
 
             <Route exact path="/userslist" component={usersList} />
             <Route exact path="/offreslist" component={offreList} />
+            <AdminRoute exact path="/demandes" component={offreListdems} />
             <Route exact path="/categorieslist" component={categoriesList} />
             <Redirect from="/" to="/login" />
             

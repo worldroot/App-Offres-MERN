@@ -31,7 +31,7 @@ export default function (state = intialState, action) {
     case GET_OFFDEMS:
         return {...state, offdems: [], loading: true}
     case GET_OFFDEMS_S:
-        return {...state, offdems: [...action.payload], loading: true}
+        return {...state, offdems: [...action.payload], loading: false}
     case GET_OFFDEMS_F:
 
     case OFFRE_ADDED:

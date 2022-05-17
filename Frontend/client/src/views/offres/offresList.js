@@ -59,7 +59,7 @@ const Offres = ({ ...props }) => {
   const [SearchCat, setSearchCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const offresPerPage = 3;
+  const offresPerPage = 6;
   const data = props.List;
 
   const offresData = useMemo(() => {

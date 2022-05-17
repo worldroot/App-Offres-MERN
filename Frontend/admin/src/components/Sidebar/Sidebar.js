@@ -13,7 +13,7 @@ import {
   NavLink,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 var ps;
@@ -24,39 +24,19 @@ import { PropTypes } from "prop-types";
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-  };
+
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   // toggles collapse between opened and closed (true/false)
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
   };
-  // closes the collapse
-  const closeCollapse = () => {
-    setCollapseOpen(false);
-  };
-  // creates the links that appear in the left menu / Sidebar
-  const createLinks = (routes) => {
-    return routes.map((prop, key) => {
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={closeCollapse}
-            activeClassName="active"
-          >
-            <i className={prop.icon} />
-            {prop.name}
-          </NavLink>
-        </NavItem>
-      );
-    });
-  };
 
-const { bgColor, routes, logo } = props;
-const LogoImg = require('../../assets/img/oored.png')
+  const { bgColor, routes, logo } = props;
+  const LogoImg = require("../../assets/img/oored.png");
 
   let navbarBrandProps;
   if (logo && logo.innerLink) {
@@ -89,11 +69,7 @@ const LogoImg = require('../../assets/img/oored.png')
         {/* Brand */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            <img
-              alt={LogoImg}
-              className="navbar-brand-img"
-              src={LogoImg}
-            />
+            <img alt={LogoImg} className="navbar-brand-img" src={LogoImg} />
           </NavbarBrand>
         ) : null}
         {/* User */}
@@ -127,21 +103,28 @@ const LogoImg = require('../../assets/img/oored.png')
               </Col>
             </Row>
           </div>
-          
-              <NavItem className="pt-0 nav-link" to="/userslist" tag={Link}>
-                    <i className="fas fa-users text-red mr-2" />
-                    <span className="text-dark">  Utilisateurs</span>
-              </NavItem>
-              <br/>
-              <NavItem className="pt-0 nav-link " to="/categorieslist" tag={Link}>
-                    <i className="fas fa-archive text-red mr-2"></i>
-                    <span className="text-dark">  Categories</span>
-              </NavItem>
-              <br/>
-              <NavItem className="pt-0 nav-link" to="/offreslist" tag={Link}>
-                    <i className="fas fa-list-ul text-red mr-2"></i>
-                    <span className="text-dark">  Offres</span>
-              </NavItem>
+
+          <NavItem className="pt-0 nav-link" to="/userslist" tag={Link}>
+            <i className="fas fa-users text-red mr-2" />
+            <span className="text-dark"> Utilisateurs</span>
+          </NavItem>
+          <br />
+          <NavItem className="pt-0 nav-link " to="/categorieslist" tag={Link}>
+            <i className="fas fa-archive text-red mr-2"></i>
+            <span className="text-dark"> Categories</span>
+          </NavItem>
+          <br />
+          <NavItem className="pt-0 nav-link" to="/offreslist" tag={Link}>
+            <i className="fas fa-list-ul text-red mr-2"></i>
+            <span className="text-dark"> Offres</span>
+          </NavItem>
+          <br />
+          {user.role === "admin" && (
+            <NavItem className="pt-0 nav-link" to="/demandes" tag={Link}>
+              <i className="fas fa-flag text-red mr-2"></i>
+              <span className="text-dark"> Demandes</span>
+            </NavItem>
+          )}
 
           {/* Form */}
           <Form className="mt-4 mb-3 d-md-none">
@@ -159,8 +142,6 @@ const LogoImg = require('../../assets/img/oored.png')
               </InputGroupAddon>
             </InputGroup>
           </Form>
-
-          
         </Collapse>
       </Container>
     </Navbar>
