@@ -20,7 +20,7 @@ import "components/modal.css";
 import "./offre.css";
 import { connect, useDispatch } from "react-redux";
 import useForm from "helpers/useFormObj";
-const initialFieldValues = { key: "" };
+import DecryptDemande from "./decryptDemande";
 
 const DetailsDemande = ({ ...props }) => {
   const backdrop = {
@@ -32,13 +32,7 @@ const DetailsDemande = ({ ...props }) => {
     visible: { opacity: 1 },
   };
 
-  const dispatch = useDispatch();
-  const [data, setData] = useState(initialFieldValues);
-  const { key } = data;
-  const handleChange = (name) => (event) => {
-    setData({ ...data, [name]: event.target.value });
-  };
-
+  const [currentObj, setCurrentObj] = useState({});
   const Offre = props.currentObj;
   const userExist = localStorage.getItem("user");
 
@@ -100,7 +94,10 @@ const DetailsDemande = ({ ...props }) => {
                             {dm.prix.length > 50 ? (
                               <i className="fas fa-lock"></i>
                             ) : (
-                              dm.prix
+                              <>
+                                <i className="fas fa-lock-open"></i>
+                                {dm.prix}
+                              </>
                             )}
                           </td>
                           <td>
@@ -108,73 +105,14 @@ const DetailsDemande = ({ ...props }) => {
                               className="btn btn-outline-success"
                               size="sm"
                               onClick={() => {
-                                setShowModal(true);
+                                setShowModal(true), setCurrentObj(dm);
                               }}
                             >
                               Décrypter
                             </Button>
                           </td>
                         </tr>
-                        <tr>
-                          <AnimatePresence
-                            exitBeforeEnter
-                            showModal={showModal}
-                            setShowModal={setShowModal}
-                          >
-                            {showModal && (
-                              <motion.div
-                                className="backdrop"
-                                variants={backdrop}
-                                initial="hidden"
-                                animate="visible"
-                                exit="hidden"
-                              >
-                                <Col className=" fixed-top center" xl="6">
-                                  <motion.div className="" variants={modal}>
-                                    <Card>
-                                      <CardHeader className="text-center border-0">
-                                        <div className="d-flex justify-content-between"></div>
-                                        <h3 className="mb-0 text-dark">
-                                          Décryptage pour {dm.userInfos}
-                                        </h3>
-                                      </CardHeader>
-
-                                      <CardBody>
-                                        <Form role="form">
-                                          <Row className=" justify-content-center">
-                                            Copier le Key reçu par mail
-                                            <Input
-                                              type="textarea"
-                                              name="key"
-                                              value={key}
-                                              onChange={handleChange("key")}
-                                            />
-                                            <Button
-                                              className="my-4 btn-outline-success"
-                                              color="dark"
-                                              type="submit"
-                                            >
-                                              Confirmer
-                                            </Button>
-                                            <Button
-                                              className="my-4 btn-outline-danger"
-                                              onClick={() => {
-                                                setShowModal(false),
-                                                  setData(initialFieldValues);
-                                              }}
-                                            >
-                                              Annuler
-                                            </Button>
-                                          </Row>
-                                        </Form>
-                                      </CardBody>
-                                    </Card>
-                                  </motion.div>
-                                </Col>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </tr>
+                        <tr></tr>
                       </Fragment>
                     );
                   })}
@@ -184,6 +122,35 @@ const DetailsDemande = ({ ...props }) => {
           </Form>
         </CardBody>
       </Card>
+
+      <AnimatePresence
+        exitBeforeEnter
+        showModal={showModal}
+        setShowModal={setShowModal}
+      >
+        {showModal && (
+          <motion.div
+            className="backdrop"
+            variants={backdrop}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <Col className=" fixed-top center" xl="6">
+              <motion.div className="" variants={modal}>
+                <DecryptDemande
+                  {...{
+                    currentObj,
+                    setCurrentObj,
+                    showModal,
+                    setShowModal,
+                  }}
+                />
+              </motion.div>
+            </Col>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

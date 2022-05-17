@@ -121,7 +121,7 @@ router.put(
               );
               res.status(200).json(up);
             } else {
-              res.status(400).json({
+              res.status(401).json({
                 error: true,
                 msg: "Décryptage Impossible",
               });

@@ -123,9 +123,9 @@ export const allOffresDems = () => (dispatch) => {
   });
 };
 
-export const DecDems = (id, updated) => axios.put(`${OffremsURL}/api/offre/` + id, updated);
+export const DecDems = (id, updated) => axios.put(`${OffremsURL}/api/demande/` + id, updated);
 export const decryptDemande = (id, data) => (dispatch) => {
-  dispatch({type: DECRYPTING})
+ 
   setAuthToken(localStorage.accessToken);
   DecDems(id, data)
     .then((res) => {
