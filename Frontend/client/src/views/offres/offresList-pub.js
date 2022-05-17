@@ -131,13 +131,16 @@ const Offres = ({ ...props }) => {
                   </Form>
                   <Form className="mb-2 mt-2 mx-2">
                     <FormGroup className="mb-0">
-                      <FormGroup className="border-dark">
+                      <InputGroup className="border-dark">
+                       
                         <UncontrolledDropdown
                           className=" border-dark rounded border-darker shadow-none"
                           direction="right"
                         >
+                          
                           <DropdownToggle caret>
-                            Choisis une catégorie
+                          <i className="mx-1 fas fa-sort text-dark" />Filtrage par catégorie
+                         
                           </DropdownToggle>
                           <DropdownMenu>
                             {props.ListCat.map((cat, index) => {
@@ -179,9 +182,9 @@ const Offres = ({ ...props }) => {
                                                     }
                                                   }}
                                                 />
-                                                <span className="text-gray">
+                                                <small className="text-gray">
                                                   {sousnomcat}
-                                                </span>
+                                                </small>
                                               </Row>
                                             </AccordionDetails>
                                           </Fragment>
@@ -194,7 +197,7 @@ const Offres = ({ ...props }) => {
                             })}
                           </DropdownMenu>
                         </UncontrolledDropdown>
-                      </FormGroup>
+                      </InputGroup>
                     </FormGroup>
                   </Form>
                 </Row>
