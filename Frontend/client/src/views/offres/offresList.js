@@ -40,7 +40,7 @@ const backdrop = {
 const modal = {
   hidden: { y: "100vh", opacity: 0 },
   visible: {
-    y: "50px",
+    y: "60px",
     opacity: 1,
     transition: { delay: 0.5 },
   },
@@ -287,14 +287,27 @@ const Offres = ({ ...props }) => {
                     );
                   })}
                 </Row>
-                <Row className="justify-content-center">
-                  <PaginationComponent
-                    total={pageNumber}
-                    itemsPerPage={offresPerPage}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                </Row>
+                {showModal2 || showModal ? (
+                  <motion.div animate={{ opacity: 0 }}>
+                    <Row className="justify-content-center">
+                      <PaginationComponent
+                        total={pageNumber}
+                        itemsPerPage={offresPerPage}
+                        currentPage={currentPage}
+                        onPageChange={(page) => setCurrentPage(page)}
+                      />
+                    </Row>
+                  </motion.div>
+                ) : (
+                  <Row className="justify-content-center">
+                    <PaginationComponent
+                      total={pageNumber}
+                      itemsPerPage={offresPerPage}
+                      currentPage={currentPage}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
+                  </Row>
+                )}
               </>
             )}
 
