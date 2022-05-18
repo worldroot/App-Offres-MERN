@@ -21,12 +21,11 @@ const PaginationComponent = ({
     for (let i = 1; i <= totalPages; i++) {
       pages.push(
         <PaginationItem
-        
           key={i}
           active={i === currentPage}
           onClick={() => onPageChange(i)}
         >
-          <PaginationLink className="bg-dark border-0">{i}</PaginationLink>
+          <PaginationLink className="bg-dark border-light">{i}</PaginationLink>
         </PaginationItem>
       );
     }
@@ -37,10 +36,8 @@ const PaginationComponent = ({
   if (totalPages === 0) return null;
 
   return (
-    <Pagination className="d-flex d-inline mt-2">
-      <PaginationItem 
-      className=""
-      disabled={currentPage === 1}>
+    <Pagination className="d-flex d-inline my-2">
+      <PaginationItem className="" disabled={currentPage === 1}>
         <PaginationLink
           previous
           className="bg-gray text-white"
@@ -48,10 +45,9 @@ const PaginationComponent = ({
         />
       </PaginationItem>
       {paginationItems}
-      <PaginationItem 
-        disabled={currentPage === totalPages}>
+      <PaginationItem disabled={currentPage === totalPages}>
         <PaginationLink
-          next 
+          next
           className="bg-gray text-white"
           onClick={() => onPageChange(currentPage + 1)}
         />

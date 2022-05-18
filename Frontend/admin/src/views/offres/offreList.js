@@ -358,12 +358,24 @@ const OffreList = ({ ...props }) => {
                       </tbody>
                     </Table>
                   </Card>
-                  <PaginationComponent
-                    total={pageNumber}
-                    itemsPerPage={offresPerPage}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
+                  {showModal3 || showModal2 || showModal || showModal4 ? (
+                    <motion.div animate={{ opacity: 0 }}>
+                      
+                      <PaginationComponent
+                        total={pageNumber}
+                        itemsPerPage={offresPerPage}
+                        currentPage={currentPage}
+                        onPageChange={(page) => setCurrentPage(page)}
+                      />
+                    </motion.div>
+                  ) : (
+                    <PaginationComponent
+                      total={pageNumber}
+                      itemsPerPage={offresPerPage}
+                      currentPage={currentPage}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
+                  )}
                 </div>
               </Col>
 

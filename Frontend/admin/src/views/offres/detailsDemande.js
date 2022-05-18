@@ -90,29 +90,46 @@ const DetailsDemande = ({ ...props }) => {
                         <tr key={dm._id}>
                           <td>{dm.userInfos}</td>
                           <td>{dm.createdAt.substring(0, 10)}</td>
-                          <td>
-                            {dm.prix.length > 50 ? (
-                              <i className="fas fa-lock"></i>
-                            ) : (
-                              <>
-                                <i className="fas fa-lock-open"></i>
-                                {dm.prix}
-                              </>
-                            )}
-                          </td>
-                          <td>
-                            <Button
-                              className="btn btn-outline-success"
-                              size="sm"
-                              onClick={() => {
-                                setShowModal(true), setCurrentObj(dm);
-                              }}
-                            >
-                              Décrypter
-                            </Button>
-                          </td>
+
+                          {dm.prix.length > 50 ? (
+                            <>
+                              <td>
+                                <i className="fas fa-lock mx-2"></i>
+                              </td>
+                              <td>
+                                <Button
+                                  className="btn btn-outline-success"
+                                  size="sm"
+                                  onClick={() => {
+                                    setShowModal(true), setCurrentObj(dm);
+                                  }}
+                                >
+                                  Décrypter
+                                </Button>
+                              </td>
+                            </>
+                          ) : (
+                            <>
+                              <td>
+                                <i className="fas fa-lock-open mx-2"> </i>
+                                {dm.prix} Dt
+                              </td>
+                              <td>
+                                <Button
+                                  disabled
+                                  className="btn btn-outline-dark border-dark"
+                                  size="sm"
+                                  onClick={() => {
+                                    setShowModal(true), setCurrentObj(dm);
+                                  }}
+                                >
+                                  Décrypter
+                                </Button>
+                              </td>
+                            </>
+                          )}
                         </tr>
-                        <tr></tr>
+                        
                       </Fragment>
                     );
                   })}
@@ -158,6 +175,7 @@ const DetailsDemande = ({ ...props }) => {
 const mapStateToProps = (state) => ({
   List: state.offres.offdems,
   isLoading: state.offres.loading,
+  loading_decrypt: state.offres.loading_decrypt,
   isAuth: state.auth.isAuthenticated,
 });
 

@@ -19,6 +19,7 @@ const intialState = {
   offdems: [],
   offres: [],
   loading: false,
+  loading_decrypt: false,
   error: null,
 };
 
@@ -58,16 +59,20 @@ export default function (state = intialState, action) {
         offres: state.offres.filter((c) => c._id !== action.payload),
       };
     case DECRYPTING:
-      return { ...state, loading: true };
+      return { ...state, loading_decrypt: true };
     case DECRYPTING_S:
       return {
         ...state,
         offres: state.offres.map((c) =>
           c._id === action.payload._id ? action.payload : c
         ),
-        loading: false,
+        loading_decrypt: false,
       };
-    case DECRYPTING_F:
+    case DECRYPTING_F: 
+    return {
+      ...state,
+      loading_decrypt: false,
+    }
     case OFFRE_ERROR:
 
     default:

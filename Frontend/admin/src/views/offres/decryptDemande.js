@@ -34,6 +34,9 @@ const DecryptDemande = ({ ...props }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(decryptDemande(props.currentObj._id, data));
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
     props.setShowModal(false);
   };
 
