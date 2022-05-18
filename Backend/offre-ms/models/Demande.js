@@ -8,10 +8,6 @@ const DemandeSchema = new mongoose.Schema(
       ref: "Offre",
       required: true,
     },
-    titreOffre: {
-      type: String,
-      required: true,
-    },
     prix: {
       type: String,
       required: true,
@@ -24,6 +20,10 @@ const DemandeSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+    dateFin: {
+        type: Date,
+        required: true,
+    },
   },
   { timestamps: true }
 );

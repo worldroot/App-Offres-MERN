@@ -13,10 +13,8 @@ import {
 } from "reactstrap";
 
 import React, { useEffect, useState } from "react";
-import { Demandesuser, deleteDem } from "redux/offres/offreActions";
+import { Demandesuser, deleteDem} from "redux/offres/offreActions";
 import { connect, useDispatch } from "react-redux";
-import axios from "axios";
-import { OffremsURL } from "helpers/urls";
 import "../../components/Loading/loading.css";
 
 const DemandesByUser = ({ ...props }) => {
@@ -26,6 +24,8 @@ const DemandesByUser = ({ ...props }) => {
   }, []);
 
   const [Titre, setTitre] = useState("l");
+  var date = new Date();
+  const DatetoCheck = new Date(date.getTime());
 
   const onDL = (id) => {
     const onSuccess = () => {
@@ -80,17 +80,30 @@ const DemandesByUser = ({ ...props }) => {
                 {props.List.map((dm, index) => {
                   return (
                     <tr key={index}>
-                      <td>{dm.titreOffre}</td>
+                      <td>{dm.offre.titre}</td>
                       <td>{dm.createdAt.substring(0, 10)}</td>
-                      <td>
-                        <Button
-                          className="btn btn-outline-danger"
-                          size="sm"
-                          onClick={() => onDL(dm._id)}
-                        >
-                          Annuler
-                        </Button>
-                      </td>
+                      {DatetoCheck < new Date(dm.offre.dateFin) ? (
+                        <td>
+                          <Button
+                            className="btn btn-outline-danger"
+                            size="sm"
+                            onClick={() => onDL(dm._id)}
+                          >
+                            Annuler
+                          </Button>
+                        </td>
+                      ) : (
+                        <td>
+                          <Button
+                            disabled
+                            className="btn btn-outline-dark border-dark"
+                            size="sm"
+                            onClick={() => onDL(dm._id)}
+                          >
+                            Offre fermée
+                          </Button>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
@@ -108,7 +121,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionToProps = {
-  All: Demandesuser,
+  All: Demandesuser
 };
 
 export default connect(mapStateToProps, mapActionToProps)(DemandesByUser);

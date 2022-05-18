@@ -199,7 +199,7 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
       .then(async (response) => {
         var role = response.data.role;
         if (role === "user") {
-          const data = await Demande.find({ userInfos: response.data.email });
+          const data = await Demande.find({ userInfos: response.data.email }).populate({ path: "offre"})
           res.status(200).json(data);
         }
       });
