@@ -73,68 +73,73 @@ const DetailsDemande = ({ ...props }) => {
         <CardBody className=" justify-content-center">
           <Form role="form">
             <Row>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Email Utilisateur</th>
-                    <th scope="col">Date de demande</th>
-                    <th scope="col">Prix proposé</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
+              {props.loadingDec ? (
+                <div className="text-center my-3">
+                  <div id="loading1"></div>
+                </div>
+              ) : (
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Email Utilisateur</th>
+                      <th scope="col">Date de demande</th>
+                      <th scope="col">Prix proposé</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  {Offre.demandes.map((dm, index) => {
-                    return (
-                      <Fragment key={index}>
-                        <tr key={dm._id}>
-                          <td>{dm.userInfos}</td>
-                          <td>{dm.createdAt.substring(0, 10)}</td>
+                  <tbody>
+                    {Offre.demandes.map((dm, index) => {
+                      return (
+                        <Fragment key={index}>
+                          <tr key={dm._id}>
+                            <td>{dm.userInfos}</td>
+                            <td>{dm.createdAt.substring(0, 10)}</td>
 
-                          {dm.prix.length > 50 ? (
-                            <>
-                              <td>
-                                <i className="fas fa-lock mx-2"></i>
-                              </td>
-                              <td>
-                                <Button
-                                  className="btn btn-outline-success"
-                                  size="sm"
-                                  onClick={() => {
-                                    setShowModal(true), setCurrentObj(dm);
-                                  }}
-                                >
-                                  Décrypter
-                                </Button>
-                              </td>
-                            </>
-                          ) : (
-                            <>
-                              <td>
-                                <i className="fas fa-lock-open mx-2"> </i>
-                                {dm.prix} Dt
-                              </td>
-                              <td>
-                                <Button
-                                  disabled
-                                  className="btn btn-outline-dark border-dark"
-                                  size="sm"
-                                  onClick={() => {
-                                    setShowModal(true), setCurrentObj(dm);
-                                  }}
-                                >
-                                  Décrypter
-                                </Button>
-                              </td>
-                            </>
-                          )}
-                        </tr>
-                        
-                      </Fragment>
-                    );
-                  })}
-                </tbody>
-              </Table>
+                            {dm.prix.length > 50 ? (
+                              <>
+                                <td>
+                                  <i className="fas fa-lock mx-2"></i>
+                                </td>
+                                <td>
+                                  <Button
+                                    className="btn btn-outline-success"
+                                    size="sm"
+                                    onClick={() => {
+                                      setShowModal(true), setCurrentObj(dm);
+                                    }}
+                                  >
+                                    Décrypter
+                                  </Button>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td>
+                                  <i className="fas fa-lock-open mx-2"> </i>
+                                  {dm.prix} Dt
+                                </td>
+                                <td>
+                                  <Button
+                                    disabled
+                                    className="btn btn-outline-dark border-dark"
+                                    size="sm"
+                                    onClick={() => {
+                                      setShowModal(true), setCurrentObj(dm);
+                                    }}
+                                  >
+                                    Décrypter
+                                  </Button>
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        </Fragment>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              )}
             </Row>
           </Form>
         </CardBody>
@@ -153,7 +158,7 @@ const DetailsDemande = ({ ...props }) => {
             animate="visible"
             exit="hidden"
           >
-            <Col className=" fixed-top center" xl="6">
+            <Col className=" fixed-top center" xl="7">
               <motion.div className="" variants={modal}>
                 <DecryptDemande
                   {...{
@@ -175,7 +180,7 @@ const DetailsDemande = ({ ...props }) => {
 const mapStateToProps = (state) => ({
   List: state.offres.offdems,
   isLoading: state.offres.loading,
-  loading_decrypt: state.offres.loading_decrypt,
+  loadingDec: state.offres.loading_decrypt,
   isAuth: state.auth.isAuthenticated,
 });
 

@@ -63,7 +63,7 @@ export default function (state = intialState, action) {
     case DECRYPTING_S:
       return {
         ...state,
-        offres: state.offres.map((c) =>
+        offres: state.offdems.map((c) =>
           c._id === action.payload._id ? action.payload : c
         ),
         loading_decrypt: false,

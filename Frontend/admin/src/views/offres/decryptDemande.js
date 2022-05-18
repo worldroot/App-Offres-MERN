@@ -34,9 +34,9 @@ const DecryptDemande = ({ ...props }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(decryptDemande(props.currentObj._id, data));
-    setTimeout(() => {
+    /*     setTimeout(() => {
       window.location.reload();
-    }, 1500);
+    }, 1500); */
     props.setShowModal(false);
   };
 
@@ -45,12 +45,14 @@ const DecryptDemande = ({ ...props }) => {
     return <Redirect to="/login" />;
   }
 
+  const text = { height: 180 };
+
   return (
     <>
       <Card>
         <CardHeader className="text-center border-0">
           <div className="d-flex justify-content-between"></div>
-          <h3 className="mb-0 text-dark">Décryptage pour {dm.userInfos}</h3>
+          <h3 className="mb-0 text-dark">Décryptage pour la demande de {dm.userInfos}</h3>
         </CardHeader>
 
         <CardBody>
@@ -58,6 +60,7 @@ const DecryptDemande = ({ ...props }) => {
             <Row className=" justify-content-center">
               Copier le Key reçu par mail
               <Input
+                style={text}
                 type="textarea"
                 name="key"
                 value={key}
