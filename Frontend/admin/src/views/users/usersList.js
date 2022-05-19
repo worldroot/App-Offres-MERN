@@ -6,19 +6,26 @@ import {
   Table,
   Container,
   Col,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
 } from "reactstrap";
 
 import Header from "../../components/Headers/Header.js";
 import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import PaginationComponent from "components/Pagination.js";
 import { connect, useDispatch } from "react-redux";
 import { getAllUsers } from "redux/users/userActions.js";
 import { refreshJwt } from "redux/auth/authActions";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
-import decode from 'jwt-decode'
+import decode from "jwt-decode";
 import Banuser from "./banuser.js";
 const backdrop = {
   visible: { opacity: 1 },
@@ -34,7 +41,6 @@ const modal = {
 };
 
 const UsersList = (props) => {
-
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
@@ -58,6 +64,31 @@ const UsersList = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [currentId, setCurrentId] = useState(0);
 
+  const [Search, setSearch] = useState("");
+  const [pageNumber, setPageNumber] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const Data = props.List;
+  const offresPerPage = 6;
+
+  const usersData = useMemo(() => {
+    let computed = Data;
+
+    if (Search) {
+      computed = computed.filter((u) =>
+        u.nom.toLowerCase().includes(Search.toLowerCase()) ||
+        u.email.toLowerCase().includes(Search.toLowerCase()) ||
+        u.prenom.toLowerCase().includes(Search.toLowerCase())
+      );
+    }
+
+    setPageNumber(computed.length);
+
+    return computed.slice(
+      (currentPage - 1) * offresPerPage,
+      (currentPage - 1) * offresPerPage + offresPerPage
+    );
+  }, [Data, currentPage, Search]);
+
   return (
     <>
       {/* Layout*/}
@@ -78,6 +109,24 @@ const UsersList = (props) => {
           <Row>
             <Col className="order-xl-1 mb-5 mb-xl-0" xl="12">
               <div className="col">
+                <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto mb-2">
+                  <FormGroup className="mb-0">
+                    <InputGroup className="input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="fas fa-search" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Rechercher par email ou nom..."
+                        type="text"
+                        onChange={(event) => {
+                          setSearch(event.target.value), setCurrentPage(1);
+                        }}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Form>
                 <Card className="shadow">
                   <CardHeader className="border-0">
                     <h3 className="mb-0">List des utilisateurs</h3>
@@ -86,7 +135,7 @@ const UsersList = (props) => {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Email</th>
-                        <th scope="col">Nom & Prenom</th>
+                        <th scope="col">Nom {"&"} Prenom</th>
                         <th scope="col">Role</th>
                         <th scope="col">Active</th>
                         <th scope="col">Banned</th>
@@ -99,7 +148,7 @@ const UsersList = (props) => {
                     <tbody>
                       {user.role === "admin" && (
                         <>
-                          {props.List.filter((user) => {
+                          {usersData.filter((user) => {
                             if (user.role === "user") {
                               return user;
                             }
@@ -151,7 +200,7 @@ const UsersList = (props) => {
                       )}
                       {user.role === "super-admin" && (
                         <>
-                          {props.List.filter((user) => {
+                          {usersData.filter((user) => {
                             if (user.role !== "super-admin") {
                               return user;
                             }
@@ -205,6 +254,24 @@ const UsersList = (props) => {
                     </tbody>
                   </Table>
                 </Card>
+                {showModal ? (
+                    <motion.div animate={{ opacity: 0 }}>
+                      
+                      <PaginationComponent
+                        total={pageNumber}
+                        itemsPerPage={offresPerPage}
+                        currentPage={currentPage}
+                        onPageChange={(page) => setCurrentPage(page)}
+                      />
+                    </motion.div>
+                  ) : (
+                    <PaginationComponent
+                      total={pageNumber}
+                      itemsPerPage={offresPerPage}
+                      currentPage={currentPage}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
+                  )}
               </div>
             </Col>
             <AnimatePresence

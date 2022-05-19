@@ -4,7 +4,7 @@ import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 const PaginationComponent = ({
   total = 0,
-  itemsPerPage = 5,
+  itemsPerPage = 0,
   currentPage = 1,
   onPageChange,
 }) => {
