@@ -83,7 +83,7 @@ const DetailsOffre = ({ ...props }) => {
 
         <CardBody className=" justify-content-center">
           <Form role="form">
-            <Row>
+            <Row className="justify-content-center">
               <Col>
                 <FormGroup>
                   <p>

@@ -73,6 +73,7 @@ const DemandesByUser = ({ ...props }) => {
                 <tr>
                   <th scope="col">Titre d'offre</th>
                   <th scope="col">Date de creation</th>
+                  <th scope="col">Etat</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -82,6 +83,7 @@ const DemandesByUser = ({ ...props }) => {
                     <tr key={index}>
                       <td>{dm.offre.titre}</td>
                       <td>{dm.createdAt.substring(0, 10)}</td>
+                      <td>En cours...</td>
                       {DatetoCheck < new Date(dm.offre.dateFin) ? (
                         <td>
                           <Button

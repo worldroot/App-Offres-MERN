@@ -20,9 +20,10 @@ const DemandeSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-    dateFin: {
-        type: Date,
-        required: true,
+    etat: {
+      type: String,
+      enum: ["en cours de traitement", "published", "pending", "closed"],
+      default: "pending"
     },
   },
   { timestamps: true }

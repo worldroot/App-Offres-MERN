@@ -42,7 +42,7 @@ const backdrop = {
 const modal = {
   hidden: { y: "100vh", opacity: 0 },
   visible: {
-    y: "60px",
+    y: "0px",
     opacity: 1,
     transition: { delay: 0.5 },
   },
