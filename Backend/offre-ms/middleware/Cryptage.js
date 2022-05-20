@@ -1,12 +1,14 @@
 const NodeRSA = require("node-rsa");
 const key = new NodeRSA({ b: 512 });
 
-var PublicKey = key.exportKey();
-var PrivateKey = key.exportKey();
+var PublicKey = key.exportKey("public");
+var PrivateKey = key.exportKey("private");
 
-let key_public = new NodeRSA(PublicKey);
+//let key_public = new NodeRSA(PublicKey);
 
-const ToCrypte = (text) => {
+const ToCrypte = (key,text) => {
+  let key_public = new NodeRSA(key);
+  console.log(PublicKey);
   const encrypted = key_public.encrypt(text, "base64");
   return encrypted;
 };
@@ -18,4 +20,4 @@ const ToDecrypte = (key,dec) => {
 };
 
 
-module.exports = { ToCrypte, ToDecrypte, PrivateKey };
+module.exports = { ToCrypte, ToDecrypte, PrivateKey, PublicKey };
