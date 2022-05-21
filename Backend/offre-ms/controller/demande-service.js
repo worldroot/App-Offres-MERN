@@ -90,9 +90,7 @@ router.post(
                       properties: encrypted,
                     });
                     newDem.save().then(() => res.json(newDem));
-
                   } else {
-
                     const encrypted = ToCrypte(theKey, rs);
                     const newDem = new Demande({
                       offre,
@@ -139,6 +137,9 @@ router.put(
         const Debut = new Date(OF.dateDebut);
         const Fin = new Date(OF.dateFin);
         const DateToCheck = new Date(date.getTime());
+        /*         var x = "{\"prix\":\"900\",\"userInfos\":\"ohendd@gamesev.ml\",\"userId\":\"626a7c33e435817ae018dc1e\"}"
+        const rs = JSON.parse(x)
+        res.json(rs) */
 
         if (role === "admin") {
           //Update by Admin Only
@@ -146,13 +147,11 @@ router.put(
             if (OF.status === "closed") {
               let { key } = req.body;
               const decrypted = ToDecrypte(key, DemandeModel.properties);
-/*               var jsonStr = decrypted.replace(/(\w+:)|(\w+ :)/g, function(s) {
-                return '"' + s.substring(0, s.length-1) + '":';
-              }); 
-              var result = JSON.parse(jsonStr) */
+              const result = JSON.parse(decrypted);
+              //const many = await Demande.updateMany({},  { $set: { properties: result, etat: "Ouvert" } })
               const up = await Demande.findByIdAndUpdate(
                 req.params.demandeId,
-                { $set: { properties: decrypted, etat: "Ouvert" } },
+                { $set: { properties: result, etat: "Ouvert" } },
                 { new: true }
               );
               res.status(200).json(up);
