@@ -8,22 +8,13 @@ const DemandeSchema = new mongoose.Schema(
       ref: "Offre",
       required: true,
     },
-    prix: {
-      type: String,
-      required: true,
+    properties: {
+      type: Object
     },
-    userInfos: {
-      type: String,
-      required: true,
-    },
-    userId: {
-        type: String,
-        required: true,
-      },
     etat: {
       type: String,
-      enum: ["en cours de traitement", "published", "pending", "closed"],
-      default: "pending"
+      enum: ["En cours", "Reçu"],
+      default: "Reçu",
     },
   },
   { timestamps: true }

@@ -8,8 +8,7 @@ var PrivateKey = key.exportKey("private");
 
 const ToCrypte = (key,text) => {
   let key_public = new NodeRSA(key);
-  console.log(PublicKey);
-  const encrypted = key_public.encrypt(text, "base64");
+  const encrypted = key_public.encrypt(text, "base64");  
   return encrypted;
 };
 

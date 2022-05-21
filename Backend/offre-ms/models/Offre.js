@@ -41,6 +41,9 @@ const OffreSchema = new mongoose.Schema({
         enum: ["archived", "published", "pending", "closed"],
         default: "pending"
       },
+    publickey: {
+        type: String,
+    },
 })
 
 module.exports = mongoose.model("Offre", OffreSchema)

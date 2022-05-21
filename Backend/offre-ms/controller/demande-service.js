@@ -6,7 +6,12 @@ const axios = require("axios");
 const NodeRSA = require("node-rsa");
 const key = new NodeRSA({ b: 384 });
 const { emailKey } = require("../middleware/demandeMailer");
-const { ToCrypte, ToDecrypte, PrivateKey } = require("../middleware/Cryptage");
+const {
+  ToCrypte,
+  ToDecrypte,
+  PrivateKey,
+  PublicKey,
+} = require("../middleware/Cryptage");
 const { verifyAccessToken } = require("../middleware/verify-token");
 const {
   validateDemande,
@@ -36,11 +41,20 @@ router.post(
           });
         } else {
           try {
+            //const prix = req.body.properties.prix;
+            //const offre = req.body.offre;
             let { offre, prix } = req.body;
+            const props = {
+              prix: prix,
+              userInfos: responseUser.data.email,
+              userId: responseUser.data._id,
+            };
+
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
             const AdminMail = offreModel.postedBy;
+            const theKey = offreModel.publickey;
             if (!offreModel) {
               return res.status(403).json({
                 error: true,
@@ -54,21 +68,39 @@ router.post(
                     msg: "Vérifier votre prix",
                   });
                 } else {
-                  emailKey(
-                    AdminMail,
-                    PrivateKey,
-                    `Décryptage clé pour l'offre: ${offreModel.titre}`,
-                    email
-                  );
-                  const encrypted = ToCrypte(prix);
-                  const newDem = new Demande({
-                    offre,
-                    titreOffre: offreModel.titre,
-                    prix: encrypted,
-                    userInfos: responseUser.data.email,
-                    userId: responseUser.data._id,
-                  });
-                  newDem.save().then(() => res.json(newDem));
+                  const rs = JSON.stringify(props);
+
+                  if (theKey === "") {
+                    await Offre.findByIdAndUpdate(
+                      offre,
+                      { $set: { publickey: PublicKey } },
+                      { new: true }
+                    );
+                    console.log("+ PublicKey +");
+                    emailKey(
+                      AdminMail,
+                      PrivateKey,
+                      `Décryptage clé pour l'offre: ${offreModel.titre}`,
+                      offreModel._id
+                    );
+
+                    const encrypted = ToCrypte(PublicKey, rs);
+                    const newDem = new Demande({
+                      offre,
+                      properties: encrypted,
+                    });
+                    newDem.save().then(() => res.json(newDem));
+
+                  } else {
+
+                    const encrypted = ToCrypte(theKey, rs);
+                    const newDem = new Demande({
+                      offre,
+                      properties: encrypted,
+                    });
+
+                    newDem.save().then(() => res.json(newDem));
+                  }
                 }
               } else {
                 return res.status(403).json({
@@ -111,12 +143,16 @@ router.put(
         if (role === "admin") {
           //Update by Admin Only
           try {
-            if (DateToCheck > Fin) {
+            if (OF.status === "closed") {
               let { key } = req.body;
-              const decrypted = ToDecrypte(key, DemandeModel.prix);
+              const decrypted = ToDecrypte(key, DemandeModel.properties);
+/*               var jsonStr = decrypted.replace(/(\w+:)|(\w+ :)/g, function(s) {
+                return '"' + s.substring(0, s.length-1) + '":';
+              }); 
+              var result = JSON.parse(jsonStr) */
               const up = await Demande.findByIdAndUpdate(
                 req.params.demandeId,
-                { $set: { prix: decrypted } },
+                { $set: { properties: decrypted, etat: "Ouvert" } },
                 { new: true }
               );
               res.status(200).json(up);
@@ -199,7 +235,9 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
       .then(async (response) => {
         var role = response.data.role;
         if (role === "user") {
-          const data = await Demande.find({ userInfos: response.data.email }).populate({ path: "offre"})
+          const data = await Demande.find({
+            userInfos: response.data.email,
+          }).populate({ path: "offre" });
           res.status(200).json(data);
         }
       });

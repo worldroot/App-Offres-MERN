@@ -88,7 +88,7 @@ const emailKey = async (email, key, text, user ) => {
 				<div class="wrapper">
 				  <div class="card">
 					
-					<p>Demande par ${user}</p>
+					<p>Offre ID: ${user}</p>
                     <h3>${text}</h3>
                     <textarea disabled>${key}</textarea>
 					<small>Copier tout le text !</small>
