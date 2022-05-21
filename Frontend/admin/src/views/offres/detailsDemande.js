@@ -19,8 +19,9 @@ import { allOffresDems } from "redux/offres/offreActions";
 import "components/modal.css";
 import "./offre.css";
 import { connect, useDispatch } from "react-redux";
-import useForm from "helpers/useFormObj";
+import { decryptDemande } from "redux/offres/offreActions";
 import DecryptDemande from "./decryptDemande";
+const initialFieldValues = { key: "" };
 
 const DetailsDemande = ({ ...props }) => {
   const backdrop = {
@@ -32,15 +33,19 @@ const DetailsDemande = ({ ...props }) => {
     visible: { opacity: 1 },
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [showKey, setShowKey] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
   const Offre = props.currentObj;
   const userExist = localStorage.getItem("user");
+  const text = { height: 100 };
+
+  const dispatch = useDispatch();
+  const [data, setData] = useState(initialFieldValues);
 
   if (!userExist) {
     return <Redirect to="/login" />;
   }
-
-  const [showModal, setShowModal] = useState(false);
 
   const reset = (e) => {
     props.setShowDemande(false);
@@ -69,80 +74,75 @@ const DetailsDemande = ({ ...props }) => {
             Prix à partir de <p className="text-red">{Offre.prixdebut} dt</p>{" "}
           </small>
         </CardHeader>
+        {!showKey && (
+          <DecryptDemande/>
+        )}
 
-        <CardBody className=" justify-content-center">
-          <Form role="form">
-            <Row>
-              {props.loadingDec ? (
-                <div className="text-center my-3">
-                  <div id="loading1"></div>
-                </div>
-              ) : (
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Email Utilisateur</th>
-                      <th scope="col">Date de demande</th>
-                      <th scope="col">Prix proposé</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
+        {showKey && (
+          <CardBody className=" justify-content-center">
+            <Form role="form">
+              <Row>
+                {props.loadingDec ? (
+                  <div className="text-center my-3">
+                    <div id="loading1"></div>
+                  </div>
+                ) : (
+                  <Table className="align-items-center table-flush" responsive>
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Utilisateur</th>
+                        <th scope="col">Date de demande</th>
+                        <th scope="col">Prix proposé</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
 
-                  <tbody>
-                    {Offre.demandes.map((dm, index) => {
-                      return (
-                        <Fragment key={index}>
-                          <tr key={dm._id}>
-                            <td>{dm.userInfos}</td>
-                            <td>{dm.createdAt.substring(0, 10)}</td>
-
-                            {dm.prix.length > 50 ? (
-                              <>
-                                <td>
-                                  <i className="fas fa-lock mx-2"></i>
-                                </td>
-                                <td>
-                                  <Button
-                                    className="btn btn-outline-success"
-                                    size="sm"
-                                    onClick={() => {
-                                      setShowModal(true), setCurrentObj(dm);
-                                    }}
-                                  >
-                                    Décrypter
-                                  </Button>
-                                </td>
-                              </>
-                            ) : (
-                              <>
-                                <td>
-                                  <i className="fas fa-lock-open mx-2"> </i>
-                                  {dm.prix} Dt
-                                </td>
-                                <td>
-                                  <Button
-                                    disabled
-                                    className="btn btn-outline-dark border-dark"
-                                    size="sm"
-                                    onClick={() => {
-                                      setShowModal(true), setCurrentObj(dm);
-                                    }}
-                                  >
-                                    Décrypter
-                                  </Button>
-                                </td>
-                              </>
-                            )}
-                          </tr>
-                        </Fragment>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              )}
-            </Row>
-          </Form>
-        </CardBody>
+                    <tbody>
+                      {Offre.demandes.map((dm, index) => {
+                        return (
+                          <Fragment key={index}>
+                            <tr key={dm._id}>
+                              {dm.properties.length > 50 ? (
+                                <>
+                                  <td>Anonym {index}</td>
+                                  <td>{dm.createdAt.substring(0, 10)}</td>
+                                  <td>
+                                    <i className="fas fa-lock mx-2"></i>
+                                  </td>
+                                  <td>
+                                    <Button
+                                      className="btn btn-outline-success"
+                                      size="sm"
+                                      onClick={() => {
+                                        setShowModal(true), setCurrentObj(dm);
+                                      }}
+                                    >
+                                      Décrypter
+                                    </Button>
+                                  </td>
+                                </>
+                              ) : (
+                                <>
+                                  <td>{dm.properties.userInfos}</td>
+                                  <td>{dm.createdAt.substring(0, 10)}</td>
+                                  <td>
+                                    <i className="fas fa-lock-open mx-2"> </i>
+                                    {dm.properties.prix} Dt
+                                  </td>
+                                  <td></td>
+                                </>
+                              )}
+                            </tr>
+                          </Fragment>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                )}
+              </Row>
+            </Form>
+          </CardBody>
+        )}
       </Card>
 
       <AnimatePresence

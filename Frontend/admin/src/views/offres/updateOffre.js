@@ -108,31 +108,6 @@ const UpdateOffre = ({ ...props }) => {
 
   return (
     <>
-      {DatetoCheck > Debut && (
-        <Card>
-          <Row className="justify-content-center">
-            <Col>
-              <Button
-                className="border-0 shadow-none bg-transparent"
-                size="sm"
-                onClick={() => props.setShowModal2(false)}
-              >
-                <i className="fas fa-times fa-2x text-danger"></i>
-              </Button>
-            </Col>
-          </Row>
-
-          <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-            <div className="d-flex justify-content-between"></div>
-
-            <h1 className="mb-0 text-danger">
-              Impossible de modifier l'offre choisis
-            </h1>
-          </CardHeader>
-        </Card>
-      )}
-
-      {DatetoCheck < Debut && (
         <Card className=" overflow-auto h-100vh">
           <Row className="justify-content-center">
             <Col>
@@ -332,7 +307,6 @@ const UpdateOffre = ({ ...props }) => {
             </Form>
           </CardBody>
         </Card>
-      )}
     </>
   );
 };

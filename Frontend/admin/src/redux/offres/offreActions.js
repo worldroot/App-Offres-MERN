@@ -74,7 +74,7 @@ export const addOffre = (offre) => {
           dispatch(createSousSuccess(ndata));
           toast.success("Ajouté avec succès");
         })
-        .catch((err) => toast.error("Erreur !"), OFFRE_ERROR);
+        .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
     };
   }
 };

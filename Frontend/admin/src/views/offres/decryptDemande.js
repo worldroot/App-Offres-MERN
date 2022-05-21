@@ -23,7 +23,7 @@ import "./offre.css";
 const initialFieldValues = { key: "" };
 
 const DecryptDemande = ({ ...props }) => {
-  const dm = props.currentObj;
+
   const dispatch = useDispatch();
   const [data, setData] = useState(initialFieldValues);
   const { key } = data;
@@ -34,9 +34,6 @@ const DecryptDemande = ({ ...props }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(decryptDemande(props.currentObj._id, data));
-         setTimeout(() => {
-      window.location.reload();
-    }, 1500); 
     props.setShowModal(false);
   };
 
@@ -45,16 +42,10 @@ const DecryptDemande = ({ ...props }) => {
     return <Redirect to="/login" />;
   }
 
-  const text = { height: 180 };
+  const text = { height: 100 };
 
   return (
     <>
-      <Card>
-        <CardHeader className="text-center border-0">
-          <div className="d-flex justify-content-between"></div>
-          <h3 className="mb-0 text-dark">Décryptage pour la demande de {dm.userInfos}</h3>
-        </CardHeader>
-
         <CardBody>
           <Form role="form" onSubmit={onSubmit}>
             <Row className=" justify-content-center">
@@ -73,18 +64,10 @@ const DecryptDemande = ({ ...props }) => {
               >
                 Confirmer
               </Button>
-              <Button
-                className="my-4 btn-outline-danger"
-                onClick={() => {
-                  props.setShowModal(false), setData(initialFieldValues);
-                }}
-              >
-                Annuler
-              </Button>
+             
             </Row>
           </Form>
         </CardBody>
-      </Card>
     </>
   );
 };

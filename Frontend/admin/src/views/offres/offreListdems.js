@@ -40,7 +40,7 @@ const backdrop = {
 const modal = {
   hidden: { y: "100vh", opacity: 0 },
   visible: {
-    y: "50px",
+    y: "0px",
     opacity: 1,
     transition: { delay: 0.5 },
   },
@@ -189,19 +189,6 @@ const OffreListDemandes = ({ ...props }) => {
                                   {of.category} - {of.souscategory}
                                 </td>
                                 <td>
-                                  {of.status === "pending" && (
-                                    <span className=" text-warning">
-                                      Pending
-                                    </span>
-                                  )}
-                                  {of.status === "archived" && (
-                                    <span className=" text-gray">Archived</span>
-                                  )}
-                                  {of.status === "published" && (
-                                    <span className=" text-success">
-                                      Published
-                                    </span>
-                                  )}
                                   {of.status === "closed" && (
                                     <span className=" text-dark">Closed</span>
                                   )}
@@ -226,7 +213,7 @@ const OffreListDemandes = ({ ...props }) => {
                                         setShowDemande(true);
                                       }}
                                     >
-                                      <i className="fas fa-sign-in-alt"></i>
+                                      Ajout Key
                                     </Button>
                                   )}
                                 </td>

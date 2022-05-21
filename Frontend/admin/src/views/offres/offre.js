@@ -35,7 +35,7 @@ const Offre = ({ ...props }) => {
 
   const ImgStyle = {
     width: "100px",
-    height: "100px"
+    height: "100px",
   };
 
   const [data, setData] = useState(initialFieldValues);
@@ -60,14 +60,12 @@ const Offre = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-      props.create(data);
-      reset();
-      props.setShowModal(false);
+    props.create(data);
+    reset();
+    /*       props.setShowModal(false);
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
-    
+      }, 1000); */
   };
 
   if (!userExist) {
@@ -116,7 +114,7 @@ const Offre = ({ ...props }) => {
   const reset = (e) => {
     resetForm();
     setShowList(false);
-    setShowImg(false)
+    setShowImg(false);
     setData(initialFieldValues);
   };
 
@@ -301,7 +299,6 @@ const Offre = ({ ...props }) => {
                     {image.map((img, index) => (
                       <Fragment key={index}>
                         <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
-                          
                           <img
                             style={ImgStyle}
                             className=" p-md--1 img-fluid rounded shadow avatar avatar-lg mx-2"
