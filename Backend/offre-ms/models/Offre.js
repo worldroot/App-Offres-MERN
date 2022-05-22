@@ -11,7 +11,7 @@ const OffreSchema = new mongoose.Schema({
         required: true,
     },
     prixdebut: {
-        type: String
+        type: Number
     },
     image: {
         type: Array,

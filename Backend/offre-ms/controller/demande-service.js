@@ -123,7 +123,7 @@ router.post(
 // @desc    Decrypte Price after date
 // @access  Private Admin
 router.put(
-  "/:demandeId",
+  "/:offreId",
   verifyAccessToken,
   isRequestValidated,
   async (req, res) => {
@@ -131,30 +131,32 @@ router.put(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (response) => {
         var role = response.data.role;
-        let DemandeModel = await Demande.findById(req.params.demandeId);
-        var date = new Date();
-        const OF = await Offre.findById(DemandeModel.offre);
-        const Debut = new Date(OF.dateDebut);
-        const Fin = new Date(OF.dateFin);
-        const DateToCheck = new Date(date.getTime());
-        /*         var x = "{\"prix\":\"900\",\"userInfos\":\"ohendd@gamesev.ml\",\"userId\":\"626a7c33e435817ae018dc1e\"}"
-        const rs = JSON.parse(x)
-        res.json(rs) */
+        //let DemandeModel = await Demande.findOne(req.params.demandeId);
+        const OF = await Offre.findById(req.params.offreId);
 
         if (role === "admin") {
           //Update by Admin Only
           try {
             if (OF.status === "closed") {
-              let { key } = req.body;
-              const decrypted = ToDecrypte(key, DemandeModel.properties);
-              const result = JSON.parse(decrypted);
-              //const many = await Demande.updateMany({},  { $set: { properties: result, etat: "Ouvert" } })
-              const up = await Demande.findByIdAndUpdate(
-                req.params.demandeId,
-                { $set: { properties: result, etat: "Ouvert" } },
-                { new: true }
-              );
-              res.status(200).json(up);
+              const DemandeList = await Demande.find({
+                offre: req.params.offreId,
+              });
+              var list = [];
+              var { key } = req.body;
+              DemandeList.forEach(async (dem, index) => {
+                const decrypted = ToDecrypte(key, dem.properties);
+                const result = JSON.parse(decrypted);
+                const up = await Demande.findByIdAndUpdate(
+                  dem._id,
+                  { $set: { properties: result, etat: "Ouvert" } },
+                  { new: true }
+                );
+                list.push(up);
+
+                if (index === DemandeList.length - 1) {
+                  res.status(200).json(list);
+                }
+              });
             } else {
               res.status(401).json({
                 error: true,
