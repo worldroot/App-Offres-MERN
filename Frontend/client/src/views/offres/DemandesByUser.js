@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 import React, { useEffect, useState } from "react";
-import { Demandesuser, deleteDem} from "redux/offres/offreActions";
+import { Demandesuser, deleteDem } from "redux/offres/offreActions";
 import { connect, useDispatch } from "react-redux";
 import "../../components/Loading/loading.css";
 
@@ -26,6 +26,12 @@ const DemandesByUser = ({ ...props }) => {
   const [Titre, setTitre] = useState("l");
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
+
+  const [user] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   const onDL = (id) => {
     const onSuccess = () => {
@@ -74,16 +80,19 @@ const DemandesByUser = ({ ...props }) => {
                   <th scope="col">Titre d'offre</th>
                   <th scope="col">Date de creation</th>
                   <th scope="col">Etat</th>
-                 
                 </tr>
               </thead>
               <tbody className="text-dark">
                 {props.List.map((dm, index) => {
                   return (
                     <tr key={index}>
-                      <td>{dm.offre.titre}</td>
-                      <td>{dm.createdAt.substring(0, 10)}</td>
-                      <td>{dm.etat}</td>
+                      {dm.offre.status === "closed" && dm.properties.userInfos === user.email && (
+                        <>
+                          <td>{dm.offre.titre}</td>
+                          <td>{dm.createdAt.substring(0, 10)}</td>
+                          <td>{dm.etat}</td>
+                        </>
+                      )}
                     </tr>
                   );
                 })}
@@ -101,7 +110,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionToProps = {
-  All: Demandesuser
+  All: Demandesuser,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(DemandesByUser);
