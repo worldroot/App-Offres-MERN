@@ -32,16 +32,25 @@ const DetailsDemande = ({ ...props }) => {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
   };
+  const text = { height: 100 };
 
   const [showModal, setShowModal] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
   const Offre = props.currentObj;
   const userExist = localStorage.getItem("user");
-  const text = { height: 100 };
 
   const dispatch = useDispatch();
   const [data, setData] = useState(initialFieldValues);
+  const { key } = data;
+  const handleChange = (name) => (event) => {
+    setData({ ...data, [name]: event.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(decryptDemande(props.currentObj._id, data));
+  };
 
   if (!userExist) {
     return <Redirect to="/login" />;
@@ -74,71 +83,67 @@ const DetailsDemande = ({ ...props }) => {
             Prix à partir de <p className="text-red">{Offre.prixdebut} dt</p>{" "}
           </small>
         </CardHeader>
-        {!showKey && (
-          <DecryptDemande/>
-        )}
-
-        {showKey && (
+        {!props.loadingDec && (
           <CardBody className=" justify-content-center">
+              <Form role="form" onSubmit={onSubmit}>
+              <Row className=" justify-content-center">
+                Copier le Key reçu par mail
+                <Input
+                  style={text}
+                  type="textarea"
+                  name="key"
+                  value={key}
+                  onChange={handleChange("key")}
+                />
+                <Button
+                  className="my-4 btn-outline-success"
+                  color="dark"
+                  type="submit"
+                >
+                  Confirmer
+                </Button>
+              </Row>
+            </Form>
             <Form role="form">
               <Row>
-                {props.loadingDec ? (
-                  <div className="text-center my-3">
-                    <div id="loading1"></div>
-                  </div>
-                ) : (
-                  <Table className="align-items-center table-flush" responsive>
-                    <thead className="thead-light">
-                      <tr>
-                        <th scope="col">Utilisateur</th>
-                        <th scope="col">Date de demande</th>
-                        <th scope="col">Prix proposé</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Utilisateur</th>
+                      <th scope="col">Date de demande</th>
+                      <th scope="col">Prix proposé</th>
+                    </tr>
+                  </thead>
 
-                    <tbody>
-                      {Offre.demandes.map((dm, index) => {
-                        return (
-                          <Fragment key={index}>
-                            <tr key={dm._id}>
-                              {dm.properties.length > 50 ? (
-                                <>
-                                  <td>Anonym {index}</td>
-                                  <td>{dm.createdAt.substring(0, 10)}</td>
-                                  <td>
-                                    <i className="fas fa-lock mx-2"></i>
-                                  </td>
-                                  <td>
-                                    <Button
-                                      className="btn btn-outline-success"
-                                      size="sm"
-                                      onClick={() => {
-                                        setShowModal(true), setCurrentObj(dm);
-                                      }}
-                                    >
-                                      Décrypter
-                                    </Button>
-                                  </td>
-                                </>
-                              ) : (
-                                <>
-                                  <td>{dm.properties.userInfos}</td>
-                                  <td>{dm.createdAt.substring(0, 10)}</td>
-                                  <td>
-                                    <i className="fas fa-lock-open mx-2"> </i>
-                                    {dm.properties.prix} Dt
-                                  </td>
-                                  <td></td>
-                                </>
-                              )}
-                            </tr>
-                          </Fragment>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                )}
+                  <tbody>
+                    {Offre.demandes.map((dm, index) => {
+                      return (
+                        <Fragment key={index}>
+                          <tr key={dm._id}>
+                            {dm.properties.length > 50 ? (
+                              <>
+                                <td>Anonym {index}</td>
+                                <td>{dm.createdAt.substring(0, 10)}</td>
+                                <td>
+                                  <i className="fas fa-lock mx-2"></i>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td>{dm.properties.userInfos}</td>
+                                <td>{dm.createdAt.substring(0, 10)}</td>
+                                <td>
+                                  <i className="fas fa-lock-open mx-2 "> </i>
+                                  {dm.properties.prix} Dt
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        </Fragment>
+                      );
+                    })}
+                  </tbody>
+                </Table>
               </Row>
             </Form>
           </CardBody>
