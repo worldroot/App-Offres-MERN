@@ -70,7 +70,7 @@ router.post(
                 } else {
                   const rs = JSON.stringify(props);
 
-                  if (theKey === "") {
+                  if (theKey === "" || !theKey) {
                     await Offre.findByIdAndUpdate(
                       offre,
                       { $set: { publickey: PublicKey } },
@@ -237,7 +237,7 @@ router.get("/byuser", verifyAccessToken, async (req, res) => {
         var role = response.data.role;
         if (role === "user") {
           const data = await Demande.find({
-            userInfos: response.data.email,
+            propperties: { userInfos: response.data.email },
           }).populate({ path: "offre" });
           res.status(200).json(data);
         }
@@ -260,7 +260,7 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
         if (role === "user") {
           //let offreModel = await Offre.findById(offre);
           const DemandeData = await Demande.aggregate([
-            { $match: { userInfos: response.data.email } },
+            { $match: { propperties: { userInfos: response.data.email } } },
           ]);
           const OffreData = await Offre.find({ status: "published" });
           var list = [];
