@@ -109,9 +109,9 @@ export const AddDem = (demande) => {
         .then((res) => {
           dispatch(createSuccess(res.data));
           toast.success("Ajouté avec succès");
-          setTimeout(() => {
+          /* setTimeout(() => {
             window.location.reload();
-          }, 1500);
+          }, 1500); */
         })
         .catch(function (error) {
           OFFRE_ERROR, console.log(error), toast.error(error.response.data.msg);

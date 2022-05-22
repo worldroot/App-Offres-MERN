@@ -227,7 +227,7 @@ const Offres = ({ ...props }) => {
                                   </small>
                                 </Row>
                                 <Row>
-                                  <small>Prix debut (dt): {of.prixdebut}</small>
+                                  <small>À partir de: {of.prixdebut} dt</small>
                                 </Row>
                                 <Row>
                                   <small className="text-danger">

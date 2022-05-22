@@ -228,7 +228,7 @@ const Offres = ({ ...props }) => {
                                 </Row>
                                 <Row>
                                   <small>
-                                    Prix debut (dt): {of.offre.prixdebut}
+                                  À partir de: {of.offre.prixdebut} dt
                                   </small>
                                 </Row>
                                 <Row>

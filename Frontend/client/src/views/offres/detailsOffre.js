@@ -87,7 +87,7 @@ const DetailsOffre = ({ ...props }) => {
               <Col>
                 <FormGroup>
                   <p>
-                    Prix debut:
+                    À partir de:
                     <label className="form-control-label text-dark mx-2">
                       {values.prixdebut} dt
                     </label>
