@@ -234,8 +234,7 @@ const UpdateOffre = ({ ...props }) => {
                       type="date"
                       name="dateDebut"
                       min={Today}
-                      max={values.dateFin.substring(0, 10)}
-                      value={values.dateDebut.substring(0, 10)}
+                      value={values.dateDebut ? values.dateDebut.substring(0, 10) : ''}
                       onChange={handleChangeDate("dateDebut")}
                     />
                   </FormGroup>
@@ -248,8 +247,8 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="date"
                       name="dateFin"
-                      min={values.dateDebut.substring(0, 10)}
-                      value={values.dateFin.substring(0, 10)}
+                      min={values.dateDebut ? values.dateDebut.substring(0, 10) : ''}
+                      value={values.dateFin ? values.dateFin.substring(0, 10): ''}
                       onChange={handleChangeDate("dateFin")}
                     />
                   </FormGroup>
