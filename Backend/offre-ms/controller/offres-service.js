@@ -208,7 +208,7 @@ router.put(
           if (DateToCheck > Debut && DateToCheck < Fin) {
             const updateOffre = await Offre.findByIdAndUpdate(
               req.params.offreId,
-              { $set: { status: "published" } },
+              { $set: req.body },
               { new: true }
             );
             res.status(200).json(updateOffre);

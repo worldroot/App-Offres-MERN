@@ -203,7 +203,9 @@ const OffreList = ({ ...props }) => {
                           <th scope="col">Date début</th>
                           <th scope="col">Date fin</th>
                           <th scope="col">Catégories</th>
-                          <th scope="col">Demandes</th>
+                          {user.role === "admin" && (
+                            <th scope="col">Demandes</th>
+                          )}
                           <th scope="col">Status</th>
                           <th scope="col"></th>
                         </tr>
@@ -229,7 +231,10 @@ const OffreList = ({ ...props }) => {
                                 <td>
                                   {of.category} - {of.souscategory}
                                 </td>
-                                <td>{of.demandes.length}</td>
+                                {user.role === "admin" && (
+                                  <td>{of.demandes.length}</td>
+                                )}
+
                                 <td>
                                   {of.status === "pending" && (
                                     <span className=" text-warning">
