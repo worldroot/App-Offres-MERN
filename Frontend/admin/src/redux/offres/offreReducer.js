@@ -13,14 +13,18 @@ import {
   DECRYPTING_S,
   DECRYPTING,
   DECRYPTING_F,
+  LOADING_OFFRE,
+  OFFRE_ADD_FAILED,
 } from "./offreTypes";
 
 const intialState = {
   offdems: [],
   offres: [],
   loading: false,
+  loading_create: false,
   loading_decrypt: false,
   error: null,
+  codeMsg: null,
 };
 
 export default function (state = intialState, action) {
@@ -37,8 +41,26 @@ export default function (state = intialState, action) {
       return { ...state, offdems: [...action.payload], loading: false };
     case GET_OFFDEMS_F:
 
+    case LOADING_OFFRE:
+      return {
+        ...state,
+        loading_create: true,
+        codeMsg: null,
+      };
     case OFFRE_ADDED:
-      return { ...state, offres: [...state.offres, action.payload] };
+      return {
+        ...state,
+        offres: [...state.offres, action.payload],
+        codeMsg: 1,
+        loading_create: false,
+      };
+    case OFFRE_ADD_FAILED:
+      return {
+        ...state,
+        codeMsg: 0,
+        loading_create: false,
+      };
+
     case OFFRE_UPDATED:
       return {
         ...state,
@@ -68,11 +90,11 @@ export default function (state = intialState, action) {
         ),
         loading_decrypt: false,
       };
-    case DECRYPTING_F: 
-    return {
-      ...state,
-      loading_decrypt: false,
-    }
+    case DECRYPTING_F:
+      return {
+        ...state,
+        loading_decrypt: false,
+      };
     case OFFRE_ERROR:
 
     default:

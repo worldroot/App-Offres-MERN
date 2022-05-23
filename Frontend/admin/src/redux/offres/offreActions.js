@@ -13,6 +13,8 @@ import {
   DECRYPTING,
   DECRYPTING_S,
   DECRYPTING_F,
+  OFFRE_ADD_FAILED,
+  LOADING_OFFRE,
 } from "./offreTypes";
 
 import { OffremsURL } from "helpers/urls";
@@ -25,15 +27,14 @@ export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
 export const allOffres = () => (dispatch) => {
   dispatch({ type: GET_OFFRE });
 
-    Fetch()
-      .then((res) => {
-        dispatch({
-          type: GET_OFFRE_S,
-          payload: res.data,
-        });
-      })
-      .catch((err) => console.log(err), GET_OFFRE_F)
-      
+  Fetch()
+    .then((res) => {
+      dispatch({
+        type: GET_OFFRE_S,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err), GET_OFFRE_F);
 };
 
 export const createSousSuccess = (data) => {
@@ -42,6 +43,7 @@ export const createSousSuccess = (data) => {
     payload: data,
   };
 };
+
 export const addOffre = (offre) => {
   const data = {
     titre: offre.titre,
@@ -64,22 +66,25 @@ export const addOffre = (offre) => {
     toast.warn("Verifier vos champs !");
   } else {
     return (dispatch) => {
+      dispatch({ type: LOADING_OFFRE });
       setAuthToken(localStorage.accessToken);
       return axios
         .post(`${OffremsURL}/api/offre/`, data)
         .then((res) => {
-          res.data;
-
+          //res.data;
           const ndata = { data };
           dispatch(createSousSuccess(ndata));
-          toast.success("Ajouté avec succès");
         })
-        .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
+        .catch(
+          (err) => 
+          dispatch({ type: OFFRE_ADD_FAILED }),
+        );
     };
   }
 };
 
-export const UPO = (id, updated) => axios.put(`${OffremsURL}/api/offre/` + id, updated);
+export const UPO = (id, updated) =>
+  axios.put(`${OffremsURL}/api/offre/` + id, updated);
 export const updateOffre = (id, data) => (dispatch) => {
   setAuthToken(localStorage.accessToken);
   UPO(id, data)
@@ -107,7 +112,8 @@ export const deleteOffre = async (id, dispatch) => {
     });
 };
 
-export const FetchOffDems = () => axios.get(`${OffremsURL}/api/offre/alldemandes`);
+export const FetchOffDems = () =>
+  axios.get(`${OffremsURL}/api/offre/alldemandes`);
 export const allOffresDems = () => (dispatch) => {
   dispatch({ type: GET_OFFDEMS });
   setTimeout(() => {
@@ -123,10 +129,11 @@ export const allOffresDems = () => (dispatch) => {
   });
 };
 
-export const DecDems = (id, updated) => axios.put(`${OffremsURL}/api/demande/` + id, updated);
+export const DecDems = (id, updated) =>
+  axios.put(`${OffremsURL}/api/demande/` + id, updated);
 export const decryptDemande = (id, data) => (dispatch) => {
-  dispatch({type: DECRYPTING})
-  
+  dispatch({ type: DECRYPTING });
+
   setAuthToken(localStorage.accessToken);
   DecDems(id, data)
     .then((res) => {

@@ -31,6 +31,9 @@ import DetailsOffre from "./detailsOffre.js";
 import UpdateStatus from "./updateStatus.js";
 import decode from "jwt-decode";
 import "../../components/Loading/loading.css";
+import { addOffre } from "redux/offres/offreActions.js";
+import usePrevious from "helpers/usePrevious.js";
+import { toast } from "react-toastify";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -92,7 +95,7 @@ const OffreList = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
-  const offresPerPage = 5;
+  const offresPerPage = 8;
 
   const offresData = useMemo(() => {
     let computed = Data;
@@ -110,6 +113,25 @@ const OffreList = ({ ...props }) => {
       (currentPage - 1) * offresPerPage + offresPerPage
     );
   }, [Data, currentPage, Search]);
+
+  const prev_loading = usePrevious(props.isLoadingCreate);
+
+  useEffect(() => {
+    console.log(prev_loading);
+    console.log(props.isLoadingCreate);
+    if (prev_loading && !props.isLoadingCreate) {
+      console.log('here.................');
+      if (props.CodeMsg === 1) {
+        props.All();
+        setShowModal(false);
+        toast.success("Ajouté avec succès");
+      }
+      
+      if(props.CodeMsg === 0){
+        toast.error("Problème lors de l'ajout !")
+      }
+    }
+  }, [props.isLoadingCreate]);
 
   return (
     <>
@@ -182,7 +204,6 @@ const OffreList = ({ ...props }) => {
                         <tr>
                           <th scope="col">Titre</th>
                           <th scope="col">Prix Dt</th>
-                          <th scope="col">Images</th>
                           <th scope="col">Date début</th>
                           <th scope="col">Date fin</th>
                           <th scope="col">Catégories</th>
@@ -196,11 +217,10 @@ const OffreList = ({ ...props }) => {
                           return (
                             <Fragment key={index}>
                               <tr key={of._id}>
-                                <td>{of.titre.substring(0, 12)}</td>
+                                <td>{of.titre}</td>
                                 <td>{of.prixdebut}</td>
-                                <td>( {of.image.length} )</td>
-                                <td>{of.dateDebut.substring(0, 10)}</td>
-                                <td>{of.dateFin.substring(0, 10)}</td>
+                                <td>{of.dateDebut ? of.dateDebut.substring(0, 10) : ''}</td>
+                                <td>{of.dateFin ? of.dateFin.substring(0, 10): ''}</td>
                                 <td>
                                   {of.category} - {of.souscategory}
                                 </td>
@@ -402,6 +422,8 @@ const OffreList = ({ ...props }) => {
                             showModal,
                             setShowModal,
                           }}
+                          //AllOffres={props.All()}
+                          create={props.create}
                         />
                       </motion.div>
                     </Col>
@@ -510,10 +532,13 @@ const mapStateToProps = (state) => ({
   List: state.offres.offres,
   isLoading: state.offres.loading,
   isAuth: state.auth.isAuthenticated,
+  isLoadingCreate: state.offres.loading_create,
+  CodeMsg: state.offres.codeMsg,
 });
-
+ 
 const mapActionToProps = {
   All: allOffres,
+  create: addOffre,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(OffreList);

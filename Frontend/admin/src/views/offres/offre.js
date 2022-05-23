@@ -19,6 +19,7 @@ import { addOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useForm";
 import "./offre.css";
+import usePrevious from "helpers/usePrevious";
 const initialFieldValues = {
   titre: "",
   description: "",
@@ -55,13 +56,30 @@ const Offre = ({ ...props }) => {
     props.AllSous();
   }, []);
 
+  //const prev_loading = usePrevious(props.isLoading);
+
+  /* useEffect(() => {
+    console.log(prev_loading);
+    console.log(props.isLoading);
+    if (prev_loading && !props.isLoading) {
+      console.log('here.................');
+      if (props.CodeMsg === 1) {
+        //props.AllOffres()
+        props.setShowModal(false);
+        toast.success("Ajouté avec succès");
+      }else{
+        toast.error("Problème lors de l'ajout !")
+      }
+    }
+  }, [props.isLoading, ]); */
+
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
   const userExist = localStorage.getItem("user");
 
   const onSubmit = (e) => {
     e.preventDefault();
     props.create(data);
-    reset();
+    //reset();
     /*       props.setShowModal(false);
       setTimeout(() => {
         window.location.reload();
@@ -268,7 +286,7 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="date"
                     name="dateFin"
-                    min={DatetoCheck}
+                    min={dateDebut || DatetoCheck}
                     value={dateFin}
                     onChange={handleChange("dateFin")}
                   />
@@ -346,6 +364,8 @@ const mapStateToProps = (state) => ({
   List: state.offres.offres,
   ListC: state.categories.categories,
   ListSC: state.categories.souscategories,
+  isLoading: state.offres.loading,
+  CodeMsg: state.offres.codeMsg,
 });
 
 export default connect(mapStateToProps, mapActionToProps)(Offre);
