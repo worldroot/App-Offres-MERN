@@ -40,6 +40,17 @@ const DetailsDemande = ({ ...props }) => {
   const Offre = props.currentObj;
   const userExist = localStorage.getItem("user");
 
+  useEffect(() => {
+    Offre.demandes.map((dm) => {
+      if (dm.properties.length > 50) {
+        
+        setShowKey(true);
+      } else {
+        setShowKey(false);
+      }
+    });
+  }, []);
+
   const dispatch = useDispatch();
   const [data, setData] = useState(initialFieldValues);
   const { key } = data;
@@ -85,25 +96,28 @@ const DetailsDemande = ({ ...props }) => {
         </CardHeader>
         {!props.loadingDec && (
           <CardBody className=" justify-content-center">
+            {showKey && (
               <Form role="form" onSubmit={onSubmit}>
-              <Row className=" justify-content-center">
-                Copier le Key reçu par mail
-                <Input
-                  style={text}
-                  type="textarea"
-                  name="key"
-                  value={key}
-                  onChange={handleChange("key")}
-                />
-                <Button
-                  className="my-4 btn-outline-success"
-                  color="dark"
-                  type="submit"
-                >
-                  Confirmer
-                </Button>
-              </Row>
-            </Form>
+                <Row className=" justify-content-center">
+                  Copier le Key reçu par mail
+                  <Input
+                    style={text}
+                    type="textarea"
+                    name="key"
+                    value={key}
+                    onChange={handleChange("key")}
+                  />
+                  <Button
+                    className="my-4 btn-outline-success"
+                    color="dark"
+                    type="submit"
+                  >
+                    Confirmer
+                  </Button>
+                </Row>
+              </Form>
+            )}
+
             <Form role="form">
               <Row>
                 <Table className="align-items-center table-flush" responsive>
