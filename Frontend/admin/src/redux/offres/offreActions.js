@@ -37,13 +37,6 @@ export const allOffres = () => (dispatch) => {
     .catch((err) => console.log(err), GET_OFFRE_F);
 };
 
-export const createSousSuccess = (data) => {
-  return {
-    type: OFFRE_ADDED,
-    payload: data,
-  };
-};
-
 export const addOffre = (offre) => {
   const data = {
     titre: offre.titre,
@@ -71,14 +64,12 @@ export const addOffre = (offre) => {
       return axios
         .post(`${OffremsURL}/api/offre/`, data)
         .then((res) => {
-          //res.data;
-          const ndata = { data };
-          dispatch(createSousSuccess(ndata));
+          dispatch({
+            type: OFFRE_ADDED,
+            payload: res.data,
+          });
         })
-        .catch(
-          (err) => 
-          dispatch({ type: OFFRE_ADD_FAILED }),
-        );
+        .catch((err) => dispatch({ type: OFFRE_ADD_FAILED }));
     };
   }
 };

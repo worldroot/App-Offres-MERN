@@ -50,7 +50,7 @@ export default function (state = intialState, action) {
     case OFFRE_ADDED:
       return {
         ...state,
-        offres: [...state.offres, action.payload],
+        offres: [...state.offres, ...action.payload],
         codeMsg: 1,
         loading_create: false,
       };

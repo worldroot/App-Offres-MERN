@@ -117,26 +117,22 @@ const OffreList = ({ ...props }) => {
   const prev_loading = usePrevious(props.isLoadingCreate);
 
   useEffect(() => {
-    console.log(prev_loading);
-    console.log(props.isLoadingCreate);
+    //console.log(prev_loading);
+    //console.log(props.isLoadingCreate);
     if (prev_loading && !props.isLoadingCreate) {
-      console.log('here.................');
       if (props.CodeMsg === 1) {
         props.All();
         setShowModal(false);
         toast.success("Ajouté avec succès");
       }
-      
-      if(props.CodeMsg === 0){
-        toast.error("Problème lors de l'ajout !")
+      if (props.CodeMsg === 0) {
+        toast.error("Problème lors de l'ajout !");
       }
     }
   }, [props.isLoadingCreate]);
 
   return (
     <>
-      {/* Layout*/}
-
       <Sidebar
         logo={{
           innerLink: "",
@@ -207,6 +203,7 @@ const OffreList = ({ ...props }) => {
                           <th scope="col">Date début</th>
                           <th scope="col">Date fin</th>
                           <th scope="col">Catégories</th>
+                          <th scope="col">Demandes</th>
                           <th scope="col">Status</th>
                           <th scope="col"></th>
                         </tr>
@@ -219,11 +216,20 @@ const OffreList = ({ ...props }) => {
                               <tr key={of._id}>
                                 <td>{of.titre}</td>
                                 <td>{of.prixdebut}</td>
-                                <td>{of.dateDebut ? of.dateDebut.substring(0, 10) : ''}</td>
-                                <td>{of.dateFin ? of.dateFin.substring(0, 10): ''}</td>
+                                <td>
+                                  {of.dateDebut
+                                    ? of.dateDebut.substring(0, 10)
+                                    : ""}
+                                </td>
+                                <td>
+                                  {of.dateFin
+                                    ? of.dateFin.substring(0, 10)
+                                    : ""}
+                                </td>
                                 <td>
                                   {of.category} - {of.souscategory}
                                 </td>
+                                <td>{of.demandes.length}</td>
                                 <td>
                                   {of.status === "pending" && (
                                     <span className=" text-warning">
@@ -380,7 +386,6 @@ const OffreList = ({ ...props }) => {
                   </Card>
                   {showModal3 || showModal2 || showModal || showModal4 ? (
                     <motion.div animate={{ opacity: 0 }}>
-                      
                       <PaginationComponent
                         total={pageNumber}
                         itemsPerPage={offresPerPage}
@@ -535,7 +540,7 @@ const mapStateToProps = (state) => ({
   isLoadingCreate: state.offres.loading_create,
   CodeMsg: state.offres.codeMsg,
 });
- 
+
 const mapActionToProps = {
   All: allOffres,
   create: addOffre,

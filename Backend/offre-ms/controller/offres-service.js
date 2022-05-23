@@ -40,12 +40,24 @@ router.post(
               status,
               postedBy,
             } = req.body;
-
+            const data = await Offre.aggregate([
+              {
+                $lookup: {
+                  from: "demandes",
+                  localField: "_id",
+                  foreignField: "offre",
+                  as: "demandes",
+                },
+              },
+              //cancel some attribute to displays :
+              { $project: { demandes: { __v: 0, updatedAt: 0 } } },
+              { $project: { icon: 0, __v: 0, slug: 0 } },
+            ]);
             var date = new Date();
             const Debut = new Date(dateDebut);
             const Fin = new Date(dateFin);
             const DateToCheck = new Date(date.getTime());
-
+            
             const off = await Offre.findOne({ titre });
             if (off) {
               return res.status(400).json({
@@ -75,7 +87,7 @@ router.post(
                         postedBy: responseUser.data.email,
                         status: "published",
                       });
-                      newOffre.save().then(() => res.json(newOffre));
+                      newOffre.save().then(() => res.json(data));
                     } else {
                       const newOffre = new Offre({
                         titre,
@@ -89,7 +101,7 @@ router.post(
                         postedBy: responseUser.data.email,
                         status: "pending",
                       });
-                      newOffre.save().then(() => res.json(newOffre));
+                      newOffre.save().then(() => res.json(data));
                     }
                   });
               });
@@ -309,9 +321,23 @@ router.get("/allpublished", async (req, res) => {
     });
   }
 });
+
 router.get("/all", async (req, res) => {
   try {
-    const data = await Offre.find({});
+    //const data = await Offre.find({});
+    const data = await Offre.aggregate([
+      {
+        $lookup: {
+          from: "demandes",
+          localField: "_id",
+          foreignField: "offre",
+          as: "demandes",
+        },
+      },
+      //cancel some attribute to displays :
+      { $project: { demandes: { __v: 0, updatedAt: 0 } } },
+      { $project: { icon: 0, __v: 0, slug: 0 } },
+    ]);
     res.status(200).json(data);
   } catch (error) {
     console.log(error.message);
