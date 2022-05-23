@@ -140,25 +140,45 @@ router.put(
           try {
             // Between dates : DateToCheck > Debut && DateToCheck<Fin
             if (DateToCheck < Debut) {
-              const updateOffre = await Offre.findByIdAndUpdate(
-                req.params.offreId,
-                {
-                  $set: {
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    prixdebut,
-                    souscategory,
-                    category,
-                    status,
+              if (DateToCheck > new Date(dateDebut) && DateToCheck < Fin) {
+                const updateOffre = await Offre.findByIdAndUpdate(
+                  req.params.offreId,
+                  {
+                    $set: {
+                      titre,
+                      description,
+                      image,
+                      dateDebut,
+                      dateFin,
+                      prixdebut,
+                      souscategory,
+                      category,
+                      status: "published",
+                    },
                   },
-                },
-                { new: true }
-              );
-
-              res.status(200).json(updateOffre);
+                  { new: true }
+                );
+                res.status(200).json(updateOffre);
+              } else {
+                const updateOffre = await Offre.findByIdAndUpdate(
+                  req.params.offreId,
+                  {
+                    $set: {
+                      titre,
+                      description,
+                      image,
+                      dateDebut,
+                      dateFin,
+                      prixdebut,
+                      souscategory,
+                      category,
+                      status,
+                    },
+                  },
+                  { new: true }
+                );
+                res.status(200).json(updateOffre);
+              }
             } else {
               res.status(400).json({
                 error: true,
@@ -281,7 +301,6 @@ router.get("/allpublished", async (req, res) => {
   try {
     const offre = await Offre.find({ status: "published" });
     res.status(200).json(offre);
-
   } catch (error) {
     console.log(error.message);
     res.status(500).json({
@@ -341,7 +360,7 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
         var role = response.data.role;
         if (role === "user") {
           let list = await Offre.aggregate([
-             { $match: { userInfos: response.data.email } },
+            { $match: { userInfos: response.data.email } },
             //lookup for list :
             {
               $lookup: {

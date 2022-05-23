@@ -11,7 +11,7 @@ const OffreSchema = new mongoose.Schema({
         required: true,
     },
     prixdebut: {
-        type: Number
+        type: String
     },
     image: {
         type: Array,
@@ -43,6 +43,7 @@ const OffreSchema = new mongoose.Schema({
       },
     publickey: {
         type: String,
+        default: ""
     },
 })
 
