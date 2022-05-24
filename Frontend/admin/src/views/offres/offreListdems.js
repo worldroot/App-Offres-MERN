@@ -19,19 +19,17 @@ import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import PaginationComponent from "components/Pagination.js";
 import { connect, useDispatch } from "react-redux";
-import { allOffresDems } from "redux/offres/offreActions";
+import { allOffresDems, decryptDemande } from "redux/offres/offreActions";
 import { refreshJwt } from "redux/auth/authActions";
 import { Fragment, useEffect, useState, useMemo } from "react";
-import Offre from "./offre.js";
-
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
-import UpdateOffre from "./updateOffre.js";
 import DetailsOffre from "./detailsOffre.js";
-import UpdateStatus from "./updateStatus.js";
 import decode from "jwt-decode";
 import "../../components/Loading/loading.css";
 import DetailsDemande from "./detailsDemande.js";
+import { toast } from "react-toastify";
+import usePrevious from "helpers/usePrevious.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -62,25 +60,10 @@ const OffreListDemandes = ({ ...props }) => {
     }
   }, []);
 
-  const [user] = useState(() => {
-    const saved = localStorage.getItem("user");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
-
   const dispatch = useDispatch();
   const [currentObj, setCurrentObj] = useState({});
   const [showModal3, setShowModal3] = useState(false);
   const [showDemande, setShowDemande] = useState(false);
-
-  const onDLF = (id) => {
-    const onSuccess = () => {
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    };
-    if (window.confirm("Êtes-vous sûr ?")) dispatch(deleteOffre(id, onSuccess));
-  };
 
   var date = new Date();
   const DatetoCheck = new Date(date.getTime());
@@ -106,6 +89,22 @@ const OffreListDemandes = ({ ...props }) => {
       (currentPage - 1) * offresPerPage + offresPerPage
     );
   }, [Data, currentPage, Search]);
+
+  const prev_loading = usePrevious(props.isloadingDec);
+
+  useEffect(() => {
+    //console.log(prev_loading);
+    //console.log(props.isloadingDec);
+    if (prev_loading && !props.isloadingDec) {
+      if (props.CodeMsg === 1) {
+        props.All();
+        setShowDemande(false);
+      }
+      if (props.CodeMsg === 0) {
+        toast.error("Problème lors de l'ajout !");
+      }
+    }
+  }, [props.isloadingDec]);
 
   return (
     <>
@@ -297,6 +296,7 @@ const OffreListDemandes = ({ ...props }) => {
                             showDemande,
                             setShowDemande,
                           }}
+                          decrypt={props.decrypt}
                         />
                       </motion.div>
                     </Col>
@@ -314,11 +314,13 @@ const OffreListDemandes = ({ ...props }) => {
 const mapStateToProps = (state) => ({
   List: state.offres.offdems,
   isLoading: state.offres.loading,
+  isloadingDec: state.offres.loading_decrypt,
   isAuth: state.auth.isAuthenticated,
 });
 
 const mapActionToProps = {
   All: allOffresDems,
+  decrypt: decryptDemande,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(OffreListDemandes);

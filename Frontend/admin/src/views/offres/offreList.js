@@ -117,8 +117,8 @@ const OffreList = ({ ...props }) => {
   const prev_loading = usePrevious(props.isLoadingCreate);
 
   useEffect(() => {
-    //console.log(prev_loading);
-    //console.log(props.isLoadingCreate);
+    console.log(prev_loading);
+    console.log(props.isLoadingCreate);
     if (prev_loading && !props.isLoadingCreate) {
       if (props.CodeMsg === 1) {
         props.All();

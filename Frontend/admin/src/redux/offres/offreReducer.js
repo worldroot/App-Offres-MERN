@@ -80,13 +80,13 @@ export default function (state = intialState, action) {
         ...state,
         offres: state.offres.filter((c) => c._id !== action.payload),
       };
-      
+
     case DECRYPTING:
       return { ...state, loading_decrypt: true, codeMsg: null };
     case DECRYPTING_S:
       return {
         ...state,
-        offres: state.offdems.map((c) =>
+        offdems: state.offdems.map((c) =>
           c._id === action.payload._id ? action.payload : c
         ),
         loading_decrypt: false,
@@ -95,8 +95,8 @@ export default function (state = intialState, action) {
     case DECRYPTING_F:
       return {
         ...state,
-        codeMsg: 0,
         loading_decrypt: false,
+        codeMsg: 0,
       };
     case OFFRE_ERROR:
 

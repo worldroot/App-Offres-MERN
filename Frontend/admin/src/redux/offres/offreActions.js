@@ -120,7 +120,8 @@ export const allOffresDems = () => (dispatch) => {
   });
 };
 
-export const DecDems = (id, updated) => axios.put(`${OffremsURL}/api/demande/` + id, updated);
+export const DecDems = (id, updated) =>
+  axios.put(`${OffremsURL}/api/demande/` + id, updated);
 export const decryptDemande = (id, data) => (dispatch) => {
   dispatch({ type: DECRYPTING });
   setAuthToken(localStorage.accessToken);
@@ -131,6 +132,12 @@ export const decryptDemande = (id, data) => (dispatch) => {
         payload: res.data,
       });
       toast.success("Demande décryptée avec succés");
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000);
     })
-    .catch((err) => toast.error(err.response.data.msg), DECRYPTING_F);
+    .catch(
+      (err) => toast.error(err.response.data.msg),
+      dispatch({ type: DECRYPTING_F })
+    );
 };
