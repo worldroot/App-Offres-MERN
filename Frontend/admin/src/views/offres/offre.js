@@ -12,14 +12,13 @@ import {
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import React, { Fragment, useState, useEffect } from "react";
 import { addOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
 import useForm from "helpers/useForm";
 import "./offre.css";
-import usePrevious from "helpers/usePrevious";
 const initialFieldValues = {
   titre: "",
   description: "",
@@ -32,7 +31,6 @@ const initialFieldValues = {
 };
 
 const Offre = ({ ...props }) => {
-  const dispatch = useDispatch();
 
   const ImgStyle = {
     width: "100px",
@@ -56,34 +54,12 @@ const Offre = ({ ...props }) => {
     props.AllSous();
   }, []);
 
-  //const prev_loading = usePrevious(props.isLoading);
-
-  /* useEffect(() => {
-    console.log(prev_loading);
-    console.log(props.isLoading);
-    if (prev_loading && !props.isLoading) {
-      console.log('here.................');
-      if (props.CodeMsg === 1) {
-        //props.AllOffres()
-        props.setShowModal(false);
-        toast.success("Ajouté avec succès");
-      }else{
-        toast.error("Problème lors de l'ajout !")
-      }
-    }
-  }, [props.isLoading, ]); */
-
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
   const userExist = localStorage.getItem("user");
 
   const onSubmit = (e) => {
     e.preventDefault();
     props.create(data);
-    //reset();
-    /*       props.setShowModal(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000); */
   };
 
   if (!userExist) {

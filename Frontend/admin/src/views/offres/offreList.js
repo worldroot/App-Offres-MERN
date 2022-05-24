@@ -142,9 +142,8 @@ const OffreList = ({ ...props }) => {
       />
 
       <div className="main-content">
-        <AdminNavbar />
-
-        <Header />
+        <AdminNavbar/>
+        <Header/>
         {/* Page content */}
         {props.isLoading ? (
           <div className="text-center my-3">
