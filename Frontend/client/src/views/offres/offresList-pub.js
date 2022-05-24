@@ -84,11 +84,6 @@ const Offres = ({ ...props }) => {
     );
   }, [data, currentPage, Search, SearchCat]);
 
-  const sty = {
-    height: 400,
-    width: 350,
-  };
-
   if (userExist) return <Redirect to="/offres" />;
 
   if (!offresData) return <p>Pas d'offre disponible</p>;
@@ -209,7 +204,7 @@ const Offres = ({ ...props }) => {
                           transition={{ duration: 1.5 }}
                         >
                           <Col>
-                            <Card className="m-1" style={sty}>
+                            <Card className="m-1 cardStyle">
                               <CardBody className="text-dark">
                                 <div className="text-center">
                                   <img

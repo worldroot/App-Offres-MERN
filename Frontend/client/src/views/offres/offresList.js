@@ -81,11 +81,6 @@ const Offres = ({ ...props }) => {
     );
   }, [data, currentPage, Search, SearchCat]);
 
-  const sty = {
-    height: 450,
-    width: 350,
-  };
-
   const img = {
     height: 170,
     width: 170,
@@ -207,7 +202,7 @@ const Offres = ({ ...props }) => {
                           transition={{ duration: 1 }}
                         >
                           <Col>
-                            <Card className="m-1" style={sty}>
+                            <Card className="m-1 cardStyle">
                               <CardBody className="text-dark">
                                 <div className="text-center">
                                   <img

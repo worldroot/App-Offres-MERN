@@ -33,14 +33,8 @@ const DemandesByUser = ({ ...props }) => {
     return initialValue || "";
   });
 
-  const onDL = (id) => {
-    const onSuccess = () => {
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    };
-    if (window.confirm("Êtes-vous sûr ?")) dispatch(deleteDem(id, onSuccess));
-  };
+
+  
 
   return (
     <>
