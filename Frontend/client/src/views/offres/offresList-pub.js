@@ -26,6 +26,7 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { allPub } from "redux/offres/offreActions";
 import { getAllCat } from "redux/cat/catActions";
+import { refreshJwt } from "redux/auth/authActions";
 import { connect } from "react-redux";
 import PaginationComponent from "components/Pagination.js";
 import { motion, AnimatePresence } from "framer-motion";
@@ -34,6 +35,7 @@ import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
 import { Redirect } from "react-router-dom";
+import decode from "jwt-decode";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -52,6 +54,18 @@ const Offres = ({ ...props }) => {
   useEffect(() => {
     props.AllPub();
     props.AllCat();
+  }, []);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const decodedToken = decode(accessToken);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken }));
+        window.location.reload()
+      }
+    }
   }, []);
 
   const userExist = localStorage.getItem("user");
@@ -257,7 +271,7 @@ const Offres = ({ ...props }) => {
                 </Row>
                 {showModal2 || showModal ? (
                   <motion.div animate={{ opacity: 0 }}>
-                    <Row className="justify-content-center">
+                    <Row className="justify-content-center mx-3">
                       <PaginationComponent
                         total={pageNumber}
                         itemsPerPage={offresPerPage}
@@ -267,7 +281,7 @@ const Offres = ({ ...props }) => {
                     </Row>
                   </motion.div>
                 ) : (
-                  <Row className="justify-content-center">
+                  <Row className="justify-content-center mx-3">
                     <PaginationComponent
                       total={pageNumber}
                       itemsPerPage={offresPerPage}

@@ -42,6 +42,7 @@ const UserDetails = (props) => {
       const decodedToken = decode(accessToken);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         dispatch(refreshJwt({ refreshToken }));
+        window.location.reload()
       }
     }
   }, []);

@@ -294,7 +294,7 @@ const Offres = ({ ...props }) => {
                     </Row>
                   </motion.div>
                 ) : (
-                  <Row className="justify-content-center">
+                  <Row className="justify-content-center mx-3">
                     <PaginationComponent
                       total={pageNumber}
                       itemsPerPage={offresPerPage}

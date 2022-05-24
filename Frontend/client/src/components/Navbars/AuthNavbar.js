@@ -52,7 +52,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
   return (
     <>
       <Navbar
-        className="navbar-top navbar-horizontal navbar-dark bg-white fixed-top"
+        className="navbar-top navbar-horizontal navbar-dark bg-white fixed-top position-fixed"
         expand="md"
       >
         <Container className="px-4">

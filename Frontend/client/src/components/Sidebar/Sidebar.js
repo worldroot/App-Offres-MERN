@@ -87,11 +87,11 @@ const LogoImg = require('../../assets/img/oored.png')
 
   return (
     <Navbar
-      className="navbar-vertical fixed-left navbar-light bg-white"
+      className="navbar-vertical fixed-top navbar-light bg-white align-items-center justify-content-xl-between position-fixed"
       expand="md"
       id="sidenav-main"
     >
-      <Container fluid>
+      <Container>
         {/* Toggler */}
         <button
           className="navbar-toggler"
@@ -101,15 +101,13 @@ const LogoImg = require('../../assets/img/oored.png')
           <span className="navbar-toggler-icon" />
         </button>
         {/* Brand */}
-        {logo ? (
-          <NavbarBrand className="pt-0" {...navbarBrandProps}>
+        <NavbarBrand className="pt-0">
             <img
               alt={LogoImg}
               className="navbar-brand-img"
               src={LogoImg}
             />
           </NavbarBrand>
-        ) : null}
         {/* User */}
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
