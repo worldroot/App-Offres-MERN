@@ -86,7 +86,10 @@ const Offres = ({ ...props }) => {
 
   if (userExist) return <Redirect to="/offres" />;
 
-  if (!offresData) return <p>Pas d'offre disponible</p>;
+  const img = {
+    height: 170,
+    width: 170,
+  };
 
   return (
     <>
@@ -204,12 +207,13 @@ const Offres = ({ ...props }) => {
                           transition={{ duration: 1.5 }}
                         >
                           <Col>
-                            <Card className="m-1 cardStyle">
+                            <Card className="m-2 cardStyle">
                               <CardBody className="text-dark">
                                 <div className="text-center">
                                   <img
-                                    className="img-fluid rounded avatar avatar-lg w-50 h-50"
-                                    src={of.image[0]}
+                                    className="img-fluid rounded avatar avatar-lg"
+                                    style={img}
+                                    src={of.image[1]}
                                     alt=""
                                   />
                                 </div>

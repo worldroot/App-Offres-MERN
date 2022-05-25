@@ -222,7 +222,7 @@ const Offres = ({ ...props }) => {
                                   <img
                                     style={img}
                                     className="img-fluid rounded avatar avatar-lg "
-                                    src={of.offre.image[0]}
+                                    src={of.offre.image[1]}
                                     alt=""
                                   />
                                 </div>
