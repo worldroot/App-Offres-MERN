@@ -61,6 +61,7 @@ const OffreListDemandes = ({ ...props }) => {
   }, []);
 
   const dispatch = useDispatch();
+  const prev_loading = usePrevious(props.isloadingDec);
   const [currentObj, setCurrentObj] = useState({});
   const [showModal3, setShowModal3] = useState(false);
   const [showDemande, setShowDemande] = useState(false);
@@ -75,22 +76,17 @@ const OffreListDemandes = ({ ...props }) => {
 
   const offresData = useMemo(() => {
     let computed = Data;
-
     if (Search) {
       computed = computed.filter((of) =>
         of.titre.toLowerCase().includes(Search.toLowerCase())
       );
     }
-
     setPageNumber(computed.length);
-
     return computed.slice(
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
   }, [Data, currentPage, Search]);
-
-  const prev_loading = usePrevious(props.isloadingDec);
 
   useEffect(() => {
     //console.log(prev_loading);
@@ -123,10 +119,18 @@ const OffreListDemandes = ({ ...props }) => {
 
         <Header />
         {/* Page content */}
-        {props.isLoading ? (
-          <div className="text-center my-3">
-            <div id="loading"></div>
-          </div>
+
+        {props.isLoading || offresData.length === 0 ? (
+          <>
+            <div className="text-center my-3">
+              <div id="loading"></div>
+            </div>
+            <Row className="justify-content-center">
+              <h1 className="text-center text-red text-xl-center my-3">
+                Aucune demandes à traiter
+              </h1>
+            </Row>
+          </>
         ) : (
           <Container className="mt--7" fluid>
             <Row>
@@ -150,6 +154,7 @@ const OffreListDemandes = ({ ...props }) => {
                       </InputGroup>
                     </FormGroup>
                   </Form>
+
                   <Card className="shadow">
                     <CardHeader className="border-0 ">
                       <div className="d-flex justify-content-between">
@@ -223,6 +228,7 @@ const OffreListDemandes = ({ ...props }) => {
                       </tbody>
                     </Table>
                   </Card>
+
                   {showModal3 || showDemande ? (
                     <motion.div animate={{ opacity: 0 }}>
                       <PaginationComponent
