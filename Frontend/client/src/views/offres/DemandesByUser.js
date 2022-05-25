@@ -60,10 +60,6 @@ const DemandesByUser = ({ ...props }) => {
             <div className="text-center">
               <h2 className="mb-0 text-dark">Aucune demande</h2>
             </div>
-          ) : Titre === "" ? (
-            <div className="text-center">
-              <div id="loading"></div>
-            </div>
           ) : (
             <Table
               className="align-items-center table-flush bg-transparent"
