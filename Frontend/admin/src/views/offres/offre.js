@@ -27,7 +27,7 @@ const initialFieldValues = {
   dateFin: "",
   souscategory: "",
   category: "",
-  prixdebut: "-",
+  prixdebut: "  ",
 };
 
 const Offre = ({ ...props }) => {
@@ -95,7 +95,7 @@ const Offre = ({ ...props }) => {
     });
     const filePaths = await Promise.all(filePathsPromises);
     const mappedFiles = filePaths.map((base64File) => base64File);
-    toast.info("Upload done");
+    toast.info("Téléchargement d'images réussi");
     setShowImg(true);
     setData({ ...data, image: mappedFiles.reverse() });
   };

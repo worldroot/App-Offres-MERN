@@ -99,15 +99,12 @@ const OffreList = ({ ...props }) => {
 
   const offresData = useMemo(() => {
     let computed = Data;
-
     if (Search) {
       computed = computed.filter((of) =>
         of.titre.toLowerCase().includes(Search.toLowerCase())
       );
     }
-
     setPageNumber(computed.length);
-
     return computed.slice(
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
@@ -117,8 +114,8 @@ const OffreList = ({ ...props }) => {
   const prev_loading = usePrevious(props.isLoadingCreate);
 
   useEffect(() => {
-    console.log(prev_loading);
-    console.log(props.isLoadingCreate);
+    //console.log(prev_loading);
+    //console.log(props.isLoadingCreate);
     if (prev_loading && !props.isLoadingCreate) {
       if (props.CodeMsg === 1) {
         props.All();
@@ -142,8 +139,8 @@ const OffreList = ({ ...props }) => {
       />
 
       <div className="main-content">
-        <AdminNavbar/>
-        <Header/>
+        <AdminNavbar />
+        <Header />
         {/* Page content */}
         {props.isLoading ? (
           <div className="text-center my-3">
@@ -231,7 +228,11 @@ const OffreList = ({ ...props }) => {
                                   {of.category} - {of.souscategory}
                                 </td>
                                 {user.role === "admin" && (
-                                  <td>{of.demandes.length}</td>
+                                  <td>
+                                    {of.demandes.length == 0
+                                      ? of.demandes.length
+                                      : of.demandes.length}
+                                  </td>
                                 )}
 
                                 <td>

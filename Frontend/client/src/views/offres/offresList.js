@@ -65,18 +65,6 @@ const Offres = ({ ...props }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      const refreshToken = localStorage.getItem("refreshToken");
-      const decodedToken = decode(accessToken);
-      if (decodedToken.exp * 1000 < new Date().getTime()) {
-        dispatch(refreshJwt({ refreshToken }));
-        window.location.reload();
-      }
-    }
-  }, []);
-
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -248,19 +236,23 @@ const Offres = ({ ...props }) => {
                                   </small>
                                 </Row>
                                 <Row>
-                                  <small>
-                                    À partir de: {of.offre.prixdebut} dt
-                                  </small>
+                                  {of.offre.prixdebut === "" ? (
+                                    <small> Prix début ouvert </small>
+                                  ) : (
+                                    <small>
+                                      À partir de: {of.offre.prixdebut} dt
+                                    </small>
+                                  )}
                                 </Row>
                                 <Row>
                                   <small className="text-danger">
-                                    Date Debut:{" "}
+                                    Date Debut:
                                     {of.offre.dateDebut.substring(0, 10)}
                                   </small>
                                 </Row>
                                 <Row>
                                   <small className="text-danger">
-                                    Date Limite:{" "}
+                                    Date Limite:
                                     {of.offre.dateFin.substring(0, 10)}
                                   </small>
                                 </Row>

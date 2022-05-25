@@ -137,7 +137,7 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="text"
                       name="titre"
-                      value={values.titre}
+                      defaultValue={values.titre}
                       onChange={handleInputChange}
                     />
                   </FormGroup>
@@ -152,7 +152,7 @@ const UpdateOffre = ({ ...props }) => {
                       type="number"
                       step="0.1"
                       name="prixdebut"
-                      value={values.prixdebut}
+                      defaultValue={values.prixdebut}
                       onChange={handleInputChange}
                     />
                   </FormGroup>
@@ -168,7 +168,7 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="select"
                       name="category"
-                      value={values.category}
+                      defaultValue={values.category}
                       onChange={handleInputChange}
                     >
                       {props.ListC.map((cat, index) => {
@@ -189,7 +189,7 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="select"
                       name="souscategory"
-                      value={values.souscategory}
+                      defaultValue={values.souscategory}
                       onChange={handleInputChange}
                     >
                       {props.ListSC.filter((sous) => {
@@ -218,7 +218,7 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="textarea"
                       name="description"
-                      value={values.description}
+                      defaultValue={values.description}
                       onChange={handleInputChange}
                     />
                   </FormGroup>
@@ -234,7 +234,7 @@ const UpdateOffre = ({ ...props }) => {
                       type="date"
                       name="dateDebut"
                       min={Today}
-                      value={values.dateDebut ? values.dateDebut.substring(0, 10) : ''}
+                      defaultValue={values.dateDebut ? values.dateDebut.substring(0, 10) : ''}
                       onChange={handleChangeDate("dateDebut")}
                     />
                   </FormGroup>
@@ -248,7 +248,7 @@ const UpdateOffre = ({ ...props }) => {
                       type="date"
                       name="dateFin"
                       min={values.dateDebut ? values.dateDebut.substring(0, 10) : ''}
-                      value={values.dateFin ? values.dateFin.substring(0, 10): ''}
+                      defaultValue={values.dateFin ? values.dateFin.substring(0, 10): ''}
                       onChange={handleChangeDate("dateFin")}
                     />
                   </FormGroup>

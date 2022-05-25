@@ -21,6 +21,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "components/modal.css";
 import "./offre.css";
+import { toast } from "react-toastify";
 
 const AjoutDemande = ({ ...props }) => {
   const backdrop = {
@@ -47,8 +48,14 @@ const AjoutDemande = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    props.create(data);
-    props.setShowModal2(false);
+    const prixProposed = parseFloat(data.prix);
+    const prixOffre = parseFloat(props.currentObj.prixdebut);
+    if (prixProposed < prixOffre) {
+      toast.error("Vérifier votre prix");
+    } else {
+      props.create(data);
+      props.setShowModal2(false);
+    }
   };
 
   const handleChange = (name) => (event) => {
@@ -87,10 +94,12 @@ const AjoutDemande = ({ ...props }) => {
                   name="prix"
                   value={data.prix}
                   onChange={handleChange("prix")}
+                  className="my-2"
                 />
-                <small className="text-gray">
-                  A partir de {props.currentObj.prixdebut}
-                </small>
+                {props.currentObj.prixdebut !== "" && (
+                   <small className="text-gray">A partir de {props.currentObj.prixdebut} dt</small>
+                )}
+                
               </p>
             </Row>
             <Row className="justify-content-center">

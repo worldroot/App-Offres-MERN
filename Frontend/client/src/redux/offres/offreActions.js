@@ -114,7 +114,7 @@ export const AddDem = (demande) => {
           }, 1500); */
         })
         .catch(function (error) {
-          OFFRE_ERROR, console.log(error), toast.error(error.response.data.msg);
+          OFFRE_ERROR, console.log(error);
         });
     };
   }
