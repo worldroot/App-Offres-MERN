@@ -1,22 +1,29 @@
 const nodemailer = require("nodemailer");
 
-const emailKey = async (email, key, text, user ) => {
-	try {
-		const transporter = nodemailer.createTransport({
-			host: "smtp.mailtrap.io",
+const emailKey = async (email, key, text, user) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      /* 			
+	  		host: "smtp.mailtrap.io",
 			port: 2525,
 			auth: {
 			  user: "6adcb0b3bc15c3",
 			  pass: "c170a6da93e22e",
-			},
-		});
+			}, 
+	  */
+      host: "smtp.sendgrid.net",
+      port: 587,
+      auth: {
+        user: "appOffres", //"6adcb0b3bc15c3",
+        pass: process.env.SENDGRID_API_KEY, //"c170a6da93e22e",
+      },
+    });
 
-        
-		await transporter.sendMail({
-			from: process.env.USER,
-			to: email,
-			subject: "Admin clé de decryptage",
-			html:`
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: email,
+      subject: "Admin clé de decryptage",
+      html: `
 			<html lang="en">
 			<head>
 			  <meta charset="UTF-8" />
@@ -88,7 +95,7 @@ const emailKey = async (email, key, text, user ) => {
 				<div class="wrapper">
 				  <div class="card">
 					
-					<p>Offre ID: ${user}</p>
+					<p>OffreID: ${user}</p>
                     <h3>${text}</h3>
                     <textarea disabled>${key}</textarea>
 					<small>Copier tout le text !</small>
@@ -98,13 +105,13 @@ const emailKey = async (email, key, text, user ) => {
 			</body>
 		  </html>
 			`,
-		});
-		console.log("Key email sent successfully");
-	} catch (error) {
-		console.log("Key email not sent!");
-		console.log(error);
-		return error;
-	}
+    });
+    console.log("Key email sent successfully");
+  } catch (error) {
+    console.log("Key email not sent!");
+    console.log(error);
+    return error;
+  }
 };
 
 module.exports = { emailKey };

@@ -25,7 +25,6 @@ import decode from "jwt-decode";
 import DemandesByUser from "./offres/DemandesByUser";
 
 const UserDetails = (props) => {
-  
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [userLocal] = useState(() => {
@@ -42,7 +41,7 @@ const UserDetails = (props) => {
       const decodedToken = decode(accessToken);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         dispatch(refreshJwt({ refreshToken }));
-        window.location.reload()
+        window.location.reload();
       }
     }
   }, []);
@@ -55,15 +54,8 @@ const UserDetails = (props) => {
   const [Show, setShow] = useState(false);
 
   const verif = () => {
-    try {
-      props.ResendEmail();
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-    } catch (error) {
-      console.log(error);
-      toast.error("Quelque chose s'est mal passé !");
-    }
+    props.ResendEmail();
+    window.location.reload();
   };
 
   if (!userExist) {
@@ -119,7 +111,9 @@ const UserDetails = (props) => {
                                 <Button
                                   className="my-2 btn-outline-dark"
                                   color="default"
-                                  onClick={() => {setCurrentId(userLocal._id), setShow(false) }}
+                                  onClick={() => {
+                                    setCurrentId(userLocal._id), setShow(false);
+                                  }}
                                   size="sm"
                                 >
                                   Editer compte
@@ -127,7 +121,9 @@ const UserDetails = (props) => {
                                 <Button
                                   className="my-2 btn-outline-dark"
                                   color="default"
-                                  onClick={() => {setCurrentId(0), setShow(true) }}
+                                  onClick={() => {
+                                    setCurrentId(0), setShow(true);
+                                  }}
                                   size="sm"
                                 >
                                   Traiter demandes
@@ -176,8 +172,7 @@ const UserDetails = (props) => {
         </div>
       </div>
 
-        <AuthFooter />
-  
+      <AuthFooter />
     </>
   );
 };

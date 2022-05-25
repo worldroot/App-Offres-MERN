@@ -65,6 +65,11 @@ const Offres = ({ ...props }) => {
     }
   }, []);
 
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   const userExist = localStorage.getItem("user");
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -269,7 +274,7 @@ const Offres = ({ ...props }) => {
                                   </a>
                                 </Row>
                               </CardBody>
-                              {userExist && (
+                              {userLocal.active && (
                                 <CardFooter className="text-center">
                                   {of.exist ? (
                                     <Row className="justify-content-center">

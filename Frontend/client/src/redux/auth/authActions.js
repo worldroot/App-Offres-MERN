@@ -160,6 +160,7 @@ export const resend = () => async (dispatch) => {
     dispatch({ type: RESEND });
     dispatch(loadUser());
     toast.info("E-mail envoyé avec succès");
+
   } catch (error) {
     console.log(error);
     dispatch({

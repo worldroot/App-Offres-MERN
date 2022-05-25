@@ -28,7 +28,7 @@ const VerifMail = () => {
 				await axios.get(url);
 				//console.log(data);
 				setValidUrl(true);
-        toast.success('Félicitations')
+        window.location.reload();
 			} catch (error) {
 				console.log(error);
         toast.error("Quelque chose s'est mal passé !")
