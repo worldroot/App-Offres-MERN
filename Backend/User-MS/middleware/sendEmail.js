@@ -2,6 +2,8 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const apiKey = `${process.env.SENDGRID_API_KEY}`;
+console.log("SendGrid key ", apiKey);
 
 const emailSender = async (email, url, text) => {
   try {
@@ -94,16 +96,7 @@ const emailSender = async (email, url, text) => {
 
 const emailReset = async (email, url, text, nom) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 587,
-      auth: {
-        user: "apikey", //"6adcb0b3bc15c3",
-        pass: process.env.SENDGRID_API_KEY, //"c170a6da93e22e",
-      },
-    });
-
-    await transporter.sendMail({
+    const message = {
       from: "appoffres.ooredoo@gmail.com",
       to: email,
       subject: "Réinitialiser votre mot de passe",
@@ -180,10 +173,11 @@ const emailReset = async (email, url, text, nom) => {
 			</body>
 		  </html>
 			`,
-    });
-    console.log("reset email sent successfully");
+    };
+    sgMail.send(message);
+    console.log("Reset email sent successfully");
   } catch (error) {
-    console.log("reset email not sent!");
+    console.log("Reset email not sent!");
     console.log(error);
     return error;
   }
