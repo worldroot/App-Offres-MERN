@@ -228,11 +228,8 @@ const OffreList = ({ ...props }) => {
                                   {of.category} - {of.souscategory}
                                 </td>
                                 {user.role === "admin" && (
-                                  <td>
-                                    {of.demandes.length == 0
-                                      ? of.demandes.length
-                                      : of.demandes.length}
-                                  </td>
+                                  <td>{of.status !== "pending" && of.status !== "archived"  ? (of.demandes.length):(0)}</td>
+                                  
                                 )}
 
                                 <td>

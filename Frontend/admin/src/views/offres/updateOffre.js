@@ -21,10 +21,11 @@ import useForm from "helpers/useFormObj";
 import "./offre.css";
 
 
-const initialFieldValues = { image: [] };
+
 
 const UpdateOffre = ({ ...props }) => {
 
+  const initialFieldValues = { image: [], demandes: props.currentObj.demandes.length };
   useEffect(() => {
     if (props.currentObj !== {}) {
       setValues({ ...props.currentObj });
