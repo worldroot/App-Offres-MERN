@@ -388,8 +388,9 @@ const Offres = ({ ...props }) => {
             </AnimatePresence>
           </Container>
         </div>
-
-        <AuthFooter />
+        <div className="fixed-bottom">
+          <AuthFooter />
+        </div>
       </div>
     </>
   );
