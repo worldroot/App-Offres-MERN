@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/GhassenBoughzala/App-Offres-MERN#readme",
   "dependencies": {
+    "@onesignal/node-onesignal": "^1.0.0-beta4",
     "@sendgrid/mail": "^7.7.0",
     "axios": "^0.25.0",
     "bcrypt": "^5.0.1",
@@ -42,6 +43,7 @@
     "nodemailer": "^6.7.2",
     "nodemailer-smtp-transport": "^2.4.2",
     "nodemon": "^2.0.15",
+    "onesignal-node": "^3.3.0",
     "passport": "^0.5.2",
     "redis": "^4.0.3",
     "sonarqube-scanner": "^2.8.1",

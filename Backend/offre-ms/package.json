@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/GhassenBoughzala/App-Offres-MERN#readme",
   "dependencies": {
+    "@onesignal/node-onesignal": "^1.0.0-beta4",
     "axios": "^0.25.0",
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/GhassenBoughzala/App-Offres-MERN#readme",
   "dependencies": {
+    "@onesignal/node-onesignal": "^1.0.0-beta4",
     "axios": "^0.25.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",

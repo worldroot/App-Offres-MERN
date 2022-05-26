@@ -56,7 +56,6 @@
     "node-sass": "^7.0.1",
     "node-sass-package-importer": "^3.0.4",
     "nouislider": "15.2.0",
-    "onesignal-node": "^3.3.0",
     "react": "17.0.2",
     "react-alice-carousel": "^2.6.0",
     "react-chartjs-2": "2.11.1",

@@ -2,7 +2,6 @@ import { UsermsURL } from "helpers/urls";
 import setAuthToken from "helpers/authToken";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useHistory, Redirect } from "react-router-dom";
 
 import {
   USER_LOADED,
@@ -80,6 +79,7 @@ export const register =
       dispatch({ type: REGISTER_FAIL });
     }
   };
+
 
 export const login =
   ({ email, password }) =>
@@ -160,7 +160,6 @@ export const resend = () => async (dispatch) => {
     dispatch({ type: RESEND });
     dispatch(loadUser());
     toast.info("E-mail envoyé avec succès");
-
   } catch (error) {
     console.log(error);
     dispatch({
