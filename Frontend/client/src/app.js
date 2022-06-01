@@ -6,7 +6,7 @@ import setAuthToken from "./helpers/authToken";
 import store from "./redux/store";
 
 import { ToastContainer } from "react-toastify";
-import OneSignal from 'react-onesignal';
+import OneSignal from "react-onesignal";
 
 import Login from "views/Login";
 import Register from "views/Register";
@@ -24,6 +24,7 @@ import offresList from "views/offres/offresList";
 import offresListPub from "views/offres/offresList-pub";
 
 function App() {
+
   if (localStorage.accessToken) {
     setAuthToken(localStorage.accessToken);
   }
@@ -42,12 +43,11 @@ function App() {
     }
   }, []);
 
-
   useEffect(() => {
     OneSignal.init({
       appId: "10d0d189-e8bd-413a-b51b-becc098b1617",
     });
-    console.log("OneSignal...")
+    console.log("OneSignal...");
   }, []);
 
   //DARK-RED: #C11923

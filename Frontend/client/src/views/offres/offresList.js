@@ -109,7 +109,7 @@ const Offres = ({ ...props }) => {
     <>
       <div className="main-content">
         <AuthNavbar />
-        <div className=" py-xl-6 position-relative">
+        <div className=" py-xl-6 position-relative w-100vh h-100vh">
           {/* Content */}
           <Container className="mt--8  py-xl-7">
             <Row className="justify-content-center">
@@ -388,7 +388,7 @@ const Offres = ({ ...props }) => {
             </AnimatePresence>
           </Container>
         </div>
-        <div className="fixed-bottom">
+        <div>
           <AuthFooter />
         </div>
       </div>
