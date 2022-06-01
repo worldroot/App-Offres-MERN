@@ -228,33 +228,39 @@ const OffreList = ({ ...props }) => {
                                   {of.category} - {of.souscategory}
                                 </td>
                                 {user.role === "admin" && (
-                                  <td>{of.status !== "pending" && of.status !== "archived"  ? (of.demandes.length):(0)}</td>
-                                  
+                                  <td>
+                                    {of.status !== "pending" &&
+                                    of.status !== "archived"
+                                      ? of.demandes.length
+                                      : 0}
+                                  </td>
                                 )}
 
                                 <td>
-                                  {of.status === "pending" && (
+                                  {!of.archived &&
+                                    DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin) && (
+                                      <span className=" text-success">
+                                        Published
+                                      </span>
+                                    )}
+                                  {DatetoCheck > new Date(of.dateFin) && (
+                                    <span className=" text-dark">Closed</span>
+                                  )}
+                                  {DatetoCheck < new Date(of.dateDebut) && (
                                     <span className=" text-warning">
                                       Pending
                                     </span>
                                   )}
-                                  {of.status === "archived" && (
-                                    <span className=" text-gray">Archived</span>
-                                  )}
-                                  {of.status === "published" && (
-                                    <span className=" text-success">
-                                      Published
-                                    </span>
-                                  )}
-                                  {of.status === "closed" && (
-                                    <span className=" text-dark">Closed</span>
+                                  {of.archived && (
+                                    <span className=" text-grey">Archived</span>
                                   )}
                                 </td>
                                 {/* DateToCheck > Debut && DateToCheck < Fin */}
                                 {user.role === "admin" && (
                                   <td>
                                     <Button
-                                      className="btn btn-outline-success"
+                                      className="btn btn-outline-dark"
                                       size="sm"
                                       onClick={() => {
                                         setCurrentObj(of);
@@ -314,7 +320,7 @@ const OffreList = ({ ...props }) => {
                                 {user.role === "super-admin" && (
                                   <td>
                                     <Button
-                                      className="btn btn-outline-success"
+                                      className="btn btn-outline-dark"
                                       size="sm"
                                       onClick={() => {
                                         setCurrentObj(of);
@@ -324,18 +330,18 @@ const OffreList = ({ ...props }) => {
                                       <i className="fas fa-eye"></i>
                                     </Button>
 
-                                    {of.status === "archived" &&
+                                    {of.archived &&
                                       DatetoCheck > new Date(of.dateDebut) &&
                                       DatetoCheck < new Date(of.dateFin) && (
                                         <Button
-                                          className="btn btn-outline-dark"
+                                          className="btn btn-outline-success"
                                           size="sm"
                                           onClick={() => {
                                             setCurrentObj(of);
                                             setShowModal4(true);
                                           }}
                                         >
-                                          <i className="fas fa-pencil-alt"></i>
+                                          <i className="fas fa-arrow-up"></i>
                                         </Button>
                                       )}
 

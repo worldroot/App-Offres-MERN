@@ -105,24 +105,7 @@ const DetailsOffre = ({ ...props }) => {
                   </p>
                 </FormGroup>
               </Col>
-              <Col>
-                <FormGroup>
-                  <p>
-                    Status:
-                    <label className="form-control-label text-dark mx-2">
-                      {values.status === "pending" && (
-                        <span className=" text-warning">Pending</span>
-                      )}
-                      {values.status === "archived" && (
-                        <span className=" text-dark">Archived</span>
-                      )}
-                      {values.status === "published" && (
-                        <span className=" text-success">Published</span>
-                      )}
-                    </label>
-                  </p>
-                </FormGroup>
-              </Col>
+             
             </Row>
 
             <Row>

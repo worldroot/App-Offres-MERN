@@ -7,7 +7,7 @@ const {
   isRequestValidated,
 } = require("../middleware/offreValidator");
 const axios = require("axios");
-const offreByid = require("../middleware/offreByid");
+//const offreByid = require("../middleware/offreByid");
 
 // @route   POST api/appeloffre
 // @desc    Create appel offre
@@ -57,7 +57,7 @@ router.post(
             const Debut = new Date(dateDebut);
             const Fin = new Date(dateFin);
             const DateToCheck = new Date(date.getTime());
-            
+
             const off = await Offre.findOne({ titre });
             if (off) {
               return res.status(400).json({
@@ -230,12 +230,58 @@ router.put(
   }
 );
 
+router.patch(
+  "/changestatus",
+  verifyAccessToken,
+  async (req, res) => {
+    axios
+      .get("http://localhost:5001/api/user/" + req.user.id)
+      .then(async (response) => {
+        var role = response.data.role;
+        let { id, status, archived } = req.body;
+        const one = await Offre.findById(id);
+        var date = new Date();
+        const Debut = new Date(one.dateDebut);
+        const Fin = new Date(one.dateFin);
+        const DateToCheck = new Date(date.getTime());
+        if (role === "super-admin") {
+          try {
+            if (one.status === "published" && !one.archived) {
+              const toArchived = await Offre.findByIdAndUpdate(
+                id,
+                { $set: { status: "archived", archived: true } },
+                { new: true }
+              );
+              res.status(200).json(toArchived);
+            } else {
+              const toPublished = await Offre.findByIdAndUpdate(
+                id,
+                { $set: { status: "published", archived: false } },
+                { new: true }
+              );
+              res.status(200).json(toPublished);
+            }
+          } catch (error) {
+            console.log(error);
+            res.status(500).json({
+              error: true,
+              msg: "Server error",
+            });
+          }
+        } else {
+          return res.status(404).json({
+            error: "Access Denied !!",
+          });
+        }
+      });
+  }
+);
+
 // @route   Delete api/offre/:categoryId
 // @desc    Delete Single offre
 // @access  Private super Admin
 router.delete(
   "/:offreId",
-  offreByid,
   verifyAccessToken,
   isRequestValidated,
   async (req, res) => {
@@ -284,14 +330,6 @@ router.delete(
                 msg: "Server error",
               });
             }
-          } else if (DateToCheck > Debut && DateToCheck < Fin) {
-            const updateOffre = await Offre.findByIdAndUpdate(
-              req.params.offreId,
-              { $set: { status: "archived" } },
-              { new: true }
-            );
-
-            res.status(200).json(updateOffre);
           } else {
             res.status(400).json({
               error: true,
@@ -315,7 +353,11 @@ router.get("/allpublished", async (req, res) => {
     var date = new Date();
     const DateToCheck = new Date(date.getTime());
     //DateToCheck > Debut && DateToCheck < Fin
-    const offre = await Offre.find( { dateDebut: { $lt: DateToCheck }, dateFin: { $gt: DateToCheck } } )
+    const offre = await Offre.find({
+      archived: false,
+      dateDebut: { $lt: DateToCheck },
+      dateFin: { $gt: DateToCheck },
+    });
     res.status(200).json(offre);
   } catch (error) {
     console.log(error.message);
@@ -325,7 +367,6 @@ router.get("/allpublished", async (req, res) => {
     });
   }
 });
-
 
 router.get("/all", async (req, res) => {
   try {
@@ -422,10 +463,6 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
       msg: "Server error",
     });
   }
-});
-
-router.get("/:offreId", offreByid, async (req, res) => {
-  res.json(req.offre);
 });
 
 module.exports = router;

@@ -42,6 +42,10 @@ const OffreSchema = new mongoose.Schema({
         enum: ["archived", "published", "pending", "closed"],
         default: "pending"
       },
+    archived: {
+        type: Boolean,
+        default: false
+      },
     publickey: {
         type: String,
         default: ""
