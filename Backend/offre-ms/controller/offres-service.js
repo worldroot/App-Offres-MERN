@@ -87,6 +87,7 @@ router.post(
                         postedBy: responseUser.data.email,
                         status: "published",
                       });
+
                       newOffre.save().then(() => res.json(data));
                     } else {
                       const newOffre = new Offre({
@@ -311,7 +312,10 @@ router.delete(
 // @access  Public
 router.get("/allpublished", async (req, res) => {
   try {
-    const offre = await Offre.find({ status: "published" });
+    var date = new Date();
+    const DateToCheck = new Date(date.getTime());
+    //DateToCheck > Debut && DateToCheck < Fin
+    const offre = await Offre.find( { dateDebut: { $lt: DateToCheck }, dateFin: { $gt: DateToCheck } } )
     res.status(200).json(offre);
   } catch (error) {
     console.log(error.message);
@@ -321,6 +325,7 @@ router.get("/allpublished", async (req, res) => {
     });
   }
 });
+
 
 router.get("/all", async (req, res) => {
   try {
