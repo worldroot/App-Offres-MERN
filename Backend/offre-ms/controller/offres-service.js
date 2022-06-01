@@ -100,7 +100,7 @@ router.post(
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
                         postedBy: responseUser.data.email,
-                        status: "pending",
+                        status,
                       });
                       newOffre.save().then(() => res.json(data));
                     }
@@ -153,50 +153,51 @@ router.put(
           try {
             // Between dates : DateToCheck > Debut && DateToCheck<Fin
             if (DateToCheck < Debut) {
-              if (DateToCheck > new Date(dateDebut) && DateToCheck < Fin) {
-                const updateOffre = await Offre.findByIdAndUpdate(
-                  req.params.offreId,
-                  {
-                    $set: {
-                      titre,
-                      description,
-                      image,
-                      dateDebut,
-                      dateFin,
-                      prixdebut,
-                      souscategory,
-                      category,
-                      status: "published",
-                    },
+              const updateOffre = await Offre.findByIdAndUpdate(
+                req.params.offreId,
+                {
+                  $set: {
+                    titre,
+                    description,
+                    image,
+                    dateDebut,
+                    dateFin,
+                    prixdebut,
+                    souscategory,
+                    category,
+                    status,
                   },
-                  { new: true }
-                );
-                res.status(200).json(updateOffre);
-              } else {
-                const updateOffre = await Offre.findByIdAndUpdate(
-                  req.params.offreId,
-                  {
-                    $set: {
-                      titre,
-                      description,
-                      image,
-                      dateDebut,
-                      dateFin,
-                      prixdebut,
-                      souscategory,
-                      category,
-                      status,
-                    },
+                },
+                { new: true }
+              );
+              res.status(200).json(updateOffre);
+            } else if (
+              DateToCheck > Debut &&
+              DateToCheck < Fin &&
+              OF.archived
+            ) {
+              const updateOffre = await Offre.findByIdAndUpdate(
+                req.params.offreId,
+                {
+                  $set: {
+                    titre,
+                    description,
+                    image,
+                    dateDebut,
+                    dateFin,
+                    prixdebut,
+                    souscategory,
+                    category,
+                    status,
                   },
-                  { new: true }
-                );
-                res.status(200).json(updateOffre);
-              }
-            } else {
-              res.status(400).json({
+                },
+                { new: true }
+              );
+              res.status(200).json(updateOffre);
+              /* res.status(400).json({
                 error: true,
                 msg: `Modification avant '${Debut.toDateString()}' est impossible !`,
-              });
+              }); */
             }
           } catch (error) {
             console.log(error.message);
@@ -230,52 +231,48 @@ router.put(
   }
 );
 
-router.patch(
-  "/changestatus",
-  verifyAccessToken,
-  async (req, res) => {
-    axios
-      .get("http://localhost:5001/api/user/" + req.user.id)
-      .then(async (response) => {
-        var role = response.data.role;
-        let { id, status, archived } = req.body;
-        const one = await Offre.findById(id);
-        var date = new Date();
-        const Debut = new Date(one.dateDebut);
-        const Fin = new Date(one.dateFin);
-        const DateToCheck = new Date(date.getTime());
-        if (role === "super-admin") {
-          try {
-            if (one.status === "published" && !one.archived) {
-              const toArchived = await Offre.findByIdAndUpdate(
-                id,
-                { $set: { status: "archived", archived: true } },
-                { new: true }
-              );
-              res.status(200).json(toArchived);
-            } else {
-              const toPublished = await Offre.findByIdAndUpdate(
-                id,
-                { $set: { status: "published", archived: false } },
-                { new: true }
-              );
-              res.status(200).json(toPublished);
-            }
-          } catch (error) {
-            console.log(error);
-            res.status(500).json({
-              error: true,
-              msg: "Server error",
-            });
+router.patch("/changestatus", verifyAccessToken, async (req, res) => {
+  axios
+    .get("http://localhost:5001/api/user/" + req.user.id)
+    .then(async (response) => {
+      var role = response.data.role;
+      let { id, status, archived } = req.body;
+      const one = await Offre.findById(id);
+      var date = new Date();
+      const Debut = new Date(one.dateDebut);
+      const Fin = new Date(one.dateFin);
+      const DateToCheck = new Date(date.getTime());
+      if (role === "super-admin") {
+        try {
+          if (one.status === "published" && !one.archived) {
+            const toArchived = await Offre.findByIdAndUpdate(
+              id,
+              { $set: { status: "archived", archived: true } },
+              { new: true }
+            );
+            res.status(200).json(toArchived);
+          } else {
+            const toPublished = await Offre.findByIdAndUpdate(
+              id,
+              { $set: { status: "published", archived: false } },
+              { new: true }
+            );
+            res.status(200).json(toPublished);
           }
-        } else {
-          return res.status(404).json({
-            error: "Access Denied !!",
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({
+            error: true,
+            msg: "Server error",
           });
         }
-      });
-  }
-);
+      } else {
+        return res.status(404).json({
+          error: "Access Denied !!",
+        });
+      }
+    });
+});
 
 // @route   Delete api/offre/:categoryId
 // @desc    Delete Single offre
@@ -356,8 +353,9 @@ router.get("/allpublished", async (req, res) => {
     const offre = await Offre.find({
       archived: false,
       dateDebut: { $lt: DateToCheck },
-      dateFin: { $gt: DateToCheck },
+      dateFin: { $lt: DateToCheck },
     });
+    const up = await Offre.updateMany({dateFin: { $lt: DateToCheck }}, { $set: { status: "closed" } })
     res.status(200).json(offre);
   } catch (error) {
     console.log(error.message);

@@ -89,6 +89,20 @@ export const updateOffre = (id, data) => (dispatch) => {
     .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
 };
 
+export const UPS = (id) => axios.patch(`${OffremsURL}/api/offre/changestatus`, {"id": id});
+export const updateStatus = (id) => (dispatch) => {
+  setAuthToken(localStorage.accessToken);
+  UPS(id)
+    .then((res) => {
+      dispatch({
+        type: OFFRE_UPDATED,
+        payload: res.data,
+      });
+      toast.success("Mis à jour avec succés");
+    })
+    .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
+};
+
 export const DL = (id) => axios.delete(`${OffremsURL}/api/offre/` + id);
 export const deleteOffre = async (id, dispatch) => {
   DL(id)
@@ -133,7 +147,7 @@ export const decryptDemande = (id, data) => (dispatch) => {
       });
       toast.success("Demande décryptée avec succés");
       setTimeout(() => {
-        window.location.reload()
+        window.location.reload();
       }, 1000);
     })
     .catch(

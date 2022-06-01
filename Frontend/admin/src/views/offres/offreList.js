@@ -28,12 +28,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
 import UpdateOffre from "./updateOffre.js";
 import DetailsOffre from "./detailsOffre.js";
-import UpdateStatus from "./updateStatus.js";
 import decode from "jwt-decode";
 import "../../components/Loading/loading.css";
 import { addOffre } from "redux/offres/offreActions.js";
 import usePrevious from "helpers/usePrevious.js";
 import { toast } from "react-toastify";
+import { updateStatus } from "redux/offres/offreActions.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -86,6 +86,10 @@ const OffreList = ({ ...props }) => {
       }, 500);
     };
     if (window.confirm("Êtes-vous sûr ?")) dispatch(deleteOffre(id, onSuccess));
+  };
+
+  const onStatus = (id) => {
+    dispatch(updateStatus(id));
   };
 
   var date = new Date();
@@ -247,11 +251,12 @@ const OffreList = ({ ...props }) => {
                                   {DatetoCheck > new Date(of.dateFin) && (
                                     <span className=" text-dark">Closed</span>
                                   )}
-                                  {DatetoCheck < new Date(of.dateDebut) && (
-                                    <span className=" text-warning">
-                                      Pending
-                                    </span>
-                                  )}
+                                  {DatetoCheck < new Date(of.dateDebut) &&
+                                    !of.archived && (
+                                      <span className=" text-warning">
+                                        Pending
+                                      </span>
+                                    )}
                                   {of.archived && (
                                     <span className=" text-grey">Archived</span>
                                   )}
@@ -269,31 +274,19 @@ const OffreList = ({ ...props }) => {
                                     >
                                       <i className="fas fa-eye"></i>
                                     </Button>
-                                    {DatetoCheck < new Date(of.dateDebut) && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal2(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
-
-                                    {of.status === "archived" && (
-                                      <Button
-                                        className="btn btn-outline-dark"
-                                        size="sm"
-                                        onClick={() => {
-                                          setCurrentObj(of);
-                                          setShowModal2(true);
-                                        }}
-                                      >
-                                        <i className="fas fa-pencil-alt"></i>
-                                      </Button>
-                                    )}
+                                    {DatetoCheck < new Date(of.dateDebut) &&
+                                      of.archived && (
+                                        <Button
+                                          className="btn btn-outline-dark"
+                                          size="sm"
+                                          onClick={() => {
+                                            setCurrentObj(of);
+                                            setShowModal2(true);
+                                          }}
+                                        >
+                                          <i className="fas fa-pencil-alt"></i>
+                                        </Button>
+                                      )}
 
                                     {DatetoCheck < new Date(of.dateDebut) ? (
                                       <>
@@ -336,10 +329,7 @@ const OffreList = ({ ...props }) => {
                                         <Button
                                           className="btn btn-outline-success"
                                           size="sm"
-                                          onClick={() => {
-                                            setCurrentObj(of);
-                                            setShowModal4(true);
-                                          }}
+                                          onClick={() => onStatus(of._id)}
                                         >
                                           <i className="fas fa-arrow-up"></i>
                                         </Button>
@@ -372,13 +362,13 @@ const OffreList = ({ ...props }) => {
                                       </>
                                     )}
 
-                                    {of.status !== "archived" &&
+                                    {!of.archived &&
                                       DatetoCheck > new Date(of.dateDebut) &&
                                       DatetoCheck < new Date(of.dateFin) && (
                                         <Button
                                           className="btn btn-outline-dark"
                                           size="sm"
-                                          onClick={() => onDLF(of._id)}
+                                          onClick={() => onStatus(of._id)}
                                         >
                                           <i className="fas fa-archive "></i>
                                         </Button>
@@ -496,36 +486,6 @@ const OffreList = ({ ...props }) => {
                             setCurrentObj,
                             showModal3,
                             setShowModal3,
-                          }}
-                        />
-                      </motion.div>
-                    </Col>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Update Status Modal-4 */}
-              <AnimatePresence
-                exitBeforeEnter
-                showModal={showModal4}
-                setShowModal={setShowModal4}
-              >
-                {showModal4 && (
-                  <motion.div
-                    className="backdrop"
-                    variants={backdrop}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                  >
-                    <Col className=" fixed-top center" xl="5">
-                      <motion.div className="" variants={modal}>
-                        <UpdateStatus
-                          {...{
-                            currentObj,
-                            setCurrentObj,
-                            showModal4,
-                            setShowModal4,
                           }}
                         />
                       </motion.div>

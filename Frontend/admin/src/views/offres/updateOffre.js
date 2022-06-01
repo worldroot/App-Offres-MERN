@@ -25,13 +25,14 @@ import "./offre.css";
 
 const UpdateOffre = ({ ...props }) => {
 
-  const initialFieldValues = { image: [], demandes: props.currentObj.demandes.length };
   useEffect(() => {
     if (props.currentObj !== {}) {
       setValues({ ...props.currentObj });
       setErrors({});
     }
   }, [props.currentObj]);
+
+  const initialFieldValues = { image: [], demandes: props.currentObj.demandes.length };
 
   var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFieldValues, props.setCurrentObj);
@@ -234,7 +235,6 @@ const UpdateOffre = ({ ...props }) => {
                     <Input
                       type="date"
                       name="dateDebut"
-                      min={Today}
                       defaultValue={values.dateDebut ? values.dateDebut.substring(0, 10) : ''}
                       onChange={handleChangeDate("dateDebut")}
                     />

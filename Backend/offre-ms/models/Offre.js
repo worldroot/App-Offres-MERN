@@ -40,7 +40,7 @@ const OffreSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["archived", "published", "pending", "closed"],
-        default: "pending"
+        default: ""
       },
     archived: {
         type: Boolean,
