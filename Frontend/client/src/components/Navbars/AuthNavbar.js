@@ -73,16 +73,14 @@ const AuthNavbar = ({ logout, isAuth }) => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink className="nav-link-icon" to="/published-offres" tag={Link}>
+                  <i className="fab fa-buffer text-red"></i>
+                  <span className="nav-link-inner--text text-red ">Offres</span>
+                </NavLink>
+              </NavItem>
               {userExist && (
                 <>
-                  <NavItem>
-                    <NavLink className="nav-link-icon" to="/offres" tag={Link}>
-                      <i className="fab fa-buffer text-red"></i>
-                      <span className="nav-link-inner--text text-red">
-                        Offres
-                      </span>
-                    </NavLink>
-                  </NavItem>
                   <UncontrolledDropdown nav>
                     <DropdownToggle className="pr-0" nav>
                       <Media className="align-items-center">
@@ -118,18 +116,6 @@ const AuthNavbar = ({ logout, isAuth }) => {
 
               {!userExist && (
                 <>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      to="/published"
-                      tag={Link}
-                    >
-                      <i className="fab fa-buffer text-red"></i>
-                      <span className="nav-link-inner--text text-red ">
-                        Offres
-                      </span>
-                    </NavLink>
-                  </NavItem>
                   <NavItem>
                     <NavLink
                       className="nav-link-icon"

@@ -27,7 +27,7 @@ const initialFieldValues = {
   dateFin: "",
   souscategory: "",
   category: "",
-  prixdebut: "  ",
+  prixdebut: "",
 };
 
 const Offre = ({ ...props }) => {

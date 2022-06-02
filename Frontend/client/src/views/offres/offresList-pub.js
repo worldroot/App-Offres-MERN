@@ -84,7 +84,11 @@ const Offres = ({ ...props }) => {
     );
   }, [data, currentPage, Search, SearchCat]);
 
-  if (userExist) return <Redirect to="/offres" />;
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   const img = {
     height: 170,
@@ -225,8 +229,15 @@ const Offres = ({ ...props }) => {
                                     Categorie: {of.category} - {of.souscategory}
                                   </small>
                                 </Row>
+                               
                                 <Row>
-                                  <small>À partir de: {of.prixdebut} dt</small>
+                                  {of.prixdebut.length === 0 ? (
+                                    <small> Prix début ouvert  </small>
+                                  ) : (
+                                    <small>
+                                      À partir de: {of.prixdebut} dt
+                                    </small>
+                                  )}
                                 </Row>
                                 <Row>
                                   <small className="text-danger">
@@ -238,8 +249,6 @@ const Offres = ({ ...props }) => {
                                     Date Limite: {of.dateFin.substring(0, 10)}
                                   </small>
                                 </Row>
-                              </CardBody>
-                              <CardFooter className="border-0">
                                 <Row>
                                   <a
                                     className="card-link text-underline text-gray"
@@ -251,7 +260,22 @@ const Offres = ({ ...props }) => {
                                     <small>Details</small>
                                   </a>
                                 </Row>
-                              </CardFooter>
+                              </CardBody>
+                              {userLocal.active && (
+                                <CardFooter className="text-center">
+                                  <Row className="justify-content-center">
+                                    <Button
+                                      className="btn-outline-danger"
+                                      color="dark"
+                                      onClick={() => {
+                                        setShowModal2(true), setCurrentObj(of);
+                                      }}
+                                    >
+                                      Ajouter une demande
+                                    </Button>
+                                  </Row>
+                                </CardFooter>
+                              )}
                             </Card>
                           </Col>
                         </motion.div>

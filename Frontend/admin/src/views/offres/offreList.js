@@ -34,6 +34,7 @@ import { addOffre } from "redux/offres/offreActions.js";
 import usePrevious from "helpers/usePrevious.js";
 import { toast } from "react-toastify";
 import { updateStatus } from "redux/offres/offreActions.js";
+import Infos from "./infos.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -177,18 +178,24 @@ const OffreList = ({ ...props }) => {
                     <CardHeader className="border-0 ">
                       <div className="d-flex justify-content-between">
                         <h3 className="mb-0">List des offres</h3>
-                        {user.role === "admin" && (
-                          <>
-                            <Row>
-                              <Button
-                                size="sm"
-                                onClick={() => setShowModal(true)}
-                              >
-                                <i className="fas fa-plus"></i> Offre
-                              </Button>
-                            </Row>
-                          </>
-                        )}
+
+                        <Row>
+                          {user.role === "admin" && (
+                            <Button
+                              size="sm"
+                              onClick={() => setShowModal(true)}
+                            >
+                              <i className="fas fa-plus"></i> Offre
+                            </Button>
+                          )}
+                          <Button
+                            className="btn btn-dark rounded-circle"
+                            size="sm"
+                            onClick={() => setShowModal4(true)}
+                          >
+                            <i className="fas fa-info"></i>
+                          </Button>
+                        </Row>
                       </div>
                     </CardHeader>
 
@@ -217,7 +224,14 @@ const OffreList = ({ ...props }) => {
                             <Fragment key={index}>
                               <tr key={of._id}>
                                 <td>{of.titre}</td>
-                                <td>{of.prixdebut}</td>
+                                <td>
+                                  {" "}
+                                  {of.prixdebut.length === 0 ? (
+                                    <span>Ouvert</span>
+                                  ) : (
+                                    <span>{of.prixdebut}</span>
+                                  )}
+                                </td>
                                 <td>
                                   {of.dateDebut
                                     ? of.dateDebut.substring(0, 10)
@@ -262,20 +276,20 @@ const OffreList = ({ ...props }) => {
                                   )}
                                 </td>
                                 {/* DateToCheck > Debut && DateToCheck < Fin */}
-                                {user.role === "admin" && (
-                                  <td>
-                                    <Button
-                                      className="btn btn-outline-dark"
-                                      size="sm"
-                                      onClick={() => {
-                                        setCurrentObj(of);
-                                        setShowModal3(true);
-                                      }}
-                                    >
-                                      <i className="fas fa-eye"></i>
-                                    </Button>
-                                    {DatetoCheck < new Date(of.dateDebut) &&
-                                      of.archived && (
+                                <td>
+                                  <Button
+                                    className="btn btn-outline-success"
+                                    size="sm"
+                                    onClick={() => {
+                                      setCurrentObj(of);
+                                      setShowModal3(true);
+                                    }}
+                                  >
+                                    <i className="fas fa-eye"></i>
+                                  </Button>
+                                  {user.role === "admin" && (
+                                    <>
+                                      {of.archived && (
                                         <Button
                                           className="btn btn-outline-dark"
                                           size="sm"
@@ -288,44 +302,51 @@ const OffreList = ({ ...props }) => {
                                         </Button>
                                       )}
 
-                                    {DatetoCheck < new Date(of.dateDebut) ? (
-                                      <>
+                                      {DatetoCheck < new Date(of.dateDebut) ? (
+                                        <>
+                                          <Button
+                                            className="btn btn-outline-danger"
+                                            size="sm"
+                                            onClick={() => onDLF(of._id)}
+                                          >
+                                            <i className="fas fa-trash"></i>
+                                          </Button>
+                                        </>
+                                      ) : (
                                         <Button
-                                          className="btn btn-outline-danger"
+                                          disabled
+                                          className="btn btn-dark"
                                           size="sm"
                                           onClick={() => onDLF(of._id)}
                                         >
                                           <i className="fas fa-trash"></i>
                                         </Button>
-                                      </>
-                                    ) : (
-                                      <Button
-                                        disabled
-                                        className="btn btn-dark"
-                                        size="sm"
-                                        onClick={() => onDLF(of._id)}
-                                      >
-                                        <i className="fas fa-trash"></i>
-                                      </Button>
-                                    )}
-                                  </td>
-                                )}
-                                {user.role === "super-admin" && (
-                                  <td>
-                                    <Button
-                                      className="btn btn-outline-dark"
-                                      size="sm"
-                                      onClick={() => {
-                                        setCurrentObj(of);
-                                        setShowModal3(true);
-                                      }}
-                                    >
-                                      <i className="fas fa-eye"></i>
-                                    </Button>
-
-                                    {of.archived &&
-                                      DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) && (
+                                      )}
+                                    </>
+                                  )}
+                                  {user.role === "super-admin" && (
+                                    <>
+                                      {of.archived &&
+                                        DatetoCheck > new Date(of.dateDebut) &&
+                                        DatetoCheck < new Date(of.dateFin) && (
+                                          <Button
+                                            className="btn btn-outline-success"
+                                            size="sm"
+                                            onClick={() => onStatus(of._id)}
+                                          >
+                                            <i className="fas fa-arrow-up"></i>
+                                          </Button>
+                                        )}
+                                      {!of.archived && (
+                                        <Button
+                                          className="btn btn-outline-dark"
+                                          size="sm"
+                                          onClick={() => onStatus(of._id)}
+                                        >
+                                          <i className="fas fa-archive "></i>
+                                        </Button>
+                                      )}
+                                      {of.archived && (
                                         <Button
                                           className="btn btn-outline-success"
                                           size="sm"
@@ -335,46 +356,20 @@ const OffreList = ({ ...props }) => {
                                         </Button>
                                       )}
 
-                                    {of.status === "pending" &&
-                                      DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) && (
-                                        <Button
-                                          className="btn btn-outline-dark"
-                                          size="sm"
-                                          onClick={() => {
-                                            setCurrentObj(of);
-                                            setShowModal4(true);
-                                          }}
-                                        >
-                                          <i className="fas fa-pencil-alt"></i>
-                                        </Button>
+                                      {DatetoCheck < new Date(of.dateDebut) && (
+                                        <>
+                                          <Button
+                                            className="btn btn-outline-danger"
+                                            size="sm"
+                                            onClick={() => onDLF(of._id)}
+                                          >
+                                            <i className="fas fa-trash"></i>
+                                          </Button>
+                                        </>
                                       )}
-
-                                    {DatetoCheck < new Date(of.dateDebut) && (
-                                      <>
-                                        <Button
-                                          className="btn btn-outline-danger"
-                                          size="sm"
-                                          onClick={() => onDLF(of._id)}
-                                        >
-                                          <i className="fas fa-trash"></i>
-                                        </Button>
-                                      </>
-                                    )}
-
-                                    {!of.archived &&
-                                      DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) && (
-                                        <Button
-                                          className="btn btn-outline-dark"
-                                          size="sm"
-                                          onClick={() => onStatus(of._id)}
-                                        >
-                                          <i className="fas fa-archive "></i>
-                                        </Button>
-                                      )}
-                                  </td>
-                                )}
+                                    </>
+                                  )}
+                                </td>
                               </tr>
                             </Fragment>
                           );
@@ -486,6 +481,34 @@ const OffreList = ({ ...props }) => {
                             setCurrentObj,
                             showModal3,
                             setShowModal3,
+                          }}
+                        />
+                      </motion.div>
+                    </Col>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Instructions Offre Modal-4 */}
+              <AnimatePresence
+                exitBeforeEnter
+                showModal={showModal4}
+                setShowModal={setShowModal4}
+              >
+                {showModal4 && (
+                  <motion.div
+                    className="backdrop"
+                    variants={backdrop}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                  >
+                    <Col className=" fixed-top center" xl="5">
+                      <motion.div className="" variants={modal}>
+                        <Infos
+                          {...{
+                            showModal4,
+                            setShowModal4,
                           }}
                         />
                       </motion.div>

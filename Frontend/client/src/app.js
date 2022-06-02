@@ -47,7 +47,6 @@ function App() {
     OneSignal.init({
       appId: "10d0d189-e8bd-413a-b51b-becc098b1617",
     });
-    console.log("OneSignal...");
   }, []);
 
   //DARK-RED: #C11923
@@ -66,9 +65,8 @@ function App() {
           <Route exact path="/forgot-pass" component={ForgotPass} />
           <Route exact path="/reset-pass/:token" component={ResetPass} />
           <Route path="/api/access/verify/:token" component={VerifMail} />
-          <Route exact path="/published" component={offresListPub} />
+          <Route exact path="/published-offres" component={offresListPub} />
 
-          <UserRoute exact path="/offres" component={offresList} />
           <UserRoute exact path="/profile" component={UserDetails} />
           <Redirect from="/" to="/404" />
         </Switch>

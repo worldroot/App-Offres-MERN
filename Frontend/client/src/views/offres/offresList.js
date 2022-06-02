@@ -241,7 +241,7 @@ const Offres = ({ ...props }) => {
                                   </small>
                                 </Row>
                                 <Row>
-                                  {of.offre.prixdebut === "" ? (
+                                  {of.offre.prixdebut.length === 0 ? (
                                     <small> Prix début ouvert </small>
                                   ) : (
                                     <small>

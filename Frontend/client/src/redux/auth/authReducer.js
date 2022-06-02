@@ -24,7 +24,7 @@ const intialState = {
     accessToken: localStorage.getItem('accesstoken'),
     expiresIn: localStorage.getItem('expiresIn'),
     refreshToken: localStorage.getItem('refreshToken'),
-    isAuthenticated: null,
+    isAuthenticated: false,
     loading: true,
     user: [],
 };

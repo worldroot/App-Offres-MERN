@@ -99,8 +99,7 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data.email,
-                        status,
+                        postedBy: responseUser.data.email
                       });
                       newOffre.save().then(() => res.json(data));
                     }
@@ -353,7 +352,7 @@ router.get("/allpublished", async (req, res) => {
     const offre = await Offre.find({
       archived: false,
       dateDebut: { $lt: DateToCheck },
-      dateFin: { $lt: DateToCheck },
+      dateFin: { $gt: DateToCheck },
     });
     const up = await Offre.updateMany({dateFin: { $lt: DateToCheck }}, { $set: { status: "closed" } })
     res.status(200).json(offre);

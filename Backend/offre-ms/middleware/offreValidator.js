@@ -17,10 +17,6 @@ exports.validateAddOffre = [
     .notEmpty()
     .withMessage('dateDebut is required'),
 
-    check('prixdebut')
-    .notEmpty()
-    .withMessage('prixdebut is required'),
-
     check('dateFin')
     .notEmpty()
     .withMessage('dateFin is required'),
