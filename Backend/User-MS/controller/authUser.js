@@ -35,8 +35,13 @@ router.post(
         });
       } else {
         user = new User({ nom, prenom, email, password, role });
+
+        const savedUser = await user.save();
+        if (!savedUser) throw Error("Something went wrong saving the user");
+
         const accessToken = await signAccessToken(savedUser.id);
         const refreshToken = await signRefreshToken(savedUser.id);
+
         const url = `${process.env.BASE_URL}/api/access/verify/${accessToken}`;
         const sendMail = await emailSender(
           user.email,
@@ -54,7 +59,6 @@ router.post(
             msg: "Failed to send email !",
           });
         } else {
-          const savedUser = await user.save();
           res
             .status(200)
             .json({

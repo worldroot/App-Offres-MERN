@@ -59,7 +59,6 @@ const Offre = ({ ...props }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     props.create(data);
-    setData(initialFieldValues);
   };
 
   if (!userExist) {

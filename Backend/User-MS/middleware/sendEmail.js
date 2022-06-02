@@ -1,15 +1,42 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
+const sgTransport = require('nodemailer-sendgrid-transport');
+
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const apiKey = `${process.env.SENDGRID_API_KEY}`;
 console.log("SendGrid key ", apiKey);
 
+
+//appoffres.ooredoo@gmail.com
 const emailSender = async (email, url, text) => {
   try {
-    const message = {
+    /* 		const transporter = nodemailer.createTransport({
+		
+		
+			host: "smtp.mailtrap.io",
+			port: 2525,
+			auth: {
+			  user: "6adcb0b3bc15c3",
+			  pass: "c170a6da93e22e",
+			},
+		  }); 
+	*/
+
+	const transporter = nodemailer.createTransport({
+		
+		
+		host: "smtp.mailtrap.io",
+		port: 2525,
+		auth: {
+		  user: "6adcb0b3bc15c3",
+		  pass: "c170a6da93e22e",
+		},
+	  }); 
+
+    await transporter.sendMail({
+      from: 'appoffres@mailpluss.com',
       to: email,
-      from: "appoffres@mailpluss.com",
       subject: "Activate your account",
       html: `
 			<html lang="en">
@@ -84,8 +111,7 @@ const emailSender = async (email, url, text) => {
 			</body>
 		  </html>
 			`,
-    };
-    sgMail.send(message);
+    });
     console.log("email sent successfully");
   } catch (error) {
     console.log("email not sent!");
@@ -97,8 +123,8 @@ const emailSender = async (email, url, text) => {
 const emailReset = async (email, url, text, nom) => {
   try {
     const message = {
-      from: "appoffres.ooredoo@gmail.com",
       to: email,
+      from: "appoffres@mailpluss.com",
       subject: "Réinitialiser votre mot de passe",
       html: `
 			<html lang="en">

@@ -62,8 +62,8 @@ router.post(
               });
             } else {
               if (DateToCheck > Debut && DateToCheck < Fin) {
-                const pDem = parseFloat(prix)
-                const pOffre = parseFloat(offreModel.prixdebut)
+                const pDem = parseFloat(prix);
+                const pOffre = parseFloat(offreModel.prixdebut);
                 if (pDem < pOffre) {
                   return res.status(403).json({
                     error: true,
