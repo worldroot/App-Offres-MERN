@@ -1,0 +1,19 @@
+{
+  "name": "notification-ms",
+  "version": "1.0.0",
+  "description": "notification-ms",
+  "main": "\\",
+  "scripts": {
+    "test": "jest --silent"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GhassenBoughzala/App-Offres-MERN.git"
+  },
+  "author": "GhassenBoughzala",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GhassenBoughzala/App-Offres-MERN/issues"
+  },
+  "homepage": "https://github.com/GhassenBoughzala/App-Offres-MERN#readme"
+}

@@ -20,7 +20,6 @@ import UserRoute from "routes/UserRoute";
 
 import { refreshJwt } from "redux/auth/authActions";
 import decode from "jwt-decode";
-import offresList from "views/offres/offresList";
 import offresListPub from "views/offres/offresList-pub";
 
 function App() {
@@ -39,6 +38,7 @@ function App() {
 
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         store.dispatch(refreshJwt({ refreshToken }));
+        window.location.reload()
       }
     }
   }, []);

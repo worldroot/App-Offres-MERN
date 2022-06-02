@@ -33,7 +33,7 @@ import "../../components/Loading/loading.css";
 import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
-import { Redirect } from "react-router-dom";
+
 
 const backdrop = {
   visible: { opacity: 1 },
