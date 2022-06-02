@@ -346,15 +346,7 @@ const OffreList = ({ ...props }) => {
                                           <i className="fas fa-archive "></i>
                                         </Button>
                                       )}
-                                      {of.archived && (
-                                        <Button
-                                          className="btn btn-outline-success"
-                                          size="sm"
-                                          onClick={() => onStatus(of._id)}
-                                        >
-                                          <i className="fas fa-arrow-up"></i>
-                                        </Button>
-                                      )}
+                                     
 
                                       {DatetoCheck < new Date(of.dateDebut) && (
                                         <>
