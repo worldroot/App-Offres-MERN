@@ -189,7 +189,7 @@ const OffreList = ({ ...props }) => {
                             </Button>
                           )}
                           <Button
-                            className="btn btn-dark rounded-circle"
+                            className="btn btn-outline-dark"
                             size="sm"
                             onClick={() => setShowModal4(true)}
                           >

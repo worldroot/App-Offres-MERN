@@ -88,7 +88,6 @@ const AjoutDemande = ({ ...props }) => {
               <p className="text-center text-dark">
                 Votre prix
                 <Input
-                  min={1}
                   type="number"
                   step="0.1"
                   name="prix"

@@ -99,9 +99,9 @@ const Offres = ({ ...props }) => {
     <>
       <div className="main-content">
         <AuthNavbar />
-        <div className=" py-xl-6 position-relative w-100vh h-100vh">
+       
           {/* Content */}
-          <Container className="mt--8  py-xl-7">
+          <Container className="mt-4 mb-4 py-4">
             <Row className="justify-content-center">
               <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
@@ -217,7 +217,7 @@ const Offres = ({ ...props }) => {
                                   <img
                                     className="img-fluid rounded avatar avatar-lg"
                                     style={img}
-                                    src={of.image[1]}
+                                    src={of.image[0]}
                                     alt=""
                                   />
                                 </div>
@@ -365,7 +365,7 @@ const Offres = ({ ...props }) => {
               )}
             </AnimatePresence>
           </Container>
-        </div>
+     
 
         <AuthFooter />
       </div>

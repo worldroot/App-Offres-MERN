@@ -295,7 +295,7 @@ router.delete(
         if (role === "admin") {
           if (DateToCheck < Debut) {
             try {
-              let deletedOffre = await offre.remove();
+              let deletedOffre = await Offre.deleteOne(req.params.offreId);
               res.status(200).json({
                 message: `Offre : ${deletedOffre.titre} deleted successfully`,
               });
@@ -315,7 +315,7 @@ router.delete(
         } else if (role === "super-admin") {
           if (DateToCheck < Debut) {
             try {
-              let deletedOffre = await offre.remove();
+              let deletedOffre = await Offre.deleteOne(req.params.offreId);
               res.status(200).json({
                 msg: `Offre : ${deletedOffre.titre} deleted successfully`,
               });
@@ -351,6 +351,7 @@ router.get("/allpublished", async (req, res) => {
     //DateToCheck > Debut && DateToCheck < Fin
     const offre = await Offre.find({
       archived: false,
+      status: "published",
       dateDebut: { $lt: DateToCheck },
       dateFin: { $gt: DateToCheck },
     });

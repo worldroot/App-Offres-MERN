@@ -18,14 +18,14 @@ const Home = () => {
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
-  const dispatch =  useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       const refreshToken = localStorage.getItem("refreshToken");
       const decodedToken = decode(accessToken);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
-        dispatch(refreshJwt({ refreshToken })) 
+        dispatch(refreshJwt({ refreshToken }));
       }
     }
   });
@@ -40,51 +40,39 @@ const Home = () => {
     <>
       <div className="main-content">
         <AuthNavbar />
-        <div className=" py-xl-9">
-          <Container>
-            <div className="header-body text-center mb-7">
-              <Row className="justify-content-center">
-                <Col lg="5" md="6">
-                  <p className="text-lead text-light"></p>
-                </Col>
-              </Row>
-            </div>
-          </Container>
 
-          {/* Content */}
-          {!userExist && (
-            <>
-              <Container className="mt--8 pb-8 py-xl-9">
-                <Row className="justify-content-center">
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.5 }}
-                  >
-                    <h1 className="text-center text-red">Acceuil</h1>
-                  </motion.div>
-                </Row>
-              </Container>
-            </>
-          )}
-
-          {userExist && (
-            <Container className="mt--8 pb-8 py-xl-9">
+        {/* Content */}
+        {!userExist && (
+          <>
+            <Container className="mt-4 mb-4 py-4">
               <Row className="justify-content-center">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1.5 }}
                 >
-                  <h1 className="text-center text-red">Bienvenue</h1>
+                  <h1 className="text-center text-red">Acceuil</h1>
                 </motion.div>
               </Row>
             </Container>
-          )}
-        </div>
-        <div className=" fixed-bottom">
-          <AuthFooter />
-        </div>
+          </>
+        )}
+
+        {userExist && (
+          <Container className="mt-4 mb-4 py-4">
+            <Row className="justify-content-center">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5 }}
+              >
+                <h1 className="text-center text-red">Bienvenue</h1>
+              </motion.div>
+            </Row>
+          </Container>
+        )}
+
+        <AuthFooter />
       </div>
     </>
   );

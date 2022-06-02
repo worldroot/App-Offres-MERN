@@ -66,10 +66,10 @@ const UserDetails = (props) => {
     <>
       <div className="main-content flex">
         <AuthNavbar />
-        <div className="bg-danger py-7 py-lg-9 w-100vh h-100vh">
+        <div className="bg-danger w-100vh h-100vh py-5">
           <Container>
             <Row>
-              <Col className="order-xl-1 mb-5 mb-xl-0" xl="4">
+              <Col className="order-xl-1 mb-5 mb-xl-0 " xl="4">
                 <div className="text-center">
                   <Card className="card-profile shadow">
                     <CardHeader className="text-center border-0 pt-0 pt-md-2 pb-0 pb-md-2">
@@ -118,7 +118,7 @@ const UserDetails = (props) => {
                                 >
                                   Editer compte
                                 </Button>
-                                <Button
+                               {/*  <Button
                                   className="my-2 btn-outline-dark"
                                   color="default"
                                   onClick={() => {
@@ -127,7 +127,7 @@ const UserDetails = (props) => {
                                   size="sm"
                                 >
                                   Traiter demandes
-                                </Button>
+                                </Button> */}
                               </div>
                             </>
                           )}

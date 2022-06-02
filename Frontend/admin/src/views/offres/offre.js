@@ -31,7 +31,6 @@ const initialFieldValues = {
 };
 
 const Offre = ({ ...props }) => {
-
   const ImgStyle = {
     width: "100px",
     height: "100px",
@@ -60,6 +59,7 @@ const Offre = ({ ...props }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     props.create(data);
+    setData(initialFieldValues);
   };
 
   if (!userExist) {

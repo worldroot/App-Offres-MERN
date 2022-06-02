@@ -14,7 +14,7 @@ import {
   Container,
   Row,
   Col,
-  Button,
+  Button
 } from "reactstrap";
 
 const LogoImg = require("../../assets/img/oo.png");
@@ -53,7 +53,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
     <>
       <Navbar
         className="navbar-top navbar-horizontal navbar-dark bg-white fixed-top position-relative"
-        expand="md"
+        expand="sm"
       >
         <Container className="px-4">
           <NavbarBrand to="/" tag={Link}>
@@ -62,16 +62,8 @@ const AuthNavbar = ({ logout, isAuth }) => {
           <button className="navbar-toggler" id="navbar-collapse-main">
             <span className="navbar-toggler-icon" />
           </button>
-          <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
-            <div className="navbar-collapse-header d-md-none">
-              <Row>
-                <Col className="collapse-brand" xs="6">
-                  <Link to="/">
-                    <img className="img-fluid" alt="..." src={ooredoo} />
-                  </Link>
-                </Col>
-              </Row>
-            </div>
+          <UncontrolledCollapse navbar toggler="navbar-collapse-main">
+           
             <Nav className="ml-auto" navbar>
               <NavItem>
                 <NavLink className="nav-link-icon" to="/published-offres" tag={Link}>
