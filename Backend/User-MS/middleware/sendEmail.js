@@ -7,8 +7,6 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const apiKey = `${process.env.SENDGRID_API_KEY}`;
 console.log("SendGrid key ", apiKey);
 
-
-//appoffres.ooredoo@gmail.com
 const emailSender = async (email, url, text) => {
   try {
     /* 		const transporter = nodemailer.createTransport({
