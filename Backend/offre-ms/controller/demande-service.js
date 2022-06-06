@@ -159,6 +159,11 @@ router.put(
                   res.status(200).json(list);
                 }
               });
+              await Offre.findByIdAndUpdate(
+                req.params.offreId,
+                { $set: { status: "résultats" } },
+                { new: true }
+              );
             } else {
               res.status(401).json({
                 error: true,

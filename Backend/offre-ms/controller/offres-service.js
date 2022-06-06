@@ -355,7 +355,11 @@ router.get("/allpublished", async (req, res) => {
       dateFin: { $gt: DateToCheck },
     });
     const up = await Offre.updateMany({dateFin: { $lt: DateToCheck }}, { $set: { status: "closed" } })
-    res.status(200).json(offre);
+    const closed = await Offre.find({dateFin: { $lt: DateToCheck },  status: "closed"  })
+    if(closed.length > 0){
+      axios.post(`http://localhost:5004/api/notif/toAll`, {"text": closed[0].titre})
+    }
+    res.status(200).json(closed);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({

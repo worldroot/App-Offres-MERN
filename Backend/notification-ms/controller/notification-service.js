@@ -4,6 +4,10 @@ const Notif = require("../models/Notif");
 const router = express.Router();
 const https = require("https");
 
+//AdminApp: app_id: "ce9b6483-0272-4f13-8560-e6c628f65776",
+// -------
+//ClientApp: app_id: "10d0d189-e8bd-413a-b51b-becc098b1617",
+
 var options = {
   host: "onesignal.com",
   port: 443,
@@ -38,10 +42,7 @@ router.post("/toAll", async (req, res) => {
   req.write(JSON.stringify(message));
   req.end();
 
-  res
-    .status(200)
-    .json({ etat: true, message: "Notification sent successfully" });
+  res.status(200).json({ etat: true, message: "Notification sent successfully" });
 });
-
 
 module.exports = router;
