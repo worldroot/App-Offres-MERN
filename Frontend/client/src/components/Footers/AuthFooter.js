@@ -7,7 +7,7 @@ import { NavItem, NavLink, Nav, Container, Row, Col } from "reactstrap";
 const Login = () => {
   return (
     <>
-      <footer className="bg-darkgrey py-3 w-100vh fixed-bottom">
+      <footer className="bg-darkgrey py-3 w-100vh">
         <Container>
           <Row className="align-items-center justify-content-xl-between">
             <Col xl="6">

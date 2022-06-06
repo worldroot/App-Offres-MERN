@@ -222,7 +222,7 @@ const Offres = ({ ...props }) => {
                                   />
                                 </div>
                                 <Row>
-                                  <h3>{of.titre}</h3>
+                                  <h3>{of.titre.substring(0,25)}</h3>
                                 </Row>
                                 <Row>
                                   <small>
