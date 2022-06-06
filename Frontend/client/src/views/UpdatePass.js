@@ -16,8 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
 import useForm from "../helpers/useForm";
 import { updatePassword } from "redux/users/userActions";
-import { data } from "jquery";
-import { toast } from "react-toastify";
 const initialFieldValues = {};
 
 const UpdatePass = ({ ...props }) => {
@@ -28,24 +26,9 @@ const UpdatePass = ({ ...props }) => {
   const [confirmpass, setCp] = useState("");
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!password || !confirmpass) {
-      toast.warn("Verifier vos champs !");
-    }
-
-    if (props.currentId !== 0) {
-      dispatch(updatePassword(password, confirmpass));
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-
-      reset();
-    } else {
-      toast.error("Erreur");
-      resetForm();
-    }
+  const onSubmit = (e) => {
+    e.preventDefault();    
+    dispatch(updatePassword(password, confirmpass));
   };
 
   const reset = (e) => {
@@ -56,56 +39,59 @@ const UpdatePass = ({ ...props }) => {
     <>
       <hr className="my-4" />
 
-      <FormGroup onSubmit={handleSubmit}>
+      <FormGroup>
         <Row className="align-items-center">
           <Col xs="8">
             <h6 className="heading-small text-muted mb-4">
               Mettre à jour le mot de passe
             </h6>
           </Col>
-          <Col className="text-right" xs="4">
-            <Button
+        </Row>
+
+        <Form onSubmit={onSubmit}>
+          <Row>
+            <Col lg="6">
+              <FormGroup>
+                <label className="form-control-label text-dark">
+                  Nouveau mot de passe
+                </label>
+                <Input
+                  value={password}
+                  name="password"
+                  onChange={(e) => setP(e.target.value)}
+                  className="form-control-alternative"
+                  type="password"
+                />
+              </FormGroup>
+              <Button
               className="btn-outline-success"
               color="default"
-              size="sm"
               type="submit"
+              size="sm"
             >
               Confirmer
             </Button>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col lg="6">
-            <FormGroup>
-              <label className="form-control-label text-dark">
-                Nouveau mot de passe
-              </label>
-              <Input
-                value={password}
-                name="password"
-                onChange={(e) => setP(e.target.value)}
-                className="form-control-alternative"
-                type="password"
-              />
-            </FormGroup>
-          </Col>
-          <Col lg="6">
-            <FormGroup>
-              <label className="form-control-label text-dark">
-                Confirmation mot de passe
-              </label>
-              <Input
-                value={confirmpass}
-                name="confirmpass"
-                onChange={(e) => setCp(e.target.value)}
-                className="form-control-alternative"
-                type="password"
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row></Row>
+            </Col>
+            <Col lg="6">
+              <FormGroup>
+                <label className="form-control-label text-dark">
+                  Confirmation mot de passe
+                </label>
+                <Input
+                  value={confirmpass}
+                  name="confirmpass"
+                  onChange={(e) => setCp(e.target.value)}
+                  className="form-control-alternative"
+                  type="password"
+                />
+              </FormGroup>
+             
+            </Col>
+          </Row>
+          <Row>
+           
+          </Row>
+        </Form>
       </FormGroup>
     </>
   );

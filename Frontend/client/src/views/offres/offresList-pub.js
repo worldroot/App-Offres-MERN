@@ -106,7 +106,7 @@ const Offres = ({ ...props }) => {
               <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
             {props.isLoading ? (
-              <div className="text-center">
+              <div className="text-center mt-4 mb-4 py-4 p-xl-9">
                 <div id="loading"></div>
               </div>
             ) : (

@@ -49,30 +49,33 @@ export const updateUser = (nom, prenom, email) => (dispatch) => {
   }
 };
 
-export const updatePassword = (password, confirmpass) => (dispatch) => {
-  const config = { headers: { "Content-Type": "application/json" } };
-  const body = JSON.stringify({ password, confirmpass });
-
-  if (password !== confirmpass) {
-    toast.warn("Les mots de passe ne correspondent pas !");
+export const updatePassword = (password, confirmpass) => async (dispatch) => {
+  if (!password || !confirmpass) {
+    toast.warn("Verifier vos champs !");
   } else {
     try {
-      const res = axios
-        .put(`${UsermsURL}/api/user/updatepwd`, body, config)
+      const body = {
+        password: password,
+        confirmpass: confirmpass,
+      };
+      await axios
+        .put(`${UsermsURL}/api/user/updatepwd`, body)
+        .then((res) => {
+          dispatch({
+            type: UP_PASS_DONE,
+            payload: res.data,
+          });
+          window.location.reload(false);
+        })
         .catch(function (error) {
           //console.log(error.response.data.msg);
           toast.warn(error.response.data.msg);
         });
-      dispatch({
-        type: UP_PASS_DONE,
-        payload: res.data,
-      });
     } catch (error) {
       console.log(error);
       dispatch({
         type: UP_PASS_FAIL,
       });
-
       toast.error("Quelque chose s'est mal passé !");
     }
   }
