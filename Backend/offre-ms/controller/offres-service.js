@@ -351,7 +351,6 @@ router.get("/allpublished", async (req, res) => {
     //DateToCheck > Debut && DateToCheck < Fin
     const offre = await Offre.find({
       archived: false,
-      status: "published",
       dateDebut: { $lt: DateToCheck },
       dateFin: { $gt: DateToCheck },
     });

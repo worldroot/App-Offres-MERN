@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const connectDB = require('./db/db')
 const bodyParser = require('body-parser')
-//const offreRoute = require('./controller/offres-service')
+const notifRoute = require('./controller/notification-service')
 
 require('dotenv').config()
 connectDB()
@@ -17,7 +17,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-//app.use("/api/offre", offreRoute)
+app.use("/api/notif", notifRoute)
 
 //404
 app.use((res) => {

@@ -1,8 +1,8 @@
 {
   "name": "notification-ms",
   "version": "1.0.0",
-  "description": "notification-ms",
-  "main": "\\",
+  "description": "PFE",
+  "main": "index.js",
   "scripts": {
     "dev-notif": "nodemon index.js",
     "test": "jest --silent"

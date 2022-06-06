@@ -37,6 +37,9 @@ const UserSchema = new mongoose.Schema({
       banned: {
         type: Boolean,
         default: false
+      },
+      OneSignalID: {
+        type: Array
       }
     },
     { timestamps: true }
