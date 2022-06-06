@@ -7,6 +7,7 @@ import store from './redux/store';
 import { loadUser } from './redux/auth/authActions';
 
 import { ToastContainer } from 'react-toastify';
+import OneSignal from "react-onesignal";
 
 import AdminRoute from 'routes/AdminRoute';
 import SuperRoute from 'routes/SuperAdminRoute';
@@ -32,8 +33,13 @@ function App() {
     //store.dispatch(loadUser()) 
   }, [])
 
-  //DARK-RED: #C11923
-  //RED: #ED1A24
+
+  useEffect(() => {
+    OneSignal.init({
+      appId: "ce9b6483-0272-4f13-8560-e6c628f65776",
+    });
+  }, []);
+
 
   return (
     <Provider store={store}>
