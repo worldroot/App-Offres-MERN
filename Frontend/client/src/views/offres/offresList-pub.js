@@ -91,8 +91,8 @@ const Offres = ({ ...props }) => {
   });
 
   const img = {
-    height: 170,
-    width: 170,
+    height: 180,
+    width: 220,
   };
 
   return (
@@ -215,7 +215,7 @@ const Offres = ({ ...props }) => {
                               <CardBody className="text-dark">
                                 <div className="text-center">
                                   <img
-                                    className="img-fluid rounded avatar avatar-lg"
+                                    className="img-fluid rounded avatar avatar-lg m-2"
                                     style={img}
                                     src={of.image[0]}
                                     alt=""

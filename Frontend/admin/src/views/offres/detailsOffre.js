@@ -64,7 +64,7 @@ const DetailsOffre = ({ ...props }) => {
 
   const ImgStyle = {
     width: "200px",
-    height: "200px"
+    height: "200px",
   };
 
   if (!userExist) {
@@ -97,15 +97,15 @@ const DetailsOffre = ({ ...props }) => {
             <Row>
               <Col>
                 <FormGroup>
-                  <p>
-                    Prix debut:
-                    <label className="form-control-label text-dark mx-2">
-                      {values.prixdebut} dt
-                    </label>
-                  </p>
+                  {values.prixdebut.length === 0 ? (
+                    <p className="text-dark"> Prix début ouvert </p>
+                  ) : (
+                    <p className="text-dark">
+                      À partir de: {values.prixdebut} dt
+                    </p>
+                  )}
                 </FormGroup>
               </Col>
-             
             </Row>
 
             <Row>
@@ -170,20 +170,19 @@ const DetailsOffre = ({ ...props }) => {
             <Row>
               <Col>
                 <FormGroup>
-                  <AliceCarousel mouseDragEnabled >
+                  <AliceCarousel mouseDragEnabled>
                     {values.image.map((img, index) => (
                       <Fragment key={index}>
                         <div className="text-center">
                           <img
-                          onClick={() => {
-                            setShowImg(true), setCurrentIndex(index);
-                          }}
-                          className="img-fluid rounded shadow avatar avatar-lg w-25 h-25"
-                          src={img}
-                          alt=""
-                        />
+                            onClick={() => {
+                              setShowImg(true), setCurrentIndex(index);
+                            }}
+                            className="img-fluid rounded shadow avatar avatar-lg w-25 h-50"
+                            src={img}
+                            alt=""
+                          />
                         </div>
-                        
                       </Fragment>
                     ))}
                   </AliceCarousel>

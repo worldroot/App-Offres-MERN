@@ -1,4 +1,4 @@
-import { Row, Col, Container } from "reactstrap";
+import { Row, Col, Container, UncontrolledCarousel } from "reactstrap";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ import { connect, useDispatch } from "react-redux";
 
 import { refreshJwt } from "redux/auth/authActions";
 import decode from "jwt-decode";
+const ooredoo = require("../assets/img/oored.png");
 
 const Home = () => {
   const userExist = localStorage.getItem("user");
@@ -36,6 +37,18 @@ const Home = () => {
     }
   }, []);
 
+  const items = [
+    {
+      src: ooredoo,
+
+    },
+    {
+      src: ooredoo,
+
+    },
+
+  ];
+
   return (
     <>
       <div className="main-content">
@@ -59,17 +72,20 @@ const Home = () => {
         )}
 
         {userExist && (
-          <Container className="mt-4 mb-4 py-4">
-            <Row className="justify-content-center">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5 }}
-              >
-                <h1 className="text-center text-red">Bienvenue</h1>
-              </motion.div>
-            </Row>
-          </Container>
+          <>
+            <Container className="mt-4 mb-4 py-4">
+              <Row className="justify-content-center">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1.5 }}
+                >
+                  <h1 className="text-center text-red">Bienvenue</h1>
+                </motion.div>
+              </Row>
+            </Container>
+            <UncontrolledCarousel items={items} />
+          </>
         )}
 
         <AuthFooter />

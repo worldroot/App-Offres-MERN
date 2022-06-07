@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { Provider } from "react-redux";
@@ -23,6 +23,12 @@ import decode from "jwt-decode";
 import offresListPub from "views/offres/offresList-pub";
 
 function App() {
+  const userExist = localStorage.getItem("user");
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   if (localStorage.accessToken) {
     setAuthToken(localStorage.accessToken);
@@ -38,16 +44,32 @@ function App() {
 
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         store.dispatch(refreshJwt({ refreshToken }));
-        window.location.reload()
+        window.location.reload();
       }
     }
   }, []);
 
   useEffect(() => {
-    OneSignal.init({
-      appId: "10d0d189-e8bd-413a-b51b-becc098b1617",
-    });
-  }, []);
+    if (userExist) {
+      if (userLocal.OneSignalID.length === 0) {
+        OneSignal.init({
+          appId: "10d0d189-e8bd-413a-b51b-becc098b1617",
+        });
+        OneSignal.getUserId((userId) => {
+          console.log(userId);
+        });
+        console.log("OneSignal On");
+      } else {
+        console.log("OneSignal userId Exist");
+      }
+    } else {
+      console.log("OneSignal Off");
+    }
+    /* 
+    OneSignal.getUserId((userId) => {
+      console.log(userId);
+    }); */
+  }, [userExist]);
 
   //DARK-RED: #C11923
   //RED: #ED1A24

@@ -75,6 +75,8 @@ router.post(
                       response.data.category
                   )
                   .then(async (response2) => {
+                    const DebutNotif = new Date(dateDebut).toDateString()
+                    const FinNotif = new Date(dateFin).toDateString()
                     if (DateToCheck > Debut && DateToCheck < Fin) {
                       const newOffre = new Offre({
                         titre,
@@ -90,19 +92,21 @@ router.post(
                       });
 
                       newOffre.save().then(() => res.json(data));
-                      const DebutNotif = new Date(dateDebut).toDateString()
-                      const FinNotif = new Date(dateFin).toDateString()
+                   
+                     
                       const Adminbody = {
                         userId: req.user.id,
                         titre: titre,
                         dateFin: FinNotif,
                       }
                       await axios.post("http://localhost:5004/api/notif/decrypt", Adminbody)
+
                       const Clientbody = {
                         titre: titre,
                         dateDebut: DebutNotif,
                       }
                       await axios.post("http://localhost:5004/api/notif/published-offre", Clientbody)
+
                     } else {
                       const newOffre = new Offre({
                         titre,
@@ -116,6 +120,12 @@ router.post(
                         postedBy: responseUser.data.email,
                       });
                       newOffre.save().then(() => res.json(data));
+                      const Adminbody = {
+                        userId: req.user.id,
+                        titre: titre,
+                        dateFin: FinNotif,
+                      }
+                      await axios.post("http://localhost:5004/api/notif/decrypt", Adminbody)
                     }
                   });
               });

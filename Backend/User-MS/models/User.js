@@ -39,7 +39,8 @@ const UserSchema = new mongoose.Schema({
         default: false
       },
       OneSignalID: {
-        type: Array
+        type: Array,
+        default: []
       }
     },
     { timestamps: true }

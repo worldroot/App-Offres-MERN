@@ -87,50 +87,98 @@ router.post("/decrypt", async (req, res) => {
   req.write(JSON.stringify(message));
   req.end();
 
-  res.status(200).json({ etat: true, message: "Notification sent successfully" });
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
   console.log("Notification Delivered");
 });
 
 router.post("/published-offre", async (req, res) => {
-    const data = req.body;
-    var message = {
-      app_id: ClientApp,
-      contents: {
-        en: `Nouvelle offre publiée`,
-      },
-      included_segments: ["Subscribed Users"],
-    };
-  
-    var req = https.request(options, function (res) {
-      var payload = "";
-      res.on("data", function (data) {
-        payload += data;
-        //console.log("Response:");
-        //console.log(JSON.parse(data));
-      });
-  
-      res.on("end", function () {
-        payload = JSON.parse(payload);
-        const notification = new Notif({
-          idNotification: payload.id,
-          title: data.titre,
-          delivered: data.dateDebut,
-        });
-        notification.save();
-        return payload;
-      });
+  const data = req.body;
+  var message = {
+    app_id: ClientApp,
+    contents: {
+      en: `Nouvelle offre publiée`,
+    },
+    included_segments: ["Subscribed Users"],
+  };
+
+  var req = https.request(options, function (res) {
+    var payload = "";
+    res.on("data", function (data) {
+      payload += data;
+      //console.log("Response:");
+      //console.log(JSON.parse(data));
     });
-  
-    req.on("error", function (e) {
-      console.log("ERROR:");
-      console.log(e);
+
+    res.on("end", function () {
+      payload = JSON.parse(payload);
+      const notification = new Notif({
+        idNotification: payload.id,
+        title: data.titre,
+        delivered: data.dateDebut,
+      });
+      notification.save();
+      return payload;
     });
-  
-    req.write(JSON.stringify(message));
-    req.end();
-  
-    res.status(200).json({ etat: true, message: "Notification sent successfully" });
-    console.log("Notification Published");
   });
+
+  req.on("error", function (e) {
+    console.log("ERROR:");
+    console.log(e);
+  });
+
+  req.write(JSON.stringify(message));
+  req.end();
+
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
+  console.log("Notification Published");
+});
+
+router.post("/verif-account", async (req, res) => {
+  const data = req.body;
+  var message = {
+    app_id: ClientApp,
+    contents: {
+      en: `Vérifier votre compte`,
+    },
+    include_player_ids: data.array,
+  };
+
+  var req = https.request(options, function (res) {
+    var payload = "";
+    res.on("data", function (data) {
+      payload += data;
+      //console.log("Response:");
+      //console.log(JSON.parse(data));
+    });
+
+    res.on("end", function () {
+      payload = JSON.parse(payload);
+      const notification = new Notif({
+        idClient: data.userId,
+        idNotification: payload.id,
+        delivered: data.date,
+      });
+      notification.save();
+      return payload;
+    });
+  });
+
+  req.on("error", function (e) {
+    console.log("ERROR:");
+    console.log(e);
+  });
+
+  req.write(JSON.stringify(message));
+  req.end();
+
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
+  console.log("Notification Published");
+});
 
 module.exports = router;

@@ -56,13 +56,13 @@ const DetailsOffre = ({ ...props }) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   const ImgStyle = {
-    width: "200px",
-    height: "200px"
+    height: 300,
+    width: 500
   };
 
   return (
     <>
-      <Card>
+      <Card className="cardBg">
         <Row className="justify-content-center">
           <Col>
             <Button
@@ -86,12 +86,11 @@ const DetailsOffre = ({ ...props }) => {
             <Row className="justify-content-center">
               <Col>
                 <FormGroup>
-                  <p>
-                    À partir de:
-                    <label className="form-control-label text-dark mx-2">
-                      {values.prixdebut} dt
-                    </label>
-                  </p>
+                {values.prixdebut.length === 0 ? (
+                    <p className="text-dark"> Prix début ouvert </p>
+                  ) : (
+                    <p className="text-dark">À partir de: {values.prixdebut} dt</p>
+                  )}
                 </FormGroup>
               </Col>
              
@@ -167,7 +166,7 @@ const DetailsOffre = ({ ...props }) => {
                           onClick={() => {
                             setShowImg(true), setCurrentIndex(index);
                           }}
-                          className="img-fluid rounded shadow avatar avatar-lg w-25 h-25"
+                          className="img-fluid rounded shadow avatar avatar-lg w-50 h-50"
                           src={img}
                           alt=""
                         />
@@ -200,7 +199,8 @@ const DetailsOffre = ({ ...props }) => {
               <motion.div variants={modal}>
                 <img
                   onClick={() => setShowImg(false)}
-                  className="img-fluid rounded shadow avatar avatar-lg w-auto h-auto"
+                  style={ImgStyle}
+                  className="img-fluid rounded shadow avatar avatar-lg"
                   src={values.image[currentIndex]}
                   alt=""
                 />
