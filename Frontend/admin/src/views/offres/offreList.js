@@ -223,9 +223,8 @@ const OffreList = ({ ...props }) => {
                           return (
                             <Fragment key={index}>
                               <tr key={of._id}>
-                                <td>{of.titre}</td>
+                                <td>{of.titre.substring(0,25)}</td>
                                 <td>
-                                  {" "}
                                   {of.prixdebut.length === 0 ? (
                                     <span>Ouvert</span>
                                   ) : (

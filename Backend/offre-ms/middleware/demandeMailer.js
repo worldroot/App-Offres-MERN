@@ -1,22 +1,21 @@
 const nodemailer = require("nodemailer");
 
-const emailKey = async (email, key, text, user ) => {
-	try {
-		const transporter = nodemailer.createTransport({
-			host: "smtp.mailtrap.io",
-			port: 2525,
-			auth: {
-			  user: "6adcb0b3bc15c3",
-			  pass: "c170a6da93e22e",
-			},
-		});
+const emailKey = async (email, key, text, user) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+        user: "6adcb0b3bc15c3",
+        pass: "c170a6da93e22e",
+      },
+    });
 
-        
-		await transporter.sendMail({
-			from: process.env.USER,
-			to: email,
-			subject: "Admin clé de decryptage",
-			html:`
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: email,
+      subject: "Admin clé de decryptage",
+      html: `
 			<html lang="en">
 			<head>
 			  <meta charset="UTF-8" />
@@ -98,13 +97,13 @@ const emailKey = async (email, key, text, user ) => {
 			</body>
 		  </html>
 			`,
-		});
-		console.log("Key email sent successfully");
-	} catch (error) {
-		console.log("Key email not sent!");
-		console.log(error);
-		return error;
-	}
+    });
+    console.log("Key email sent successfully");
+  } catch (error) {
+    console.log("Key email not sent!");
+    console.log(error);
+    return error;
+  }
 };
 
 module.exports = { emailKey };

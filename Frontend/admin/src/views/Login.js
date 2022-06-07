@@ -75,7 +75,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
     <>
         <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-red h-100vh" fluid>
+        <div className="header bg-red h-100vh">
           <Container>
             <div className="header-body text-center">
               <Row className="justify-content-center">

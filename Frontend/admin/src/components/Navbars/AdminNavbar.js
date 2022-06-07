@@ -111,7 +111,7 @@ const AdminNavbar = ({ logout }) => {
                     onClick={ ()=> {
                        logout(),
                        history.push('/login'),
-                       toast.info('Utilisateur déconnecté ')
+                       window.location.reload(false);
                        }}>
                       <i className="fas fa-sign-out-alt"></i>
                       <span>Se déconnecter</span>

@@ -15,6 +15,10 @@ const NotificationSchema = new mongoose.Schema({
   },
   seen: {
     type: Boolean,
+    default: false
+  },
+  delivered: {
+    type: String
   },
 });
 

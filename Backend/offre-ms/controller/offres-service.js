@@ -7,6 +7,7 @@ const {
   isRequestValidated,
 } = require("../middleware/offreValidator");
 const axios = require("axios");
+const e = require("express");
 //const offreByid = require("../middleware/offreByid");
 
 // @route   POST api/appeloffre
@@ -73,7 +74,7 @@ router.post(
                     "http://localhost:5002/api/categorie/" +
                       response.data.category
                   )
-                  .then((response2) => {
+                  .then(async (response2) => {
                     if (DateToCheck > Debut && DateToCheck < Fin) {
                       const newOffre = new Offre({
                         titre,
@@ -89,6 +90,19 @@ router.post(
                       });
 
                       newOffre.save().then(() => res.json(data));
+                      const DebutNotif = new Date(dateDebut).toDateString()
+                      const FinNotif = new Date(dateFin).toDateString()
+                      const Adminbody = {
+                        userId: req.user.id,
+                        titre: titre,
+                        dateFin: FinNotif,
+                      }
+                      await axios.post("http://localhost:5004/api/notif/decrypt", Adminbody)
+                      const Clientbody = {
+                        titre: titre,
+                        dateDebut: DebutNotif,
+                      }
+                      await axios.post("http://localhost:5004/api/notif/published-offre", Clientbody)
                     } else {
                       const newOffre = new Offre({
                         titre,
@@ -99,7 +113,7 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data.email
+                        postedBy: responseUser.data.email,
                       });
                       newOffre.save().then(() => res.json(data));
                     }
@@ -229,7 +243,6 @@ router.put(
       });
   }
 );
-
 router.patch("/changestatus", verifyAccessToken, async (req, res) => {
   axios
     .get("http://localhost:5001/api/user/" + req.user.id)
@@ -348,18 +361,23 @@ router.get("/allpublished", async (req, res) => {
   try {
     var date = new Date();
     const DateToCheck = new Date(date.getTime());
+    
     //DateToCheck > Debut && DateToCheck < Fin
     const offre = await Offre.find({
       archived: false,
       dateDebut: { $lt: DateToCheck },
       dateFin: { $gt: DateToCheck },
     });
-    const up = await Offre.updateMany({dateFin: { $lt: DateToCheck }}, { $set: { status: "closed" } })
-    const closed = await Offre.find({dateFin: { $lt: DateToCheck },  status: "closed"  })
-    if(closed.length > 0){
-      axios.post(`http://localhost:5004/api/notif/toAll`, {"text": closed[0].titre})
+    const closed = await Offre.find({ dateFin: { $lt: DateToCheck } });
+    if (closed.length > 0) {
+      await Offre.updateMany(
+        { dateFin: { $lt: DateToCheck } },
+        { $set: { status: "closed" } }
+      );
+      res.status(200).json(offre);
+    } else {
+      res.status(200).json(offre);
     }
-    res.status(200).json(closed);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({
@@ -368,10 +386,8 @@ router.get("/allpublished", async (req, res) => {
     });
   }
 });
-
 router.get("/all", async (req, res) => {
   try {
-    //const data = await Offre.find({});
     const data = await Offre.aggregate([
       {
         $lookup: {
@@ -385,7 +401,19 @@ router.get("/all", async (req, res) => {
       { $project: { demandes: { __v: 0, updatedAt: 0 } } },
       { $project: { icon: 0, __v: 0, slug: 0 } },
     ]);
-    res.status(200).json(data);
+
+    var date = new Date();
+    const DateToCheck = new Date(date.getTime());
+    const closed = await Offre.find({ dateFin: { $lt: DateToCheck } });
+    if (closed.length > 0 ) {
+      await Offre.updateMany(
+        { dateFin: { $lt: DateToCheck } },
+        { $set: { status: "closed" } }
+      );
+      res.status(200).json(data);
+    } else {
+      res.status(200).json(data);
+    }
   } catch (error) {
     console.log(error.message);
     res.status(500).json({
@@ -395,8 +423,8 @@ router.get("/all", async (req, res) => {
   }
 });
 
-// @route   Get api/categorie/all
-// @desc    Get all categories
+// @route   Get api/demandes
+// @desc    Get all offres et demandes
 // @access  Public
 router.get("/alldemandes", async (req, res) => {
   try {
@@ -415,6 +443,7 @@ router.get("/alldemandes", async (req, res) => {
       { $project: { demandes: { __v: 0, updatedAt: 0 } } },
       { $project: { icon: 0, __v: 0, slug: 0 } },
     ]);
+
     res.status(200).json(data);
   } catch (error) {
     console.log(error);
@@ -457,6 +486,21 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
           res.status(200).json(list);
         }
       });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: true,
+      msg: "Server error",
+    });
+  }
+});
+
+router.get("/one",async (req, res) => {
+  try {
+    const data = req.body
+    const one = await Offre.findById(data.id)
+    res.status(200).json(one.dateFin.toDateString())
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
