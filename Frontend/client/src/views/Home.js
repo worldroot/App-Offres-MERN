@@ -73,7 +73,7 @@ const Home = () => {
 
         {userExist && (
           <>
-            <Container className="mt-4 mb-4 py-4">
+            <Container className="mt-4 mb-4 py-4 w-100vh h-100vh">
               <Row className="justify-content-center">
                 <motion.div
                   initial={{ opacity: 0 }}

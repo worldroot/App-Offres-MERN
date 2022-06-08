@@ -19,50 +19,50 @@ var options = {
 // ======== ADMIN APP =========== //
 //Admin Notif: After dateFin Offre
 router.post("/decrypt", async (req, res) => {
-    const data = req.body;
-    var message = {
-      app_id: AdminApp,
-      contents: {
-        en: `Vous pouvez faire le dépouillement de l'offre ${data.titre}`,
-      },
-      included_segments: ["Subscribed Users"],
-      send_after: data.dateFin,
-    };
-  
-    var req = https.request(options, function (res) {
-      var payload = "";
-      res.on("data", function (data) {
-        payload += data;
-        //console.log("Response:");
-        //console.log(JSON.parse(data));
-      });
-  
-      res.on("end", function () {
-        payload = JSON.parse(payload);
-        const notification = new Notif({
-          idClient: data.userId,
-          idNotification: payload.id,
-          title: message.contents.en,
-          delivered: data.dateFin,
-        });
-        notification.save();
-        return payload;
-      });
+  const data = req.body;
+  var message = {
+    app_id: AdminApp,
+    contents: {
+      en: `Vous pouvez faire le dépouillement de l'offre ${data.titre}`,
+    },
+    included_segments: ["Subscribed Users"],
+    send_after: data.dateFin,
+  };
+
+  var req = https.request(options, function (res) {
+    var payload = "";
+    res.on("data", function (data) {
+      payload += data;
+      //console.log("Response:");
+      //console.log(JSON.parse(data));
     });
-  
-    req.on("error", function (e) {
-      console.log("ERROR:");
-      console.log(e);
+
+    res.on("end", function () {
+      payload = JSON.parse(payload);
+      const notification = new Notif({
+        idClient: data.userId,
+        idNotification: payload.id,
+        title: message.contents.en,
+        delivered: data.dateFin,
+      });
+      notification.save();
+      return payload;
     });
-  
-    req.write(JSON.stringify(message));
-    req.end();
-  
-    res
-      .status(200)
-      .json({ etat: true, message: "Notification sent successfully" });
-    console.log("Notification Delivered");
   });
+
+  req.on("error", function (e) {
+    console.log("ERROR:");
+    console.log(e);
+  });
+
+  req.write(JSON.stringify(message));
+  req.end();
+
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
+  console.log("Notification Delivered");
+});
 
 // ======== CLIENT APP =========== //
 router.post("/toAll", async (req, res) => {
@@ -150,21 +150,21 @@ router.post("/published-offre", async (req, res) => {
 
 router.post("/verif-account", async (req, res) => {
   const data = req.body;
+
   var message = {
     app_id: ClientApp,
     contents: {
-      en: `Une-mail vient de vous être envoyé`,
+      en: `Un e-mail vient de vous être envoyé`,
     },
     include_player_ids: data.array,
+    data: { foo: "bar" },
   };
-  console.log(message.include_player_ids);
 
   var req = https.request(options, function (res) {
     var payload = "";
     res.on("data", function (data) {
       payload += data;
     });
-
     res.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
@@ -172,7 +172,7 @@ router.post("/verif-account", async (req, res) => {
         idNotification: payload.id,
         title: message.contents.en,
         text: "Pour finaliser votre inscription,rendez-vous dans votre boîte-mail pour activer votre compte",
-        delivered: data.date,
+        delivered: data.date
       });
       notification.save();
       return payload;

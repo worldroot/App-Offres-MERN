@@ -177,20 +177,21 @@ router.post(
 
       //Verif Active
       if (!user.active) {
-        const createdAt = new Date(user.createdAt).toDateString()
-        const body = {
-          userId: user.id,
-          date: createdAt,
-          array: user.OneSignalID
-        };
-        await axios.post("http://localhost:5004/api/notif/verif-account", body);
-
-        return res.status(200).json({
+        res.status(200).json({
           accessToken,
           expiresIn,
           refreshToken,
           msg: "Une-mail vient de vous être envoyé",
         });
+
+        const createdAt = new Date(user.createdAt).toDateString();
+        const body = {
+          userId: user.id,
+          date: createdAt,
+          array: user.OneSignalID,
+        };
+        await axios.post("http://localhost:5004/api/notif/verif-account", body);
+        
       } else {
         return res.status(200).json({ accessToken, expiresIn, refreshToken });
       }
