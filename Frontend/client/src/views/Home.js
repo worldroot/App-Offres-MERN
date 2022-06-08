@@ -84,7 +84,7 @@ const Home = () => {
                 </motion.div>
               </Row>
             </Container>
-            <UncontrolledCarousel items={items} />
+            {/* <UncontrolledCarousel items={items} /> */}
           </>
         )}
 

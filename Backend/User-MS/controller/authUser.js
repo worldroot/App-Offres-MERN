@@ -3,6 +3,7 @@ const User = require("../models/User");
 const router = express.Router();
 const createError = require("http-errors");
 const deco = require("jwt-decode");
+const axios = require("axios");
 const { emailSender, emailReset } = require("../middleware/sendEmail");
 const {
   validateSigninRequest,
@@ -24,7 +25,7 @@ router.post(
   validateSignupRequest,
   isRequestValidated,
   async (req, res) => {
-    const { nom, prenom, email, password, role } = req.body;
+    const { nom, prenom, email, password, role, OneSignalID } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -34,7 +35,7 @@ router.post(
           msg: "Utilisateur existe déjà",
         });
       } else {
-        user = new User({ nom, prenom, email, password, role });
+        user = new User({ nom, prenom, email, password, role, OneSignalID });
 
         const savedUser = await user.save();
         if (!savedUser) throw Error("Something went wrong saving the user");
@@ -59,14 +60,12 @@ router.post(
             msg: "Failed to send email !",
           });
         } else {
-          res
-            .status(200)
-            .json({
-              accessToken,
-              expiresIn,
-              refreshToken,
-              msg: "Go verify your account !",
-            });
+          res.status(200).json({
+            accessToken,
+            expiresIn,
+            refreshToken,
+            msg: "Go verify your account !",
+          });
         }
       }
     } catch (error) {
@@ -178,11 +177,19 @@ router.post(
 
       //Verif Active
       if (!user.active) {
+        const createdAt = new Date(user.createdAt).toDateString()
+        const body = {
+          userId: user.id,
+          date: createdAt,
+          array: user.OneSignalID
+        };
+        await axios.post("http://localhost:5004/api/notif/verif-account", body);
+
         return res.status(200).json({
           accessToken,
           expiresIn,
           refreshToken,
-          msg: "An Email sent to your account please verify",
+          msg: "Une-mail vient de vous être envoyé",
         });
       } else {
         return res.status(200).json({ accessToken, expiresIn, refreshToken });

@@ -12,32 +12,38 @@ import {
   InputGroup,
   Row,
   Col,
-  Container
+  Container,
 } from "reactstrap";
 
-import React, { useState } from 'react';
-import { connect } from 'react-redux'
-import { register } from "redux/auth/authActions"
-import { Redirect, useHistory } from 'react-router-dom'
-import {toast} from 'react-toastify'
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { register } from "redux/auth/authActions";
+import { Redirect, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import '../components/Loading/loading.css'
+import "../components/Loading/loading.css";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-import OO from "../assets/img/ccwhite.png"
-import ooredoo from "../assets/img/oo.png"
+import OO from "../assets/img/ccwhite.png";
+import ooredoo from "../assets/img/oo.png";
 
-const Register = ({register, isAuth, isLoading, user}) => {
-  
+import OneSignal from "react-onesignal";
+
+const Register = ({ register, isAuth, isLoading, user }) => {
   const [data, setData] = useState({
-    nom: '',
-    prenom: '',
-    email: '',
-    password: '',
-  })
+    nom: "",
+    prenom: "",
+    email: "",
+    password: "",
+    OneSignalID: [],
+  });
 
-  const { nom, prenom, email, password} = data
-  const style = { width: "200px" }
+  OneSignal.getUserId((userId) => {
+    OneSignalID[0] = userId;
+  });
+
+  const { nom, prenom, email, password, OneSignalID } = data;
+  const style = { width: "200px" };
   /*
   const history = useHistory()
   setTimeout(() => {
@@ -46,170 +52,175 @@ const Register = ({register, isAuth, isLoading, user}) => {
   */
 
   const handleChange = (name) => (event) => {
-    setData({ ...data, [name]: event.target.value })
-  }
+    setData({ ...data, [name]: event.target.value });
+  };
 
-  const onSubmit = async(e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if(!nom || !prenom || !email || !password){
-      toast.warn('Verifier vos champs !')
-    }else{
+    if (!nom || !prenom || !email || !password) {
+      toast.warn("Verifier vos champs !");
+    } else {
       try {
-          register({nom, prenom, email, password})
-          
+        register({ nom, prenom, email, password, OneSignalID });
+      } catch (error) {
+        console.log(error);
+        toast.error("Error dans les champs !");
+      }
+    }
+  };
 
-        } catch (error) {
-            console.log(error)
-            toast.error('Error dans les champs !')
-        }
-      }    
-    }
-    
-    if (isAuth && user) {
-      const { role } = user;
-      //toast.info(`Bienvenue ${role}`);
-      if (role === "user") return <Redirect to='/login'/>;
-      //if (role === 1) return <Redirect to='/dashboard/'/>;
-    }
+  if (isAuth && user) {
+    const { role } = user;
+    //toast.info(`Bienvenue ${role}`);
+    if (role === "user") return <Redirect to="/login" />;
+    //if (role === 1) return <Redirect to='/dashboard/'/>;
+  }
 
   return (
     <>
-    <div className="main-content position-flex">
+      <div className="main-content position-flex">
         <AuthNavbar />
         <div className="bg-danger py-7 py-lg-8 w-100vh h-100vh">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                  <p className="text-lead text-light">
-                  </p>
+                  <p className="text-lead text-light"></p>
                 </Col>
               </Row>
             </div>
           </Container>
 
           {/* Content */}
-            <Container className="mt--8 pb-5">
-                <Row className="justify-content-center">        
-                          
-                <Col className="order-xl-1 bg-danger" xl="8">
-                    
+          <Container className="mt--8 pb-5">
+            <Row className="justify-content-center">
+              <Col className="order-xl-1 bg-danger" xl="8">
+                <Row className="mt-3">
+                  {/* SIDE 1 */}
+                  <Col xl="8">
                     <Row className="mt-3">
-                      {/* SIDE 1 */}
-                      <Col xl="8">
-                          <Row className="mt-3">
-                            <Col xl="2">
-                              <div className="display-flex flex-items-center padding-xl">
-                                <i className="fas fa-user fa-fw fa-3x text-white"></i>
-                              </div>
-                            </Col>
-
-                          <Col xl="8">
-                              <div className="flex-grow-1">
-                                <div className="small font-weight-bold text-white-50 mb-0 text-uppercase">Inscrivez-vous pour profiter de tous nos services</div>
-                                <div className="h3 mb-0 text-white">Mon espace</div>
-                              </div>
-                            </Col>
-                          </Row>
-                    
-                          <br></br>
-
-                          <Form role="form" onSubmit={onSubmit}>
-                            <FormGroup>
-                              <InputGroup className="input-group-alternative mb-3">
-                                <InputGroupAddon addonType="prepend">
-                                  <InputGroupText>
-                                  <i className="fas fa-user"></i>
-                                  </InputGroupText>
-                                </InputGroupAddon>
-                                <Input 
-                                  placeholder="Nom" 
-                                  type="text" 
-                                  onChange={handleChange('nom')}
-                                  value={nom}
-                                  />
-                              </InputGroup>
-                            </FormGroup>
-                            <FormGroup>
-                              <InputGroup className="input-group-alternative mb-3">
-                                <InputGroupAddon addonType="prepend">
-                                  <InputGroupText>
-                                    <i className="fas fa-user"></i>
-                                  </InputGroupText>
-                                </InputGroupAddon>
-                                <Input 
-                                  placeholder="Prenom" 
-                                  type="text"
-                                  onChange={handleChange('prenom')}
-                                  value={prenom} />
-                              </InputGroup>
-                            </FormGroup>
-                            <FormGroup>
-                              <InputGroup className="input-group-alternative mb-3">
-                                <InputGroupAddon addonType="prepend">
-                                  <InputGroupText>
-                                    <i className="fas fa-envelope"></i>
-                                  </InputGroupText>
-                                </InputGroupAddon>
-                                <Input
-                                  placeholder="Email"
-                                  type="email"
-                                  onChange={handleChange('email')}
-                                  value={email}
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                            <FormGroup>
-                              <InputGroup className="input-group-alternative">
-                                  <InputGroupAddon addonType="prepend">
-                                    <InputGroupText>
-                                      <i className="fas fa-lock"></i>
-                                    </InputGroupText>
-                                  </InputGroupAddon>
-                                  <Input
-                                    placeholder="Mot de passe"
-                                    type="password"
-                                    onChange={handleChange('password')}
-                                    value={password}
-                                  />
-                                </InputGroup>
-                            </FormGroup>
-                            <div className="text-center">
-                                <Button className="mt-4 btn-outline-white"  type="submit">
-                                  S'inscrire
-                                </Button>
-                            </div>
-                          </Form>
+                      <Col xl="2">
+                        <div className="display-flex flex-items-center padding-xl">
+                          <i className="fas fa-user fa-fw fa-3x text-white"></i>
+                        </div>
                       </Col>
-                      {/* SIDE 2 */}
-                      <Col className="align-self-center sticky" xl="4">  
-                          <div className="md-2">
-                              
-                              <img
-                                  className="img-fluid"
-                                  style={ style }
-                                  alt="..."
-                                  src={OO}
-                                />
-                                <img
-                                  className="img-fluid"
-                                  style={ style }
-                                  alt="..."
-                                  src={ooredoo}
-                                />
-                            </div>   
+
+                      <Col xl="8">
+                        <div className="flex-grow-1">
+                          <div className="small font-weight-bold text-white-50 mb-0 text-uppercase">
+                            Inscrivez-vous pour profiter de tous nos services
+                          </div>
+                          <div className="h3 mb-0 text-white">Mon espace</div>
+                        </div>
                       </Col>
                     </Row>
+
+                    <br></br>
+
+                    <Form role="form" onSubmit={onSubmit}>
+                      <Row>
+                        <Col lg="6">
+                          <FormGroup>
+                            <InputGroup className="input-group-alternative mb-3">
+                              <InputGroupAddon addonType="prepend">
+                                <InputGroupText>
+                                  <i className="fas fa-user"></i>
+                                </InputGroupText>
+                              </InputGroupAddon>
+                              <Input
+                                placeholder="Nom"
+                                type="text"
+                                onChange={handleChange("nom")}
+                                value={nom}
+                              />
+                            </InputGroup>
+                          </FormGroup>
+                        </Col>
+                        <Col lg="6">
+                          <FormGroup>
+                            <InputGroup className="input-group-alternative mb-3">
+                              <InputGroupAddon addonType="prepend">
+                                <InputGroupText>
+                                  <i className="fas fa-user"></i>
+                                </InputGroupText>
+                              </InputGroupAddon>
+                              <Input
+                                placeholder="Prenom"
+                                type="text"
+                                onChange={handleChange("prenom")}
+                                value={prenom}
+                              />
+                            </InputGroup>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="fas fa-envelope"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="Email"
+                            type="email"
+                            onChange={handleChange("email")}
+                            value={email}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="fas fa-lock"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="Mot de passe"
+                            type="password"
+                            onChange={handleChange("password")}
+                            value={password}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <div className="text-center">
+                        <Button
+                          className="mt-4 btn-outline-white"
+                          type="submit"
+                        >
+                          S'inscrire
+                        </Button>
+                      </div>
+                    </Form>
                   </Col>
-
+                  {/* SIDE 2 */}
+                  <Col className="align-self-center sticky" xl="4">
+                    <div className="md-2">
+                      <img
+                        className="img-fluid"
+                        style={style}
+                        alt="..."
+                        src={OO}
+                      />
+                      <img
+                        className="img-fluid"
+                        style={style}
+                        alt="..."
+                        src={ooredoo}
+                      />
+                    </div>
+                  </Col>
                 </Row>
-             </Container> 
-    </div>
-</div>
-      <div className=" fixed-bottom">
-      <AuthFooter/>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
-
+      <div className=" fixed-bottom">
+        <AuthFooter />
+      </div>
     </>
   );
 };

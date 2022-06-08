@@ -16,8 +16,55 @@ var options = {
     Authorization: "Basic ZjE1NGVjOWQtYjUwNi00ZmZiLTg1YzktMGVjY2M2OTU3OGZk",
   },
 };
+// ======== ADMIN APP =========== //
+//Admin Notif: After dateFin Offre
+router.post("/decrypt", async (req, res) => {
+    const data = req.body;
+    var message = {
+      app_id: AdminApp,
+      contents: {
+        en: `Vous pouvez faire le dépouillement de l'offre ${data.titre}`,
+      },
+      included_segments: ["Subscribed Users"],
+      send_after: data.dateFin,
+    };
+  
+    var req = https.request(options, function (res) {
+      var payload = "";
+      res.on("data", function (data) {
+        payload += data;
+        //console.log("Response:");
+        //console.log(JSON.parse(data));
+      });
+  
+      res.on("end", function () {
+        payload = JSON.parse(payload);
+        const notification = new Notif({
+          idClient: data.userId,
+          idNotification: payload.id,
+          title: message.contents.en,
+          delivered: data.dateFin,
+        });
+        notification.save();
+        return payload;
+      });
+    });
+  
+    req.on("error", function (e) {
+      console.log("ERROR:");
+      console.log(e);
+    });
+  
+    req.write(JSON.stringify(message));
+    req.end();
+  
+    res
+      .status(200)
+      .json({ etat: true, message: "Notification sent successfully" });
+    console.log("Notification Delivered");
+  });
 
-//Annonce from Admin to all Users
+// ======== CLIENT APP =========== //
 router.post("/toAll", async (req, res) => {
   const data = req.body;
   var message = {
@@ -27,52 +74,16 @@ router.post("/toAll", async (req, res) => {
   };
 
   var req = https.request(options, function (res) {
-    res.on("data", function (data) {
-      console.log("Response:");
-      console.log(JSON.parse(data));
-    });
-  });
-
-  req.on("error", function (e) {
-    console.log("ERROR:");
-    console.log(e);
-  });
-
-  req.write(JSON.stringify(message));
-  req.end();
-
-  res
-    .status(200)
-    .json({ etat: true, message: "Notification sent successfully" });
-});
-
-//Admin Notif: After dateFin Offre
-router.post("/decrypt", async (req, res) => {
-  const data = req.body;
-  var message = {
-    app_id: AdminApp,
-    contents: {
-      en: `Vous pouvez faire le dépouillement de l'offre ${data.titre}`,
-    },
-    included_segments: ["Subscribed Users"],
-    send_after: data.dateFin,
-  };
-
-  var req = https.request(options, function (res) {
     var payload = "";
     res.on("data", function (data) {
       payload += data;
-      //console.log("Response:");
-      //console.log(JSON.parse(data));
     });
 
     res.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
-        idClient: data.userId,
         idNotification: payload.id,
-        title: `Dépouillement offre ${data.titre}`,
-        delivered: data.dateFin,
+        title: message.contents.en,
       });
       notification.save();
       return payload;
@@ -90,7 +101,6 @@ router.post("/decrypt", async (req, res) => {
   res
     .status(200)
     .json({ etat: true, message: "Notification sent successfully" });
-  console.log("Notification Delivered");
 });
 
 router.post("/published-offre", async (req, res) => {
@@ -116,6 +126,7 @@ router.post("/published-offre", async (req, res) => {
       const notification = new Notif({
         idNotification: payload.id,
         title: data.titre,
+        text: message.contents.en,
         delivered: data.dateDebut,
       });
       notification.save();
@@ -142,17 +153,16 @@ router.post("/verif-account", async (req, res) => {
   var message = {
     app_id: ClientApp,
     contents: {
-      en: `Vérifier votre compte`,
+      en: `Une-mail vient de vous être envoyé`,
     },
     include_player_ids: data.array,
   };
+  console.log(message.include_player_ids);
 
   var req = https.request(options, function (res) {
     var payload = "";
     res.on("data", function (data) {
       payload += data;
-      //console.log("Response:");
-      //console.log(JSON.parse(data));
     });
 
     res.on("end", function () {
@@ -160,6 +170,8 @@ router.post("/verif-account", async (req, res) => {
       const notification = new Notif({
         idClient: data.userId,
         idNotification: payload.id,
+        title: message.contents.en,
+        text: "Pour finaliser votre inscription,rendez-vous dans votre boîte-mail pour activer votre compte",
         delivered: data.date,
       });
       notification.save();
@@ -178,7 +190,7 @@ router.post("/verif-account", async (req, res) => {
   res
     .status(200)
     .json({ etat: true, message: "Notification sent successfully" });
-  console.log("Notification Published");
+  console.log("Notification account verification ");
 });
 
 module.exports = router;

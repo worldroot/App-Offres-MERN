@@ -44,7 +44,7 @@ export const loadUser = () => async (dispatch) => {
 };
 
 export const register =
-  ({ nom, prenom, email, password, role }) =>
+  ({ nom, prenom, email, password, OneSignalID }) =>
   async (dispatch) => {
     // Config header for axios
     const config = { headers: { "Content-Type": "application/json" } };
@@ -54,6 +54,7 @@ export const register =
       prenom,
       email,
       password,
+      OneSignalID
     });
 
     dispatch({ type: SET_LOADING });

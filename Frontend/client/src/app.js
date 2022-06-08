@@ -49,7 +49,7 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (userExist) {
       if (userLocal.OneSignalID.length === 0) {
         OneSignal.init({
@@ -65,14 +65,14 @@ function App() {
     } else {
       console.log("OneSignal Off");
     }
-    /* 
-    OneSignal.getUserId((userId) => {
-      console.log(userId);
-    }); */
-  }, [userExist]);
+  }, [userExist]); */
 
-  //DARK-RED: #C11923
-  //RED: #ED1A24
+  useEffect(() => {
+    OneSignal.init({
+      appId: "10d0d189-e8bd-413a-b51b-becc098b1617",
+    });
+  }, []);
+
 
   return (
     <Provider store={store}>

@@ -101,7 +101,7 @@ const Offres = ({ ...props }) => {
         <AuthNavbar />
        
           {/* Content */}
-          <Container className="mt-4 mb-4 py-4">
+          <Container className="mt-4 mb-4 py-4 w-100vh h-100vh">
             <Row className="justify-content-center">
               <h1 className="text-center text-red">Les appels d'offres</h1>
             </Row>
