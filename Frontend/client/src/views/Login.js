@@ -26,6 +26,7 @@ import { Redirect, useHistory } from 'react-router-dom'
 import {connect} from 'react-redux'
 import { login } from "redux/auth/authActions"
 import {toast} from 'react-toastify'
+import OneSignal from "react-onesignal";
 
 const Login = ({ login, isAuth, user }) => {
 
@@ -34,9 +35,16 @@ const Login = ({ login, isAuth, user }) => {
   const [data, setData] = useState({
     email: '',
     password: '',
+    OneSignalID: [],
   });
 
-  const { email, password } = data;
+  const { email, password, OneSignalID } = data;
+
+
+  OneSignal.getUserId((userId) => {
+    //OneSignalID[0] = userId;
+    OneSignalID.push(userId)
+  });
 
   const handleChange = (name) => (event) => {
     setData({ ...data, [name]: event.target.value });
@@ -48,7 +56,7 @@ const Login = ({ login, isAuth, user }) => {
       toast.warn('Verifier vos champs !')
     }else{
       try {
-        login({email,password});
+        login({email,password, OneSignalID});
       } catch (error) {
         console.log(error)
         toast.error('Error !')

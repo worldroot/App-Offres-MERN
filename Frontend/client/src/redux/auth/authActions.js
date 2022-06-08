@@ -83,7 +83,7 @@ export const register =
 
 
 export const login =
-  ({ email, password }) =>
+  ({ email, password, OneSignalID }) =>
   async (dispatch) => {
     // Config header for axios
     const config = { headers: { "Content-Type": "application/json" } };
@@ -106,7 +106,9 @@ export const login =
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
+
       dispatch(loadUser());
+
       toast.success("Connecté avec succès");
     } catch (err) {
       console.log(err);
@@ -117,8 +119,18 @@ export const login =
     }
   };
 
-export const logout = () => (dispatch) => {
-  dispatch({ type: LOGOUT });
+export const logout = () => async (dispatch) => {
+  try {
+    setAuthToken(localStorage.accessToken);
+    await axios.put(`${UsermsURL}/api/user/osid`)
+    dispatch({ type: LOGOUT });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+    });
+  }
+ 
 };
 
 export const refreshJwt =
@@ -160,7 +172,7 @@ export const resend = () => async (dispatch) => {
     );
     dispatch({ type: RESEND });
     dispatch(loadUser());
-    toast.info("E-mail envoyé avec succès");
+
   } catch (error) {
     console.log(error);
     dispatch({

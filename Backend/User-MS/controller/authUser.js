@@ -141,7 +141,7 @@ router.post(
   validateSigninRequest,
   isRequestValidated,
   async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, OneSignalID } = req.body;
 
     try {
       //Mail Verif
@@ -185,13 +185,14 @@ router.post(
         });
 
         const createdAt = new Date(user.createdAt).toDateString();
+
         const body = {
           userId: user.id,
           date: createdAt,
           array: user.OneSignalID,
         };
         await axios.post("http://localhost:5004/api/notif/verif-account", body);
-        
+
       } else {
         return res.status(200).json({ accessToken, expiresIn, refreshToken });
       }
@@ -294,7 +295,7 @@ router.get("/resend/:token", verifyAccessToken, async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
 
     if (!user) {
-      return res.status(400).json({
+      res.status(400).json({
         error: true,
         msg: "Invalid link",
       });
@@ -302,10 +303,18 @@ router.get("/resend/:token", verifyAccessToken, async (req, res) => {
       const url = `${process.env.BASE_URL}/api/access/verify/${req.params.token}`;
       await emailSender(user.email, url, "Activez votre compte");
 
-      return res.status(200).json({
+      res.status(200).json({
         error: false,
         msg: "An Email sent to your account please verify",
       });
+
+      const createdAt = new Date(user.createdAt).toDateString();
+      const body = {
+        userId: user.id,
+        date: createdAt,
+        array: user.OneSignalID,
+      };
+      await axios.post("http://localhost:5004/api/notif/verif-account", body);
     }
   } catch (error) {
     console.log(error);

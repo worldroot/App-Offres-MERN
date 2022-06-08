@@ -51,7 +51,7 @@ router.put("/", verifyAccessToken, async (req, res) => {
 router.put("/updatepwd", verifyAccessToken, async (req, res) => {
   const { password, confirmpass } = req.body;
   if (password !== confirmpass) {
-     res.status(403).json({
+    res.status(403).json({
       error: true,
       msg: "Les mots de passe ne correspondent pas !",
     });
@@ -154,6 +154,35 @@ router.get("/", async (req, res) => {
       error: true,
       msg: "Server error",
     });
+  }
+});
+
+router.put("/osid", verifyAccessToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const osid = req.body.OneSignalID;
+
+    if (user.OneSignalID.length === 0 && !user.OneSignalID) {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        { $set: { OneSignalID: [osid] } },
+        { new: true }
+      );
+      res.status(200).json(updatedUser.OneSignalID);
+    } else {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        { $set: { OneSignalID: [] } },
+        { new: true }
+      );
+      res.status(200).json(updatedUser.OneSignalID);
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: true,
+      msg: "Server error",
+    });
+    console.log(err);
   }
 });
 

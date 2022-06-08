@@ -151,46 +151,53 @@ router.post("/published-offre", async (req, res) => {
 router.post("/verif-account", async (req, res) => {
   const data = req.body;
 
-  var message = {
-    app_id: ClientApp,
-    contents: {
-      en: `Un e-mail vient de vous être envoyé`,
-    },
-    include_player_ids: data.array,
-    data: { foo: "bar" },
-  };
+  if (data.array.length > 0) {
+    var message = {
+      app_id: ClientApp,
+      contents: {
+        en: `Un e-mail vient de vous être envoyé`,
+      },
+      include_player_ids: data.array,
+      data: { foo: "bar" },
+    };
 
-  var req = https.request(options, function (res) {
-    var payload = "";
-    res.on("data", function (data) {
-      payload += data;
-    });
-    res.on("end", function () {
-      payload = JSON.parse(payload);
-      const notification = new Notif({
-        idClient: data.userId,
-        idNotification: payload.id,
-        title: message.contents.en,
-        text: "Pour finaliser votre inscription,rendez-vous dans votre boîte-mail pour activer votre compte",
-        delivered: data.date
+    var req = https.request(options, function (res) {
+      var payload = "";
+      res.on("data", function (data) {
+        payload += data;
       });
-      notification.save();
-      return payload;
+      res.on("end", function () {
+        payload = JSON.parse(payload);
+        const notification = new Notif({
+          idClient: data.userId,
+          idNotification: payload.id,
+          title: message.contents.en,
+          text: "Pour finaliser votre inscription,rendez-vous dans votre boîte-mail pour activer votre compte",
+          delivered: data.date,
+        });
+        notification.save();
+        return payload;
+      });
     });
-  });
 
-  req.on("error", function (e) {
-    console.log("ERROR:");
-    console.log(e);
-  });
+    req.on("error", function (e) {
+      console.log("ERROR:");
+      console.log(e);
+    });
 
-  req.write(JSON.stringify(message));
-  req.end();
+    req.write(JSON.stringify(message));
+    req.end();
 
-  res
-    .status(200)
-    .json({ etat: true, message: "Notification sent successfully" });
-  console.log("Notification account verification ");
+    res
+      .status(200)
+      .json({ etat: true, message: "Notification sent successfully" });
+    console.log("Notification account verification ");
+  } else {
+    res.status(400).json({
+      error: true,
+      msg: "Error array OneSignalId",
+    });
+  }
 });
 
 module.exports = router;

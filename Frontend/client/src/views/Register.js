@@ -39,7 +39,8 @@ const Register = ({ register, isAuth, isLoading, user }) => {
   });
 
   OneSignal.getUserId((userId) => {
-    OneSignalID[0] = userId;
+    //OneSignalID[0] = userId;
+    OneSignalID.push(userId)
   });
 
   const { nom, prenom, email, password, OneSignalID } = data;
