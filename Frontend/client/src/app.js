@@ -49,7 +49,7 @@ function App() {
     }
   }, []);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (userExist) {
       if (userLocal.OneSignalID.length === 0) {
         OneSignal.init({
@@ -71,11 +71,7 @@ function App() {
     OneSignal.init({
       appId: "10d0d189-e8bd-413a-b51b-becc098b1617",
     });
-    OneSignal.getUserId((userId) => {
-      console.log(userId);
-    });
   }, []);
-
 
   return (
     <Provider store={store}>

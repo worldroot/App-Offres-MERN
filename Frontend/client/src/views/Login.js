@@ -152,15 +152,26 @@ const Login = ({ login, isAuth, user }) => {
                             >
                               <small>Mot de passe oublié ?</small>
                             </a>
+                           
+                            
                           </FormGroup>
 
                           <div className="text-center">
-                            <Button
-                              className="my-4 btn-outline-white"
-                              type="submit"
-                            >
-                              Connecter
-                            </Button>
+                            <Col>
+                              <Button
+                                className="my-4 btn-outline-white"
+                                type="submit"
+                              >
+                                Connecter
+                              </Button>
+                              <Button
+                                className="my-4 btn-outline-white"
+                                onClick={() => history.push("/register")}
+                              >
+                                Créer un compte
+                              </Button>
+                              
+                            </Col>
                           </div>
                         </Form>
                       </Col>

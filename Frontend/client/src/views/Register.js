@@ -45,6 +45,7 @@ const Register = ({ register, isAuth, isLoading, user }) => {
 
   const { nom, prenom, email, password } = data;
   const style = { width: "200px" };
+  const history = useHistory()
   /*
   const history = useHistory()
   setTimeout(() => {
@@ -185,6 +186,14 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                             value={password}
                           />
                         </InputGroup>
+                        <a
+                          disabled
+                          className=" text-white"
+                          onClick={() => history.push("/login")}
+                          href=""
+                        >
+                          <small>Se connecter à un compte existant</small>
+                        </a>
                       </FormGroup>
                       <div className="text-center">
                         <Button
