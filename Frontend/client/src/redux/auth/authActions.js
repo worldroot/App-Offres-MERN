@@ -122,8 +122,12 @@ export const login =
 export const logout = (OneSignalID) => async (dispatch) => {
   try {
     setAuthToken(localStorage.accessToken);
-    await axios.put(`${UsermsURL}/api/user/osid`, { OneSignalID: OneSignalID });
-    dispatch({ type: LOGOUT });
+    await axios
+      .put(`${UsermsURL}/api/user/osid`, { OneSignalID: OneSignalID })
+      .then((res) => {
+        dispatch({ type: LOGOUT });
+      })
+      .catch((err) => console.log(err), ERROR, localStorage.clear());
   } catch (error) {
     console.log(error);
     dispatch({
