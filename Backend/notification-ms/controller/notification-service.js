@@ -3,6 +3,7 @@ const express = require("express");
 const Notif = require("../models/Notif");
 const router = express.Router();
 const https = require("https");
+const { verifyAccessToken } = require("../middleware/verify-token");
 const AdminApp = "ce9b6483-0272-4f13-8560-e6c628f65776";
 const ClientApp = "10d0d189-e8bd-413a-b51b-becc098b1617";
 
@@ -197,6 +198,52 @@ router.post("/verif-account", async (req, res) => {
       error: true,
       msg: "Error array OneSignalId",
     });
+  }
+});
+
+router.get("/user", verifyAccessToken, async (req, res) => {
+  try {
+    const data = await Notif.find({ idClient: req.user.id });
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      msg: "server error",
+    });
+    console.log(error);
+  }
+});
+
+router.put("/", async (req, res) => {
+  try {
+    const data = await Notif.findByIdAndUpdate(
+      req.body.id,
+      { $set: { seen: true } },
+      { new: true }
+    );
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      msg: "server error",
+    });
+    console.log(error);
+  }
+});
+
+router.delete("/:notifId", async (req, res) => {
+  try {
+    let results = await Notif.findByIdAndDelete(req.params.notifId);
+    res.status(200).json({
+      message: `Notification: deleted successfully`,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      msg: "server error",
+    });
+    console.log(error);
   }
 });
 

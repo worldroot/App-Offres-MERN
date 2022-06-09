@@ -161,7 +161,7 @@ router.delete('/:categoryId',
             
                 let category = req.category;
                 try {
-                    let deletedCategory = await category.remove()
+                    let deletedCategory = await SousCategory.deleteOne(category)
                     res.status(200).json({
                         message: `Category : ${deletedCategory.sousnomcat} deleted successfully`
                     })

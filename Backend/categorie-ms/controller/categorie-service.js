@@ -151,7 +151,7 @@ router.delete(
         } else {
           let category = req.category;
           try {
-            let deletedCategory = await category.remove();
+            let deletedCategory = await Category.deleteOne(category);
             res.status(200).json({
               message: `Category : ${deletedCategory.nomcat} deleted successfully`,
             });

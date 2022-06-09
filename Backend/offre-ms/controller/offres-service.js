@@ -318,7 +318,7 @@ router.delete(
         if (role === "admin") {
           if (DateToCheck < Debut) {
             try {
-              let deletedOffre = await Offre.deleteOne(req.params.offreId);
+              let deletedOffre = await Offre.findByIdAndDelete(req.params.offreId);
               res.status(200).json({
                 message: `Offre : ${deletedOffre.titre} deleted successfully`,
               });

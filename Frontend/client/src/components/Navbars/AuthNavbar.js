@@ -14,20 +14,28 @@ import {
   Container,
   Row,
   Col,
-  Button
+  Button,
+  Dropdown,
 } from "reactstrap";
 
-const LogoImg = require("../../assets/img/oo.png");
 const ooredoo = require("../../assets/img/oored.png");
-import { logout } from "redux/auth/authActions";
 import { connect, useDispatch } from "react-redux";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import decode from "jwt-decode";
 import OneSignal from "react-onesignal";
+import {
+  getUserNotif,
+  deleteNotif,
+  updateSeen,
+} from "redux/notif/notifActions";
+import { logout } from "redux/auth/authActions";
+import Badge from "@mui/material/Badge";
+import Notification from "@mui/icons-material/Notifications";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
-const AuthNavbar = ({ logout, isAuth }) => {
+const AuthNavbar = ({ ...props }) => {
   let history = useHistory();
   const userExist = localStorage.getItem("user");
   const dispatch = useDispatch();
@@ -50,16 +58,31 @@ const AuthNavbar = ({ logout, isAuth }) => {
     }
   }, []);
 
-  const [OneSignalID, setSignal] = useState("");
+  useEffect(() => {
+    if (userExist) {
+      props.AllNotif();
+    }
+  }, []);
 
+  const [OneSignalID, setSignal] = useState("");
   OneSignal.getUserId((userId) => {
     setSignal(userId);
   });
 
   const LoggingOut = () => {
-    logout(OneSignalID),
-    history.push("/login"),
-    toast.info("Utilisateur déconnecté ");
+    dispatch(logout(OneSignalID)),
+      history.push("/login"),
+      window.location.reload();
+  };
+
+  const bs = {
+    height: 30,
+    width: 30,
+  };
+
+  const onDl = (id) => {
+    dispatch(deleteNotif(id));
+    window.location.reload(false)
   };
 
   return (
@@ -76,16 +99,96 @@ const AuthNavbar = ({ logout, isAuth }) => {
             <i className="fas fa-bars text-red"></i>
           </button>
           <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
-           
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink className="nav-link-icon" to="/published-offres" tag={Link}>
-                  <i className="fab fa-buffer text-red"></i>
-                  <span className="nav-link-inner--text text-red ">Offres</span>
+                <NavLink
+                  className="nav-link-icon"
+                  to="/published-offres"
+                  tag={Link}
+                >
+                  <i className="fab fa-buffer text-red "></i>
+                  <span className=" text-red ">Offres</span>
                 </NavLink>
               </NavItem>
               {userExist && (
-                <>
+                <Row>
+                  <UncontrolledDropdown>
+                    <DropdownToggle className="pr-0" nav>
+                      {props.List.length > 0 ? (
+                        <Badge
+                          badgeContent={props.List.length}
+                          overlap="circular"
+                          color="error"
+                        >
+                          <NotificationsActiveIcon
+                            className="text-red text-xl-center"
+                            style={bs}
+                          />
+                        </Badge>
+                      ) : (
+                        <Notification
+                          className="text-red text-xl-center"
+                          style={bs}
+                        />
+                      )}
+                    </DropdownToggle>
+                    <DropdownMenu className="dropdown-menu-arrow" right>
+                      <DropdownItem disabled className="bg-white text-red">
+                        <span className="mx-1">Notifications</span>
+                      </DropdownItem>
+                      {props.List.length > 0 ? (
+                        props.List.map((n, index) => {
+                          return (
+                            <Fragment key={index}>
+                              {n.seen ? (
+                                <div className="">
+                                  <DropdownItem header>
+                                    <span className="text-gray">{n.title}</span>
+                                    <Button
+                                      className="mx-2 btn btn-outline-danger"
+                                      size="sm"
+                                      onClick={() => onDl(n._id)}
+                                    >
+                                      <i className="fas fa-trash"></i>
+                                    </Button>
+                                  </DropdownItem>
+                                  <DropdownItem disabled className="bg-white">
+                                    <h5 className="text-gray">{n.text}</h5>
+                                  </DropdownItem>
+                                </div>
+                              ) : (
+                                <>
+                                  <DropdownItem header>
+                                    <span className="text-dark">{n.title}</span>
+                                  </DropdownItem>
+                                  <DropdownItem
+                                    className="bg-white"
+                                    onClick={() => {
+                                      dispatch(updateSeen(n._id));
+                                    }}
+                                  >
+                                    <h5 className="text-dark">{n.text}</h5>
+                                  </DropdownItem>
+                                </>
+                              )}
+                            </Fragment>
+                          );
+                        })
+                      ) : (
+                        <>
+                          <DropdownItem divider />
+                          <DropdownItem
+                            disabled
+                            className="bg-white text-center"
+                          >
+                            <span className=" p-md-8">
+                              Aucune Notifications
+                            </span>
+                          </DropdownItem>
+                        </>
+                      )}
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                   <UncontrolledDropdown nav>
                     <DropdownToggle className="pr-0" nav>
                       <Media className="align-items-center">
@@ -101,7 +204,6 @@ const AuthNavbar = ({ logout, isAuth }) => {
                         <i className="fas fa-user text-red" />
                         <span>Profile</span>
                       </DropdownItem>
-
                       <DropdownItem divider />
                       <DropdownItem
                         className="bg-white"
@@ -112,7 +214,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
-                </>
+                </Row>
               )}
 
               {!userExist && (
@@ -124,13 +226,17 @@ const AuthNavbar = ({ logout, isAuth }) => {
                       tag={Link}
                     >
                       <i className="fas fa-user-plus text-red" />
-                      <span className="nav-link-inner--text text-red">Register</span>
+                      <span className="nav-link-inner--text text-red">
+                        Register
+                      </span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink className="nav-link-icon" to="/login" tag={Link}>
                       <i className="fas fa-sign-in-alt text-red"></i>
-                      <span className="nav-link-inner--text text-red">Login</span>
+                      <span className="nav-link-inner--text text-red">
+                        Login
+                      </span>
                     </NavLink>
                   </NavItem>
                 </>
@@ -143,9 +249,13 @@ const AuthNavbar = ({ logout, isAuth }) => {
   );
 };
 
-const mapToStateProps = (state) => ({
-  isAuth: state.auth.isAuthenticated,
-  //user: state.auth.user,
+const mapStateToProps = (state) => ({
+  List: state.notifications.notifications,
+  isLoading: state.notifications.loading,
 });
 
-export default connect(mapToStateProps, { logout })(AuthNavbar);
+const mapActionToProps = {
+  AllNotif: getUserNotif,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(AuthNavbar);
