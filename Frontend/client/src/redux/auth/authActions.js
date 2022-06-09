@@ -54,7 +54,7 @@ export const register =
       prenom,
       email,
       password,
-      OneSignalID
+      OneSignalID,
     });
 
     dispatch({ type: SET_LOADING });
@@ -81,7 +81,6 @@ export const register =
     }
   };
 
-
 export const login =
   ({ email, password, OneSignalID }) =>
   async (dispatch) => {
@@ -92,7 +91,7 @@ export const login =
     const body = JSON.stringify({
       email,
       password,
-      OneSignalID
+      OneSignalID,
     });
     dispatch({ type: SET_LOADING });
 
@@ -120,10 +119,10 @@ export const login =
     }
   };
 
-export const logout = () => async (dispatch) => {
+export const logout = (OneSignalID) => async (dispatch) => {
   try {
-    //setAuthToken(localStorage.accessToken);
-    //await axios.put(`${UsermsURL}/api/user/osid`)
+    setAuthToken(localStorage.accessToken);
+    await axios.put(`${UsermsURL}/api/user/osid`, { OneSignalID: OneSignalID });
     dispatch({ type: LOGOUT });
   } catch (error) {
     console.log(error);
@@ -131,7 +130,6 @@ export const logout = () => async (dispatch) => {
       type: ERROR,
     });
   }
- 
 };
 
 export const refreshJwt =
@@ -173,7 +171,6 @@ export const resend = () => async (dispatch) => {
     );
     dispatch({ type: RESEND });
     dispatch(loadUser());
-
   } catch (error) {
     console.log(error);
     dispatch({

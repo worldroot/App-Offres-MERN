@@ -25,6 +25,7 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import decode from "jwt-decode";
+import OneSignal from "react-onesignal";
 
 const AuthNavbar = ({ logout, isAuth }) => {
   let history = useHistory();
@@ -48,6 +49,18 @@ const AuthNavbar = ({ logout, isAuth }) => {
       }
     }
   }, []);
+
+  const [OneSignalID, setSignal] = useState("");
+
+  OneSignal.getUserId((userId) => {
+    setSignal(userId);
+  });
+
+  const LoggingOut = () => {
+    logout(OneSignalID),
+    history.push("/login"),
+    toast.info("Utilisateur déconnecté ");
+  };
 
   return (
     <>
@@ -92,11 +105,7 @@ const AuthNavbar = ({ logout, isAuth }) => {
                       <DropdownItem divider />
                       <DropdownItem
                         className="bg-white"
-                        onClick={() => {
-                          logout(),
-                            history.push("/login"),
-                            toast.info("Utilisateur déconnecté ");
-                        }}
+                        onClick={() => LoggingOut()}
                       >
                         <i className="fas fa-sign-out-alt text-red"></i>
                         <span>Se déconnecter</span>

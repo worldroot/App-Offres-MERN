@@ -161,8 +161,12 @@ router.put("/osid", verifyAccessToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     const osid = req.body.OneSignalID;
-    const result = user.OneSignalID.filter(item => item !== osid);
-    res.status(200).json(result);
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $pull: { OneSignalID: osid } },
+      { new: true }
+    );
+    res.status(200).json(user.OneSignalID);
   } catch (err) {
     res.status(500).json({
       error: true,
