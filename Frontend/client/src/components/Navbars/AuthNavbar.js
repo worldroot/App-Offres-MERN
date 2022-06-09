@@ -66,16 +66,16 @@ const AuthNavbar = ({ logout, isAuth }) => {
     <>
       <Navbar
         className="navbar-top navbar-horizontal navbar-dark bg-white fixed-top position-relative"
-        expand="sm"
+        expand="md"
       >
         <Container className="px-4">
           <NavbarBrand to="/" tag={Link}>
             <img alt="..." src={ooredoo} />
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
-            <span className="navbar-toggler-icon" />
+            <i className="fas fa-bars text-red"></i>
           </button>
-          <UncontrolledCollapse navbar toggler="navbar-collapse-main">
+          <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
            
             <Nav className="ml-auto" navbar>
               <NavItem>
@@ -124,17 +124,13 @@ const AuthNavbar = ({ logout, isAuth }) => {
                       tag={Link}
                     >
                       <i className="fas fa-user-plus text-red" />
-                      <span className="nav-link-inner--text text-red">
-                        Register
-                      </span>
+                      <span className="nav-link-inner--text text-red">Register</span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink className="nav-link-icon" to="/login" tag={Link}>
                       <i className="fas fa-sign-in-alt text-red"></i>
-                      <span className="nav-link-inner--text text-red">
-                        Login
-                      </span>
+                      <span className="nav-link-inner--text text-red">Login</span>
                     </NavLink>
                   </NavItem>
                 </>

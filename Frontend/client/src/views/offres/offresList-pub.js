@@ -295,7 +295,7 @@ const Offres = ({ ...props }) => {
                     </Row>
                   </motion.div>
                 ) : (
-                  <Row className="justify-content-center my-3">
+                  <Row className="justify-content-center p-md-3 py-5">
                     <PaginationComponent
                       total={pageNumber}
                       itemsPerPage={offresPerPage}
@@ -307,6 +307,7 @@ const Offres = ({ ...props }) => {
               </>
             )}
 
+            {/* Offre Details  */}
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal}
@@ -335,7 +336,7 @@ const Offres = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
-
+            {/* Ajout Demande  */}
             <AnimatePresence
               exitBeforeEnter
               showModal={showModal2}
