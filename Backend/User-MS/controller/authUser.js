@@ -175,6 +175,12 @@ router.post(
       const time = deco(accessToken);
       const expiresIn = new Date(date.getHours() + time.exp * 1000);
 
+      await User.findByIdAndUpdate(
+        user._id,
+        { $push: { OneSignalID: OneSignalID } },
+        { new: true }
+      );
+
       //Verif Active
       if (!user.active) {
         res.status(200).json({

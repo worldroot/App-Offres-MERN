@@ -35,15 +35,15 @@ const Register = ({ register, isAuth, isLoading, user }) => {
     prenom: "",
     email: "",
     password: "",
-    OneSignalID: [],
   });
+
+  const [OneSignalID, setSignal] = useState("");
 
   OneSignal.getUserId((userId) => {
-    //OneSignalID[0] = userId;
-    OneSignalID.push(userId)
+    setSignal(userId);
   });
 
-  const { nom, prenom, email, password, OneSignalID } = data;
+  const { nom, prenom, email, password } = data;
   const style = { width: "200px" };
   /*
   const history = useHistory()

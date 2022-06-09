@@ -92,6 +92,7 @@ export const login =
     const body = JSON.stringify({
       email,
       password,
+      OneSignalID
     });
     dispatch({ type: SET_LOADING });
 
@@ -121,8 +122,8 @@ export const login =
 
 export const logout = () => async (dispatch) => {
   try {
-    setAuthToken(localStorage.accessToken);
-    await axios.put(`${UsermsURL}/api/user/osid`)
+    //setAuthToken(localStorage.accessToken);
+    //await axios.put(`${UsermsURL}/api/user/osid`)
     dispatch({ type: LOGOUT });
   } catch (error) {
     console.log(error);
