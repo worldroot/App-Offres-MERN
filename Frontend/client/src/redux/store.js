@@ -9,8 +9,6 @@ import notifications from './notif/notifReducer'
 
 const intialState = {}
 
-const middleware = [thunk]
-
 const rootReducer = combineReducers ({
     auth,
     offres,
@@ -21,7 +19,7 @@ const rootReducer = combineReducers ({
 const store = createStore(
     rootReducer,
     intialState,
-    composeWithDevTools(applyMiddleware(...middleware))
+    composeWithDevTools(applyMiddleware(thunk))
 );
 
 export default store;
