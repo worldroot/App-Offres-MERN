@@ -92,24 +92,34 @@ const Offre = ({ ...props }) => {
     files.forEach((file) => {
       filePathsPromises.push(convertToBase64(file));
     });
+
     const filePaths = await Promise.all(filePathsPromises);
     const mappedFiles = filePaths.map((base64File) => base64File);
     toast.info("Téléchargement d'images réussi");
     setShowImg(true);
-    setData({ ...data, image: mappedFiles.reverse() });
+    setData({ image: mappedFiles.reverse() });
+    console.log(e.target.value);
   };
 
-  const onDelete = async (e) => {
+  const onDelete = (e) => {
     const filtered = image.filter((item, index) => index !== e);
-    setData({ ...data, image: filtered });
+    setData({ image: filtered });
   };
 
-  const reset = (e) => {
+  const reset = async (e) => {
     resetForm();
     setShowList(false);
     setShowImg(false);
+
+    const filePathsPromises = image;
+    const filePaths = await Promise.resolve(filePathsPromises);
+    setData({ image: filePaths });
     setData(initialFieldValues);
+
+    //setData(image.splice(0,image.length))
   };
+
+  console.log(image);
 
   const [ShowList, setShowList] = useState(false);
   const [ShowImg, setShowImg] = useState(false);
@@ -125,7 +135,7 @@ const Offre = ({ ...props }) => {
               className="border-0 shadow-none bg-transparent"
               size="sm"
               onClick={() => {
-                props.setShowModal(false), setShowImg(false);
+                props.setShowModal(false), setShowImg(false), reset();
               }}
             >
               <i className="fas fa-times fa-2x text-danger"></i>

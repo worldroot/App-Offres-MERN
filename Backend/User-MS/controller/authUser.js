@@ -191,14 +191,14 @@ router.post(
         };
         await axios.post("http://localhost:5004/api/notif/verif-account", body);
 
-        return res.status(200).json({
+        res.status(200).json({
           accessToken,
           expiresIn,
           refreshToken,
           msg: "Une-mail vient de vous être envoyé",
         });
       } else {
-        return res.status(200).json({ accessToken, expiresIn, refreshToken });
+        res.status(200).json({ accessToken, expiresIn, refreshToken });
       }
     } catch (err) {
       res.status(500).json({
@@ -271,6 +271,15 @@ router.get("/verify/:token", verifyAccessToken, async (req, res) => {
         { $set: { active: true } },
         { new: true }
       );
+
+      const DateToCheck = new Date(date.getTime()).toDateString();
+      const body = {
+        userId: user.id,
+        nom: user.nom,
+        date: DateToCheck,
+        array: user.OneSignalID,
+      };
+      await axios.post("http://localhost:5004/api/notif/welcome", body);
 
       res.status(200).json({
         error: false,

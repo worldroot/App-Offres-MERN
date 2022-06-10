@@ -201,6 +201,51 @@ router.post("/verif-account", async (req, res) => {
   }
 });
 
+router.post("/welcome", async (req, res) => {
+  const data = req.body;
+    var message = {
+      app_id: ClientApp,
+      contents: {
+        en: `Bienvenue chez nous! ${data.nom}`,
+      },
+      include_player_ids: data.array,
+      data: { foo: "bar" },
+    };
+
+    var req = https.request(options, function (res) {
+      var payload = "";
+      res.on("data", function (data) {
+        payload += data;
+      });
+      res.on("end", function () {
+        payload = JSON.parse(payload);
+        const notification = new Notif({
+          idClient: data.userId,
+          idNotification: payload.id,
+          title: message.contents.en,
+          text: "Merci de votre inscription!",
+          delivered: data.date,
+        });
+        notification.save();
+        return payload;
+      });
+    });
+
+    req.on("error", function (e) {
+      console.log("ERROR:");
+      console.log(e);
+    });
+
+    req.write(JSON.stringify(message));
+    req.end();
+
+    res
+      .status(200)
+      .json({ etat: true, message: "Notification sent successfully" });
+    console.log("Welcome Notification ");
+
+});
+
 router.get("/user", verifyAccessToken, async (req, res) => {
   try {
     const data = await Notif.find({ idClient: req.user.id });

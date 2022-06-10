@@ -21,8 +21,8 @@ import {
 const ooredoo = require("../../assets/img/oored.png");
 import { connect, useDispatch } from "react-redux";
 import { Link, useHistory, Redirect } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useState, useEffect, Fragment } from "react";
+import "../../components/Loading/loading.css";
+import { useState, useEffect, Fragment, useMemo } from "react";
 import decode from "jwt-decode";
 import OneSignal from "react-onesignal";
 import {
@@ -36,6 +36,10 @@ import Notification from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 const AuthNavbar = ({ ...props }) => {
+  useEffect(() => {
+    props.AllNotif();
+  }, []);
+
   let history = useHistory();
   const userExist = localStorage.getItem("user");
   const dispatch = useDispatch();
@@ -58,12 +62,6 @@ const AuthNavbar = ({ ...props }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (userExist) {
-      props.AllNotif();
-    }
-  }, []);
-
   const [OneSignalID, setSignal] = useState("");
   OneSignal.getUserId((userId) => {
     setSignal(userId);
@@ -80,10 +78,17 @@ const AuthNavbar = ({ ...props }) => {
     width: 30,
   };
 
-  const onDl = (id) => {
+  const onDL = (id) => {
     dispatch(deleteNotif(id));
-    window.location.reload(false)
+    window.location.reload(false);
   };
+
+  const onSeen = (id) => {
+    dispatch(updateSeen(id));
+  };
+
+  const Data = props.List;
+  console.log(Data.length);
 
   return (
     <>
@@ -114,9 +119,9 @@ const AuthNavbar = ({ ...props }) => {
                 <Row>
                   <UncontrolledDropdown>
                     <DropdownToggle className="pr-0" nav>
-                      {props.List.length > 0 ? (
+                      {Data.length > 0 ? (
                         <Badge
-                          badgeContent={props.List.length}
+                          badgeContent={Data.length}
                           overlap="circular"
                           color="error"
                         >
@@ -132,59 +137,73 @@ const AuthNavbar = ({ ...props }) => {
                         />
                       )}
                     </DropdownToggle>
+
                     <DropdownMenu className="dropdown-menu-arrow" right>
-                      <DropdownItem disabled className="bg-white text-red">
-                        <span className="mx-1">Notifications</span>
-                      </DropdownItem>
-                      {props.List.length > 0 ? (
-                        props.List.map((n, index) => {
-                          return (
-                            <Fragment key={index}>
-                              {n.seen ? (
-                                <div className="">
-                                  <DropdownItem header>
-                                    <span className="text-gray">{n.title}</span>
-                                    <Button
-                                      className="mx-2 btn btn-outline-danger"
-                                      size="sm"
-                                      onClick={() => onDl(n._id)}
-                                    >
-                                      <i className="fas fa-trash"></i>
-                                    </Button>
-                                  </DropdownItem>
-                                  <DropdownItem disabled className="bg-white">
-                                    <h5 className="text-gray">{n.text}</h5>
-                                  </DropdownItem>
-                                </div>
-                              ) : (
-                                <>
-                                  <DropdownItem header>
-                                    <span className="text-dark">{n.title}</span>
-                                  </DropdownItem>
-                                  <DropdownItem
-                                    className="bg-white"
-                                    onClick={() => {
-                                      dispatch(updateSeen(n._id));
-                                    }}
-                                  >
-                                    <h5 className="text-dark">{n.text}</h5>
-                                  </DropdownItem>
-                                </>
-                              )}
-                            </Fragment>
-                          );
-                        })
+                      {props.isLoading ? (
+                        <div className="text-center my-3">
+                          <div id="loading"></div>
+                        </div>
                       ) : (
                         <>
-                          <DropdownItem divider />
-                          <DropdownItem
-                            disabled
-                            className="bg-white text-center"
-                          >
-                            <span className=" p-md-8">
-                              Aucune Notifications
-                            </span>
+                          <DropdownItem disabled className="bg-white text-red">
+                            <span className="mx-1">Notifications</span>
                           </DropdownItem>
+                          {Data.length > 0 ? (
+                            props.List.map((n, index) => {
+                              return (
+                                <Fragment key={index}>
+                                  {n.seen ? (
+                                    <div key={n._id}>
+                                      <DropdownItem header>
+                                        <span disabled className="text-gray">
+                                          {n.title}
+                                        </span>
+                                        <Button
+                                          className="mx-2 btn btn-outline-danger"
+                                          size="sm"
+                                          onClick={() => onDL(n._id)}
+                                        >
+                                          <i className="fas fa-trash"></i>
+                                        </Button>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        disabled
+                                        className="bg-white"
+                                      >
+                                        <h5 className="text-gray">{n.text}</h5>
+                                      </DropdownItem>
+                                    </div>
+                                  ) : (
+                                    <div key={n._id}>
+                                      <DropdownItem
+                                        className="bg-white"
+                                        onClick={() => {
+                                          onSeen(n._id);
+                                        }}
+                                      >
+                                        <span className="text-dark">
+                                          {n.title}
+                                        </span>
+                                        <h5 className="text-dark">{n.text}</h5>
+                                      </DropdownItem>
+                                    </div>
+                                  )}
+                                </Fragment>
+                              );
+                            })
+                          ) : (
+                            <>
+                              <DropdownItem divider />
+                              <DropdownItem
+                                disabled
+                                className="bg-white text-center"
+                              >
+                                <span className=" p-md-8">
+                                  Aucune Notifications
+                                </span>
+                              </DropdownItem>
+                            </>
+                          )}
                         </>
                       )}
                     </DropdownMenu>
