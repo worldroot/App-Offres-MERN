@@ -155,34 +155,38 @@ const AuthNavbar = ({ ...props }) => {
                                 <Fragment key={index}>
                                   {n.seen ? (
                                     <div key={n._id}>
-                                     
-                                        <Row>
-                                           <Col className=" order-1"> 
-                                           <DropdownItem disabled className=" border">
-                                        <span disabled className="text-gray">
-                                          {n.title}
-                                        </span>
-                                        <h5 className="text-gray">{n.text}</h5>
-                                        {n.seen && (<small className="text-red">seen</small>)}    
-                                        </DropdownItem>
-                                        </Col>
-                                        <Col className=" order-2">
-                                        <DropdownItem  className=" border">
-                                        <a
-                                          className="text-danger text-underline"
-                                          size="sm"
-                                          onClick={() => onDL(n._id)}
-                                        >
-                                          Supprimer
-                                        </a>
+                                      <Row>
+                                        <Col lg="8">
+                                          <DropdownItem disabled>
+                                            <span
+                                              disabled
+                                              className="text-gray"
+                                            >
+                                              {n.title}
+                                            </span>
+                                            <h5 className="text-gray">
+                                              {n.text}
+                                            </h5>
+                                            {n.seen && (
+                                              <small className="text-success">
+                                                seen
+                                              </small>
+                                            )}
                                           </DropdownItem>
-                                        
-                                        
                                         </Col>
-                                        </Row>
-                                       
-                                        
-                                  
+                                        <Col
+                                          lg="3"
+                                          className="justify-content-center "
+                                        >
+                                          <Button
+                                            className="btn-outline-danger mx-6"
+                                            size="sm"
+                                            onClick={() => onDL(n._id)}
+                                          >
+                                            Supprimer
+                                          </Button>
+                                        </Col>
+                                      </Row>
                                     </div>
                                   ) : (
                                     <div key={n._id}>
@@ -196,8 +200,11 @@ const AuthNavbar = ({ ...props }) => {
                                           {n.title}
                                         </span>
                                         <h5 className="text-dark">{n.text}</h5>
-                                        {n.seen && (<small className="text-red">seen</small>)}
-                                        
+                                        {!n.seen && (
+                                          <small className="text-red">
+                                            unseen
+                                          </small>
+                                        )}
                                       </DropdownItem>
                                     </div>
                                   )}
