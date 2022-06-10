@@ -37,7 +37,7 @@ const Offre = ({ ...props }) => {
   };
 
   const [data, setData] = useState(initialFieldValues);
-  const {
+  /* const {
     titre,
     description,
     image,
@@ -46,7 +46,7 @@ const Offre = ({ ...props }) => {
     souscategory,
     category,
     prixdebut,
-  } = data;
+  } = data; */
 
   useEffect(() => {
     props.All();
@@ -88,21 +88,25 @@ const Offre = ({ ...props }) => {
   const handleFileUpload = async (e) => {
     const files = [...e.target.files];
     //const base64 = await convertToBase64([...e.target.files]);
-    const filePathsPromises = image;
+    //const filePathsPromises = image;
     files.forEach((file) => {
-      filePathsPromises.push(convertToBase64(file));
+      convertToBase64(file).then(res => {
+        console.log(res);
+        // data.image.push(res);
+        setData({image : [...data.image, res]});
+      })
+      
     });
 
-    const filePaths = await Promise.all(filePathsPromises);
-    const mappedFiles = filePaths.map((base64File) => base64File);
+    //const filePaths = await Promise.all(filePathsPromises);
+    //const mappedFiles = filePaths.map((base64File) => base64File);
     toast.info("Téléchargement d'images réussi");
     setShowImg(true);
-    setData({ image: mappedFiles.reverse() });
-    console.log(e.target.value);
+    
   };
 
   const onDelete = (e) => {
-    const filtered = image.filter((item, index) => index !== e);
+    const filtered = data.image.filter((item, index) => index !== e);
     setData({ image: filtered });
   };
 
@@ -119,7 +123,7 @@ const Offre = ({ ...props }) => {
     //setData(image.splice(0,image.length))
   };
 
-  console.log(image);
+  //console.log(image);
 
   const [ShowList, setShowList] = useState(false);
   const [ShowImg, setShowImg] = useState(false);
@@ -155,7 +159,7 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="text"
                     name="titre"
-                    value={titre}
+                    value={data.titre}
                     onChange={handleChange("titre")}
                   />
                 </FormGroup>
@@ -170,7 +174,7 @@ const Offre = ({ ...props }) => {
                     type="number"
                     step="0.1"
                     name="prixdebut"
-                    value={prixdebut}
+                    value={data.prixdebut}
                     onChange={handleChange("prixdebut")}
                   />
                 </FormGroup>
@@ -186,7 +190,7 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="select"
                     name="category"
-                    value={category}
+                    value={data.category}
                     onChange={handleChange("category")}
                   >
                     <option>Choisis une catégorie</option>
@@ -211,7 +215,7 @@ const Offre = ({ ...props }) => {
                     <Input
                       type="select"
                       name="souscategory"
-                      value={souscategory}
+                      value={data.souscategory}
                       onChange={handleChange("souscategory")}
                     >
                       <option>Choisis une sous-catégorie</option>
@@ -242,7 +246,7 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="textarea"
                     name="description"
-                    value={description}
+                    value={data.description}
                     onChange={handleChange("description")}
                   />
                 </FormGroup>
@@ -258,7 +262,7 @@ const Offre = ({ ...props }) => {
                     type="date"
                     name="dateDebut"
                     min={DatetoCheck}
-                    value={dateDebut}
+                    value={data.dateDebut}
                     onChange={handleChange("dateDebut")}
                   />
                 </FormGroup>
@@ -271,8 +275,8 @@ const Offre = ({ ...props }) => {
                   <Input
                     type="date"
                     name="dateFin"
-                    min={dateDebut || DatetoCheck}
-                    value={dateFin}
+                    min={data.dateDebut || DatetoCheck}
+                    value={data.dateFin}
                     onChange={handleChange("dateFin")}
                   />
                 </FormGroup>
@@ -299,7 +303,9 @@ const Offre = ({ ...props }) => {
               <>
                 {ShowImg && (
                   <>
-                    {image.map((img, index) => (
+                    {data.image.map((img, index) => {
+                      console.log(img);
+                      return (
                       <Fragment key={index}>
                         <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
                           <img
@@ -314,7 +320,7 @@ const Offre = ({ ...props }) => {
                           ></i>
                         </label>
                       </Fragment>
-                    ))}
+                    )})}
                   </>
                 )}
               </>

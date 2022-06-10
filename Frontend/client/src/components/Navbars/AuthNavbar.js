@@ -90,15 +90,6 @@ const AuthNavbar = ({ ...props }) => {
   };
 
   const Data = props.List;
-  const prev_loading = usePrevious(props.isLoading);
-
-  useEffect(() => {
-    console.log(prev_loading);
-    console.log(props.isLoading);
-    if (prev_loading && !props.isLoading) {
-      //props.AllNotif();
-    }
-  }, [props.isLoading]);
 
   return (
     <>
@@ -164,24 +155,34 @@ const AuthNavbar = ({ ...props }) => {
                                 <Fragment key={index}>
                                   {n.seen ? (
                                     <div key={n._id}>
-                                      <DropdownItem header>
+                                     
+                                        <Row>
+                                           <Col className=" order-1"> 
+                                           <DropdownItem disabled className=" border">
                                         <span disabled className="text-gray">
                                           {n.title}
                                         </span>
-                                        <Button
-                                          className="mx-2 btn btn-outline-danger"
+                                        <h5 className="text-gray">{n.text}</h5>
+                                        {n.seen && (<small className="text-red">seen</small>)}    
+                                        </DropdownItem>
+                                        </Col>
+                                        <Col className=" order-2">
+                                        <DropdownItem  className=" border">
+                                        <a
+                                          className="text-danger text-underline"
                                           size="sm"
                                           onClick={() => onDL(n._id)}
                                         >
-                                          <i className="fas fa-trash"></i>
-                                        </Button>
-                                      </DropdownItem>
-                                      <DropdownItem
-                                        disabled
-                                        className="bg-white"
-                                      >
-                                        <h5 className="text-gray">{n.text}</h5>
-                                      </DropdownItem>
+                                          Supprimer
+                                        </a>
+                                          </DropdownItem>
+                                        
+                                        
+                                        </Col>
+                                        </Row>
+                                       
+                                        
+                                  
                                     </div>
                                   ) : (
                                     <div key={n._id}>
@@ -195,6 +196,8 @@ const AuthNavbar = ({ ...props }) => {
                                           {n.title}
                                         </span>
                                         <h5 className="text-dark">{n.text}</h5>
+                                        {n.seen && (<small className="text-red">seen</small>)}
+                                        
                                       </DropdownItem>
                                     </div>
                                   )}
