@@ -31,6 +31,8 @@ import {
   updateSeen,
 } from "redux/notif/notifActions";
 import { logout } from "redux/auth/authActions";
+import usePrevious from "helpers/usePrevious.js";
+
 import Badge from "@mui/material/Badge";
 import Notification from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
@@ -88,7 +90,15 @@ const AuthNavbar = ({ ...props }) => {
   };
 
   const Data = props.List;
-  console.log(Data.length);
+  const prev_loading = usePrevious(props.isLoading);
+
+  useEffect(() => {
+    console.log(prev_loading);
+    console.log(props.isLoading);
+    if (prev_loading && !props.isLoading) {
+      //props.AllNotif();
+    }
+  }, [props.isLoading]);
 
   return (
     <>
@@ -271,6 +281,7 @@ const AuthNavbar = ({ ...props }) => {
 const mapStateToProps = (state) => ({
   List: state.notifications.notifications,
   isLoading: state.notifications.loading,
+  CodeMsg: state.notifications.codeMsg,
 });
 
 const mapActionToProps = {

@@ -37,14 +37,13 @@ export const updateSeen = (id) => (dispatch) => {
     .catch((err) => console.log(err), NOTIF_ERROR);
 };
 
-export const delnotif = (id) => axios.delete(`${NotifmsURL}/api/notif/` + id);
-export const deleteNotif = async (id, dispatch) => {
-  delnotif(id)
+export const deleteNotif = (id) => async (dispatch) => {
+  await axios
+    .delete(`${NotifmsURL}/api/notif/` + id)
     .then((res) => {
-      window.location.reload();
       dispatch({
         type: NOTIF_DEL,
-        payload: id,
+        payload: { id: id },
       });
     })
     .catch((err) => console.log(err), NOTIF_ERROR);

@@ -5,19 +5,20 @@ import {
   NOTIF_DEL,
   NOTIF_ERROR,
   NOTIF_SEEN,
+  NOTIF_SEEN_F,
 } from "./notifTypes";
 
 const intialState = {
   notifications: [],
   loading: false,
   error: null,
+  codeMsg: null,
 };
 
 export default function (state = intialState, action) {
   switch (action.type) {
-    
     case LOADIN_NOTIF:
-      return { ...state, notifications: [], loading: true };
+      return { ...state, notifications: [], loading: true, codeMsg: null };
     case GET_NOTIF_S:
       return { ...state, notifications: [...action.payload], loading: false };
     case GET_NOTIF_F:
@@ -25,15 +26,23 @@ export default function (state = intialState, action) {
     case NOTIF_SEEN:
       return {
         ...state,
-        offres: state.notifications.map((c) =>
+        notifications: state.notifications.map((c) =>
           c._id === action.payload._id ? action.payload : c
         ),
+        codeMsg: 1,
+        loading: false
       };
+    case NOTIF_SEEN_F:
+        return {
+          ...state,
+          codeMsg: 0,
+          loading: false
+        };
 
     case NOTIF_DEL:
       return {
         ...state,
-        offres: state.notifications.filter((c) => c._id !== action.payload),
+        notifications: state.notifications.filter((c) => c._id !== action.payload),
       };
 
     case NOTIF_ERROR:
