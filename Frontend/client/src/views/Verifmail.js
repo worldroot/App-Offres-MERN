@@ -28,7 +28,7 @@ const VerifMail = () => {
 				await axios.get(url);
 				//console.log(data);
 				setValidUrl(true);
-        window.location.reload();
+        //window.location.reload();
 			} catch (error) {
 				console.log(error);
         toast.error("Quelque chose s'est mal passé !")
@@ -46,7 +46,7 @@ const VerifMail = () => {
 
             { !validUrl && (
             <>
-              <div className="header py-7 py-lg-8"> 
+              <div className="header"> 
                 <PageNotFound/>
               </div> 
             </>

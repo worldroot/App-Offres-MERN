@@ -206,7 +206,7 @@ router.post("/welcome", async (req, res) => {
     var message = {
       app_id: ClientApp,
       contents: {
-        en: `Bienvenue chez nous! ${data.nom}`,
+        en: `Bienvenue ${data.nom}`,
       },
       include_player_ids: data.array,
       data: { foo: "bar" },
@@ -223,8 +223,7 @@ router.post("/welcome", async (req, res) => {
           idClient: data.userId,
           idNotification: payload.id,
           title: message.contents.en,
-          text: "Merci de votre inscription!",
-          delivered: data.date,
+          text: "Merci de votre inscription, vous pouvez maintenent ajouter une demande"
         });
         notification.save();
         return payload;

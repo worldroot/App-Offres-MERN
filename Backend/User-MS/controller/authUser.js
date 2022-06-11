@@ -272,11 +272,9 @@ router.get("/verify/:token", verifyAccessToken, async (req, res) => {
         { new: true }
       );
 
-      const DateToCheck = new Date(date.getTime()).toDateString();
       const body = {
         userId: user.id,
         nom: user.nom,
-        date: DateToCheck,
         array: user.OneSignalID,
       };
       await axios.post("http://localhost:5004/api/notif/welcome", body);

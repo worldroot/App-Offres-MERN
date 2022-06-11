@@ -132,22 +132,19 @@ const AuthNavbar = ({ ...props }) => {
                           />
                         </Badge>
                       ) : (
-                        <Notification
-                          className="text-red text-xl-center"
-                          style={bs}
-                        />
+                        <i className="far fa-bell text-red fa-2x"></i>
                       )}
                     </DropdownToggle>
 
                     <DropdownMenu className="dropdown-menu-arrow" right>
                       {props.isLoading ? (
                         <div className="text-center my-3">
-                          <div id="loading"></div>
+                          <div id="small-loading"></div>
                         </div>
                       ) : (
                         <>
                           <DropdownItem disabled className="bg-white text-red">
-                            <span className="mx-1">Notifications</span>
+                            <span>Notifications</span>
                           </DropdownItem>
                           {Data.length > 0 ? (
                             props.List.map((n, index) => {
@@ -156,7 +153,7 @@ const AuthNavbar = ({ ...props }) => {
                                   {n.seen ? (
                                     <div key={n._id}>
                                       <Row>
-                                        <Col lg="8">
+                                        <Col lg="10">
                                           <DropdownItem disabled>
                                             <span
                                               disabled
@@ -167,23 +164,15 @@ const AuthNavbar = ({ ...props }) => {
                                             <h5 className="text-gray">
                                               {n.text}
                                             </h5>
-                                            {n.seen && (
-                                              <small className="text-success">
-                                                seen
-                                              </small>
-                                            )}
                                           </DropdownItem>
                                         </Col>
-                                        <Col
-                                          lg="3"
-                                          className="justify-content-center "
-                                        >
+                                        <Col lg="2" className="text-center">
                                           <Button
-                                            className="btn-outline-danger mx-6"
+                                            className="btn-outline-danger"
                                             size="sm"
                                             onClick={() => onDL(n._id)}
                                           >
-                                            Supprimer
+                                            <i className="fas fa-trash"></i>
                                           </Button>
                                         </Col>
                                       </Row>
@@ -201,8 +190,8 @@ const AuthNavbar = ({ ...props }) => {
                                         </span>
                                         <h5 className="text-dark">{n.text}</h5>
                                         {!n.seen && (
-                                          <small className="text-red">
-                                            unseen
+                                          <small className="text-danger">
+                                            Cliquer pour marquer comme lu
                                           </small>
                                         )}
                                       </DropdownItem>
