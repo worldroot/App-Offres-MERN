@@ -211,7 +211,7 @@ const OffreList = ({ ...props }) => {
                           <th scope="col">Date fin</th>
                           <th scope="col">Catégories</th>
                           {user.role === "admin" && (
-                            <th scope="col">Demandes</th>
+                            <th scope="col">Soumissions</th>
                           )}
                           <th scope="col">Status</th>
                           <th scope="col"></th>

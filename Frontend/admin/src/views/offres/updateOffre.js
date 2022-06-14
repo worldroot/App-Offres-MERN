@@ -81,13 +81,12 @@ const UpdateOffre = ({ ...props }) => {
 
   const handleFileUpload = async (e) => {
     const files = [...e.target.files];
-    const filePathsPromises = values.image;
     files.forEach((file) => {
-      filePathsPromises.push(convertToBase64(file));
+      convertToBase64(file).then((res) => {
+        //console.log(res);
+        setValues({ image: [...values.image, res] });
+      });
     });
-    const filePaths = await Promise.all(filePathsPromises);
-    const mappedFiles = filePaths.map((base64File) => base64File);
-    setValues({ ...values, image: mappedFiles });
   };
 
   const handleChangeDate = (name) => (event) => {

@@ -187,9 +187,9 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                           />
                         </InputGroup>
                         {password && (
-                          <small className="text-white-50">
-                            " Minimum huit caractères, au moins une lettre et un
-                            chiffre "
+                          <small className="text-white">
+                            Note: Minimum huit caractères, au moins une lettre et un
+                            chiffre
                           </small>
                         )}
                       </FormGroup>

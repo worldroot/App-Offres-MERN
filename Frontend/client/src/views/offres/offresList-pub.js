@@ -271,7 +271,7 @@ const Offres = ({ ...props }) => {
                                         setShowModal2(true), setCurrentObj(of);
                                       }}
                                     >
-                                      Ajouter une demande
+                                      Soumettre une demande
                                     </Button>
                                   </Row>
                                 </CardFooter>

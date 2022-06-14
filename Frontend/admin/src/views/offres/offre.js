@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import React, { Fragment, useState, useEffect } from "react";
 import { addOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
+import { getAllUsers } from "redux/users/userActions.js";
 import useForm from "helpers/useForm";
 import "./offre.css";
 const initialFieldValues = {
@@ -28,6 +29,7 @@ const initialFieldValues = {
   souscategory: "",
   category: "",
   prixdebut: "",
+  postedBy: "",
 };
 
 const Offre = ({ ...props }) => {
@@ -37,20 +39,11 @@ const Offre = ({ ...props }) => {
   };
 
   const [data, setData] = useState(initialFieldValues);
-  /* const {
-    titre,
-    description,
-    image,
-    dateDebut,
-    dateFin,
-    souscategory,
-    category,
-    prixdebut,
-  } = data; */
 
   useEffect(() => {
     props.All();
     props.AllSous();
+    props.AllUsers();
   }, []);
 
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
@@ -87,22 +80,14 @@ const Offre = ({ ...props }) => {
 
   const handleFileUpload = async (e) => {
     const files = [...e.target.files];
-    //const base64 = await convertToBase64([...e.target.files]);
-    //const filePathsPromises = image;
     files.forEach((file) => {
-      convertToBase64(file).then(res => {
-        console.log(res);
-        // data.image.push(res);
-        setData({image : [...data.image, res]});
-      })
-      
+      convertToBase64(file).then((res) => {
+        //console.log(res);
+        setData({ image: [...data.image, res] });
+      });
     });
-
-    //const filePaths = await Promise.all(filePathsPromises);
-    //const mappedFiles = filePaths.map((base64File) => base64File);
     toast.info("Téléchargement d'images réussi");
     setShowImg(true);
-    
   };
 
   const onDelete = (e) => {
@@ -253,6 +238,36 @@ const Offre = ({ ...props }) => {
               </Col>
             </Row>
             <Row>
+              <Col>
+                <FormGroup>
+                  <label className="form-control-label text-dark">
+                    Selectionner responsable dépouillement
+                  </label>
+                  <Input
+                    type="select"
+                    name="postedBy"
+                    value={data.postedBy}
+                    onChange={handleChange("postedBy")}
+                  >
+                    <option>Choisis un responsable</option>
+                    {props.ListU.filter((user) => {
+                      if (user.role === "admin") {
+                        return user;
+                      }
+                    }).map((u, index) => {
+                      return (
+                        <Fragment key={index}>
+                          <option key={u._id} value={u._id}>
+                            {u.email}
+                          </option>
+                        </Fragment>
+                      );
+                    })}
+                  </Input>
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
               <Col lg="6">
                 <FormGroup>
                   <label className="form-control-label text-dark">
@@ -306,21 +321,22 @@ const Offre = ({ ...props }) => {
                     {data.image.map((img, index) => {
                       console.log(img);
                       return (
-                      <Fragment key={index}>
-                        <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
-                          <img
-                            style={ImgStyle}
-                            className=" p-md--1 img-fluid rounded shadow avatar avatar-lg mx-2"
-                            src={img}
-                            alt=""
-                          />
-                          <i
-                            className="btn btn-sm btn-danger shadow-none--hover shadow-none fas fa-times mx--4 top--5"
-                            onClick={() => onDelete(index)}
-                          ></i>
-                        </label>
-                      </Fragment>
-                    )})}
+                        <Fragment key={index}>
+                          <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
+                            <img
+                              style={ImgStyle}
+                              className=" p-md--1 img-fluid rounded shadow avatar avatar-lg mx-2"
+                              src={img}
+                              alt=""
+                            />
+                            <i
+                              className="btn btn-sm btn-danger shadow-none--hover shadow-none fas fa-times mx--4 top--5"
+                              onClick={() => onDelete(index)}
+                            ></i>
+                          </label>
+                        </Fragment>
+                      );
+                    })}
                   </>
                 )}
               </>
@@ -345,18 +361,20 @@ const Offre = ({ ...props }) => {
   );
 };
 
-const mapActionToProps = {
-  create: addOffre,
-  All: getAllCat,
-  AllSous: getAllSousCat,
-};
-
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
   ListC: state.categories.categories,
   ListSC: state.categories.souscategories,
+  ListU: state.users.uslist,
   isLoading: state.offres.loading,
   CodeMsg: state.offres.codeMsg,
 });
+
+const mapActionToProps = {
+  create: addOffre,
+  All: getAllCat,
+  AllSous: getAllSousCat,
+  AllUsers: getAllUsers,
+};
 
 export default connect(mapStateToProps, mapActionToProps)(Offre);
