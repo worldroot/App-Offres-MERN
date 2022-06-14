@@ -180,7 +180,7 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Mot de passe"
+                            placeholder="Minimum huit caractères, au moins une lettre et un chiffre"
                             type="password"
                             onChange={handleChange("password")}
                             value={password}

@@ -27,14 +27,14 @@ router.post(
   async (req, res) => {
     const { nom, prenom, email, password, role, OneSignalID } = req.body;
 
-    try {
-      let user = await User.findOne({ email });
-      if (user) {
-        return res.status(400).json({
-          error: true,
-          msg: "Utilisateur existe déjà",
-        });
-      } else {
+    let user = await User.findOne({email});
+    if (user) {
+      return res.status(400).json({
+        error: true,
+        msg: "Utilisateur existe déjà",
+      });
+    } else {
+      try {
         user = new User({ nom, prenom, email, password, role, OneSignalID });
 
         const savedUser = await user.save();
@@ -67,13 +67,20 @@ router.post(
             msg: "Go verify your account !",
           });
         }
+      } catch (error) {
+        //console.log(error);
+        res.status(500).json({
+          error: true,
+          msg: "Erreur lors de l'inscription",
+        });
       }
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        error: true,
-        msg: "Server error",
-      });
+
+      /*  if (error.errors.password) {
+        res.status(500).json({
+          error: true,
+          msg: "Minimum huit caractères, au moins une lettre et un chiffre",
+        });
+      } */
     }
   }
 );

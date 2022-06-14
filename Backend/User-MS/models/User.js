@@ -18,10 +18,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true, 
+        lowercase: true,
       },
       password: {
         type: String,
         required: true,
+        match: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/]
       },
       telephone: { type: String },
       role: {
