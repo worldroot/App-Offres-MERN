@@ -229,22 +229,6 @@ router.put(
               msg: "Server error",
             });
           }
-        } else if (role === "super-admin") {
-          if (DateToCheck > Debut && DateToCheck < Fin) {
-            const updateOffre = await Offre.findByIdAndUpdate(
-              req.params.offreId,
-              { $set: req.body },
-              { new: true }
-            );
-            res.status(200).json(updateOffre);
-          } else if (DateToCheck < Debut) {
-            const updateOffre = await Offre.findByIdAndUpdate(
-              req.params.offreId,
-              { $set: { status: "pending" } },
-              { new: true }
-            );
-            res.status(200).json(updateOffre);
-          }
         } else {
           return res.status(404).json({
             error: "Access Denied !!",

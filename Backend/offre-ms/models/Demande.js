@@ -6,7 +6,6 @@ const DemandeSchema = new mongoose.Schema(
     offre: {
       type: ObjectId,
       ref: "Offre",
-      required: true,
     },
     properties: {
       type: Object

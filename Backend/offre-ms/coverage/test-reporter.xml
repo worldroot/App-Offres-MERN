@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/offre-ms/tests/offrebyid.test.js">
+        <testCase name="Offre getById  should return null if nothing is found" duration="21"/>
+        <testCase name="Offre getById  should retrieve correct offre if id matches" duration="8"/>
+    </file>
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/offre-ms/tests/dembyid.test.js">
+        <testCase name="Demande getById  should return null if nothing is found" duration="14"/>
+        <testCase name="Demande getById  should retrieve correct demande if id matches" duration="6"/>
+    </file>
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/offre-ms/tests/offre.test.js">
+        <testCase name="Create Offre can be created correctly" duration="11"/>
+    </file>
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/offre-ms/tests/demande.test.js">
+        <testCase name="Create Demande can be created correctly" duration="11"/>
+    </file>
+</testExecutions>
