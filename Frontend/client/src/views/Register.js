@@ -215,7 +215,7 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                     </Form>
                   </Col>
                   {/* SIDE 2 */}
-                  <Col className="align-self-center sticky" xl="4">
+                  <Col className="align-self-center" xl="4">
                     <div className="md-2">
                       <img
                         className="img-fluid"

@@ -48,7 +48,11 @@ const Offre = ({ ...props }) => {
 
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
   const userExist = localStorage.getItem("user");
-
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   const onSubmit = (e) => {
     e.preventDefault();
     props.create(data);
@@ -83,7 +87,7 @@ const Offre = ({ ...props }) => {
     files.forEach((file) => {
       convertToBase64(file).then((res) => {
         //console.log(res);
-        setData({ image: [...data.image, res] });
+        setData({ ...data, image: [...data.image, res] });
       });
     });
     toast.info("Téléchargement d'images réussi");
@@ -92,29 +96,22 @@ const Offre = ({ ...props }) => {
 
   const onDelete = (e) => {
     const filtered = data.image.filter((item, index) => index !== e);
-    setData({ image: filtered });
+    setData({ ...data, image: filtered });
   };
 
   const reset = async (e) => {
     resetForm();
     setShowList(false);
     setShowImg(false);
-
-    const filePathsPromises = image;
-    const filePaths = await Promise.resolve(filePathsPromises);
-    setData({ image: filePaths });
     setData(initialFieldValues);
-
     //setData(image.splice(0,image.length))
   };
-
-  //console.log(image);
 
   const [ShowList, setShowList] = useState(false);
   const [ShowImg, setShowImg] = useState(false);
   var date = new Date();
   const DatetoCheck = date.toISOString().substring(0, 10);
-
+  //console.log(data);
   return (
     <>
       <Card className="card-profile shadow overflow-auto h-100vh ">
@@ -205,7 +202,7 @@ const Offre = ({ ...props }) => {
                     >
                       <option>Choisis une sous-catégorie</option>
                       {props.ListSC.filter((sous) => {
-                        if (sous.category === category) {
+                        if (sous.category === data.category) {
                           return sous;
                         }
                       }).map((sous, index) => {
@@ -256,11 +253,11 @@ const Offre = ({ ...props }) => {
                       }
                     }).map((u, index) => {
                       return (
-                        <Fragment key={index}>
-                          <option key={u._id} value={u._id}>
-                            {u.email}
-                          </option>
-                        </Fragment>
+                        u.email !== userLocal.email && (
+                          <Fragment key={index}>
+                            <option key={u._id} value={u.email}>{u.email}</option>
+                          </Fragment>
+                        )
                       );
                     })}
                   </Input>
@@ -319,7 +316,7 @@ const Offre = ({ ...props }) => {
                 {ShowImg && (
                   <>
                     {data.image.map((img, index) => {
-                      console.log(img);
+                     
                       return (
                         <Fragment key={index}>
                           <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">

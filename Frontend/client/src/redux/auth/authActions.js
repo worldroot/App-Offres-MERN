@@ -73,7 +73,7 @@ export const register =
       });
       dispatch(loadUser());
       toast.success("Inscription avec succès");
-      toast.info("Vérifiez votre email pour activer votre compte");
+      //toast.info("Vérifiez votre email pour activer votre compte");
     } catch (err) {
       toast.error("Inscription: Quelque chose s'est mal passé !");
       console.log(err);

@@ -1,4 +1,3 @@
-
 // reactstrap components
 import {
   DropdownMenu,
@@ -16,50 +15,45 @@ import {
   Container,
   Media,
   Button,
-  Toast
+  Toast,
 } from "reactstrap";
 
 import { logout, refreshJwt } from "redux/auth/authActions";
-import {connect, useDispatch} from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
-import {toast} from 'react-toastify'
-import decode from 'jwt-decode'
+import { connect, useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import decode from "jwt-decode";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const AdminNavbar = ({ logout }) => {
-
-  const dispatch = useDispatch()
-  let history = useHistory()
+  const dispatch = useDispatch();
+  let history = useHistory();
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
 
-      useEffect(() => {
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const decodedToken = decode(accessToken);
+      const decodedRefToken = decode(refreshToken);
 
-        const accessToken = localStorage.getItem("accessToken")
-        if(accessToken){
-          
-          const refreshToken = localStorage.getItem("refreshToken")
-          const decodedToken = decode(accessToken)
-          const decodedRefToken = decode(refreshToken)
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken }));
+      }
 
-                if(decodedToken.exp * 1000 < new Date().getTime()){
-                    dispatch(refreshJwt({refreshToken}))
-                  }
+      if (decodedRefToken.exp * 1000 < new Date().getTime()) {
+        dispatch(logout());
+        //history.push('/login')
+        return <Redirect to="/login" />;
+      }
+    }
+  }, []);
 
-                if(decodedRefToken.exp * 1000 < new Date().getTime()){
-                    dispatch(logout())
-                    //history.push('/login')
-                    return <Redirect to='/login'/>;
-                  }
-
-                
-        }
-      }, []);
-    
   /*
   if(!user){
     toast.error("ERROR")
@@ -74,49 +68,55 @@ const AdminNavbar = ({ logout }) => {
           <Link
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
             to="/"
-          >
-            
-          </Link>
-         
+          ></Link>
+
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
-                    <i className="fas fa-user-shield"></i>
+                  <i className="fas fa-user-shield"></i>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      {user.role}
+                      {user.role === "admin"?  <span>Admin</span> :  <span>Super-admin</span> }
                     </span>
                   </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow bg-white" right>
-
-              { user.role === "admin" &&(
+                <DropdownItem disabled className="bg-white" >
+                  <span className="text-red">{user.email}</span>
+                </DropdownItem>
+                <DropdownItem divider />
+                {user.role === "admin" && (
                   <DropdownItem to="/admin" className="bg-white" tag={Link}>
                     <i className="fas fa-tools" />
                     <span>Dashboard</span>
                   </DropdownItem>
-              )} 
+                )}
 
-              { user.role === "super-admin" &&(
-                  <DropdownItem to="/super-admin" className="bg-white" tag={Link}>
+                {user.role === "super-admin" && (
+                  <DropdownItem
+                    to="/super-admin"
+                    className="bg-white"
+                    tag={Link}
+                  >
                     <i className="fas fa-tools"></i>
                     <span>Dashboard</span>
                   </DropdownItem>
-              )} 
-
-                    <DropdownItem divider />
-                    <DropdownItem className="bg-white"
-                    onClick={ ()=> {
-                       logout(),
-                       history.push('/login'),
-                       window.location.reload(false);
-                       }}>
-                      <i className="fas fa-sign-out-alt"></i>
-                      <span>Se déconnecter</span>
-                    </DropdownItem>
-
+                )}
+               
+              
+                <DropdownItem
+                  className="bg-white"
+                  onClick={() => {
+                    logout(),
+                      history.push("/login"),
+                      window.location.reload(false);
+                  }}
+                >
+                  <i className="fas fa-sign-out-alt"></i>
+                  <span>Se déconnecter</span>
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
@@ -126,12 +126,9 @@ const AdminNavbar = ({ logout }) => {
   );
 };
 
-const mapToStateProps = (state) => ({
+const mapToStateProps = (state) => ({});
 
-});
-
-export default connect (mapToStateProps, { logout } )(AdminNavbar);
-
+export default connect(mapToStateProps, { logout })(AdminNavbar);
 
 /* Serach Bar
 

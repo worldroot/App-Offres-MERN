@@ -232,7 +232,7 @@ const AuthNavbar = ({ ...props }) => {
                         <i className="fas fa-user text-red" />
                         <span>Profile</span>
                       </DropdownItem>
-                      <DropdownItem divider />
+
                       <DropdownItem
                         className="bg-white"
                         onClick={() => LoggingOut()}
@@ -255,7 +255,7 @@ const AuthNavbar = ({ ...props }) => {
                     >
                       <i className="fas fa-user-plus text-red" />
                       <span className="nav-link-inner--text text-red">
-                        Register
+                        S'inscrire
                       </span>
                     </NavLink>
                   </NavItem>
@@ -263,7 +263,7 @@ const AuthNavbar = ({ ...props }) => {
                     <NavLink className="nav-link-icon" to="/login" tag={Link}>
                       <i className="fas fa-sign-in-alt text-red"></i>
                       <span className="nav-link-inner--text text-red">
-                        Login
+                        Connexion
                       </span>
                     </NavLink>
                   </NavItem>

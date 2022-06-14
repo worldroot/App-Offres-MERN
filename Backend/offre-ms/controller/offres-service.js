@@ -87,7 +87,7 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data.email,
+                        postedBy,
                         status: "published",
                       });
 
@@ -117,7 +117,7 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data.email,
+                        postedBy,
                       });
                       newOffre.save().then(() => res.json(data));
                       const Adminbody = {
@@ -164,6 +164,7 @@ router.put(
           category,
           status,
           prixdebut,
+          postedBy
         } = req.body;
         var date = new Date();
         const OF = await Offre.findById(req.params.offreId);

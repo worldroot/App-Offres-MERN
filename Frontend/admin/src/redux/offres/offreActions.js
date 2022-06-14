@@ -37,7 +37,7 @@ export const allOffres = () => (dispatch) => {
     .catch((err) => console.log(err), GET_OFFRE_F);
 };
 
-export const addOffre = (offre) => {
+export const addOffre = (offre) => async (dispatch) => {
   const data = {
     titre: offre.titre,
     description: offre.description,
@@ -46,6 +46,7 @@ export const addOffre = (offre) => {
     dateFin: offre.dateFin,
     prixdebut: offre.prixdebut,
     souscategory: offre.souscategory,
+    postedBy: offre.postedBy
   };
 
   if (
@@ -54,23 +55,23 @@ export const addOffre = (offre) => {
     !data.image ||
     !data.dateDebut ||
     !data.dateFin ||
-    !data.souscategory
+    !data.souscategory ||
+    !data.postedBy
   ) {
     toast.warn("Verifier vos champs !");
   } else {
-    return (dispatch) => {
-      dispatch({ type: LOADING_OFFRE });
+    dispatch({ type: LOADING_OFFRE });
       setAuthToken(localStorage.accessToken);
-      return axios
-        .post(`${OffremsURL}/api/offre/`, data)
-        .then((res) => {
-          dispatch({
-            type: OFFRE_ADDED,
-            payload: res.data,
-          });
-        })
-        .catch((err) => dispatch({ type: OFFRE_ADD_FAILED }));
-    };
+      try {
+      const res = await axios
+        .post(`${OffremsURL}/api/offre/`, data);
+      dispatch({
+        type: OFFRE_ADDED,
+        payload: res.data
+      });
+    } catch (err) {
+      return dispatch({ type: OFFRE_ADD_FAILED });
+    }
   }
 };
 
