@@ -189,6 +189,7 @@ router.put(
                     souscategory,
                     category,
                     status,
+                    postedBy
                   },
                 },
                 { new: true }
@@ -212,6 +213,7 @@ router.put(
                     souscategory,
                     category,
                     status,
+                    postedBy
                   },
                 },
                 { new: true }

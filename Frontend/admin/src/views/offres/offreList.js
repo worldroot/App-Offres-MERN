@@ -249,7 +249,7 @@ const OffreList = ({ ...props }) => {
                                     {of.status !== "pending" &&
                                     of.status !== "archived"
                                       ? of.demandes.length
-                                      : 0}
+                                      : of.demandes.length}
                                   </td>
                                 )}
 
@@ -288,7 +288,8 @@ const OffreList = ({ ...props }) => {
                                   </Button>
                                   {user.role === "admin" && (
                                     <>
-                                      {of.archived && (
+                                      {/* Update */}
+                                      {of.archived && of.demandes.length === 0 && (
                                         <Button
                                           className="btn btn-outline-dark"
                                           size="sm"
@@ -300,7 +301,7 @@ const OffreList = ({ ...props }) => {
                                           <i className="fas fa-pencil-alt"></i>
                                         </Button>
                                       )}
-
+                                      {/* Delete */}
                                       {DatetoCheck < new Date(of.dateDebut) ? (
                                         <>
                                           <Button

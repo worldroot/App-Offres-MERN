@@ -98,7 +98,7 @@ export const updateStatus = (id) => (dispatch) => {
         type: OFFRE_UPDATED,
         payload: res.data,
       });
-      toast.success("Mis à jour avec succés");
+      toast.info("Mis à jour de status avec succés");
     })
     .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
 };

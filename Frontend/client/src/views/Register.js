@@ -45,7 +45,7 @@ const Register = ({ register, isAuth, isLoading, user }) => {
 
   const { nom, prenom, email, password } = data;
   const style = { width: "200px" };
-  const history = useHistory()
+  const history = useHistory();
   /*
   const history = useHistory()
   setTimeout(() => {
@@ -180,29 +180,38 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Minimum huit caractères, au moins une lettre et un chiffre"
+                            placeholder="Mot de passe"
                             type="password"
                             onChange={handleChange("password")}
                             value={password}
                           />
                         </InputGroup>
-                        <a
-                          disabled
-                          className=" text-white"
-                          onClick={() => history.push("/login")}
-                          href=""
-                        >
-                          <small>Se connecter à un compte existant</small>
-                        </a>
+                        {password && (
+                          <small className="text-white-50">
+                            " Minimum huit caractères, au moins une lettre et un
+                            chiffre "
+                          </small>
+                        )}
                       </FormGroup>
-                      <div className="text-center">
+
+                      <Row className="text-center justify-content-center">
                         <Button
                           className="mt-4 btn-outline-white"
                           type="submit"
                         >
                           S'inscrire
                         </Button>
-                      </div>
+                      </Row>
+                      <Row className=" justify-content-center">
+                        <a
+                          disabled
+                          className=" text-white text-underline"
+                          onClick={() => history.push("/login")}
+                          href=""
+                        >
+                          <small>Se connecter à un compte existant</small>
+                        </a>
+                      </Row>
                     </Form>
                   </Col>
                   {/* SIDE 2 */}
