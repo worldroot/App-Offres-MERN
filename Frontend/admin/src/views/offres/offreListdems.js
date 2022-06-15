@@ -170,10 +170,10 @@ const OffreListDemandes = ({ ...props }) => {
                         <tr>
                           <th scope="col">Titre</th>
                           <th scope="col">Prix Dt</th>
-                          <th scope="col">Demandes</th>
                           <th scope="col">Date début</th>
                           <th scope="col">Date fin</th>
                           <th scope="col">Catégories</th>
+                          <th scope="col">Soumissions</th>
                           <th scope="col">Status</th>
                           <th scope="col"></th>
                         </tr>
@@ -186,12 +186,13 @@ const OffreListDemandes = ({ ...props }) => {
                               <tr key={of._id}>
                                 <td>{of.titre.substring(0, 25)}</td>
                                 <td>{of.prixdebut}</td>
-                                <td>( {of.demandes.length} )</td>
+                               
                                 <td>{of.dateDebut.substring(0, 10)}</td>
                                 <td>{of.dateFin.substring(0, 10)}</td>
                                 <td>
                                   {of.category} - {of.souscategory}
                                 </td>
+                                <td>( {of.demandes.length} )</td>
                                 <td>
                                   {of.status === "closed" && (
                                     <span className=" text-dark">Closed</span>

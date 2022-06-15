@@ -223,7 +223,7 @@ const OffreList = ({ ...props }) => {
                           return (
                             <Fragment key={index}>
                               <tr key={of._id}>
-                                <td>{of.titre.substring(0,25)}</td>
+                                <td>{of.titre.substring(0, 18)}</td>
                                 <td>
                                   {of.prixdebut.length === 0 ? (
                                     <span>Ouvert</span>
@@ -248,8 +248,8 @@ const OffreList = ({ ...props }) => {
                                   <td>
                                     {of.status !== "pending" &&
                                     of.status !== "archived"
-                                      ? of.demandes.length
-                                      : of.demandes.length}
+                                      ? (of.demandes.length)
+                                      : (0)}
                                   </td>
                                 )}
 
@@ -289,7 +289,7 @@ const OffreList = ({ ...props }) => {
                                   {user.role === "admin" && (
                                     <>
                                       {/* Update */}
-                                      {of.archived && of.demandes.length === 0 && (
+                                      {of.archived && of.demandes.length === 0 ? (
                                         <Button
                                           className="btn btn-outline-dark"
                                           size="sm"
@@ -300,7 +300,20 @@ const OffreList = ({ ...props }) => {
                                         >
                                           <i className="fas fa-pencil-alt"></i>
                                         </Button>
-                                      )}
+                                      ):("")}
+                                      {DatetoCheck < new Date(of.dateDebut) &&
+                                        !of.archived && (
+                                          <Button
+                                            className="btn btn-outline-dark"
+                                            size="sm"
+                                            onClick={() => {
+                                              setCurrentObj(of);
+                                              setShowModal2(true);
+                                            }}
+                                          >
+                                            <i className="fas fa-pencil-alt"></i>
+                                          </Button>
+                                        )}
                                       {/* Delete */}
                                       {DatetoCheck < new Date(of.dateDebut) ? (
                                         <>
@@ -326,6 +339,7 @@ const OffreList = ({ ...props }) => {
                                   )}
                                   {user.role === "super-admin" && (
                                     <>
+                                      {/* Update ToPublish */}
                                       {of.archived &&
                                         DatetoCheck > new Date(of.dateDebut) &&
                                         DatetoCheck < new Date(of.dateFin) && (
@@ -337,7 +351,8 @@ const OffreList = ({ ...props }) => {
                                             <i className="fas fa-arrow-up"></i>
                                           </Button>
                                         )}
-                                      {!of.archived && (
+                                        {/* Update ToArchive */}
+                                      {!of.archived && DatetoCheck > new Date(of.dateDebut) &&(
                                         <Button
                                           className="btn btn-outline-dark"
                                           size="sm"
@@ -346,7 +361,6 @@ const OffreList = ({ ...props }) => {
                                           <i className="fas fa-archive "></i>
                                         </Button>
                                       )}
-                                     
 
                                       {DatetoCheck < new Date(of.dateDebut) && (
                                         <>
