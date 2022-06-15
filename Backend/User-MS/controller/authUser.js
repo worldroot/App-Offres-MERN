@@ -93,7 +93,7 @@ router.post(
   validateSigninRequest,
   isRequestValidated,
   async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, OneSignalID } = req.body;
 
     try {
       //Mail Verif
@@ -124,6 +124,12 @@ router.post(
           msg: "Mot de passe incorrect",
         });
       }
+
+      await User.findByIdAndUpdate(
+        user._id,
+        { $push: { OneSignalID: OneSignalID } },
+        { new: true }
+      );
 
       const accessToken = await signAccessToken(user.id);
       const refreshToken = await signRefreshToken(user.id);

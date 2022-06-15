@@ -7,7 +7,6 @@ const {
   isRequestValidated,
 } = require("../middleware/offreValidator");
 const axios = require("axios");
-const e = require("express");
 //const offreByid = require("../middleware/offreByid");
 
 // @route   POST api/appeloffre
@@ -40,20 +39,9 @@ router.post(
               category,
               status,
               postedBy,
+              responsable,
             } = req.body;
-            const data = await Offre.aggregate([
-              {
-                $lookup: {
-                  from: "demandes",
-                  localField: "_id",
-                  foreignField: "offre",
-                  as: "demandes",
-                },
-              },
-              //cancel some attribute to displays :
-              { $project: { demandes: { __v: 0, updatedAt: 0 } } },
-              { $project: { icon: 0, __v: 0, slug: 0 } },
-            ]);
+
             var date = new Date();
             const Debut = new Date(dateDebut);
             const Fin = new Date(dateFin);
@@ -75,8 +63,6 @@ router.post(
                       response.data.category
                   )
                   .then(async (response2) => {
-                    const DebutNotif = new Date(dateDebut).toDateString()
-                    const FinNotif = new Date(dateFin).toDateString()
                     if (DateToCheck > Debut && DateToCheck < Fin) {
                       const newOffre = new Offre({
                         titre,
@@ -87,26 +73,31 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy,
+                        postedBy: responseUser.data.email,
+                        responsable,
                         status: "published",
                       });
 
-                      newOffre.save().then(() => res.json(data));
-                   
-                     
+                      newOffre.save().then(() => res.json(newOffre));
+
                       const Adminbody = {
-                        userId: req.user.id,
+                        responsable: responsable,
                         titre: titre,
-                        dateFin: FinNotif,
-                      }
-                      await axios.post("http://localhost:5004/api/notif/decrypt", Adminbody)
+                        dateFin: dateFin,
+                      };
+                      axios.post(
+                        "http://localhost:5004/api/notif/selected",
+                        Adminbody
+                      );
 
                       const Clientbody = {
                         titre: titre,
-                        dateDebut: DebutNotif,
-                      }
-                      await axios.post("http://localhost:5004/api/notif/published-offre", Clientbody)
-
+                        dateDebut: dateDebut,
+                      };
+                      await axios.post(
+                        "http://localhost:5004/api/notif/published-offre",
+                        Clientbody
+                      );
                     } else {
                       const newOffre = new Offre({
                         titre,
@@ -117,15 +108,19 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy,
+                        postedBy: responseUser.data.email,
+                        responsable,
                       });
-                      newOffre.save().then(() => res.json(data));
+                      newOffre.save().then(() => res.json(newOffre));
                       const Adminbody = {
-                        userId: req.user.id,
+                        responsable: responsable,
                         titre: titre,
-                        dateFin: FinNotif,
-                      }
-                      await axios.post("http://localhost:5004/api/notif/decrypt", Adminbody)
+                        dateFin: dateFin,
+                      };
+                      axios.post(
+                        "http://localhost:5004/api/notif/selected",
+                        Adminbody
+                      );
                     }
                   });
               });
@@ -164,7 +159,7 @@ router.put(
           category,
           status,
           prixdebut,
-          postedBy
+          responsable,
         } = req.body;
         var date = new Date();
         const OF = await Offre.findById(req.params.offreId);
@@ -177,21 +172,13 @@ router.put(
           try {
             // Between dates : DateToCheck > Debut && DateToCheck<Fin
             if (DateToCheck < Debut) {
+              /*               if(OF.responsable !== responsable ){
+
+              } */
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
-                  $set: {
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    prixdebut,
-                    souscategory,
-                    category,
-                    status,
-                    postedBy
-                  },
+                  $set: req.body,
                 },
                 { new: true }
               );
@@ -204,18 +191,7 @@ router.put(
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
-                  $set: {
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    prixdebut,
-                    souscategory,
-                    category,
-                    status,
-                    postedBy
-                  },
+                  $set: req.body,
                 },
                 { new: true }
               );
@@ -305,7 +281,9 @@ router.delete(
         if (role === "admin") {
           if (DateToCheck < Debut) {
             try {
-              let deletedOffre = await Offre.findByIdAndDelete(req.params.offreId);
+              let deletedOffre = await Offre.findByIdAndDelete(
+                req.params.offreId
+              );
               res.status(200).json({
                 message: `Offre : ${deletedOffre.titre} deleted successfully`,
               });
@@ -358,7 +336,7 @@ router.get("/allpublished", async (req, res) => {
   try {
     var date = new Date();
     const DateToCheck = new Date(date.getTime());
-    
+
     //DateToCheck > Debut && DateToCheck < Fin
     const offre = await Offre.find({
       archived: false,
@@ -402,7 +380,7 @@ router.get("/all", async (req, res) => {
     var date = new Date();
     const DateToCheck = new Date(date.getTime());
     const closed = await Offre.find({ dateFin: { $lt: DateToCheck } });
-    if (closed.length > 0 ) {
+    if (closed.length > 0) {
       await Offre.updateMany(
         { dateFin: { $lt: DateToCheck } },
         { $set: { status: "closed" } }
@@ -492,12 +470,11 @@ router.get("/offrebyuser", verifyAccessToken, async (req, res) => {
   }
 });
 
-router.get("/one",async (req, res) => {
+router.get("/one", async (req, res) => {
   try {
-    const data = req.body
-    const one = await Offre.findById(data.id)
-    res.status(200).json(one.dateFin.toDateString())
-
+    const data = req.body;
+    const one = await Offre.findById(data.id);
+    res.status(200).json(one.dateFin.toDateString());
   } catch (error) {
     console.log(error);
     res.status(500).json({

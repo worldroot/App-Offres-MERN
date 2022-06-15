@@ -53,7 +53,7 @@ router.post(
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
-            const AdminMail = offreModel.postedBy;
+            const AdminMail = offreModel.responsable;
             const theKey = offreModel.publickey;
             if (!offreModel) {
               return res.status(403).json({

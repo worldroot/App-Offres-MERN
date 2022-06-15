@@ -13,7 +13,7 @@ import {
 export const all = () => axios.get(`${NotifmsURL}/api/notif/user`);
 export const getUserNotif = () => (dispatch) => {
   dispatch({ type: LOADIN_NOTIF });
-  setAuthToken(localStorage.accessToken);
+  //setAuthToken(localStorage.accessToken);
   all()
     .then((res) => {
       dispatch({

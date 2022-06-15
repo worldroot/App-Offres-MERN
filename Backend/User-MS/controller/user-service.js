@@ -7,7 +7,6 @@ const AdminAndSuper = require("../middleware/doubleAuth");
 const userid = require("../middleware/userByid");
 const bcrypt = require("bcryptjs");
 const { verifyAccessToken } = require("../middleware/verify-token");
-const e = require("express");
 
 // @desc    update user
 // @access  Public
@@ -127,6 +126,21 @@ router.put(
 // @route   GET api/user
 // @desc    User Information by token
 // @access  Public
+router.get("/admin", async (req, res) => {
+  try {
+    //const data = req.body
+    const user = await User.findOne(req.body).select("-password");
+    console.log(user);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      msg: error.message,
+    });
+    console.log(error.message);
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
@@ -135,6 +149,20 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({
       error: true,
       msg: "Server error",
+    });
+    console.log(error.message);
+  }
+});
+
+router.get("/admin", async (req, res) => {
+  try {
+    const data = req.body
+    const user = await User.findOne(data);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      msg: error.message,
     });
     console.log(error.message);
   }

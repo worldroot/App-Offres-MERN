@@ -37,6 +37,10 @@ const OffreSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    responsable: {
+        type: String,
+        required: true,
+    },
     status: {
         type: String,
         enum: ["archived", "published", "pending", "closed", "résultats"],

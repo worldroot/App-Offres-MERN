@@ -27,6 +27,7 @@ import {
 } from "redux/notif/notifActions";
 import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import Notifications from "@mui/icons-material/Notifications";
 
 const AdminNavbar = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -86,8 +87,8 @@ const AdminNavbar = ({ ...props }) => {
   }, []);
 
   const bs = {
-    height: 30,
-    width: 30,
+    height: 23,
+    width: 23,
   };
 
   return (
@@ -114,10 +115,10 @@ const AdminNavbar = ({ ...props }) => {
                     />
                   </Badge>
                 ) : (
-                  <>
-                    <i className="far fa-bell text-white fa-1x"></i>{" "}
-                    Notification
-                  </>
+                  <Notifications
+                      className="text-white text-xl-center"
+                      style={bs}
+                    />
                 )}
               </DropdownToggle>
 
