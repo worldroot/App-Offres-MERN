@@ -4,36 +4,67 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Form,
-  FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,
   Navbar,
   Nav,
   Container,
   Media,
   Button,
   Toast,
+  Row,
+  Col
 } from "reactstrap";
 
 import { logout, refreshJwt } from "redux/auth/authActions";
 import { connect, useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
 import decode from "jwt-decode";
+import React, { Fragment, useEffect, useState } from "react";
+import OneSignal from "react-onesignal";
+import {
+  getUserNotif,
+  deleteNotif,
+  updateSeen,
+} from "redux/notif/notifActions";
+import Badge from "@mui/material/Badge";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
-import React, { useEffect, useState } from "react";
-
-const AdminNavbar = ({ logout }) => {
+const AdminNavbar = ({ ...props }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    props.AllNotif();
+  }, []);
+
   let history = useHistory();
   const [user] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
+
+  const Data = props.List;
+
+  const [OneSignalID, setSignal] = useState("");
+  OneSignal.getUserId((userId) => {
+    setSignal(userId);
+  });
+
+  const LoggingOut = () => {
+      dispatch(logout(OneSignalID)),
+      setTimeout(() => {
+        history.push("/login"), window.location.reload();
+      }, 200);
+  };
+
+
+  const onDL = (id) => {
+    dispatch(deleteNotif(id));
+    window.location.reload(false);
+  };
+
+  const onSeen = (id) => {
+    dispatch(updateSeen(id));
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -54,13 +85,11 @@ const AdminNavbar = ({ logout }) => {
     }
   }, []);
 
-  /*
-  if(!user){
-    toast.error("ERROR")
-    return <Redirect to='/login'/>;
-  }
-  */
-  //window.location.reload(true);
+  const bs = {
+    height: 30,
+    width: 30,
+  };
+
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -71,19 +100,113 @@ const AdminNavbar = ({ logout }) => {
           ></Link>
 
           <Nav className="align-items-center d-none d-md-flex" navbar>
+            <UncontrolledDropdown>
+              <DropdownToggle className="pr-0" nav>
+                {Data.length > 0 ? (
+                  <Badge
+                    badgeContent={Data.length}
+                    overlap="circular"
+                    color="primary"
+                  >
+                    <NotificationsActiveIcon
+                      className="text-white text-xl-center"
+                      style={bs}
+                    />
+                  </Badge>
+                ) : (
+                  <>
+                    <i className="far fa-bell text-white fa-1x"></i>{" "}
+                    Notification
+                  </>
+                )}
+              </DropdownToggle>
+
+              <DropdownMenu className="dropdown-menu-arrow" right>
+                {props.isLoading ? (
+                  <div className="text-center my-3">
+                    <div id="small-loading"></div>
+                  </div>
+                ) : (
+                  <>
+                    <DropdownItem disabled className="bg-white text-red">
+                      <span>Notifications</span>
+                    </DropdownItem>
+                    {Data.length > 0 ? (
+                      props.List.map((n, index) => {
+                        return (
+                          <Fragment key={index}>
+                            {n.seen ? (
+                              <div key={n._id}>
+                                <Row>
+                                  <Col lg="10">
+                                    <DropdownItem disabled>
+                                      <span disabled className="text-gray">
+                                        {n.title}
+                                      </span>
+                                      <h5 className="text-gray">{n.text} <br></br></h5>
+                                    </DropdownItem>
+                                  </Col>
+                                  <Col lg="2" className="text-center">
+                                    <Button
+                                      className="btn-outline-danger"
+                                      size="sm"
+                                      onClick={() => onDL(n._id)}
+                                    >
+                                      <i className="fas fa-trash"></i>
+                                    </Button>
+                                  </Col>
+                                </Row>
+                              </div>
+                            ) : (
+                              <div key={n._id}>
+                                <DropdownItem
+                                  className="bg-white"
+                                  onClick={() => {
+                                    onSeen(n._id);
+                                  }}
+                                >
+                                  <span className="text-dark">{n.title}</span>
+                                  <h5 className="text-dark">{n.text}</h5>
+                                  {!n.seen && (
+                                    <small className="text-danger">
+                                      Cliquer pour marquer comme lu
+                                    </small>
+                                  )}
+                                </DropdownItem>
+                              </div>
+                            )}
+                          </Fragment>
+                        );
+                      })
+                    ) : (
+                      <>
+                        <DropdownItem divider />
+                        <DropdownItem disabled className="bg-white text-center">
+                          <span className=" p-md-8">Aucune Notifications</span>
+                        </DropdownItem>
+                      </>
+                    )}
+                  </>
+                )}
+              </DropdownMenu>
+            </UncontrolledDropdown>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <i className="fas fa-user-shield"></i>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      {user.role === "admin"?  <span>Admin</span> :  <span>Super-admin</span> }
+                      {user.role === "admin" ? (
+                        <span>Admin</span>
+                      ) : (
+                        <span>Super-admin</span>
+                      )}
                     </span>
                   </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow bg-white" right>
-                <DropdownItem disabled className="bg-white" >
+                <DropdownItem disabled className="bg-white">
                   <span className="text-red">{user.email}</span>
                 </DropdownItem>
                 <DropdownItem divider />
@@ -104,14 +227,11 @@ const AdminNavbar = ({ logout }) => {
                     <span>Dashboard</span>
                   </DropdownItem>
                 )}
-               
-              
+
                 <DropdownItem
                   className="bg-white"
                   onClick={() => {
-                    logout(),
-                      history.push("/login"),
-                      window.location.reload(false);
+                    LoggingOut();
                   }}
                 >
                   <i className="fas fa-sign-out-alt"></i>
@@ -126,22 +246,13 @@ const AdminNavbar = ({ logout }) => {
   );
 };
 
-const mapToStateProps = (state) => ({});
+const mapActionToProps = {
+  AllNotif: getUserNotif,
+};
 
-export default connect(mapToStateProps, { logout })(AdminNavbar);
+const mapStateToProps = (state) => ({
+  List: state.notifications.notifications,
+  isLoading: state.notifications.loading,
+});
 
-/* Serach Bar
-
- <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-            <FormGroup className="mb-0">
-              <InputGroup className="input-group-alternative">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <i className="fas fa-search" />
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input placeholder="Search" type="text" />
-              </InputGroup>
-            </FormGroup>
-          </Form>
-*/
+export default connect(mapStateToProps, mapActionToProps)(AdminNavbar);

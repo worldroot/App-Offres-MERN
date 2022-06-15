@@ -31,10 +31,7 @@ import {
   updateSeen,
 } from "redux/notif/notifActions";
 import { logout } from "redux/auth/authActions";
-import usePrevious from "helpers/usePrevious.js";
-
 import Badge from "@mui/material/Badge";
-import Notification from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 const AuthNavbar = ({ ...props }) => {
@@ -71,8 +68,9 @@ const AuthNavbar = ({ ...props }) => {
 
   const LoggingOut = () => {
     dispatch(logout(OneSignalID)),
-      history.push("/login"),
-      window.location.reload();
+      setTimeout(() => {
+        history.push("/login"), window.location.reload();
+      }, 200);
   };
 
   const bs = {

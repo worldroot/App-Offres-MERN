@@ -8,3 +8,4 @@ export const CatmsURL = 'http://localhost:5002'
 export const OffremsURL = 'http://localhost:5003'
 
 //Notifcation-ms 5004
+export const NotifmsURL = 'http://localhost:5004'

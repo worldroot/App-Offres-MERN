@@ -6,6 +6,7 @@ import auth from "./auth/authReducer";
 import users from "./users/userReducer";
 import categories from "./cat/catReducer";
 import offres from "./offres/offreReducer";
+import notifications from './notif/notifReducer'
 
 const intialState = {};
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   users,
   categories,
   offres,
+  notifications
 });
 
 const store = createStore(

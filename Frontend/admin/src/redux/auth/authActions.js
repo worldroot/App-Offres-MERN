@@ -79,7 +79,7 @@ export const register =
   };
 
 export const login =
-  ({ email, password }) =>
+  ({ email, password, OneSignalID }) =>
   async (dispatch) => {
     // Config header for axios
     const config = { headers: { "Content-Type": "application/json" } };
@@ -95,6 +95,7 @@ export const login =
     const body = JSON.stringify({
       email,
       password,
+      OneSignalID
     });
     dispatch({ type: SET_LOADING });
     try {
@@ -119,11 +120,21 @@ export const login =
     }
   };
 
-export const logout = () => (dispatch) => {
-  dispatch({
-    type: LOGOUT,
-  });
-
+export const logout = (OneSignalID) => async (dispatch) => {
+  try {
+    setAuthToken(localStorage.accessToken);
+    await axios
+      .put(`${UsermsURL}/api/user/osid`, { OneSignalID: OneSignalID })
+      .then((res) => {
+        dispatch({ type: LOGOUT });
+      })
+      .catch((err) => console.log(err), ERROR, localStorage.clear());
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+    });
+  }
 };
 
 export const refreshJwt =
