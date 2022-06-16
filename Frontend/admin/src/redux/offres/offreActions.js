@@ -46,7 +46,7 @@ export const addOffre = (offre) => async (dispatch) => {
     dateFin: offre.dateFin,
     prixdebut: offre.prixdebut,
     souscategory: offre.souscategory,
-    postedBy: offre.postedBy
+    responsable: offre.responsable
   };
 
   if (
@@ -56,7 +56,7 @@ export const addOffre = (offre) => async (dispatch) => {
     !data.dateDebut ||
     !data.dateFin ||
     !data.souscategory ||
-    !data.postedBy
+    !data.responsable
   ) {
     toast.warn("Verifier vos champs !");
   } else {

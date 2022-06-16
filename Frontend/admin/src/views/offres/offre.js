@@ -29,13 +29,13 @@ const initialFieldValues = {
   souscategory: "",
   category: "",
   prixdebut: "",
-  postedBy: "",
+  responsable: "",
 };
 
 const Offre = ({ ...props }) => {
   const ImgStyle = {
-    width: "100px",
-    height: "100px",
+    width: "120px",
+    height: "120px",
   };
 
   const [data, setData] = useState(initialFieldValues);
@@ -242,9 +242,9 @@ const Offre = ({ ...props }) => {
                   </label>
                   <Input
                     type="select"
-                    name="postedBy"
-                    value={data.postedBy}
-                    onChange={handleChange("postedBy")}
+                    name="responsable"
+                    value={data.responsable}
+                    onChange={handleChange("responsable")}
                   >
                     <option>Choisis un responsable</option>
                     {props.ListU.filter((user) => {

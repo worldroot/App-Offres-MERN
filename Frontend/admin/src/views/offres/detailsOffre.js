@@ -106,6 +106,11 @@ const DetailsOffre = ({ ...props }) => {
                   )}
                 </FormGroup>
               </Col>
+              <Col>
+                <FormGroup>
+                  <p>Posté par: {values.postedBy}</p>
+                </FormGroup>
+              </Col>
             </Row>
 
             <Row>

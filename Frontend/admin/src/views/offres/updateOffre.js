@@ -239,8 +239,8 @@ const UpdateOffre = ({ ...props }) => {
                   </label>
                   <Input
                     type="select"
-                    name="postedBy"
-                    value={values.postedBy}
+                    name="responsable"
+                    value={values.responsable}
                     onChange={handleInputChange}
                   >
                     <option>Choisis un responsable</option>
