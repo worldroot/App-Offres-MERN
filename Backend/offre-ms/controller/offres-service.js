@@ -74,21 +74,23 @@ router.post(
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
                         postedBy: responseUser.data.email,
-                        responsable,
+                        responsable: responsable._id,
                         status: "published",
                       });
-
-                      newOffre.save().then(() => res.json(newOffre));
 
                       const Adminbody = {
                         responsable: responsable,
                         titre: titre,
                         dateFin: dateFin,
                       };
-                      axios.post(
-                        "http://localhost:5004/api/notif/selected",
-                        Adminbody
-                      );
+                      if(responsable.OneSignalID){
+                        if(responsable.OneSignalID.length > 0){
+                          axios.post(
+                            "http://localhost:5004/api/notif/selected",
+                            Adminbody
+                          );
+                        }
+                      }
 
                       const Clientbody = {
                         titre: titre,
@@ -98,6 +100,8 @@ router.post(
                         "http://localhost:5004/api/notif/published-offre",
                         Clientbody
                       );
+
+                      newOffre.save().then(() => res.json(newOffre));
                     } else {
                       const newOffre = new Offre({
                         titre,
@@ -111,7 +115,7 @@ router.post(
                         postedBy: responseUser.data.email,
                         responsable,
                       });
-                      newOffre.save().then(() => res.json(newOffre));
+
                       const Adminbody = {
                         responsable: responsable,
                         titre: titre,
@@ -121,6 +125,8 @@ router.post(
                         "http://localhost:5004/api/notif/selected",
                         Adminbody
                       );
+
+                      newOffre.save().then(() => res.json(newOffre));
                     }
                   });
               });

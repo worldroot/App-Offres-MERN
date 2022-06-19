@@ -130,7 +130,6 @@ router.get("/admin", async (req, res) => {
   try {
     //const data = req.body
     const user = await User.findOne(req.body).select("-password");
-    console.log(user);
     res.json(user);
   } catch (error) {
     res.status(500).json({

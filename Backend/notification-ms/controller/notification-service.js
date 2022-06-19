@@ -3,7 +3,6 @@ const express = require("express");
 const Notif = require("../models/Notif");
 const router = express.Router();
 const https = require("https");
-const axios = require("axios");
 const { verifyAccessToken } = require("../middleware/verify-token");
 const AdminApp = "ce9b6483-0272-4f13-8560-e6c628f65776";
 const ClientApp = "10d0d189-e8bd-413a-b51b-becc098b1617";
@@ -35,55 +34,47 @@ var optionsAd = {
 router.post("/selected", async (req, res) => {
   const data = req.body;
 
-  const bodyUser = { email: data.responsable };
-  await axios
-    .get("http://localhost:5001/api/user/admin", bodyUser)
-    .then((resdep) => {
+  var message = {
+    app_id: AdminApp,
+    contents: {
+      en: `Dépouillement pour le ${data.dateFin}`,
+    },
+    include_player_ids: data.responsable.OneSignalID,
+    data: { foo: "bar" },
+  };
 
-      var message = {
-        app_id: AdminApp,
-        contents: {
-          en: `Dépouillement pour le ${data.dateFin}`,
-        },
-        include_player_ids: resdep.data.OneSignalID,
-        data: { foo: "bar" },
-      };
-
-      var req = https.request(optionsAd, function (res) {
-        var payload = "";
-        res.on("data", function (data) {
-          payload += data;
-        });
-
-        res.on("end", function () {
-          payload = JSON.parse(payload);
-          console.log(resdep.data);
-
-          const notification = new Notif({
-            idClient: resdep.data._id,
-            idNotification: payload.id,
-            title: message.contents.en,
-            text: `Vous avez été sélectionné pour le dépouillement de l'offre ${data.titre}`,
-            delivered: data.dateFin,
-          });
-          notification.save();
-          return payload;
-        });
-      });
-
-      req.on("error", function (e) {
-        console.log("ERROR:");
-        console.log(e);
-      });
-
-      req.write(JSON.stringify(message));
-      req.end();
-
-      res
-        .status(200)
-        .json({ etat: true, message: "Notification sent successfully" });
-      console.log("Notification Selected Responsable");
+  var req = https.request(optionsAd, function (res) {
+    var payload = "";
+    res.on("data", function (data) {
+      payload += data;
     });
+
+    res.on("end", function () {
+      payload = JSON.parse(payload);
+      const notification = new Notif({
+        idClient: data.responsable._id,
+        idNotification: payload.id,
+        title: message.contents.en,
+        text: `Vous avez été sélectionné pour le dépouillement de l'offre ${data.titre}`,
+        delivered: data.dateFin,
+      });
+      notification.save();
+      return payload;
+    });
+  });
+
+  req.on("error", function (e) {
+    console.log("ERROR:");
+    console.log(e);
+  });
+
+  req.write(JSON.stringify(message));
+  req.end();
+
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
+  console.log("Notification Selected Responsable");
 });
 
 router.get("/user-email", async (req, res) => {

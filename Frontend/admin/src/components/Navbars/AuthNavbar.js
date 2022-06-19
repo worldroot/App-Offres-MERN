@@ -94,14 +94,14 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                 </>
               )}
 
-              {!userExist && (
+             {/*  {!userExist && (
                 <NavItem>
                   <NavLink className="nav-link-icon" to="/login" tag={Link}>
                     <i className="ni ni-key-25" />
                     <span className="nav-link-inner--text">Login</span>
                   </NavLink>
                 </NavItem>
-              )}
+              )} */}
             </Nav>
           </UncontrolledCollapse>
         </Container>

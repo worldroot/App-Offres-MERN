@@ -46,7 +46,11 @@ export const addOffre = (offre) => async (dispatch) => {
     dateFin: offre.dateFin,
     prixdebut: offre.prixdebut,
     souscategory: offre.souscategory,
-    responsable: offre.responsable
+    responsable: {
+      email: offre.responsable.email,
+      _id: offre.responsable._id,
+      OneSignalID: offre.responsable.OneSignalID
+    },
   };
 
   if (
@@ -61,13 +65,12 @@ export const addOffre = (offre) => async (dispatch) => {
     toast.warn("Verifier vos champs !");
   } else {
     dispatch({ type: LOADING_OFFRE });
-      setAuthToken(localStorage.accessToken);
-      try {
-      const res = await axios
-        .post(`${OffremsURL}/api/offre/`, data);
+    setAuthToken(localStorage.accessToken);
+    try {
+      const res = await axios.post(`${OffremsURL}/api/offre/`, data);
       dispatch({
         type: OFFRE_ADDED,
-        payload: res.data
+        payload: res.data,
       });
     } catch (err) {
       return dispatch({ type: OFFRE_ADD_FAILED });
@@ -90,7 +93,8 @@ export const updateOffre = (id, data) => (dispatch) => {
     .catch((err) => toast.error(err.response.data.msg), OFFRE_ERROR);
 };
 
-export const UPS = (id) => axios.patch(`${OffremsURL}/api/offre/changestatus`, {"id": id});
+export const UPS = (id) =>
+  axios.patch(`${OffremsURL}/api/offre/changestatus`, { id: id });
 export const updateStatus = (id) => (dispatch) => {
   setAuthToken(localStorage.accessToken);
   UPS(id)

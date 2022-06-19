@@ -131,7 +131,7 @@ const OffreList = ({ ...props }) => {
         toast.error("Problème lors de l'ajout !");
       }
     }
-  }, [props.isLoadingCreate]);
+  }, [props.isLoadingCreate, props.CodeMsg]);
 
   return (
     <>

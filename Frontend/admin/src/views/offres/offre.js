@@ -9,6 +9,10 @@ import {
   Input,
   Row,
   Col,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
@@ -29,7 +33,17 @@ const initialFieldValues = {
   souscategory: "",
   category: "",
   prixdebut: "",
-  responsable: "",
+  responsable: {
+    email: "",
+    _id: "",
+    OneSignalID: [],
+  },
+};
+
+const initRes = {
+  email: "",
+  _id: "",
+  OneSignalID: [],
 };
 
 const Offre = ({ ...props }) => {
@@ -39,6 +53,7 @@ const Offre = ({ ...props }) => {
   };
 
   const [data, setData] = useState(initialFieldValues);
+  const [resdep, setresdep] = useState(initRes);
 
   useEffect(() => {
     props.All();
@@ -48,11 +63,7 @@ const Offre = ({ ...props }) => {
 
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
   const userExist = localStorage.getItem("user");
-  const [userLocal] = useState(() => {
-    const saved = localStorage.getItem("user");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
+
   const onSubmit = (e) => {
     e.preventDefault();
     props.create(data);
@@ -111,7 +122,22 @@ const Offre = ({ ...props }) => {
   const [ShowImg, setShowImg] = useState(false);
   var date = new Date();
   const DatetoCheck = date.toISOString().substring(0, 10);
-  //console.log(data);
+  //console.log(data.responsable);
+  console.log(data.responsable);
+
+  useEffect(() => {
+    if (resdep) {
+      setData({
+        ...data,
+        responsable: {
+          email: resdep.email,
+          _id: resdep._id,
+          OneSignalID: resdep.OneSignalID,
+        },
+      });
+    }
+  }, [resdep]);
+
   return (
     <>
       <Card className="card-profile shadow overflow-auto h-100vh ">
@@ -240,27 +266,43 @@ const Offre = ({ ...props }) => {
                   <label className="form-control-label text-dark">
                     Selectionner responsable dépouillement
                   </label>
-                  <Input
-                    type="select"
-                    name="responsable"
-                    value={data.responsable}
-                    onChange={handleChange("responsable")}
-                  >
-                    <option>Choisis un responsable</option>
-                    {props.ListU.filter((user) => {
-                      if (user.role === "admin") {
-                        return user;
-                      }
-                    }).map((u, index) => {
-                      return (
-                        u.email !== userLocal.email && (
-                          <Fragment key={index}>
-                            <option key={u._id} value={u.email}>{u.email}</option>
-                          </Fragment>
-                        )
-                      );
-                    })}
-                  </Input>
+                  <Row>
+                    <Col lg="6">
+                      <UncontrolledDropdown className="bg-white" size="sm">
+                        <DropdownToggle caret>
+                          <label className="form-control-label text-dark m-2">
+                            Choisis un responsable
+                          </label>
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          {props.ListU.filter((user) => {
+                            if (user.role === "admin") {
+                              return user;
+                            }
+                          }).map((u, index) => {
+                            return (
+                              <Fragment key={index}>
+                                <DropdownItem
+                                  onClick={() => {
+                                    setresdep(u);
+                                  }}
+                                >
+                                  {u.email}
+                                </DropdownItem>
+                              </Fragment>
+                            );
+                          })}
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </Col>
+                    <Col lg="6">
+                      <Input
+                        disabled
+                        type="text"
+                        value={data.responsable.email}
+                      />
+                    </Col>
+                  </Row>
                 </FormGroup>
               </Col>
             </Row>
@@ -316,7 +358,6 @@ const Offre = ({ ...props }) => {
                 {ShowImg && (
                   <>
                     {data.image.map((img, index) => {
-                     
                       return (
                         <Fragment key={index}>
                           <label className="form-control-label text-dark mx-1 align-items-center d-none d-md-flex">
