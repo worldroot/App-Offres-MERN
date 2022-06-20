@@ -73,7 +73,7 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data.email,
+                        postedBy: responseUser.data._id,
                         responsable: responsable._id,
                         status: "published",
                       });
@@ -83,6 +83,7 @@ router.post(
                         titre: titre,
                         dateFin: dateFin,
                       };
+
                       if(responsable.OneSignalID){
                         if(responsable.OneSignalID.length > 0){
                           axios.post(
@@ -112,8 +113,8 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data.email,
-                        responsable,
+                        postedBy: responseUser.data._id,
+                        responsable: responsable._id,
                       });
 
                       const Adminbody = {

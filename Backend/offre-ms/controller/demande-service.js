@@ -27,7 +27,7 @@ router.post(
   validateDemande,
   isRequestValidated,
   async (req, res) => {
-    axios
+    await axios
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (responseUser) => {
         var role = responseUser.data.role;
@@ -53,7 +53,7 @@ router.post(
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
-            const AdminMail = offreModel.responsable;
+            const ResDep = offreModel.responsable;
             const theKey = offreModel.publickey;
             if (!offreModel) {
               return res.status(403).json({
@@ -78,13 +78,17 @@ router.post(
                       { $set: { publickey: PublicKey } },
                       { new: true }
                     );
-                    console.log("+ PublicKey +");
-                    emailKey(
-                      AdminMail,
-                      PrivateKey,
-                      `Décryptage clé pour l'offre: ${offreModel.titre}`,
-                      offreModel._id
-                    );
+                    await axios
+                      .get("http://localhost:5001/api/user/" + ResDep)
+                      .then(async (resdep) => {
+                        console.log(resdep.data.email);
+                        await emailKey(
+                          resdep.data.email,
+                          PrivateKey,
+                          `Décryptage clé pour l'offre: ${offreModel.titre}`,
+                          offreModel._id
+                        );
+                      });
 
                     const encrypted = ToCrypte(PublicKey, rs);
                     const newDem = new Demande({

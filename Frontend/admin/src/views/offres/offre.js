@@ -123,7 +123,7 @@ const Offre = ({ ...props }) => {
   var date = new Date();
   const DatetoCheck = date.toISOString().substring(0, 10);
   //console.log(data.responsable);
-  console.log(data.responsable);
+  //console.log(data.responsable);
 
   useEffect(() => {
     if (resdep) {
@@ -260,52 +260,7 @@ const Offre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <label className="form-control-label text-dark">
-                    Selectionner responsable dépouillement
-                  </label>
-                  <Row>
-                    <Col lg="6">
-                      <UncontrolledDropdown className="bg-white" size="sm">
-                        <DropdownToggle caret>
-                          <label className="form-control-label text-dark m-2">
-                            Choisis un responsable
-                          </label>
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          {props.ListU.filter((user) => {
-                            if (user.role === "admin") {
-                              return user;
-                            }
-                          }).map((u, index) => {
-                            return (
-                              <Fragment key={index}>
-                                <DropdownItem
-                                  onClick={() => {
-                                    setresdep(u);
-                                  }}
-                                >
-                                  {u.email}
-                                </DropdownItem>
-                              </Fragment>
-                            );
-                          })}
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                    </Col>
-                    <Col lg="6">
-                      <Input
-                        disabled
-                        type="text"
-                        value={data.responsable.email}
-                      />
-                    </Col>
-                  </Row>
-                </FormGroup>
-              </Col>
-            </Row>
+
             <Row>
               <Col lg="6">
                 <FormGroup>
@@ -333,6 +288,52 @@ const Offre = ({ ...props }) => {
                     value={data.dateFin}
                     onChange={handleChange("dateFin")}
                   />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="text-center">
+                <FormGroup>
+                  <label className="form-control-label text-dark">
+                    Selectionner responsable dépouillement
+                  </label>
+                  <Col>
+                    <UncontrolledDropdown className="bg-white" size="sm">
+                      {data.responsable.email ? (
+                        <DropdownToggle caret>
+                          <label className="form-control-label text-dark m-2">
+                            {data.responsable.email}
+                          </label>
+                        </DropdownToggle>
+                      ) : (
+                        <DropdownToggle caret>
+                          <label className="form-control-label text-dark m-2">
+                            Choisis un responsable
+                          </label>
+                        </DropdownToggle>
+                      )}
+
+                      <DropdownMenu>
+                        {props.ListU.filter((user) => {
+                          if (user.role === "admin") {
+                            return user;
+                          }
+                        }).map((u, index) => {
+                          return (
+                            <Fragment key={index}>
+                              <DropdownItem
+                                onClick={() => {
+                                  setresdep(u);
+                                }}
+                              >
+                                {u.email}
+                              </DropdownItem>
+                            </Fragment>
+                          );
+                        })}
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </Col>
                 </FormGroup>
               </Col>
             </Row>
@@ -404,7 +405,7 @@ const mapStateToProps = (state) => ({
   ListC: state.categories.categories,
   ListSC: state.categories.souscategories,
   ListU: state.users.uslist,
-  isLoading: state.offres.loading,
+  isLoadingCreate: state.offres.loading_create,
   CodeMsg: state.offres.codeMsg,
 });
 

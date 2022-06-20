@@ -91,7 +91,7 @@ const Offres = ({ ...props }) => {
   });
 
   const img = {
-    height: 180,
+    height: 200,
     width: 220,
   };
 
@@ -365,10 +365,9 @@ const Offres = ({ ...props }) => {
                 </motion.div>
               )}
             </AnimatePresence>
+           
           </Container>
      
-
-        <AuthFooter />
       </div>
     </>
   );

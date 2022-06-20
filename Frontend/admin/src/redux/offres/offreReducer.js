@@ -29,6 +29,7 @@ const intialState = {
 
 export default function (state = intialState, action) {
   switch (action.type) {
+    
     case GET_OFFRE:
       return { ...state, offres: [], loading: true };
     case GET_OFFRE_S:
@@ -47,13 +48,14 @@ export default function (state = intialState, action) {
         loading_create: true,
         codeMsg: null,
       };
-    case OFFRE_ADDED:
+    case OFFRE_ADDED: {
       return {
         ...state,
-        offres: [...state.offres, ...action.payload],
+        offres: [...state.offres, action.payload],
         codeMsg: 1,
         loading_create: false,
       };
+    }
     case OFFRE_ADD_FAILED:
       return {
         ...state,

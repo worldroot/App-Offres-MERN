@@ -49,7 +49,7 @@ export const addOffre = (offre) => async (dispatch) => {
     responsable: {
       email: offre.responsable.email,
       _id: offre.responsable._id,
-      OneSignalID: offre.responsable.OneSignalID
+      OneSignalID: offre.responsable.OneSignalID,
     },
   };
 
@@ -66,15 +66,18 @@ export const addOffre = (offre) => async (dispatch) => {
   } else {
     dispatch({ type: LOADING_OFFRE });
     setAuthToken(localStorage.accessToken);
-    try {
-      const res = await axios.post(`${OffremsURL}/api/offre/`, data);
-      dispatch({
-        type: OFFRE_ADDED,
-        payload: res.data,
+    axios.post(`${OffremsURL}/api/offre/`, data)
+      .then((res) => {
+        console.log(res);
+        dispatch({
+          type: OFFRE_ADDED,
+          payload: res.data,
+        });
+      })
+      .catch(() => {
+        console.log("9a3ed iji lhnee ");
+        dispatch({ type: OFFRE_ADD_FAILED });
       });
-    } catch (err) {
-      return dispatch({ type: OFFRE_ADD_FAILED });
-    }
   }
 };
 
