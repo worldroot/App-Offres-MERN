@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema;
 
 const OffreSchema = new mongoose.Schema({
     titre: {
@@ -34,11 +35,11 @@ const OffreSchema = new mongoose.Schema({
         type: String,
     },
     postedBy: {
-        type: String,
+        type: ObjectId,
         required: true,
     },
     responsable: {
-        type: String,
+        type: ObjectId,
         required: true,
     },
     status: {
