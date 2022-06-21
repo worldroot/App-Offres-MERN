@@ -122,7 +122,7 @@ router.post(
                         titre: titre,
                         dateFin: dateFin,
                       };
-                      
+
                       if (responsable.OneSignalID) {
                         if (responsable.OneSignalID.length > 0) {
                           axios.post(
@@ -151,6 +151,48 @@ router.post(
 // @route   PUT api/appeloffre
 // @desc    Update appel offre
 // @access  Private Admin
+router.put("/changestatus", verifyAccessToken, async (req, res) => {
+  axios
+    .get("http://localhost:5001/api/user/" + req.user.id)
+    .then(async (response) => {
+      var role = response.data.role;
+      let { id, status, archived } = req.body;
+      const one = await Offre.findById(id);
+      var date = new Date();
+      const Debut = new Date(one.dateDebut);
+      const Fin = new Date(one.dateFin);
+      const DateToCheck = new Date(date.getTime());
+      if (role === "super-admin") {
+        try {
+          if (one.status === "published" && !one.archived) {
+            const toArchived = await Offre.findByIdAndUpdate(
+              id,
+              { $set: { status: "archived", archived: true } },
+              { new: true }
+            );
+            res.status(200).json(toArchived);
+          } else {
+            const toPublished = await Offre.findByIdAndUpdate(
+              id,
+              { $set: { status: "published", archived: false } },
+              { new: true }
+            );
+            res.status(200).json(toPublished);
+          }
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({
+            error: true,
+            msg: "Server error",
+          });
+        }
+      } else {
+        return res.status(404).json({
+          error: "Access Denied !!",
+        });
+      }
+    });
+});
 router.put(
   "/:offreId",
   verifyAccessToken,
@@ -243,48 +285,6 @@ router.put(
       });
   }
 );
-router.patch("/changestatus", verifyAccessToken, async (req, res) => {
-  axios
-    .get("http://localhost:5001/api/user/" + req.user.id)
-    .then(async (response) => {
-      var role = response.data.role;
-      let { id, status, archived } = req.body;
-      const one = await Offre.findById(id);
-      var date = new Date();
-      const Debut = new Date(one.dateDebut);
-      const Fin = new Date(one.dateFin);
-      const DateToCheck = new Date(date.getTime());
-      if (role === "super-admin") {
-        try {
-          if (one.status === "published" && !one.archived) {
-            const toArchived = await Offre.findByIdAndUpdate(
-              id,
-              { $set: { status: "archived", archived: true } },
-              { new: true }
-            );
-            res.status(200).json(toArchived);
-          } else {
-            const toPublished = await Offre.findByIdAndUpdate(
-              id,
-              { $set: { status: "published", archived: false } },
-              { new: true }
-            );
-            res.status(200).json(toPublished);
-          }
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({
-            error: true,
-            msg: "Server error",
-          });
-        }
-      } else {
-        return res.status(404).json({
-          error: "Access Denied !!",
-        });
-      }
-    });
-});
 
 // @route   Delete api/offre/:categoryId
 // @desc    Delete Single offre

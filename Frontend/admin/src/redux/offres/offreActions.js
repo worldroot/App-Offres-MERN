@@ -97,7 +97,7 @@ export const updateOffre = (id, data) => (dispatch) => {
 };
 
 export const UPS = (id) =>
-  axios.patch(`${OffremsURL}/api/offre/changestatus`, { id: id });
+  axios.put(`${OffremsURL}/api/offre/changestatus`, { id: id });
 export const updateStatus = (id) => (dispatch) => {
   setAuthToken(localStorage.accessToken);
   UPS(id)
