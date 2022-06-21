@@ -68,7 +68,7 @@ export const addOffre = (offre) => async (dispatch) => {
     setAuthToken(localStorage.accessToken);
     axios.post(`${OffremsURL}/api/offre/`, data)
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         dispatch({
           type: OFFRE_ADDED,
           payload: res.data,

@@ -90,10 +90,10 @@ const Login = ({ login, isAuth, user, isLoading }) => {
               <Row className="justify-content-center">
                 <Col lg="5" md="7">
                   <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-transparent pb-6">
-                      <h1 className="text-center text-dark">Login</h1>
+                    <CardHeader className="bg-transparent">
+                      <h1 className="text-center text-dark">Connexion</h1>
                       <h3 className="text-center text-dark">
-                        Espace Administration
+                        Espace Administration 
                       </h3>
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">

@@ -84,8 +84,8 @@ router.post(
                         dateFin: dateFin,
                       };
 
-                      if(responsable.OneSignalID){
-                        if(responsable.OneSignalID.length > 0){
+                      if (responsable.OneSignalID) {
+                        if (responsable.OneSignalID.length > 0) {
                           axios.post(
                             "http://localhost:5004/api/notif/selected",
                             Adminbody
@@ -113,19 +113,18 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data._id,
+                        postedBy: responseUser.data.email,
                         responsable: responsable._id,
                       });
 
-                      const Adminbody = {
-                        responsable: responsable,
-                        titre: titre,
-                        dateFin: dateFin,
-                      };
-                      axios.post(
-                        "http://localhost:5004/api/notif/selected",
-                        Adminbody
-                      );
+                      if (responsable.OneSignalID) {
+                        if (responsable.OneSignalID.length > 0) {
+                          axios.post(
+                            "http://localhost:5004/api/notif/selected",
+                            Adminbody
+                          );
+                        }
+                      }
 
                       newOffre.save().then(() => res.json(newOffre));
                     }
@@ -179,13 +178,21 @@ router.put(
           try {
             // Between dates : DateToCheck > Debut && DateToCheck<Fin
             if (DateToCheck < Debut) {
-              /*               if(OF.responsable !== responsable ){
-
-              } */
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
-                  $set: req.body,
+                  $set: {
+                    titre,
+                    description,
+                    image,
+                    dateDebut,
+                    dateFin,
+                    prixdebut,
+                    souscategory,
+                    category,
+                    status,
+                    responsable,
+                  },
                 },
                 { new: true }
               );
@@ -198,15 +205,22 @@ router.put(
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
-                  $set: req.body,
+                  $set: {
+                    titre,
+                    description,
+                    image,
+                    dateDebut,
+                    dateFin,
+                    prixdebut,
+                    souscategory,
+                    category,
+                    status,
+                    responsable,
+                  },
                 },
                 { new: true }
               );
               res.status(200).json(updateOffre);
-              /* res.status(400).json({
-                error: true,
-                msg: `Modification avant '${Debut.toDateString()}' est impossible !`,
-              }); */
             }
           } catch (error) {
             console.log(error.message);

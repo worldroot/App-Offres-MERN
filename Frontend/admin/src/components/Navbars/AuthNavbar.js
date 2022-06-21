@@ -31,10 +31,11 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
-        <Container className="px-4">
+        <Container>
           <NavbarBrand to="/" tag={Link}>
             <img alt="..." src={LogoImg} />
           </NavbarBrand>
+
           <button className="navbar-toggler" id="navbar-collapse-main">
             <span className="navbar-toggler-icon" />
           </button>
@@ -43,12 +44,20 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
               <Row>
                 <Col className="collapse-brand" xs="6">
                   <Link to="/">
-                    <img className="img-fluid" alt="..." src={ooredoo} />
+                    <img
+                      className="img-fluid h-50 w-50"
+                      alt="..."
+                      src={ooredoo}
+                    />
                   </Link>
                 </Col>
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
+              <NavItem>
+                <i className="fas fa-user-shield text-white"></i>
+                <span className="text-white h-25 w-25 mx-2 ">Espace Administration</span>
+              </NavItem>
               {userExist && (
                 <>
                   {userLocal.role === "admin" && (
@@ -94,7 +103,7 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                 </>
               )}
 
-             {/*  {!userExist && (
+              {/*  {!userExist && (
                 <NavItem>
                   <NavLink className="nav-link-icon" to="/login" tag={Link}>
                     <i className="ni ni-key-25" />

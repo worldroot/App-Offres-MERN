@@ -9,11 +9,15 @@ import {
   Input,
   Row,
   Col,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import "../../components/Loading/loading.css";
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { updateOffre } from "redux/offres/offreActions";
 import { getAllUsers } from "redux/users/userActions.js";
@@ -26,15 +30,24 @@ const UpdateOffre = ({ ...props }) => {
     if (props.currentObj !== {}) {
       setValues(props.currentObj);
       setErrors({});
+      props.ListU.map((u, index) => {
+        if (u._id === values.responsable) {
+          setresdep(u);
+        }
+      });
     }
   }, [props.currentObj]);
 
-  const initialFieldValues = {
-    image: []
-  };
+  const initialFieldValues = props.currentObj;
 
   var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFieldValues, props.setCurrentObj);
+
+  const initRes = {
+    email: "",
+    _id: values.responsable,
+    OneSignalID: [],
+  };
 
   const inputRef = useRef(null);
 
@@ -49,6 +62,7 @@ const UpdateOffre = ({ ...props }) => {
     width: "100px",
     height: "100px",
   };
+  
   const onSubmit = (e) => {
     e.preventDefault();
     props.update(props.currentObj._id, values);
@@ -84,7 +98,7 @@ const UpdateOffre = ({ ...props }) => {
     files.forEach((file) => {
       convertToBase64(file).then((res) => {
         //console.log(res);
-        setValues({ ...values ,image: [...values.image, res] });
+        setValues({ ...values, image: [...values.image, res] });
       });
     });
   };
@@ -101,19 +115,20 @@ const UpdateOffre = ({ ...props }) => {
     inputRef.current.value = null;
   };
 
-  const [userLocal] = useState(() => {
-    const saved = localStorage.getItem("user");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
-
-  //console.log(values);
-
+  const [resdep, setresdep] = useState(initRes);
   const [ShowList, setShowList] = useState(false);
-  var date = new Date();
-  const DatetoCheck = new Date(date.getTime());
-  const Debut = new Date(values.dateDebut);
-  const Today = date.toISOString().substring(0, 10);
+
+  useEffect(() => {
+    if (resdep) {
+      setValues({
+        ...values,
+        responsable: resdep._id,
+      });
+    }
+  }, [resdep.email]);
+
+  console.log(values.responsable);
+  console.log(resdep);
 
   return (
     <>
@@ -231,38 +246,7 @@ const UpdateOffre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <label className="form-control-label text-dark">
-                    Selectionner responsable dépouillement
-                  </label>
-                  <Input
-                    type="select"
-                    name="responsable"
-                    value={values.responsable}
-                    onChange={handleInputChange}
-                  >
-                    <option>Choisis un responsable</option>
-                    {props.ListU.filter((user) => {
-                      if (user.role === "admin") {
-                        return user;
-                      }
-                    }).map((u, index) => {
-                      return (
-                        u.email !== userLocal.email && (
-                          <Fragment key={index}>
-                            <option key={u._id} value={u.email}>
-                              {u.email}
-                            </option>
-                          </Fragment>
-                        )
-                      );
-                    })}
-                  </Input>
-                </FormGroup>
-              </Col>
-            </Row>
+
             <Row>
               <Col lg="6">
                 <FormGroup>
@@ -298,7 +282,60 @@ const UpdateOffre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
+            <Row className="text-center">
+              {resdep.email === "" ? (
+                <Col>
+                  <div className="text-center my-3">
+                    <div id="small-loading"></div>
+                  </div>
+                </Col>
+              ) : (
+                <Col>
+                  <FormGroup>
+                    <label className="form-control-label text-dark text-center">
+                      Selectionner responsable dépouillement
+                    </label>
+                    <Col>
+                      <UncontrolledDropdown className="bg-white" size="sm">
+                        {resdep.email ? (
+                          <DropdownToggle caret>
+                            <label className="form-control-label text-dark m-2">
+                              {resdep.email}
+                            </label>
+                          </DropdownToggle>
+                        ) : (
+                          <DropdownToggle caret>
+                            <label className="form-control-label text-dark m-2">
+                              Choisis un responsable
+                            </label>
+                          </DropdownToggle>
+                        )}
 
+                        <DropdownMenu>
+                          {props.ListU.filter((user) => {
+                            if (user.role === "admin") {
+                              return user;
+                            }
+                          }).map((u, index) => {
+                            return (
+                              <Fragment key={index}>
+                                <DropdownItem
+                                  onClick={() => {
+                                    setresdep(u);
+                                  }}
+                                >
+                                  {u.email}
+                                </DropdownItem>
+                              </Fragment>
+                            );
+                          })}
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </Col>
+                  </FormGroup>
+                </Col>
+              )}
+            </Row>
             <Row>
               <Col className="text-center">
                 <FormGroup>
@@ -317,6 +354,7 @@ const UpdateOffre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
+
             <Row>
               {values.image.map((img, index) => (
                 <Fragment key={index}>

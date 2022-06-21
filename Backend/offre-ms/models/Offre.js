@@ -35,7 +35,7 @@ const OffreSchema = new mongoose.Schema({
         type: String,
     },
     postedBy: {
-        type: ObjectId,
+        type: String,
         required: true,
     },
     responsable: {

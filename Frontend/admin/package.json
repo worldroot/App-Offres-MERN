@@ -59,6 +59,7 @@
     "node-sass": "^7.0.1",
     "node-sass-package-importer": "^3.0.4",
     "nouislider": "15.2.0",
+    "particles.js": "^2.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.1",
     "react-chartjs-2": "2.11.1",

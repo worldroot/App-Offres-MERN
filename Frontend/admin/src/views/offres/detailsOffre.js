@@ -63,8 +63,8 @@ const DetailsOffre = ({ ...props }) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   const ImgStyle = {
-    width: "200px",
-    height: "200px",
+    height: 300,
+    width: 500
   };
 
   if (!userExist) {
@@ -73,7 +73,7 @@ const DetailsOffre = ({ ...props }) => {
 
   return (
     <>
-      <Card>
+      <Card className="overflow-auto h-100vh">
         <Row className="justify-content-center">
           <Col>
             <Button
@@ -183,7 +183,7 @@ const DetailsOffre = ({ ...props }) => {
                             onClick={() => {
                               setShowImg(true), setCurrentIndex(index);
                             }}
-                            className="img-fluid rounded shadow avatar avatar-lg w-25 h-50"
+                            className="img-fluid rounded shadow avatar avatar-lg w-50 h-50"
                             src={img}
                             alt=""
                           />
@@ -198,34 +198,6 @@ const DetailsOffre = ({ ...props }) => {
         </CardBody>
       </Card>
 
-      <AnimatePresence
-        exitBeforeEnter
-        showModal={showImg}
-        setShowModal={setShowImg}
-      >
-        {showImg && (
-          <motion.div
-            className="backdrop"
-            variants={backdrop}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <Col className=" fixed-top center" xl="5">
-              <motion.div variants={modal}>
-                <img
-                  onClick={() => setShowImg(false)}
-                  className="img-fluid rounded shadow avatar avatar-lg w-auto h-auto"
-                  src={values.image[currentIndex]}
-                  alt=""
-                />
-                <br></br>
-                <small className=" text-white">Click image to hide</small>
-              </motion.div>
-            </Col>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 };
