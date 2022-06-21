@@ -54,10 +54,7 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <i className="fas fa-user-shield text-white"></i>
-                <span className="text-white h-25 w-25 mx-2 ">Espace Administration</span>
-              </NavItem>
+             
               {userExist && (
                 <>
                   {userLocal.role === "admin" && (
@@ -103,14 +100,12 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                 </>
               )}
 
-              {/*  {!userExist && (
+                {!userExist && (
                 <NavItem>
-                  <NavLink className="nav-link-icon" to="/login" tag={Link}>
-                    <i className="ni ni-key-25" />
-                    <span className="nav-link-inner--text">Login</span>
-                  </NavLink>
-                </NavItem>
-              )} */}
+                <i className="fas fa-user-shield text-white"></i>
+                <span className="text-white h-25 w-25 mx-2 ">Espace Administration</span>
+              </NavItem>
+              )} 
             </Nav>
           </UncontrolledCollapse>
         </Container>

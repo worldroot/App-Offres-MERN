@@ -37,7 +37,7 @@ router.post("/selected", async (req, res) => {
   var message = {
     app_id: AdminApp,
     contents: {
-      en: `Dépouillement pour le ${data.dateFin}`,
+      en: `Un clé vient de vous être envoyé par mail`,
     },
     include_player_ids: data.responsable.OneSignalID,
     data: { foo: "bar" },
@@ -55,7 +55,7 @@ router.post("/selected", async (req, res) => {
         idClient: data.responsable._id,
         idNotification: payload.id,
         title: message.contents.en,
-        text: `Vous avez été sélectionné pour le dépouillement de l'offre ${data.titre}`,
+        text: `Vous avez été sélectionné pour le dépouillement pour le ${data.dateFin}`,
         delivered: data.dateFin,
       });
       notification.save();

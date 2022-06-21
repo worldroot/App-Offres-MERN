@@ -117,6 +117,12 @@ router.post(
                         responsable: responsable._id,
                       });
 
+                      const Adminbody = {
+                        responsable: responsable,
+                        titre: titre,
+                        dateFin: dateFin,
+                      };
+                      
                       if (responsable.OneSignalID) {
                         if (responsable.OneSignalID.length > 0) {
                           axios.post(
