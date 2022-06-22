@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 import { login } from "redux/auth/authActions";
 import { toast } from "react-toastify";
 import OneSignal from "react-onesignal";
+import ParticleBackground from "components/Loading/ParticleBackground";
+
 
 const Login = ({ login, isAuth, user, isLoading }) => {
   const [data, setData] = useState({
@@ -67,12 +69,14 @@ const Login = ({ login, isAuth, user, isLoading }) => {
     if (role === "admin") return <Redirect to="/admin" />;
     if (role === "super-admin") return <Redirect to="/super-admin" />;
   }
-
   return (
     <>
+      <ParticleBackground></ParticleBackground>
       <div className="main-content">
         <AuthNavbar />
-        <div className="header bg-red h-100vh">
+
+        <div className="header  h-100vh">
+         
           <Container>
             <div className="header-body text-center">
               <Row className="justify-content-center">
@@ -93,7 +97,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
                     <CardHeader className="bg-transparent">
                       <h1 className="text-center text-dark">Connexion</h1>
                       <h3 className="text-center text-dark">
-                        Espace Administration 
+                        Espace Administration
                       </h3>
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
@@ -117,7 +121,7 @@ const Login = ({ login, isAuth, user, isLoading }) => {
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
-                              <i className=" fas fa-lock" />
+                                <i className=" fas fa-lock" />
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input
