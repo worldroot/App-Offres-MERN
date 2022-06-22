@@ -1,13 +1,20 @@
-import { Row, Col, Container, UncontrolledCarousel, Button } from "reactstrap";
+import {
+  Row,
+  Col,
+  Container,
+  UncontrolledCarousel,
+  Button,
+  Card,
+  CardBody,
+} from "reactstrap";
 
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-
 import { Redirect, useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
-
+import "../components/Loading/loading.css";
 import { refreshJwt } from "redux/auth/authActions";
 import { allPub } from "redux/offres/offreActions";
 import decode from "jwt-decode";
@@ -21,8 +28,7 @@ const select = require("../assets/img/undraw_Selecting_re_5ff6.png");
 const final = require("../assets/img/undraw_Agreement_re_d4dv.png");
 const dep = require("../assets/img/undraw_Folder_files_re_2cbm.png");
 
-const Home = ({...props}) => {
-
+const Home = ({ ...props }) => {
   useEffect(() => {
     props.AllPub();
   }, []);
@@ -46,8 +52,17 @@ const Home = ({...props}) => {
     }
   }, []);
 
+  const items = [
+    { src: bg1, caption: "" },
+    { src: bg2, caption: "" },
+    { src: bg3, caption: "" },
+  ];
 
-  const items = [{ src: bg1, caption: '' }, { src: bg2, caption: ''  }, { src: bg3, caption: ''  }];
+  const img = {
+    height: 200,
+    width: 220,
+  };
+
   return (
     <>
       <div className="main-content">
@@ -149,11 +164,76 @@ const Home = ({...props}) => {
               </Col>
             </Row>
           </motion.div>
+        </Container>
 
+        <Container className="mb-6 mt-4">
           <h1 className="text-red text-center m-4 border-bottom border-danger">
             LES APPELS D'OFFRES
           </h1>
-          
+          {props.isLoading ? (
+            <div className="text-center mt-4 mb-4 py-4 p-xl-9">
+              <div id="loading"></div>
+            </div>
+          ) : (
+            <>
+              <Row xs={1} md={3} className="g-4">
+                {props.Listpub.slice(0, 3).map((of, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5 }}
+                      >
+                        <Col>
+                          <Card className="m-2 cardStyle">
+                            <CardBody className="text-dark">
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid rounded avatar avatar-lg m-2"
+                                  style={img}
+                                  src={of.image[0]}
+                                  alt=""
+                                />
+                              </div>
+                              <Row>
+                                <h3>{of.titre.substring(0, 25)}</h3>
+                              </Row>
+                              <Row>
+                                <small>
+                                  Categorie: {of.category} - {of.souscategory}
+                                </small>
+                              </Row>
+
+                              <Row>
+                                <small className="text-danger">
+                                  Date Debut: {of.dateDebut.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Limite: {of.dateFin.substring(0, 10)}
+                                </small>
+                              </Row>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </motion.div>
+                    </Fragment>
+                  );
+                })}
+              </Row>
+              <Row className="justify-content-center">
+                <Button
+                  className="my-4 btn-outline-danger"
+                  onClick={() => history.push("/published-offres")}
+                  type="submit"
+                >
+                  Afficher la suite
+                </Button>
+              </Row>
+            </>
+          )}
         </Container>
 
         <AuthFooter />
@@ -162,8 +242,6 @@ const Home = ({...props}) => {
   );
 };
 
-
-
 const mapStateToProps = (state) => ({
   Listpub: state.offres.offres,
   isAuth: state.auth.isAuthenticated,
@@ -171,7 +249,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionToProps = {
-  AllPub: allPub
+  AllPub: allPub,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Home);
