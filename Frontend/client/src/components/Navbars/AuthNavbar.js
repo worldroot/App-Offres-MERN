@@ -36,7 +36,9 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 const AuthNavbar = ({ ...props }) => {
   useEffect(() => {
-    props.AllNotif();
+    if (userExist) {
+      props.AllNotif();
+    }
   }, []);
 
   let history = useHistory();
@@ -104,6 +106,16 @@ const AuthNavbar = ({ ...props }) => {
           </button>
           <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
             <Nav className="ml-auto" navbar>
+            <NavItem>
+                <NavLink
+                  className="nav-link-icon"
+                  to="/"
+                  tag={Link}
+                >
+                  <i className="fas fa-home text-red "></i>
+                  <span className=" text-red ">Acceuil</span>
+                </NavLink>
+              </NavItem>
               <NavItem>
                 <NavLink
                   className="nav-link-icon"
@@ -114,6 +126,7 @@ const AuthNavbar = ({ ...props }) => {
                   <span className=" text-red ">Offres</span>
                 </NavLink>
               </NavItem>
+              
               {userExist && (
                 <Row>
                   <UncontrolledDropdown>

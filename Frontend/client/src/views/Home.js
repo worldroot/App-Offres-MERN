@@ -25,7 +25,6 @@ const Home = ({...props}) => {
 
   useEffect(() => {
     props.AllPub();
-    props.AllCat();
   }, []);
 
   const dispatch = useDispatch();
@@ -47,13 +46,8 @@ const Home = ({...props}) => {
     }
   }, []);
 
-  const ImgStyle = {
-    width: 400,
-    height: 300,
-  };
 
-  const items = [{ src: bg1 }, { src: bg2 }, { src: bg3 }];
-
+  const items = [{ src: bg1, caption: '' }, { src: bg2, caption: ''  }, { src: bg3, caption: ''  }];
   return (
     <>
       <div className="main-content">
@@ -70,7 +64,7 @@ const Home = ({...props}) => {
         </Container>
 
         <Container className="mt-4">
-          <h1 className="text-dark text-center m-4 border-bottom border-danger">
+          <h1 className="text-red text-center m-4 border-bottom border-danger">
             SOLUTION
           </h1>
           <motion.div
@@ -125,7 +119,7 @@ const Home = ({...props}) => {
           >
             <Row className="m-2">
               <Col>
-                <h1 className="text-dark">Depouillement</h1>
+                <h1 className="text-dark">Dépouillement</h1>
                 <h2 className="text-gray">
                   Après la fin de l'offre, le dépouillement des soumissions
                   commence pour avoir le meilleur prix propose.
@@ -156,8 +150,8 @@ const Home = ({...props}) => {
             </Row>
           </motion.div>
 
-          <h1 className="text-dark text-center m-4 border-bottom border-danger">
-            LES APPEL D'OFFRES
+          <h1 className="text-red text-center m-4 border-bottom border-danger">
+            LES APPELS D'OFFRES
           </h1>
           
         </Container>

@@ -34,7 +34,6 @@ import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
 
-
 const backdrop = {
   visible: { opacity: 1 },
   hidden: { opacity: 0 },
@@ -58,6 +57,7 @@ const Offres = ({ ...props }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
+  const [checked, setchecked] = useState(false);
   const [Search, setSearch] = useState("");
   const [SearchCat, setSearchCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
@@ -99,72 +99,81 @@ const Offres = ({ ...props }) => {
     <>
       <div className="main-content">
         <AuthNavbar />
-       
-          {/* Content */}
-          <Container className="mt-4 mb-4 py-4 w-100vh h-100vh">
-            <Row className="justify-content-center">
-              <h1 className="text-center text-red">Les appels d'offres</h1>
-            </Row>
-            {props.isLoading ? (
-              <div className="text-center mt-4 mb-4 py-4 p-xl-9">
-                <div id="loading"></div>
-              </div>
-            ) : (
-              <>
-                <Row className="justify-content-center">
-                  <Form className="mb-2 mt-2">
-                    <FormGroup className="mb-0">
-                      <InputGroup className="input-group-alternative border-dark">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="fas fa-search text-dark" />
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input
-                          className="text-dark"
-                          type="text"
-                          onChange={(event) => {
-                            setSearch(event.target.value), setCurrentPage(1);
-                          }}
-                        />
-                      </InputGroup>
-                    </FormGroup>
-                  </Form>
-                  <Form className="mb-2 mt-2 mx-2">
-                    <FormGroup className="mb-0">
-                      <InputGroup className="border-dark">
-                        <UncontrolledDropdown
-                          className=" border-dark rounded border-darker shadow-none"
-                          direction="right"
+
+        {/* Content */}
+        <Container className="mt-4 mb-4 py-4 w-100vh h-100vh">
+          <Row className="justify-content-center">
+            <h1 className="text-center text-red">Les appels d'offres</h1>
+          </Row>
+          {props.isLoading ? (
+            <div className="text-center mt-4 mb-4 py-4 p-xl-9">
+              <div id="loading"></div>
+            </div>
+          ) : (
+            <>
+              <Row className="justify-content-center">
+                <Form className="mb-2 mt-2">
+                  <FormGroup className="mb-0">
+                    <InputGroup className="input-group-alternative border-dark">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="fas fa-search text-dark" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        className="text-dark"
+                        type="text"
+                        onChange={(event) => {
+                          setSearch(event.target.value), setCurrentPage(1);
+                        }}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Form>
+                <Form className="mb-2 mt-2 mx-2">
+                  <FormGroup className="mb-0">
+                    <InputGroup className="border-dark">
+                      <UncontrolledDropdown
+                        className=" border-dark rounded border-darker shadow-none"
+                        direction="right"
+                      >
+                        <DropdownToggle
+                          caret
+                         
                         >
-                          <DropdownToggle caret>
-                            <i className="mx-1 fas fa-sort text-dark" />
-                            Filtrage par catégorie
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            {props.ListCat.map((cat, index) => {
-                              return (
-                                <Fragment key={index}>
-                                  <Accordion className="shadow-none">
-                                    <AccordionSummary
-                                      aria-controls="panel1bh-content"
-                                      expandIcon={
-                                        <i className="fas fa-angle-down fa-1x"></i>
-                                      }
-                                    >
-                                      <span className="mb-0 text-sm font-weight-bold">
-                                        {cat.nomcat}
-                                      </span>
-                                      {/*  <span className="mx-2 text-sm font-weight-bold text-gray">
+                          <i className="mx-1 fas fa-sort text-dark" />
+                          Filtrage par catégorie
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          {props.ListCat.map((cat, index) => {
+                            return (
+                              <Fragment key={index}>
+                                <Accordion className="shadow-none">
+                                  <AccordionSummary
+                                    aria-controls="panel1bh-content"
+                                    expandIcon={
+                                      <i className="fas fa-angle-down fa-1x"></i>
+                                    }
+                                    onClick={() => {
+                                      setchecked(false);
+                                      setSearchCat("");
+                                      setCurrentPage(1);
+                                    }}
+                                  >
+                                    <span className="mb-0 text-sm font-weight-bold">
+                                      {cat.nomcat}
+                                    </span>
+                                    {/*  <span className="mx-2 text-sm font-weight-bold text-gray">
                                         ({cat.souscategorie.length})
                                       </span> */}
-                                    </AccordionSummary>
-                                    {cat.souscategorie.map(
-                                      ({ sousnomcat }, index2) => {
-                                        return (
-                                          <Fragment key={index2}>
-                                            <AccordionDetails>
-                                              <Row className="border-1 justify-content-between mx-3">
+                                  </AccordionSummary>
+                                  {cat.souscategorie.map(
+                                    ({ sousnomcat }, index2) => {
+                                      return (
+                                        <Fragment key={index2}>
+                                          <AccordionDetails>
+                                            <Row className="border-1 justify-content-between mx-3">
+                                              {!checked && (
                                                 <Input
                                                   className="text-dark"
                                                   type="checkbox"
@@ -174,128 +183,121 @@ const Offres = ({ ...props }) => {
                                                       setSearchCat(
                                                         event.target.value
                                                       );
+                                                      setchecked(true);
                                                       setCurrentPage(1);
+                                                     
                                                     } else {
                                                       setSearchCat("");
                                                       setCurrentPage(1);
+                                                      setchecked(false);
                                                     }
                                                   }}
                                                 />
-                                                <small className="text-gray">
-                                                  {sousnomcat}
-                                                </small>
-                                              </Row>
-                                            </AccordionDetails>
-                                          </Fragment>
-                                        );
-                                      }
-                                    )}
-                                  </Accordion>
-                                </Fragment>
-                              );
-                            })}
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </InputGroup>
-                    </FormGroup>
-                  </Form>
-                </Row>
+                                              )}
 
-                <Row xs={1} md={3} className="g-4">
-                  {offresData.map((of, index) => {
-                    return (
-                      <Fragment key={index}>
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 1.5 }}
-                        >
-                          <Col>
-                            <Card className="m-2 cardStyle">
-                              <CardBody className="text-dark">
-                                <div className="text-center">
-                                  <img
-                                    className="img-fluid rounded avatar avatar-lg m-2"
-                                    style={img}
-                                    src={of.image[0]}
-                                    alt=""
-                                  />
-                                </div>
-                                <Row>
-                                  <h3>{of.titre.substring(0,25)}</h3>
-                                </Row>
-                                <Row>
-                                  <small>
-                                    Categorie: {of.category} - {of.souscategory}
-                                  </small>
-                                </Row>
-                               
-                                <Row>
-                                  {of.prixdebut.length === 0 ? (
-                                    <small> Prix début ouvert  </small>
-                                  ) : (
-                                    <small>
-                                      À partir de: {of.prixdebut} dt
-                                    </small>
+                                              <small className="text-gray">
+                                                {sousnomcat}
+                                              </small>
+                                            </Row>
+                                          </AccordionDetails>
+                                        </Fragment>
+                                      );
+                                    }
                                   )}
-                                </Row>
-                                <Row>
-                                  <small className="text-danger">
-                                    Date Debut: {of.dateDebut.substring(0, 10)}
-                                  </small>
-                                </Row>
-                                <Row>
-                                  <small className="text-danger">
-                                    Date Limite: {of.dateFin.substring(0, 10)}
-                                  </small>
-                                </Row>
-                                <Row>
-                                  <a
-                                    className="card-link text-underline text-gray"
-                                    style={{ cursor: "pointer" }}
+                                </Accordion>
+                              </Fragment>
+                            );
+                          })}
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </InputGroup>
+                  </FormGroup>
+                </Form>
+              </Row>
+
+              <Row xs={1} md={3} className="g-4">
+                {offresData.map((of, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5 }}
+                      >
+                        <Col>
+                          <Card className="m-2 cardStyle">
+                            <CardBody className="text-dark">
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid rounded avatar avatar-lg m-2"
+                                  style={img}
+                                  src={of.image[0]}
+                                  alt=""
+                                />
+                              </div>
+                              <Row>
+                                <h3>{of.titre.substring(0, 25)}</h3>
+                              </Row>
+                              <Row>
+                                <small>
+                                  Categorie: {of.category} - {of.souscategory}
+                                </small>
+                              </Row>
+
+                              <Row>
+                                {of.prixdebut.length === 0 ? (
+                                  <small> Prix début ouvert </small>
+                                ) : (
+                                  <small>À partir de: {of.prixdebut} dt</small>
+                                )}
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Debut: {of.dateDebut.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Limite: {of.dateFin.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <a
+                                  className="card-link text-underline text-gray"
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    setShowModal(true), setCurrentObj(of);
+                                  }}
+                                >
+                                  <small>Details</small>
+                                </a>
+                              </Row>
+                            </CardBody>
+                            {userLocal.active && (
+                              <CardFooter className="text-center">
+                                <Row className="justify-content-center">
+                                  <Button
+                                    className="btn-outline-danger"
+                                    color="dark"
                                     onClick={() => {
-                                      setShowModal(true), setCurrentObj(of);
+                                      setShowModal2(true), setCurrentObj(of);
                                     }}
                                   >
-                                    <small>Details</small>
-                                  </a>
+                                    Soumettre une demande
+                                  </Button>
                                 </Row>
-                              </CardBody>
-                              {userLocal.active && (
-                                <CardFooter className="text-center">
-                                  <Row className="justify-content-center">
-                                    <Button
-                                      className="btn-outline-danger"
-                                      color="dark"
-                                      onClick={() => {
-                                        setShowModal2(true), setCurrentObj(of);
-                                      }}
-                                    >
-                                      Soumettre une demande
-                                    </Button>
-                                  </Row>
-                                </CardFooter>
-                              )}
-                            </Card>
-                          </Col>
-                        </motion.div>
-                      </Fragment>
-                    );
-                  })}
-                </Row>
-                {showModal2 || showModal ? (
-                  <motion.div animate={{ opacity: 0 }}>
-                    <Row className="justify-content-center">
-                      <PaginationComponent
-                        total={pageNumber}
-                        itemsPerPage={offresPerPage}
-                        currentPage={currentPage}
-                        onPageChange={(page) => setCurrentPage(page)}
-                      />
-                    </Row>
-                  </motion.div>
-                ) : (
-                  <Row className="justify-content-center p-md-3 py-5">
+                              </CardFooter>
+                            )}
+                          </Card>
+                        </Col>
+                      </motion.div>
+                    </Fragment>
+                  );
+                })}
+              </Row>
+              {showModal2 || showModal ? (
+                <motion.div animate={{ opacity: 0 }}>
+                  <Row className="justify-content-center">
                     <PaginationComponent
                       total={pageNumber}
                       itemsPerPage={offresPerPage}
@@ -303,71 +305,79 @@ const Offres = ({ ...props }) => {
                       onPageChange={(page) => setCurrentPage(page)}
                     />
                   </Row>
-                )}
-              </>
-            )}
+                </motion.div>
+              ) : (
+                <Row className="justify-content-center p-md-3 py-5">
+                  <PaginationComponent
+                    total={pageNumber}
+                    itemsPerPage={offresPerPage}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+                </Row>
+              )}
+            </>
+          )}
 
-            {/* Offre Details  */}
-            <AnimatePresence
-              exitBeforeEnter
-              showModal={showModal}
-              setShowModal={setShowModal}
-            >
-              {showModal && (
-                <motion.div
-                  className="backdrop"
-                  variants={backdrop}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  <Col className=" fixed-top center" xl="5">
-                    <motion.div className="" variants={modal}>
-                      <DetailsOffre
-                        {...{
-                          currentObj,
-                          setCurrentObj,
-                          showModal,
-                          setShowModal,
-                        }}
-                      />
-                    </motion.div>
-                  </Col>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            {/* Ajout Demande  */}
-            <AnimatePresence
-              exitBeforeEnter
-              showModal={showModal2}
-              setShowModal={setShowModal2}
-            >
-              {showModal2 && (
-                <motion.div
-                  className="backdrop"
-                  variants={backdrop}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  <Col className="fixed-top center" xl="5">
-                    <motion.div className="" variants={modal}>
-                      <AjoutDemande
-                        {...{
-                          currentObj,
-                          setCurrentObj,
-                          showModal2,
-                          setShowModal2,
-                        }}
-                      />
-                    </motion.div>
-                  </Col>
-                </motion.div>
-              )}
-            </AnimatePresence>
-           
-          </Container>
-     
+          {/* Offre Details  */}
+          <AnimatePresence
+            exitBeforeEnter
+            showModal={showModal}
+            setShowModal={setShowModal}
+          >
+            {showModal && (
+              <motion.div
+                className="backdrop"
+                variants={backdrop}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                <Col className=" fixed-top center" xl="5">
+                  <motion.div className="" variants={modal}>
+                    <DetailsOffre
+                      {...{
+                        currentObj,
+                        setCurrentObj,
+                        showModal,
+                        setShowModal,
+                      }}
+                    />
+                  </motion.div>
+                </Col>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {/* Ajout Demande  */}
+          <AnimatePresence
+            exitBeforeEnter
+            showModal={showModal2}
+            setShowModal={setShowModal2}
+          >
+            {showModal2 && (
+              <motion.div
+                className="backdrop"
+                variants={backdrop}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                <Col className="fixed-top center" xl="5">
+                  <motion.div className="" variants={modal}>
+                    <AjoutDemande
+                      {...{
+                        currentObj,
+                        setCurrentObj,
+                        showModal2,
+                        setShowModal2,
+                      }}
+                    />
+                  </motion.div>
+                </Col>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Container>
       </div>
     </>
   );
