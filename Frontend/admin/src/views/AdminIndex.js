@@ -28,9 +28,13 @@ const AdminIndex = ({ refreshJwt }) => {
 
   const location = useLocation()
   const userExist = localStorage.getItem("user")
-  if(!userExist){
-    return <Redirect to='/login'/>;
-  }
+  
+  useEffect(() => {
+    if(!userExist){
+      return <Redirect to='/login'/>;
+    }
+  }, [userExist]);
+ 
 
   useEffect(() => {
 

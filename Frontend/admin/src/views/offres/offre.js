@@ -101,7 +101,7 @@ const Offre = ({ ...props }) => {
         setData({ ...data, image: [...data.image, res] });
       });
     });
-    toast.info("Téléchargement d'images réussi");
+    //toast.info("Téléchargement d'images réussi");
     setShowImg(true);
   };
 

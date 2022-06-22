@@ -244,10 +244,10 @@ const OffreList = ({ ...props }) => {
                                 </td>
                                 {user.role === "admin" && (
                                   <td>
-                                    {of.status !== "pending" &&
-                                    of.status !== "archived"
-                                      ? (of.demandes.length)
-                                      : (0)}
+                                    {DatetoCheck > new Date(of.dateDebut) &&
+                                    DatetoCheck < new Date(of.dateFin)
+                                      ? of.demandes.length
+                                      : "-"}
                                   </td>
                                 )}
 
@@ -287,7 +287,8 @@ const OffreList = ({ ...props }) => {
                                   {user.role === "admin" && (
                                     <>
                                       {/* Update */}
-                                      {of.archived && of.demandes.length === 0 ? (
+                                      {of.archived &&
+                                      of.demandes.length === 0 ? (
                                         <Button
                                           className="btn btn-outline-dark"
                                           size="sm"
@@ -298,7 +299,9 @@ const OffreList = ({ ...props }) => {
                                         >
                                           <i className="fas fa-pencil-alt"></i>
                                         </Button>
-                                      ):("")}
+                                      ) : (
+                                        ""
+                                      )}
                                       {DatetoCheck < new Date(of.dateDebut) &&
                                         !of.archived && (
                                           <Button
@@ -349,16 +352,18 @@ const OffreList = ({ ...props }) => {
                                             <i className="fas fa-arrow-up"></i>
                                           </Button>
                                         )}
-                                        {/* Update ToArchive */}
-                                      {!of.archived && DatetoCheck > new Date(of.dateDebut) &&(
-                                        <Button
-                                          className="btn btn-outline-dark"
-                                          size="sm"
-                                          onClick={() => onStatus(of._id)}
-                                        >
-                                          <i className="fas fa-archive "></i>
-                                        </Button>
-                                      )}
+                                      {/* Update ToArchive */}
+                                      {!of.archived &&
+                                        DatetoCheck >
+                                          new Date(of.dateDebut) && (
+                                          <Button
+                                            className="btn btn-outline-dark"
+                                            size="sm"
+                                            onClick={() => onStatus(of._id)}
+                                          >
+                                            <i className="fas fa-archive "></i>
+                                          </Button>
+                                        )}
 
                                       {DatetoCheck < new Date(of.dateDebut) && (
                                         <>

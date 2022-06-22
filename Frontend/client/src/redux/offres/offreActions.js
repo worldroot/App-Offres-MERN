@@ -108,7 +108,7 @@ export const AddDem = (demande) => {
         .post(`${OffremsURL}/api/demande/`, data)
         .then((res) => {
           dispatch(createSuccess(res.data));
-          toast.success("Ajouté avec succès");
+          toast.success("Soumission ajouté avec succès");
           /* setTimeout(() => {
             window.location.reload();
           }, 1500); */
