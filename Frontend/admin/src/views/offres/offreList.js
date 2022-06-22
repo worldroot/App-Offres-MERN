@@ -100,7 +100,7 @@ const OffreList = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
-  const offresPerPage = 8;
+  const offresPerPage = 5;
 
   const offresData = useMemo(() => {
     let computed = Data;
@@ -129,7 +129,7 @@ const OffreList = ({ ...props }) => {
         toast.error("Problème lors de l'ajout !");
       }
     }
-  }, [props.isLoadingCreate]);
+  }, [props.isLoadingCreate, props.List]);
 
   return (
     <>
@@ -242,12 +242,21 @@ const OffreList = ({ ...props }) => {
                                 <td>
                                   {of.category} - {of.souscategory}
                                 </td>
+
                                 {user.role === "admin" && (
                                   <td>
-                                    {DatetoCheck > new Date(of.dateDebut) &&
-                                    DatetoCheck < new Date(of.dateFin)
-                                      ? of.demandes.length
-                                      : "-"}
+                                    {!of.demandes ? (
+                                      <Col>
+                                        <div className="text-center my-3">
+                                          <div id="small-loading"></div>
+                                        </div>
+                                      </Col>
+                                    ) : DatetoCheck > new Date(of.dateDebut) &&
+                                      DatetoCheck < new Date(of.dateFin) ? (
+                                      of.demandes.length
+                                    ) : (
+                                      "-"
+                                    )}
                                   </td>
                                 )}
 

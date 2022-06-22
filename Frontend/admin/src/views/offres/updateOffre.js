@@ -27,12 +27,19 @@ import "./offre.css";
 
 const UpdateOffre = ({ ...props }) => {
   useEffect(() => {
+    props.All();
+    props.AllUsers();
+    props.AllSous();
+  }, []);
+  
+  useEffect(() => {
     if (props.currentObj !== {}) {
       setValues(props.currentObj);
       setErrors({});
       props.ListU.map((u, index) => {
         if (u._id === values.responsable) {
           setresdep(u);
+          console.log(u);
         }
       });
     }

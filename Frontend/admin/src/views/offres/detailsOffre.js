@@ -15,57 +15,43 @@ import { Redirect } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import React, { Fragment, useState, useEffect } from "react";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
+import { getAllUsers } from "redux/users/userActions.js";
 import useForm from "helpers/useFormObj";
-import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "components/modal.css";
 import "./offre.css";
-const initialFieldValues = {
-  titre: "",
-  description: "",
-  image: [],
-  dateDebut: "",
-  dateFin: "",
-  souscategory: "",
-  category: "",
-  prixdebut: "",
-};
 
 const DetailsOffre = ({ ...props }) => {
-  const backdrop = {
-    visible: { opacity: 1 },
-    hidden: { opacity: 0 },
-  };
-  const modal = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  };
-
-  useEffect(() => {
-    if (props.currentObj !== {}) {
-      setValues({ ...props.currentObj });
-      setErrors({});
-    }
-  }, [props.currentObj]);
-
-  var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
-    useForm(initialFieldValues, props.setCurrentObj);
-
   useEffect(() => {
     props.All();
     props.AllSous();
+    props.AllUsers();
   }, []);
 
+  useEffect(() => {
+    if (props.currentObj !== {}) {
+      setValues(props.currentObj);
+      setErrors({});
+      props.ListU.map((u, index) => {
+        if (u._id === values.responsable) {
+          setresdep(u);
+        }
+      });
+    }
+  }, [props.currentObj]);
+
+  const initialFieldValues = props.currentObj;
+  var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+    useForm(initialFieldValues, props.setCurrentObj);
+
+  const initRes = { email: "" };
+
   const userExist = localStorage.getItem("user");
+  const [resdep, setresdep] = useState(initRes);
   const [showImg, setShowImg] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
-
-  const ImgStyle = {
-    height: 300,
-    width: 500
-  };
 
   if (!userExist) {
     return <Redirect to="/login" />;
@@ -90,6 +76,11 @@ const DetailsOffre = ({ ...props }) => {
           <div className="d-flex justify-content-between"></div>
           <h3 className="mb-0">Details d'offre </h3>
           <small>{values.titre}</small>
+          {values.prixdebut.length === 0 ? (
+            <p className="text-dark"> Prix début ouvert </p>
+          ) : (
+            <p className="text-dark">À partir de: {values.prixdebut} dt</p>
+          )}
         </CardHeader>
 
         <CardBody className=" justify-content-center">
@@ -97,18 +88,22 @@ const DetailsOffre = ({ ...props }) => {
             <Row>
               <Col>
                 <FormGroup>
-                  {values.prixdebut.length === 0 ? (
-                    <p className="text-dark"> Prix début ouvert </p>
-                  ) : (
-                    <p className="text-dark">
-                      À partir de: {values.prixdebut} dt
-                    </p>
-                  )}
+                  <p>
+                    Posté par:
+                    <label className="form-control-label text-dark mx-2">
+                      {values.postedBy}
+                    </label>
+                  </p>
                 </FormGroup>
               </Col>
               <Col>
                 <FormGroup>
-                  <p>Posté par: {values.postedBy}</p>
+                  <p>
+                    Responsable:
+                    <label className="form-control-label text-dark mx-2">
+                      {resdep.email}
+                    </label>
+                  </p>
                 </FormGroup>
               </Col>
             </Row>
@@ -197,20 +192,21 @@ const DetailsOffre = ({ ...props }) => {
           </Form>
         </CardBody>
       </Card>
-
     </>
   );
-};
-
-const mapActionToProps = {
-  All: getAllCat,
-  AllSous: getAllSousCat,
 };
 
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
   ListC: state.categories.categories,
   ListSC: state.categories.souscategories,
+  ListU: state.users.uslist,
 });
+
+const mapActionToProps = {
+  All: getAllCat,
+  AllSous: getAllSousCat,
+  AllUsers: getAllUsers,
+};
 
 export default connect(mapStateToProps, mapActionToProps)(DetailsOffre);

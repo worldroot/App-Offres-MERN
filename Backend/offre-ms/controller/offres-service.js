@@ -73,7 +73,7 @@ router.post(
                         prixdebut,
                         category: response2.data.nomcat,
                         souscategory: response.data.sousnomcat,
-                        postedBy: responseUser.data._id,
+                        postedBy: responseUser.data.email,
                         responsable: responsable._id,
                         status: "published",
                       });
