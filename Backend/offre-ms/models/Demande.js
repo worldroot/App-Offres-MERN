@@ -15,7 +15,8 @@ const DemandeSchema = new mongoose.Schema(
       enum: ["En cours", "Reçu"],
       default: "Reçu",
     },
-  }
+  },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Demande", DemandeSchema);

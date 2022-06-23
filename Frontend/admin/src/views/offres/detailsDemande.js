@@ -20,7 +20,6 @@ import { connect, useDispatch } from "react-redux";
 const initialFieldValues = { key: "" };
 
 const DetailsDemande = ({ ...props }) => {
-
   const text = { height: 100 };
   const [showModal, setShowModal] = useState(false);
   const [showKey, setShowKey] = useState(false);
@@ -31,7 +30,6 @@ const DetailsDemande = ({ ...props }) => {
   useEffect(() => {
     Offre.demandes.map((dm) => {
       if (dm.properties.length > 50) {
-        
         setShowKey(true);
       } else {
         setShowKey(false);
@@ -48,7 +46,7 @@ const DetailsDemande = ({ ...props }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    props.decrypt(props.currentObj._id, data)
+    props.decrypt(props.currentObj._id, data);
     //dispatch(decryptDemande(props.currentObj._id, data));
   };
 
@@ -60,8 +58,6 @@ const DetailsDemande = ({ ...props }) => {
     props.setShowDemande(false);
     setData(initialFieldValues);
   };
-
-
 
   return (
     <>
@@ -122,14 +118,18 @@ const DetailsDemande = ({ ...props }) => {
 
                   <tbody>
                     {Offre.demandes.map((dm, index) => {
-                      
                       return (
                         <Fragment key={index}>
                           <tr key={dm._id}>
                             {dm.properties.length > 50 ? (
                               <>
                                 <td>Anonym {index}</td>
-                                <td>{dm.createdAt.substring(0, 10)}</td>
+                                <td>
+                                  {dm.createdAt
+                                    ? dm.createdAt.substring(0, 10)
+                                    : ""}
+                                </td>
+
                                 <td>
                                   <i className="fas fa-lock mx-2"></i>
                                 </td>
@@ -137,7 +137,11 @@ const DetailsDemande = ({ ...props }) => {
                             ) : (
                               <>
                                 <td>{dm.properties.userInfos}</td>
-                                <td>{dm.createdAt.substring(0, 10)}</td>
+                                <td>
+                                  {dm.createdAt
+                                    ? dm.createdAt.substring(0, 10)
+                                    : ""}
+                                </td>
                                 <td>
                                   <i className="fas fa-lock-open mx-2 "> </i>
                                   {dm.properties.prix} Dt
