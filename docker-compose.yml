@@ -32,6 +32,40 @@ services:
       - user-ms
     networks:
       - app-network
+
+  offre-ms:
+    build:
+      context: ./Backend/offre-ms
+      dockerfile: Dockerfile
+    image: offre-ms
+    container_name: offre-ms
+    command: npm run dev-offre
+    volumes:
+      - ./Backend/offre-ms:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5003:5003"
+    depends_on:
+      - categorie-ms
+    networks:
+      - app-network
+
+  notification-ms:
+    build:
+      context: ./Backend/notification-ms
+      dockerfile: Dockerfile
+    image: notification-ms
+    container_name: notification-ms
+    command: npm run dev-notif
+    volumes:
+      - ./Backend/notification-ms:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5004:5004"
+    depends_on:
+      - offre-ms
+    networks:
+      - app-network
   react-client:
     build:
       context: ./Frontend/client
@@ -66,11 +100,11 @@ services:
     networks:
       - app-network
 networks:
-    app-network:
-        driver: bridge
+  app-network:
+    driver: bridge
 
 volumes:
-    data-volume:
-    node_modules:
-    web-root:
-      driver: local
+  data-volume:
+  node_modules:
+  web-root:
+    driver: local
