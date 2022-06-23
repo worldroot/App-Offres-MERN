@@ -25,7 +25,7 @@ router.post(
   validateSignupRequest,
   isRequestValidated,
   async (req, res) => {
-    const { nom, prenom, email, password, role, OneSignalID } = req.body;
+    const { nom, prenom, email, password, role, OneSignalID, telephone } = req.body;
 
     let user = await User.findOne({email});
     if (user) {
@@ -35,7 +35,7 @@ router.post(
       });
     } else {
       try {
-        user = new User({ nom, prenom, email, password, role, OneSignalID });
+        user = new User({ nom, prenom, email, password, role, OneSignalID, telephone });
 
         const savedUser = await user.save();
         if (!savedUser) throw Error("Something went wrong saving the user");

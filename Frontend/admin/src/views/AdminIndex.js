@@ -32,12 +32,10 @@ const AdminIndex = ({ ...props }) => {
   }, []);
 
   const userExist = localStorage.getItem("user");
+  if (!userExist) {
+    return <Redirect to="/login" />;
+  }
 
-  useEffect(() => {
-    if (!userExist) {
-      return <Redirect to="/login" />;
-    }
-  }, [userExist]);
   const dispatch = useDispatch();
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -48,12 +46,6 @@ const AdminIndex = ({ ...props }) => {
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         dispatch(refreshJwt({ refreshToken }));
       }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (localStorage.getItem("accessToken") === null) {
-      return <Redirect to="/login" />;
     }
   }, []);
 
@@ -82,10 +74,6 @@ const AdminIndex = ({ ...props }) => {
     ],
   });
 
-  useEffect(() => {}, [offresData.labels.length]);
-
-  console.log(offresData.labels.length);
-
   return (
     <>
       {/* Layout*/}
@@ -103,42 +91,43 @@ const AdminIndex = ({ ...props }) => {
         <Header />
         {/* Page content */}
         <Container className="mt--5" fluid>
-          
-          {offresData.labels.length !== 0 && (
-            <Row>
-
-              {props.isLoading ? (
+          <Row>
+            {props.isLoading || offresData.labels.length === 0 ? (
+              <Card className="bg-white shadow w-100">
+                <CardBody>
+                  <div className="text-center mt-7 mb-7">
+                    <div id="loading"></div>
+                  </div>
+                </CardBody>
+              </Card>
+            ) : (
+              <>
                 <Card className="bg-white shadow w-100">
                   <CardBody>
-                    <div className="text-center mt-7 mb-7">
-                      <div id="loading"></div>
-                    </div>
+                    <Row>
+                      <Col>
+                        {offresData.labels.length !== 0 && (
+                          <BarChart chartData={offresData} />
+                        )}
+                      </Col>
+                      <Col>
+                        {offresData.labels.length !== 0 && (
+                          <PieChart chartData={offresData} />
+                        )}
+                      </Col>
+                    </Row>
                   </CardBody>
                 </Card>
-              ) : (
-                <>
-                  <Card className="bg-white shadow w-100">
-                    <CardBody>
-                      <Row>
-                        <Col>
-                          <BarChart chartData={offresData} />
-                        </Col>
-                        <Col>
-                          <PieChart chartData={offresData} />
-                        </Col>
-                      </Row>
-                    </CardBody>
-                  </Card>
-                  <Card className="bg-white shadow w-100 mt-3">
-                    <CardBody>
+                <Card className="bg-white shadow w-100 mt-3">
+                  <CardBody>
+                    {offresData.labels.length !== 0 && (
                       <LineChart chartData={offresData} />
-                    </CardBody>
-                  </Card>
-                </>
-              )}
-
-            </Row>
-          )}
+                    )}
+                  </CardBody>
+                </Card>
+              </>
+            )}
+          </Row>
         </Container>
       </div>
     </>

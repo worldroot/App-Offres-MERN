@@ -35,6 +35,7 @@ const AjoutDemande = ({ ...props }) => {
 
   const userExist = localStorage.getItem("user");
   const [showImg, setShowImg] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const initialFieldValues = {
     prix: "",
@@ -78,70 +79,69 @@ const AjoutDemande = ({ ...props }) => {
         </Row>
 
         <CardHeader className="text-center border-0">
-          <h3 className="mb-0 text-red">Ajouter une demande pour l'offre</h3>
-          <p className="text-dark">{props.currentObj.titre}</p>
+          <h3 className="mb-0 text-red">Soumettre une demande pour l'offre</h3>
+          <p className="text-dark text-underline">{props.currentObj.titre}</p>
         </CardHeader>
 
-        <CardBody className="justify-content-center">
-          <Form role="form" onSubmit={onSubmit}>
-            <Row className="justify-content-center">
-              <p className="text-center text-dark">
-                Votre prix
-                <Input
-                  type="number"
-                  step="0.1"
-                  name="prix"
-                  value={data.prix}
-                  onChange={handleChange("prix")}
-                  className="my-2"
-                />
-                {props.currentObj.prixdebut !== "" && (
-                   <small className="text-gray">A partir de {props.currentObj.prixdebut} dt</small>
-                )}
-                
-              </p>
-            </Row>
-            <Row className="justify-content-center">
-              <Button
-                className="btn-outline-success"
-                type="submit"
-                color="dark"
-              >
-                Confirmer
-              </Button>
-            </Row>
-          </Form>
+        <CardBody className="justify-content-center mt--5">
+
+            {showConfirm ? (
+              <div>
+                <Row className="justify-content-center">
+                  <h3 className="text-dark">
+                    Etes vous sur de soumettre {data.prix} dt ?
+                  </h3>
+                </Row>
+                <Row className="justify-content-center">
+                  <Button
+                    className="btn-outline-success"
+                    type="submit"
+                    onClick={onSubmit}
+                  >
+                    Confirmer
+                  </Button>
+                  <Button
+                    className="btn-outline-danger"
+                    onClick={()=>{setShowConfirm(false)}}
+                  >
+                    Annuler 
+                  </Button>
+                </Row>
+              </div>
+            ) : (
+              <div>
+                <Row className="justify-content-center">
+                  <p className="text-center text-dark">
+                    Votre prix en dt
+                    <Input
+                      className="border border-dark"
+                      type="number"
+                      step="0.1"
+                      name="prix"
+                      value={data.prix}
+                      onChange={handleChange("prix")}
+                    />
+                    {props.currentObj.prixdebut !== "" && (
+                      <small className="text-gray">
+                        A partir de {props.currentObj.prixdebut} dt 
+                      </small>
+                    )}
+                  </p>
+                </Row>
+                <Row className="justify-content-center">
+                  <Button
+                    className="btn-success"
+                    onClick={() => setShowConfirm(true)}
+
+                  >
+                    Suivant
+                  </Button>
+                </Row>
+              </div>
+            )}
+
         </CardBody>
       </Card>
-
-      <AnimatePresence
-        exitBeforeEnter
-        showModal={showImg}
-        setShowModal={setShowImg}
-      >
-        {showImg && (
-          <motion.div
-            className="backdrop"
-            variants={backdrop}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <Col className=" fixed-top center" xl="5">
-              <motion.div variants={modal}>
-                <img
-                  onClick={() => setShowImg(false)}
-                  className="img-fluid rounded shadow avatar avatar-lg w-auto h-auto"
-                  src={values.image[currentIndex]}
-                  alt=""
-                />
-                <br></br>
-                <small className=" text-white">Click image to hide</small>
-              </motion.div>
-            </Col>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 };

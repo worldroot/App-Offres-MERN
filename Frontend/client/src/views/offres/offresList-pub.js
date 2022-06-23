@@ -33,6 +33,8 @@ import "../../components/Loading/loading.css";
 import "components/modal.css";
 import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -48,6 +50,7 @@ const modal = {
 };
 
 const Offres = ({ ...props }) => {
+
   useEffect(() => {
     props.AllPub();
     props.AllCat();
@@ -63,8 +66,9 @@ const Offres = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const offresPerPage = 6;
-  const data = props.Listpub;
 
+  const data = props.Listpub;
+  let history = useHistory();
   const offresData = useMemo(() => {
     let computed = data;
     if (Search) {
@@ -137,10 +141,7 @@ const Offres = ({ ...props }) => {
                         className=" border-dark rounded border-darker shadow-none"
                         direction="right"
                       >
-                        <DropdownToggle
-                          caret
-                         
-                        >
+                        <DropdownToggle caret>
                           <i className="mx-1 fas fa-sort text-dark" />
                           Filtrage par catégorie
                         </DropdownToggle>
@@ -185,7 +186,6 @@ const Offres = ({ ...props }) => {
                                                       );
                                                       setchecked(true);
                                                       setCurrentPage(1);
-                                                     
                                                     } else {
                                                       setSearchCat("");
                                                       setCurrentPage(1);
@@ -273,7 +273,7 @@ const Offres = ({ ...props }) => {
                                 </a>
                               </Row>
                             </CardBody>
-                            {userLocal.active && (
+                            {userLocal.active ? (
                               <CardFooter className="text-center">
                                 <Row className="justify-content-center">
                                   <Button
@@ -287,7 +287,22 @@ const Offres = ({ ...props }) => {
                                   </Button>
                                 </Row>
                               </CardFooter>
+                            ) : (
+                              <CardFooter className="text-center">
+                                <Row className="justify-content-center">
+                                  <Button
+                                    className="btn-outline-danger"
+                                    color="dark"
+                                    onClick={() => {
+                                      history.push("/login"), toast.info("Connectez ou créer un compte pour soumettre une demande !");
+                                    }}
+                                  >
+                                    Soumettre une demande
+                                  </Button>
+                                </Row>
+                              </CardFooter>
                             )}
+                            {/* connexion requise */}
                           </Card>
                         </Col>
                       </motion.div>

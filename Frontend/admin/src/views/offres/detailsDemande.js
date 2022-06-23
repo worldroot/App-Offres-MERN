@@ -86,7 +86,7 @@ const DetailsDemande = ({ ...props }) => {
             {showKey && (
               <Form role="form" onSubmit={onSubmit}>
                 <Row className=" justify-content-center">
-                  Copier le Key reçu par mail
+                  Copier le clé reçu par mail
                   <Input
                     style={text}
                     type="textarea"

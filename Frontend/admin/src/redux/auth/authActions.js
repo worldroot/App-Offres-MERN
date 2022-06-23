@@ -2,7 +2,7 @@ import { UsermsURL } from "../../helpers/urls";
 import setAuthToken from "helpers/authToken";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import decode from "jwt-decode";
 
 import {
@@ -126,7 +126,8 @@ export const logout = (OneSignalID) => async (dispatch) => {
     await axios
       .put(`${UsermsURL}/api/user/osid`, { OneSignalID: OneSignalID })
       .then((res) => {
-        dispatch({ type: LOGOUT });
+        dispatch({ type: LOGOUT })
+        localStorage.clear(); 
       })
       .catch((err) => console.log(err), ERROR, localStorage.clear());
   } catch (error) {

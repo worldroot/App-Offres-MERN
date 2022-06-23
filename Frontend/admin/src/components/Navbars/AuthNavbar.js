@@ -54,7 +54,6 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
-             
               {userExist && (
                 <>
                   {userLocal.role === "admin" && (
@@ -84,8 +83,8 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                       className="nav-link-icon"
                       to="/"
                       onClick={() => {
-                        logout(),
-                          history.push("/login"),
+                          logout(),
+                          history.push("/"),
                           window.location.reload(false);
                       }}
                       tag={Link}
@@ -100,12 +99,14 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                 </>
               )}
 
-                {!userExist && (
+              {!userExist && (
                 <NavItem>
-                <i className="fas fa-user-shield text-white"></i>
-                <span className="text-white h-25 w-25 mx-2 ">Espace Administration</span>
-              </NavItem>
-              )} 
+                  <i className="fas fa-user-shield text-white"></i>
+                  <span className="text-white h-25 w-25 mx-2 ">
+                    Espace Administration
+                  </span>
+                </NavItem>
+              )}
             </Nav>
           </UncontrolledCollapse>
         </Container>

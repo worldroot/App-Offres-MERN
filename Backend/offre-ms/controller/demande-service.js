@@ -46,7 +46,8 @@ router.post(
             let { offre, prix } = req.body;
             const props = {
               prix: prix,
-              userInfos: responseUser.data.email,
+              userEmail: responseUser.data.email,
+              userTel: responseUser.data.telephone,
               userId: responseUser.data._id,
             };
 
@@ -54,6 +55,7 @@ router.post(
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
             const ResDep = offreModel.responsable;
+            const Admin = offreModel.postedBy;
             const theKey = offreModel.publickey;
             if (!offreModel) {
               return res.status(403).json({
@@ -95,7 +97,21 @@ router.post(
                       offre,
                       properties: encrypted,
                     });
-                    newDem.save().then(() => res.json(newDem));
+
+                    await axios
+                    .get("http://localhost:5001/api/user/admin", Admin)
+                    .then(async (ad) => {
+                      const Adminbody = {
+                        postedBy: ad,
+                        titre: offreModel.titre,
+                        date: DateToCheck,
+                      };
+                      await axios.post(
+                        "http://localhost:5004/api/notif/selected",
+                        Adminbody
+                      );
+                    })
+                    newDem.save().then(() => res.json(newDem) );
                   } else {
                     const encrypted = ToCrypte(theKey, rs);
                     const newDem = new Demande({

@@ -83,15 +83,10 @@ router.post(
                         titre: titre,
                         dateFin: dateFin,
                       };
-
-                      if (responsable.OneSignalID) {
-                        if (responsable.OneSignalID.length > 0) {
-                          axios.post(
-                            "http://localhost:5004/api/notif/selected",
-                            Adminbody
-                          );
-                        }
-                      }
+                      await axios.post(
+                        "http://localhost:5004/api/notif/selected",
+                        Adminbody
+                      );
 
                       const Clientbody = {
                         titre: titre,
@@ -117,20 +112,22 @@ router.post(
                         responsable: responsable._id,
                       });
 
+                      /*  if (responsable.OneSignalID) {
+                        if (responsable.OneSignalID.length > 0) {
+                          
+                          
+                        }
+                      } */
+                      
                       const Adminbody = {
                         responsable: responsable,
                         titre: titre,
                         dateFin: dateFin,
                       };
-
-                      if (responsable.OneSignalID) {
-                        if (responsable.OneSignalID.length > 0) {
-                          axios.post(
-                            "http://localhost:5004/api/notif/selected",
-                            Adminbody
-                          );
-                        }
-                      }
+                      await axios.post(
+                        "http://localhost:5004/api/notif/selected",
+                        Adminbody
+                      );
 
                       newOffre.save().then(() => res.json(newOffre));
                     }

@@ -94,7 +94,7 @@ const AuthNavbar = ({ ...props }) => {
   return (
     <>
       <Navbar
-        className="navbar-top navbar-horizontal navbar-dark bg-white fixed-top position-relative border-bottom border-danger"
+        className="navbar-top navbar-horizontal navbar-dark bg-white fixed-top position-relative"
         expand="md"
       >
         <Container className="px-4">

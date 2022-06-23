@@ -246,16 +246,12 @@ const OffreList = ({ ...props }) => {
                                 {user.role === "admin" && (
                                   <td>
                                     {!of.demandes ? (
-                                      <Col>
-                                        <div className="text-center my-3">
-                                          <div id="small-loading"></div>
-                                        </div>
-                                      </Col>
+                                      0
                                     ) : DatetoCheck > new Date(of.dateDebut) &&
                                       DatetoCheck < new Date(of.dateFin) ? (
-                                      of.demandes.length
+                                      (of.demandes.length)
                                     ) : (
-                                      "-"
+                                     (of.demandes.length)
                                     )}
                                   </td>
                                 )}

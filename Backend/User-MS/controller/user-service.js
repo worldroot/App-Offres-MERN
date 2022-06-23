@@ -153,20 +153,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/admin", async (req, res) => {
-  try {
-    const data = req.body
-    const user = await User.findOne(data);
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({
-      error: true,
-      msg: error.message,
-    });
-    console.log(error.message);
-  }
-});
-
 // @route   GET api/user
 // @desc    All
 // @access  Public

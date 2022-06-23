@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import { Provider } from 'react-redux';
 import setAuthToken from './helpers/authToken';
@@ -24,8 +24,11 @@ import offreListdems from 'views/offres/offreListdems';
 
 function App() {
 
+  let history = useHistory()
   if (localStorage.accessToken) {
     setAuthToken(localStorage.accessToken);
+  }else{
+    <Redirect to="/login" />
   }
 
   useEffect(() => {
