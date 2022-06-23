@@ -1,201 +1,126 @@
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  Form,
-  Row,
-  Col,
-  } from "reactstrap";
-  import { styled } from '@mui/material/styles';
-  import FormGroup from '@mui/material/FormGroup';
-  import FormControlLabel from '@mui/material/FormControlLabel';
-  import Switch from '@mui/material/Switch';
-  import Stack from '@mui/material/Stack';
-  import Typography from '@mui/material/Typography';
-  // core components
-  import { connect, useDispatch } from 'react-redux';
-  import React, { useEffect, useState } from "react";
-  import { banUser } from "redux/users/userActions";
-  import useForm from "helpers/useForm";
-  const initialFieldValues = { banned:"",}
+import { Button, Card, CardHeader, CardBody, Form, Row, Col } from "reactstrap";
+// core components
+import { connect, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { banUser } from "redux/users/userActions";
+import useForm from "helpers/useForm";
+const initialFieldValues = { banned: "" };
 
-  const IOSSwitch = styled((props) => (
-    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-  ))(({ theme }) => ({
-    width: 42,
-    height: 26,
-    padding: 0,
-    '& .MuiSwitch-switchBase': {
-      padding: 0,
-      margin: 2,
-      transitionDuration: '300ms',
-      '&.Mui-checked': {
-        transform: 'translateX(16px)',
-        color: '#fff',
-        '& + .MuiSwitch-track': {
-          backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
-          opacity: 1,
-          border: 0,
-        },
-        '&.Mui-disabled + .MuiSwitch-track': {
-          opacity: 0.5,
-        },
-      },
-      '&.Mui-focusVisible .MuiSwitch-thumb': {
-        color: '#33cf4d',
-        border: '6px solid #fff',
-      },
-      '&.Mui-disabled .MuiSwitch-thumb': {
-        color:
-          theme.palette.mode === 'light'
-            ? theme.palette.grey[100]
-            : theme.palette.grey[600],
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-      },
-    },
-    '& .MuiSwitch-thumb': {
-      boxSizing: 'border-box',
-      width: 22,
-      height: 22,
-    },
-    '& .MuiSwitch-track': {
-      borderRadius: 26 / 2,
-      backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
-      opacity: 1,
-      transition: theme.transitions.create(['background-color'], {
-        duration: 500,
-      }),
-    },
-  }));
+const BanUser = ({ ...props }) => {
+  const dispatch = useDispatch();
 
-  const BanUser = ({...props}) => {
-
-    const dispatch = useDispatch()
-  
-    useEffect(() => {
-        if (props.currentId !== 0) {
-          setValues({
-            ...props.List.find((p) => p._id === props.currentId),
-          });
-          setErrors({});
-        }
-      }, [props.currentId]);
-
-    var {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm,
-      } = useForm(initialFieldValues, props.setCurrentId);
-
-    const validate = () => {
-        let temp = {...errors};
-        temp.banned = values.banned ? "" : "This field is required.";   
-        setErrors({...temp,});
-        return Object.values(temp).every((p) => p === "");
-      };
-      
-    const onSubmit = (e) => {
-        e.preventDefault();
-        const onSuccess = () => {
-          
-          resetForm();
-        };
-        if (validate()) {
-          if (props.currentId !== 0){
-    
-              props.update(props.currentId, values, onSuccess);
-              setTimeout(() => {
-                  window.location.reload();
-                }, 2000);
-              props.setShowModal(false)
-              resetForm();
-             
-          } 
-        }
-      };
-
-    const reset = (e) => { 
-      resetForm(),
-      props.setCurrentIndex(-1) 
+  useEffect(() => {
+    if (props.currentId !== 0) {
+      setValues({
+        ...props.List.find((p) => p._id === props.currentId),
+      });
+      setErrors({});
     }
+  }, [props.currentId]);
 
-    const banned = values.banned
-    const [state, setState] = useState(banned);
-    const toggleChecked = () => setState({state: values.banned = !values.banned} );
-    console.log(banned)
-  
-    return(
-      <>      
-              
-              <Card className="card-profile shadow">
-                <Row className="justify-content-center">
-                  <Col className="order-lg-1" lg="2">
-                    <div className="card-profile-image">
-                      <a href="#" onClick={(e) => e.preventDefault()}>
-                       
-                      </a>
-                    </div>
-                  </Col>
-                </Row>
-                <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <h3 className="mb-0">Etes-vous sûr de bannir {values.email} ?</h3>
-                </CardHeader>
-                <CardBody className="pt-0 pt-md-2">
-                    <Form role="form" onSubmit={onSubmit}>
-                              
-                      <div className="text-center">
-                      <select name="banned" 
-                              size="sm" 
-                              value={values.banned}
-                              onChange={handleInputChange}
-                              className='search-input input-group-alternative input-group-lg'>
-                            <option value="true">Compte Banni</option>
-                            <option value="false">Compte Non Banni</option>
-                          
-                         </select>  
-                     
-                      
-                     
-                      </div>
+  var { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+    useForm(initialFieldValues, props.setCurrentId);
 
-                      <div className=" text-center">
-                               <Button className="my-4 btn-outline-success" size="sm"
-                                        color="dark" type="submit">
-                                    Confirmer
-                                </Button>
-                                <Button className="my-4 btn-outline-dark" size="sm"
-                                        color="dark" type="submit" onClick={() => props.setShowModal(false) }>
-                                    Annuler
-                                </Button>
-                      </div>
-
-                    </Form>
-                </CardBody>
-              </Card>
-              
-            
-      </>
-    );
+  const validate = () => {
+    let temp = { ...errors };
+    temp.banned = values.banned ? "" : "This field is required.";
+    setErrors({ ...temp });
+    return Object.values(temp).every((p) => p === "");
   };
-  
-  const mapActionToProps = {
-    update: banUser,
-  };
-  
-  const mapStateToProps = (state) => ({
-    List: state.users.uslist,
-  });
-  
-  export default connect ( mapStateToProps, mapActionToProps )(BanUser);
 
-  /**
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const onSuccess = () => {
+      resetForm();
+    };
+    if (validate()) {
+      if (props.currentId !== 0) {
+        props.update(props.currentId, values, onSuccess);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        props.setShowModal(false);
+        resetForm();
+      }
+    }
+  };
+
+  const reset = (e) => {
+    resetForm(), props.setCurrentIndex(-1);
+  };
+
+  const banned = values.banned;
+  const [state, setState] = useState(banned);
+  const toggleChecked = () =>
+    setState({ state: (values.banned = !values.banned) });
+  console.log(banned);
+
+  return (
+    <>
+      <Card className="card-profile shadow">
+        <Row className="justify-content-center">
+          <Col className="order-lg-1" lg="2">
+            <div className="card-profile-image">
+              <a href="#" onClick={(e) => e.preventDefault()}></a>
+            </div>
+          </Col>
+        </Row>
+        <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+          <h3 className="mb-0">Etes-vous sûr de bannir {values.email} ?</h3>
+        </CardHeader>
+        <CardBody className="pt-0 pt-md-2">
+          <Form role="form" onSubmit={onSubmit}>
+            <div className="text-center">
+              <select
+                name="banned"
+                size="sm"
+                value={values.banned}
+                onChange={handleInputChange}
+                className="search-input input-group-alternative input-group-lg"
+              >
+                <option value="true">Compte Banni</option>
+                <option value="false">Compte Non Banni</option>
+              </select>
+            </div>
+
+            <div className=" text-center">
+              <Button
+                className="my-4 btn-outline-success"
+                size="sm"
+                color="dark"
+                type="submit"
+              >
+                Confirmer
+              </Button>
+              <Button
+                className="my-4 btn-outline-dark"
+                size="sm"
+                color="dark"
+                type="submit"
+                onClick={() => props.setShowModal(false)}
+              >
+                Annuler
+              </Button>
+            </div>
+          </Form>
+        </CardBody>
+      </Card>
+    </>
+  );
+};
+
+const mapActionToProps = {
+  update: banUser,
+};
+
+const mapStateToProps = (state) => ({
+  List: state.users.uslist,
+});
+
+export default connect(mapStateToProps, mapActionToProps)(BanUser);
+
+/**
                           <select name="banned" 
                               size="sm" 
                               value={values.banned}

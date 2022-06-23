@@ -16,62 +16,80 @@ import {
 import Header from "components/Headers/Header.js";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar/Sidebar";
-import { Redirect, useLocation } from 'react-router-dom';
-import {connect} from 'react-redux';
-import {toast} from 'react-toastify'
-import decode from 'jwt-decode'
-import React, { useEffect } from 'react';
+import { Redirect, useLocation } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import BarChart from "../components/Charts/BarChart";
+import LineChart from "../components/Charts/LineChart";
+import PieChart from "../components/Charts/PieChart";
+import decode from "jwt-decode";
+import React, { useEffect, useState } from "react";
 import { refreshJwt } from "redux/auth/authActions";
+import { allOffres } from "redux/offres/offreActions";
 
-
-const AdminIndex = ({ refreshJwt }) => {
-
-  const location = useLocation()
-  const userExist = localStorage.getItem("user")
-  
+const AdminIndex = ({ ...props }) => {
   useEffect(() => {
-    if(!userExist){
-      return <Redirect to='/login'/>;
+    props.All();
+  }, []);
+
+  const userExist = localStorage.getItem("user");
+
+  useEffect(() => {
+    if (!userExist) {
+      return <Redirect to="/login" />;
     }
   }, [userExist]);
- 
-
+  const dispatch = useDispatch();
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const refreshToken = localStorage.getItem("refreshToken");
 
-    const accessToken = localStorage.getItem("accessToken")
-    if(accessToken){
-      
-
-      const refreshToken = localStorage.getItem("refreshToken")
-      /**
-       *  
-
-             let minutes = 1000 * 60 * 40
-      let interval =  setInterval(()=> {
-          refreshJwt({refreshToken})
-      }, minutes)
-
-      return ()=> clearInterval(interval)
-       */
-
-      const decodedToken = decode(accessToken)
-          if(decodedToken.exp * 1000 < new Date().getTime()){
-              refreshJwt({refreshToken})
-            }
-     
+      const decodedToken = decode(accessToken);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(refreshJwt({ refreshToken }));
+      }
     }
   }, []);
 
   useEffect(() => {
-    if(localStorage.getItem("accessToken") === null){
-      return <Redirect to='/login'/>; 
+    if (localStorage.getItem("accessToken") === null) {
+      return <Redirect to="/login" />;
     }
-  }, [])
+  }, []);
+
+  const [userLocal] = useState(() => {
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
+
+  const [offresData, setOffresData] = useState({
+    labels: props.List.map((data) => data.titre.substring(0, 18)),
+    datasets: [
+      {
+        label: "Soumissions",
+        data: props.List.map((data) => data.demandes.length),
+        backgroundColor: [
+          "#2ECDF3",
+          "#FFA88E",
+          "#898989",
+          "#FFA300",
+          "#2CD5C4",
+        ],
+        borderColor: "black",
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  useEffect(() => {}, [offresData.labels.length]);
+
+  console.log(offresData.labels.length);
 
   return (
     <>
-    {/* Layout*/}
-    <Sidebar
+      {/* Layout*/}
+      <Sidebar
         logo={{
           innerLink: "",
           imgSrc: require("../assets/img/brand/argon-react.png").default,
@@ -79,67 +97,63 @@ const AdminIndex = ({ refreshJwt }) => {
         }}
       />
 
-      <div className="main-content" >
-        <AdminNavbar/>
+      <div className="main-content">
+        <AdminNavbar />
 
-        <Header/>
+        <Header />
         {/* Page content */}
-        <Container className="mt--7" fluid>
-          <Row>
-            <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
-              <Card className="card-profile shadow">
-                <Row className="justify-content-center">
-                  <Col className="order-lg-2" lg="3">
-                    <div className="card-profile-image">
-                      
-                    </div>
-                  </Col>
-                </Row>
-                <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <div className="d-flex justify-content-between">
-                   
-                  </div>
-                </CardHeader>
-                <CardBody className="pt-0 pt-md-4">
-                  <Row>
-                    <div className="col">
-                      <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                        
-                      </div>
-                    </div>
-                  </Row>
-                  <div className="text-center">
-                    
-                   
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col className="order-xl-1" xl="8">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
-                      <h3 className="mb-0">Admin tableau de bord</h3>
-                    </Col>
-                    
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+        <Container className="mt--5" fluid>
+          
+          {offresData.labels.length !== 0 && (
+            <Row>
 
+              {props.isLoading ? (
+                <Card className="bg-white shadow w-100">
+                  <CardBody>
+                    <div className="text-center mt-7 mb-7">
+                      <div id="loading"></div>
+                    </div>
+                  </CardBody>
+                </Card>
+              ) : (
+                <>
+                  <Card className="bg-white shadow w-100">
+                    <CardBody>
+                      <Row>
+                        <Col>
+                          <BarChart chartData={offresData} />
+                        </Col>
+                        <Col>
+                          <PieChart chartData={offresData} />
+                        </Col>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                  <Card className="bg-white shadow w-100 mt-3">
+                    <CardBody>
+                      <LineChart chartData={offresData} />
+                    </CardBody>
+                  </Card>
+                </>
+              )}
+
+            </Row>
+          )}
+        </Container>
       </div>
-     
     </>
   );
 };
 
-const mapToStateProps = (state) => ({
-
+const mapStateToProps = (state) => ({
+  List: state.offres.offres,
+  isLoading: state.offres.loading,
+  isAuth: state.auth.isAuthenticated,
+  CodeMsg: state.offres.codeMsg,
 });
 
-export default connect(mapToStateProps, {refreshJwt})(AdminIndex);
+const mapActionToProps = {
+  All: allOffres,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(AdminIndex);

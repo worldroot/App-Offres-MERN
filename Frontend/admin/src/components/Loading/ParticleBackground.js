@@ -36,8 +36,8 @@ export default function ParticleBackground() {
               quantity: 5,
             },
             repulse: {
-              distance: 200,
-              duration: 0.4,
+              distance: 100,
+              duration: 0.1,
             },
           },
         },
@@ -49,7 +49,7 @@ export default function ParticleBackground() {
             color: "#ffffff",
             distance: 150,
             enable: true,
-            opacity: 0.5,
+            opacity: 1,
             width: 1,
           },
           collisions: {
@@ -62,7 +62,7 @@ export default function ParticleBackground() {
               default: "bounce",
             },
             random: false,
-            speed: 3,
+            speed: 1,
             straight: false,
           },
           number: {
