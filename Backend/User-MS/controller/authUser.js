@@ -223,6 +223,20 @@ router.post(
   }
 );
 
+router.get("/admin", async (req, res) => {
+  try {
+    //const data = req.body
+    const user = await User.findOne(req.body).select("-password");
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      msg: error.message,
+    });
+    console.log(error.message);
+  }
+});
+
 // @route   POST /refresh-token'
 // @desc    Get new Acc Token
 // @access  Public

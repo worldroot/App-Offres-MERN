@@ -3,6 +3,7 @@ const express = require("express");
 const Notif = require("../models/Notif");
 const router = express.Router();
 const https = require("https");
+const axios = require("axios");
 const { verifyAccessToken } = require("../middleware/verify-token");
 const AdminApp = "ce9b6483-0272-4f13-8560-e6c628f65776";
 const ClientApp = "10d0d189-e8bd-413a-b51b-becc098b1617";
@@ -273,47 +274,62 @@ router.post("/welcome", async (req, res) => {
 router.post("/new", async (req, res) => {
   const data = req.body;
 
-  var message = {
-    app_id: AdminApp,
-    contents: {
-      en: `Nouvelle soumission !`,
-    },
-    include_player_ids: data.postedBy.OneSignalID,
-    data: { foo: "bar" },
-  };
+  await axios
+    .get("http://localhost:5001/api/access/admin", {
+      email: data.postedBy,
+    })
+    .then(async (ad) => {
+      var message = {
+        app_id: AdminApp,
+        contents: {
+          en: `Nouvelle soumission !`,
+        },
+        include_player_ids: ad.data.OneSignalID,
+        data: { foo: "bar" },
+      };
 
-  var req = https.request(optionsAd, function (res) {
-    var payload = "";
-    res.on("data", function (data) {
-      payload += data;
-    });
+      console.log(ad.data);
 
-    res.on("end", function () {
-      payload = JSON.parse(payload);
-      const notification = new Notif({
-        idClient: data.postedBy._id,
-        idNotification: payload.id,
-        title: message.contents.en,
-        text: `L'appel d'offre '${data.titre}' a une nouvelle soumission`,
-        delivered: data.date,
+      var req = https.request(optionsAd, function (res) {
+        var payload = "";
+        res.on("data", function (data) {
+          payload += data;
+        });
+
+        res.on("end", function () {
+          payload = JSON.parse(payload);
+          const notification = new Notif({
+            idClient: ad.data._id,
+            idNotification: payload.id,
+            title: message.contents.en,
+            text: `L'appel d'offre '${data.titre}' a une nouvelle soumission`,
+            delivered: data.date,
+          });
+          notification.save();
+          return payload;
+        });
       });
-      notification.save();
-      return payload;
+
+      req.on("error", function (e) {
+        console.log("ERROR:");
+        console.log(e);
+      });
+
+      req.write(JSON.stringify(message));
+      req.end();
+
+      res
+        .status(200)
+        .json({ etat: true, message: "Notification sent successfully" });
+      console.log("Notification New Demande");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(403).json({
+        error: true,
+        msg: "Demande impossible !",
+      });
     });
-  });
-
-  req.on("error", function (e) {
-    console.log("ERROR:");
-    console.log(e);
-  });
-
-  req.write(JSON.stringify(message));
-  req.end();
-
-  res
-    .status(200)
-    .json({ etat: true, message: "Notification sent successfully" });
-  console.log("Notification Selected Responsable");
 });
 
 router.get("/user", verifyAccessToken, async (req, res) => {

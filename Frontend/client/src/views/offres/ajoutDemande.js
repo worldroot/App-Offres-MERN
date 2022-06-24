@@ -89,7 +89,7 @@ const AjoutDemande = ({ ...props }) => {
               <div>
                 <Row className="justify-content-center">
                   <h3 className="text-dark">
-                    Etes vous sur de soumettre {data.prix} dt ?
+                    Êtes-vous sûr de soumettre {data.prix} dt ?
                   </h3>
                 </Row>
                 <Row className="justify-content-center">

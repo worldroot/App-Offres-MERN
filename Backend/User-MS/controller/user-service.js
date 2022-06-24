@@ -126,20 +126,6 @@ router.put(
 // @route   GET api/user
 // @desc    User Information by token
 // @access  Public
-router.get("/admin", async (req, res) => {
-  try {
-    //const data = req.body
-    const user = await User.findOne(req.body).select("-password");
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({
-      error: true,
-      msg: error.message,
-    });
-    console.log(error.message);
-  }
-});
-
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");

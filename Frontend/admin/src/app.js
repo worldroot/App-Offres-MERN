@@ -24,7 +24,6 @@ import offreListdems from 'views/offres/offreListdems';
 
 function App() {
 
-  let history = useHistory()
   if (localStorage.accessToken) {
     setAuthToken(localStorage.accessToken);
   }else{

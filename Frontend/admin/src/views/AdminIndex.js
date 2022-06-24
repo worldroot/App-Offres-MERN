@@ -92,7 +92,7 @@ const AdminIndex = ({ ...props }) => {
         {/* Page content */}
         <Container className="mt--5" fluid>
           <Row>
-            {props.isLoading || offresData.labels.length === 0 ? (
+            {props.isLoading ? (
               <Card className="bg-white shadow w-100">
                 <CardBody>
                   <div className="text-center mt-7 mb-7">

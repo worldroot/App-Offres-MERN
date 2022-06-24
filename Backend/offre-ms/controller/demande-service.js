@@ -98,26 +98,33 @@ router.post(
                       properties: encrypted,
                     });
 
-                    await axios
-                    .get("http://localhost:5001/api/user/admin", Admin)
-                    .then(async (ad) => {
-                      const Adminbody = {
-                        postedBy: ad,
-                        titre: offreModel.titre,
-                        date: DateToCheck,
-                      };
-                      await axios.post(
-                        "http://localhost:5004/api/notif/selected",
-                        Adminbody
-                      );
-                    })
-                    newDem.save().then(() => res.json(newDem) );
+                    const Adminbody = {
+                      postedBy: offreModel.postedBy,
+                      titre: offreModel.titre,
+                      date: DateToCheck,
+                    };
+                    await axios.post(
+                      "http://localhost:5004/api/notif/new",
+                      Adminbody
+                    );
+
+                    newDem.save().then(() => res.json(newDem));
                   } else {
                     const encrypted = ToCrypte(theKey, rs);
                     const newDem = new Demande({
                       offre,
                       properties: encrypted,
                     });
+
+                    const Adminbody = {
+                      postedBy: offreModel.postedBy,
+                      titre: offreModel.titre,
+                      date: DateToCheck,
+                    };
+                    await axios.post(
+                      "http://localhost:5004/api/notif/new",
+                      Adminbody
+                    );
 
                     newDem.save().then(() => res.json(newDem));
                   }
@@ -166,7 +173,7 @@ router.put(
               var list = [];
               var { key } = req.body;
               DemandeList.forEach(async (dem, index) => {
-                const decrypted = ToDecrypte(key, dem.properties);
+                const decrypted = ToDecrypte(key, dem.properties)
                 const result = JSON.parse(decrypted);
                 const up = await Demande.findByIdAndUpdate(
                   dem._id,
@@ -187,7 +194,7 @@ router.put(
             } else {
               res.status(401).json({
                 error: true,
-                msg: "Décryptage Impossible",
+                msg: "Décryptage Impossible: vérifier votre clé !",
               });
             }
           } catch (error) {
