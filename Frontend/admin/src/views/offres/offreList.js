@@ -249,9 +249,9 @@ const OffreList = ({ ...props }) => {
                                       0
                                     ) : DatetoCheck > new Date(of.dateDebut) &&
                                       DatetoCheck < new Date(of.dateFin) ? (
-                                      (of.demandes.length)
+                                      ((of.demandes.length))
                                     ) : (
-                                     (of.demandes.length)
+                                     ((of.demandes.length))
                                     )}
                                   </td>
                                 )}

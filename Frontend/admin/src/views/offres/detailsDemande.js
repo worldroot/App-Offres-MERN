@@ -78,7 +78,14 @@ const DetailsDemande = ({ ...props }) => {
           <div className="d-flex justify-content-between"></div>
           <h3 className="mb-0">Details d'offre - {Offre.titre}</h3>
           <small>
-            Prix à partir de <p className="text-red">{Offre.prixdebut} dt</p>{" "}
+            {" "}
+            <p className="text-red">
+              {Offre.prixdebut.length === 0 ? (
+                <span>Prix Ouvert</span>
+              ) : (
+                <span>Prix à partir de {Offre.prixdebut} dt</span>
+              )}
+            </p>
           </small>
         </CardHeader>
         {!props.isloadingDec && (

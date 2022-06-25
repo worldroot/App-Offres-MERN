@@ -18,6 +18,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import CurrencyInput from "react-currency-input-field";
 import React, { Fragment, useState, useEffect } from "react";
 import { addOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";
@@ -177,12 +178,13 @@ const Offre = ({ ...props }) => {
                   <label className="form-control-label text-dark">
                     Prix debut (dt)
                   </label>
-                  <Input
-                    min={1}
-                    type="number"
-                    step="0.1"
+
+                  <CurrencyInput
                     name="prixdebut"
-                    value={data.prixdebut}
+                    prefix="dt - "
+                    className="form-control"
+                    defaultValue={data.prixdebut}
+                    decimalsLimit={2}
                     onChange={handleChange("prixdebut")}
                   />
                 </FormGroup>
@@ -345,7 +347,7 @@ const Offre = ({ ...props }) => {
                     <i className=" mx-2 form-control-label far fa-upload text-md text-info "></i>
                     <Input
                       type="file"
-                      multiple="multiple"
+                      multiple={true}
                       name="image"
                       accept=".jpeg, .png, .jpg"
                       onChange={(e) => handleFileUpload(e)}

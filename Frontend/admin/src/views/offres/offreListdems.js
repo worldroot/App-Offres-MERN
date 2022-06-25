@@ -185,8 +185,13 @@ const OffreListDemandes = ({ ...props }) => {
                             <Fragment key={index}>
                               <tr key={of._id}>
                                 <td>{of.titre.substring(0, 18)}</td>
-                                <td>{of.prixdebut}</td>
-                               
+                                <td>
+                                  {of.prixdebut.length === 0 ? (
+                                    <span>Ouvert</span>
+                                  ) : (
+                                    <span>{of.prixdebut}</span>
+                                  )}
+                                </td>
                                 <td>{of.dateDebut.substring(0, 10)}</td>
                                 <td>{of.dateFin.substring(0, 10)}</td>
                                 <td>

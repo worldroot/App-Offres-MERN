@@ -77,7 +77,75 @@ const Home = ({ ...props }) => {
             <UncontrolledCarousel items={items} />
           </motion.div>
         </Container>
+        <Container className="mb-6 mt-4">
+          <h1 className="text-red text-center m-4 border-bottom border-danger">
+            LES APPELS D'OFFRES
+          </h1>
+          {props.isLoading ? (
+            <div className="text-center mt-4 mb-4 py-4 p-xl-9">
+              <div id="loading"></div>
+            </div>
+          ) : (
+            <>
+              <Row xs={1} md={3} className="g-4">
+                {props.Listpub.slice(0, 3).map((of, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5 }}
+                      >
+                        <Col>
+                          <Card className="m-2 cardStyle">
+                            <CardBody className="text-dark">
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid rounded avatar avatar-lg m-2"
+                                  style={img}
+                                  src={of.image[0]}
+                                  alt=""
+                                />
+                              </div>
+                              <Row>
+                                <h3>{of.titre.substring(0, 25)}</h3>
+                              </Row>
+                              <Row>
+                                <small>
+                                  Categorie: {of.category} - {of.souscategory}
+                                </small>
+                              </Row>
 
+                              <Row>
+                                <small className="text-danger">
+                                  Date Debut: {of.dateDebut.substring(0, 10)}
+                                </small>
+                              </Row>
+                              <Row>
+                                <small className="text-danger">
+                                  Date Limite: {of.dateFin.substring(0, 10)}
+                                </small>
+                              </Row>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </motion.div>
+                    </Fragment>
+                  );
+                })}
+              </Row>
+              <Row className="justify-content-center">
+                <Button
+                  className="my-4 btn-outline-danger"
+                  onClick={() => history.push("/published-offres")}
+                  type="submit"
+                >
+                  Afficher la suite
+                </Button>
+              </Row>
+            </>
+          )}
+        </Container>
         <Container className="mt-4">
           <h1 className="text-red text-center m-4 border-bottom border-danger">
             SOLUTION
@@ -164,76 +232,6 @@ const Home = ({ ...props }) => {
               </Col>
             </Row>
           </motion.div>
-        </Container>
-
-        <Container className="mb-6 mt-4">
-          <h1 className="text-red text-center m-4 border-bottom border-danger">
-            LES APPELS D'OFFRES
-          </h1>
-          {props.isLoading ? (
-            <div className="text-center mt-4 mb-4 py-4 p-xl-9">
-              <div id="loading"></div>
-            </div>
-          ) : (
-            <>
-              <Row xs={1} md={3} className="g-4">
-                {props.Listpub.slice(0, 3).map((of, index) => {
-                  return (
-                    <Fragment key={index}>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1.5 }}
-                      >
-                        <Col>
-                          <Card className="m-2 cardStyle">
-                            <CardBody className="text-dark">
-                              <div className="text-center">
-                                <img
-                                  className="img-fluid rounded avatar avatar-lg m-2"
-                                  style={img}
-                                  src={of.image[0]}
-                                  alt=""
-                                />
-                              </div>
-                              <Row>
-                                <h3>{of.titre.substring(0, 25)}</h3>
-                              </Row>
-                              <Row>
-                                <small>
-                                  Categorie: {of.category} - {of.souscategory}
-                                </small>
-                              </Row>
-
-                              <Row>
-                                <small className="text-danger">
-                                  Date Debut: {of.dateDebut.substring(0, 10)}
-                                </small>
-                              </Row>
-                              <Row>
-                                <small className="text-danger">
-                                  Date Limite: {of.dateFin.substring(0, 10)}
-                                </small>
-                              </Row>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </motion.div>
-                    </Fragment>
-                  );
-                })}
-              </Row>
-              <Row className="justify-content-center">
-                <Button
-                  className="my-4 btn-outline-danger"
-                  onClick={() => history.push("/published-offres")}
-                  type="submit"
-                >
-                  Afficher la suite
-                </Button>
-              </Row>
-            </>
-          )}
         </Container>
 
         <AuthFooter />

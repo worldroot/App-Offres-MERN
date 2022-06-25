@@ -294,7 +294,7 @@ const Offres = ({ ...props }) => {
                                     className="btn-outline-danger"
                                     color="dark"
                                     onClick={() => {
-                                      history.push("/login"), toast.info("Connectez ou créer un compte pour soumettre une demande !");
+                                       toast.info("Connectez ou créer un compte pour soumettre une demande !");
                                     }}
                                   >
                                     Soumettre une demande
