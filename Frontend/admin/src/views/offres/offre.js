@@ -181,12 +181,12 @@ const Offre = ({ ...props }) => {
 
                   <CurrencyInput
                     name="prixdebut"
-                    prefix="dt - "
                     className="form-control"
                     defaultValue={data.prixdebut}
                     decimalsLimit={2}
                     onChange={handleChange("prixdebut")}
                   />
+                  {console.log(data.prixdebut.trim())}
                 </FormGroup>
               </Col>
             </Row>

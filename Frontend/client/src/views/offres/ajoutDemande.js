@@ -68,16 +68,15 @@ const AjoutDemande = ({ ...props }) => {
       if (data.prix <= props.currentObj.prixdebut) {
         setShowConfirm(false);
         toast.warn(
-          <h3>{`Attention ! Votre prix doit dépasser le prix initial "${props.currentObj.prixdebut} dt" de l'offre ${props.currentObj.titre}`}</h3>
-          
+          <h3>{`Attention ! Votre prix doit dépasser le prix initial de l'offre ${props.currentObj.titre}`}</h3>
         );
       }
     }
   }, [data.prix, showConfirm]);
-
-  console.log(showConfirm);
-  console.log(props.currentObj.prixdebut);
   console.log(data.prix);
+  /*   console.log(showConfirm);
+  console.log(props.currentObj.prixdebut);
+  */
   return (
     <>
       <Card>
@@ -97,9 +96,7 @@ const AjoutDemande = ({ ...props }) => {
           <Col lg="6">
             <CardHeader className="border-0">
               <h2 className="text-red">Soumettre une demande pour l'offre</h2>
-              <h2 className="text-dark">
-                {props.currentObj.titre}
-              </h2>
+              <h2 className="text-dark">{props.currentObj.titre}</h2>
             </CardHeader>
             <CardBody className="justify-content-center ">
               {showConfirm ? (
@@ -136,8 +133,6 @@ const AjoutDemande = ({ ...props }) => {
                         name="prix"
                         className="form-control border border-dark"
                         defaultValue={data.prix}
-                        min={props.currentObj.prixdebut}
-                        decimalsLimit={2}
                         onChange={handleChange("prix")}
                       />
 
@@ -151,7 +146,6 @@ const AjoutDemande = ({ ...props }) => {
                       <Button
                         className="btn-default"
                         onClick={() => setShowConfirm(true)}
-                       
                       >
                         Suivant
                       </Button>

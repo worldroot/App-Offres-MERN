@@ -14,7 +14,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-// core components
+import CurrencyInput from "react-currency-input-field";
 import { Redirect } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import "../../components/Loading/loading.css";
@@ -31,7 +31,7 @@ const UpdateOffre = ({ ...props }) => {
     props.AllUsers();
     props.AllSous();
   }, []);
-  
+
   useEffect(() => {
     if (props.currentObj !== {}) {
       setValues(props.currentObj);
@@ -39,7 +39,7 @@ const UpdateOffre = ({ ...props }) => {
       props.ListU.map((u, index) => {
         if (u._id === values.responsable) {
           setresdep(u);
-          console.log(u);
+          //console.log(u);
         }
       });
     }
@@ -69,7 +69,7 @@ const UpdateOffre = ({ ...props }) => {
     width: "100px",
     height: "100px",
   };
-  
+
   const onSubmit = (e) => {
     e.preventDefault();
     props.update(props.currentObj._id, values);
@@ -134,8 +134,8 @@ const UpdateOffre = ({ ...props }) => {
     }
   }, [resdep.email]);
 
-  console.log(values.responsable);
-  console.log(resdep);
+  //console.log(values.responsable);
+  //console.log(resdep);
 
   return (
     <>
@@ -176,14 +176,17 @@ const UpdateOffre = ({ ...props }) => {
                   <label className="form-control-label text-dark">
                     Prix debut (dt)
                   </label>
-                  <Input
-                    min={1}
-                    type="number"
-                    step="0.1"
+
+                  <CurrencyInput
                     name="prixdebut"
+                    className="form-control"
                     defaultValue={values.prixdebut}
+                    //decimalScale={2}
+                    decimalsLimit={2}
                     onChange={handleInputChange}
                   />
+                  {console.log(values.prixdebut)}
+
                 </FormGroup>
               </Col>
             </Row>

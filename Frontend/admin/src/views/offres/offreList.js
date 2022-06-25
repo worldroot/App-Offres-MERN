@@ -100,7 +100,7 @@ const OffreList = ({ ...props }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
-  const offresPerPage = 5;
+  const offresPerPage = 6;
 
   const offresData = useMemo(() => {
     let computed = Data;
