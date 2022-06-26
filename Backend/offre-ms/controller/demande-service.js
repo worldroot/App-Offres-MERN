@@ -34,7 +34,8 @@ router.post(
         var email = responseUser.data.email;
         var date = new Date();
         const DateToCheck = new Date(date.getTime());
-
+        const Today = new Date(date.getTime()).toDateString();
+        
         if (role !== "user") {
           return res.status(404).json({
             error: "Access Denied !!",
@@ -54,6 +55,7 @@ router.post(
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
+            const FinDate = new Date(offreModel.dateFin).toDateString();;
             const ResDep = offreModel.responsable;
             const Admin = offreModel.postedBy;
             const theKey = offreModel.publickey;
@@ -92,12 +94,13 @@ router.post(
                         );
                       });
 
+                    //Email-Client
                     await emailDem(
                       responseUser.data.email,
                       offreModel.titre,
-                      Fin,
+                      FinDate,
                       props.prix,
-                      DateToCheck,
+                      Today,
                       responseUser.data.nom
                     );
 
@@ -107,21 +110,23 @@ router.post(
                       properties: encrypted,
                     });
 
+                    //Notif-Admin
                     const Adminbody = {
                       postedBy: offreModel.postedBy,
                       titre: offreModel.titre,
-                      date: DateToCheck,
+                      date: Today,
                     };
                     await axios.post(
                       "http://localhost:5004/api/notif/new",
                       Adminbody
                     );
 
+                    //Notif-Client
                     const Clientbody = {
                       userId: responseUser.data._id,
                       titre: offreModel.titre,
                       array: responseUser.data.OneSignalID,
-                      date: DateToCheck,
+                      date: Today,
                     };
                     await axios.post(
                       "http://localhost:5004/api/notif/demande",
@@ -130,26 +135,28 @@ router.post(
 
                     newDem.save().then(() => res.json(newDem));
                   } else {
+                    //Email
                     await emailDem(
                       responseUser.data.email,
                       offreModel.titre,
-                      offreModel.dateFin,
+                      FinDate,
                       props.prix,
-                      DateToCheck,
+                      Today,
                       responseUser.data.nom
                     );
 
+                    //Notif-Client
                     const Clientbody = {
                       userId: responseUser.data._id,
                       titre: offreModel.titre,
                       array: responseUser.data.OneSignalID,
-                      date: DateToCheck,
+                      date: Today,
                     };
                     await axios.post(
                       "http://localhost:5004/api/notif/demande",
                       Clientbody
                     );
-                    
+
                     const encrypted = ToCrypte(theKey, rs);
                     const newDem = new Demande({
                       offre,

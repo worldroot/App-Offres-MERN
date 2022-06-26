@@ -171,15 +171,13 @@ const emailDem = async (email, offre, dateFin, prix, date, user) => {
 					  <p>Votre soumission pour l'appel d'offre '${offre}' a été validée</p>
 					  <p>Veuillez trouver les détails de votre demande ci-dessous 👇🏻</p>
 					  
-					  <h3><span>Détails de soumission</span></h3>
-					  <p> Offre: ${offre}</p>
-					  <p> Date de fin d'offre: ${dateFin}</p>
-					  <p> Votre prix: ${prix}</p>
-					  <p> Date de soumission: ${date}</p>
-						  
-						  
-						  
-					  
+					  <h3><span>Détails de soumission:</span></h3>
+					  <ul>
+						<li>Offre: ${offre}</li>
+						<li>Date de fin d'offre: ${dateFin}</li>
+						<li>Votre prix: ${prix} dt</li>
+						<li>Date de soumission: ${date}</li>
+					 </ul>  
 					  <p>Si votre soumission a eu le meilleur prix proposé vous serez contacté par l'un des agents d'Ooredoo.</p>			
 					</div>
 				  </div>
