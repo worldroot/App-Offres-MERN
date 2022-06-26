@@ -14,7 +14,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import CurrencyInput from "react-currency-input-field";
+// core components
 import { Redirect } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import "../../components/Loading/loading.css";
@@ -176,17 +176,14 @@ const UpdateOffre = ({ ...props }) => {
                   <label className="form-control-label text-dark">
                     Prix debut (dt)
                   </label>
-
-                  <CurrencyInput
+                  <Input
+                    min={1}
+                    type="number"
+                    step="0.1"
                     name="prixdebut"
-                    className="form-control"
                     defaultValue={values.prixdebut}
-                    //decimalScale={2}
-                    decimalsLimit={2}
                     onChange={handleInputChange}
                   />
-                  {console.log(values.prixdebut)}
-
                 </FormGroup>
               </Col>
             </Row>

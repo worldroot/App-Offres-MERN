@@ -5,7 +5,7 @@ const Offre = require("../models/Offre");
 const axios = require("axios");
 const NodeRSA = require("node-rsa");
 const key = new NodeRSA({ b: 384 });
-const { emailKey } = require("../middleware/demandeMailer");
+const { emailKey, emailDem } = require("../middleware/demandeMailer");
 const {
   ToCrypte,
   ToDecrypte,
@@ -92,6 +92,15 @@ router.post(
                         );
                       });
 
+                    await emailDem(
+                      responseUser.data.email,
+                      offreModel.titre,
+                      Fin,
+                      props.prix,
+                      DateToCheck,
+                      responseUser.data.nom
+                    );
+
                     const encrypted = ToCrypte(PublicKey, rs);
                     const newDem = new Demande({
                       offre,
@@ -108,15 +117,46 @@ router.post(
                       Adminbody
                     );
 
+                    const Clientbody = {
+                      userId: responseUser.data._id,
+                      titre: offreModel.titre,
+                      array: responseUser.data.OneSignalID,
+                      date: DateToCheck,
+                    };
+                    await axios.post(
+                      "http://localhost:5004/api/notif/demande",
+                      Clientbody
+                    );
+
                     newDem.save().then(() => res.json(newDem));
                   } else {
+                    await emailDem(
+                      responseUser.data.email,
+                      offreModel.titre,
+                      offreModel.dateFin,
+                      props.prix,
+                      DateToCheck,
+                      responseUser.data.nom
+                    );
+
+                    const Clientbody = {
+                      userId: responseUser.data._id,
+                      titre: offreModel.titre,
+                      array: responseUser.data.OneSignalID,
+                      date: DateToCheck,
+                    };
+                    await axios.post(
+                      "http://localhost:5004/api/notif/demande",
+                      Clientbody
+                    );
+                    
                     const encrypted = ToCrypte(theKey, rs);
                     const newDem = new Demande({
                       offre,
                       properties: encrypted,
                     });
 
-                    const Adminbody = {
+                    /* const Adminbody = {
                       postedBy: offreModel.postedBy,
                       titre: offreModel.titre,
                       date: DateToCheck,
@@ -124,7 +164,8 @@ router.post(
                     await axios.post(
                       "http://localhost:5004/api/notif/new",
                       Adminbody
-                    );
+                    ); */
+                    
 
                     newDem.save().then(() => res.json(newDem));
                   }
@@ -173,7 +214,7 @@ router.put(
               var list = [];
               var { key } = req.body;
               DemandeList.forEach(async (dem, index) => {
-                const decrypted = ToDecrypte(key, dem.properties)
+                const decrypted = ToDecrypte(key, dem.properties);
                 const result = JSON.parse(decrypted);
                 const up = await Demande.findByIdAndUpdate(
                   dem._id,

@@ -106,4 +106,94 @@ const emailKey = async (email, key, text, user) => {
   }
 };
 
-module.exports = { emailKey };
+const emailDem = async (email, offre, dateFin, prix, date, user) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+        user: "6adcb0b3bc15c3",
+        pass: "c170a6da93e22e",
+      },
+    });
+
+    await transporter.sendMail({
+      from: "appoffres@mailpluss.com",
+      to: email,
+      subject: "Confirmation de soumission",
+      html: `
+			  <html lang="en">
+			  <head>
+				<meta charset="UTF-8" />
+				<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<link
+				  href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+				  rel="stylesheet"
+				/>
+				<title>Account Activation</title>
+				<style>
+				  body {
+					background-color: #333333;
+					height: 100vh;
+					font-family: "Roboto", sans-serif;
+					color: #fff;
+					position: relative;
+					
+				  }
+				  .container {
+					max-width: 700px;
+					width: 100%;
+					height: 100%;
+					margin: 0 auto;
+				  }
+				  .wrapper {
+					padding: 0 15px;
+				  }
+				  .card {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					width: 100%;
+				  }
+				  span {
+					color: #ec1c23;
+				  }
+				 
+				</style>
+			  </head>
+			  <body>
+				<div class="container">
+				  <div class="wrapper">
+					<div class="card">
+					  <h1><span>Cher ${user}</span></h1>
+					  <p>Votre soumission pour l'appel d'offre '${offre}' a été validée</p>
+					  <p>Veuillez trouver les détails de votre demande ci-dessous 👇🏻</p>
+					  
+					  <h3><span>Détails de soumission</span></h3>
+					  <p> Offre: ${offre}</p>
+					  <p> Date de fin d'offre: ${dateFin}</p>
+					  <p> Votre prix: ${prix}</p>
+					  <p> Date de soumission: ${date}</p>
+						  
+						  
+						  
+					  
+					  <p>Si votre soumission a eu le meilleur prix proposé vous serez contacté par l'un des agents d'Ooredoo.</p>			
+					</div>
+				  </div>
+				</div>
+			  </body>
+			</html>
+			  `,
+    });
+    console.log("email sent successfully");
+  } catch (error) {
+    console.log("email not sent!");
+    console.log(error);
+    return error;
+  }
+};
+
+module.exports = { emailKey, emailDem };

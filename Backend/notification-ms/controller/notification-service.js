@@ -332,6 +332,53 @@ router.post("/new", async (req, res) => {
     });
 });
 
+router.post("/demande", async (req, res) => {
+  const data = req.body;
+  var message = {
+    app_id: ClientApp,
+    contents: {
+      en: `Votre soumission pour l'appel d'offre '${data.titre}' a été validée`,
+    },
+    include_player_ids: data.array,
+    data: { foo: "bar" },
+  };
+
+  var req = https.request(options, function (res) {
+    var payload = "";
+    res.on("data", function (data) {
+      payload += data;
+      //console.log("Response:");
+      //console.log(JSON.parse(data));
+    });
+
+    res.on("end", function () {
+      payload = JSON.parse(payload);
+      const notification = new Notif({
+        idNotification: payload.id,
+        idClient: data.userId,
+        title: 'Confirmation de soumission',
+        text: message.contents.en,
+        delivered: data.date,
+      });
+      notification.save();
+      return payload;
+    });
+  });
+
+  req.on("error", function (e) {
+    console.log("ERROR:");
+    console.log(e);
+  });
+
+  req.write(JSON.stringify(message));
+  req.end();
+
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
+  console.log("Notification Published");
+});
+
 router.get("/user", verifyAccessToken, async (req, res) => {
   try {
     const data = await Notif.find({ idClient: req.user.id });
