@@ -348,7 +348,7 @@ const Offres = ({ ...props }) => {
                 animate="visible"
                 exit="hidden"
               >
-                <Col className=" fixed-top center" xl="5">
+                <Col className=" fixed-top center" xl="8">
                   <motion.div className="" variants={modal}>
                     <DetailsOffre
                       {...{
@@ -377,7 +377,7 @@ const Offres = ({ ...props }) => {
                 animate="visible"
                 exit="hidden"
               >
-                <Col className="fixed-top center" xl="5">
+                <Col className="fixed-top center" xl="8">
                   <motion.div className="" variants={modal}>
                     <AjoutDemande
                       {...{

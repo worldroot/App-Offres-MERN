@@ -9,6 +9,7 @@ import {
   Row,
   Col,
   Input,
+  Container,
 } from "reactstrap";
 // core components
 import { Redirect } from "react-router-dom";
@@ -89,7 +90,7 @@ const AjoutDemande = ({ ...props }) => {
 
   return (
     <>
-      <Card className=" overflow-auto h-100vh cardDemande">
+      <Card className=" overflow-auto h-100vh">
         <Row className="justify-content-center">
           <Col>
             <Button
@@ -141,9 +142,9 @@ const AjoutDemande = ({ ...props }) => {
               ) : (
                 <div>
                   <Row>
-                    <Col>
-                      <p className="text-dark">Votre prix en dt</p>
+                    <Col lg="8">
                       <CurrencyInput
+                        placeholder="Votre prix en dt"
                         name="prix"
                         className="form-control border border-dark"
                         defaultValue={data.prix}
@@ -155,8 +156,10 @@ const AjoutDemande = ({ ...props }) => {
                           A partir de {props.currentObj.prixdebut} dt
                         </small>
                       )}
+                    </Col>
+                    <Col lg="2" className=" justify-content-center">
                       <Button
-                        className="btn-default my-3"
+                        className="btn-default"
                         onClick={() => setShowConfirm(true)}
                       >
                         Suivant
@@ -169,7 +172,7 @@ const AjoutDemande = ({ ...props }) => {
           </Col>
           {/* Offre details */}
           <Col lg="8">
-            <CardBody className=" justify-content-center border-left">
+            <CardBody className=" justify-content-center border-left border-dark">
               <Form role="form">
                 <h2 className="text-gray">
                   Détails de {props.currentObj.titre}

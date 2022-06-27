@@ -12,7 +12,10 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 
 import Header from "../../components/Headers/Header.js";
@@ -114,7 +117,7 @@ const OffreList = ({ ...props }) => {
     }
     if (Sorting) {
       computed = computed.sort((a, b) => a.status.localeCompare(b.status));
-    }else{
+    } else {
       computed = computed.sort((a, b) => b.status.localeCompare(a.status));
     }
     setPageNumber(computed.length);
@@ -186,19 +189,6 @@ const OffreList = ({ ...props }) => {
                         <h3 className="mb-0">List des offres</h3>
 
                         <Row>
-                        <UncontrolledDropdown size="sm">
-                          <DropdownToggle caret>
-                            <i className="fas fa-filter"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            {!Sorting ? (
-                              <DropdownItem className="bg-white" onClick={() => { setSorting(true) }}><i className="fas fa-sort"></i>Status Clôturé</DropdownItem>
-                            ):(
-                              <DropdownItem className="bg-white" onClick={() => { setSorting(false) }}><i className="fas fa-sort"></i>Status Publié</DropdownItem>
-                            )} 
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                          
                           {user.role === "admin" && (
                             <Button
                               size="sm"
@@ -207,6 +197,32 @@ const OffreList = ({ ...props }) => {
                               <i className="fas fa-plus"></i> Offre
                             </Button>
                           )}
+                          <UncontrolledDropdown size="sm" direction="left">
+                            <DropdownToggle caret>
+                              <i className="fas fa-filter"></i>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              {!Sorting ? (
+                                <DropdownItem
+                                  className="bg-white"
+                                  onClick={() => {
+                                    setSorting(true);
+                                  }}
+                                >
+                                  <i className="fas fa-sort"></i>Status Clôturé
+                                </DropdownItem>
+                              ) : (
+                                <DropdownItem
+                                  className="bg-white"
+                                  onClick={() => {
+                                    setSorting(false);
+                                  }}
+                                >
+                                  <i className="fas fa-sort"></i>Status Publié
+                                </DropdownItem>
+                              )}
+                            </DropdownMenu>
+                          </UncontrolledDropdown>
                           <Button
                             className="btn btn-outline-dark"
                             size="sm"
@@ -214,7 +230,6 @@ const OffreList = ({ ...props }) => {
                           >
                             <i className="fas fa-info"></i>
                           </Button>
-                          
                         </Row>
                       </div>
                     </CardHeader>
@@ -233,10 +248,7 @@ const OffreList = ({ ...props }) => {
                           {user.role === "admin" && (
                             <th scope="col">Soumissions</th>
                           )}
-                          <th scope="col">
-                            Status
-                           
-                          </th>
+                          <th scope="col">Status</th>
                           <th scope="col"></th>
                         </tr>
                       </thead>

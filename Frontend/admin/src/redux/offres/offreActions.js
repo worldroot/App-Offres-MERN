@@ -15,6 +15,9 @@ import {
   DECRYPTING_F,
   OFFRE_ADD_FAILED,
   LOADING_OFFRE,
+  GET_OFFREPUB,
+  GET_OFFREPUB_S,
+  GET_OFFREPUB_F,
 } from "./offreTypes";
 
 import { OffremsURL } from "helpers/urls";
@@ -26,7 +29,7 @@ import axios from "axios";
 export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
 export const allOffres = () => (dispatch) => {
   dispatch({ type: GET_OFFRE });
-
+  setTimeout(() => {
   Fetch()
     .then((res) => {
       dispatch({
@@ -35,6 +38,22 @@ export const allOffres = () => (dispatch) => {
       });
     })
     .catch((err) => console.log(err), GET_OFFRE_F);
+  }, 500);
+};
+
+export const allPub = () => (dispatch) => {
+  dispatch({ type: GET_OFFREPUB });
+  setTimeout(() => {
+    return axios
+      .get(`${OffremsURL}/api/offre/allpublished`)
+      .then((res) => {
+        dispatch({
+          type: GET_OFFREPUB_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFREPUB_F);
+  }, 500);
 };
 
 export const addOffre = (offre) => async (dispatch) => {

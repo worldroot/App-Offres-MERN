@@ -15,10 +15,14 @@ import {
   DECRYPTING_F,
   LOADING_OFFRE,
   OFFRE_ADD_FAILED,
+  GET_OFFREPUB,
+  GET_OFFREPUB_S,
+  GET_OFFREPUB_F,
 } from "./offreTypes";
 
 const intialState = {
   offdems: [],
+  offpubs: [],
   offres: [],
   loading: false,
   loading_create: false,
@@ -29,7 +33,6 @@ const intialState = {
 
 export default function (state = intialState, action) {
   switch (action.type) {
-    
     case GET_OFFRE:
       return { ...state, offres: [], loading: true };
     case GET_OFFRE_S:
@@ -41,6 +44,12 @@ export default function (state = intialState, action) {
     case GET_OFFDEMS_S:
       return { ...state, offdems: [...action.payload], loading: false };
     case GET_OFFDEMS_F:
+
+    case GET_OFFREPUB:
+      return { ...state, offpubs: [], loading: true };
+    case GET_OFFREPUB_S:
+      return { ...state, offpubs: [...action.payload], loading: false };
+    case GET_OFFREPUB_F:
 
     case LOADING_OFFRE:
       return {
