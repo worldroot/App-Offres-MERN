@@ -264,7 +264,7 @@ const OffreList = ({ ...props }) => {
                                         Published
                                       </span>
                                     )}
-                                  {DatetoCheck > new Date(of.dateFin) && (
+                                  {!of.archived && DatetoCheck > new Date(of.dateFin) && (
                                     <span className=" text-dark">Closed</span>
                                   )}
                                   {DatetoCheck < new Date(of.dateDebut) &&
@@ -349,6 +349,15 @@ const OffreList = ({ ...props }) => {
                                       {of.archived &&
                                         DatetoCheck > new Date(of.dateDebut) &&
                                         DatetoCheck < new Date(of.dateFin) && (
+                                          <Button
+                                            className="btn btn-outline-success"
+                                            size="sm"
+                                            onClick={() => onStatus(of._id)}
+                                          >
+                                            <i className="fas fa-arrow-up"></i>
+                                          </Button>
+                                        )}
+                                        {of.archived &&(
                                           <Button
                                             className="btn btn-outline-success"
                                             size="sm"

@@ -86,7 +86,7 @@ export default function (state = intialState, action) {
       };
     case LOGOUT:
       //Remove Token in localstorage
-
+      localStorage.clear();
       return {
         ...state,
         isAuthenticated: false,

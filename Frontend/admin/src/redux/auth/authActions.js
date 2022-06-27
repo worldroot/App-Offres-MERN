@@ -127,7 +127,6 @@ export const logout = (OneSignalID) => async (dispatch) => {
       .put(`${UsermsURL}/api/user/osid`, { OneSignalID: OneSignalID })
       .then((res) => {
         dispatch({ type: LOGOUT })
-        localStorage.clear(); 
       })
       .catch((err) => console.log(err), ERROR, localStorage.clear());
   } catch (error) {

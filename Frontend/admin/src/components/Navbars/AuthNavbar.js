@@ -16,10 +16,10 @@ const ooredoo = require("../../assets/img/oored.png");
 import { logout } from "redux/auth/authActions";
 import { connect } from "react-redux";
 import { Link, useHistory, Redirect } from "react-router-dom";
-import { toast } from "react-toastify";
+import OneSignal from "react-onesignal";
 import { useState } from "react";
 
-const AuthNavbar = ({ logout, isAuth, user }) => {
+const AuthNavbar = ({ ...props }) => {
   let history = useHistory();
   const userExist = localStorage.getItem("user");
   const [userLocal] = useState(() => {
@@ -27,6 +27,18 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
+
+  const [OneSignalID, setSignal] = useState("");
+  OneSignal.getUserId((userId) => {
+    setSignal(userId);
+  });
+
+  const LoggingOut = () => {
+    dispatch(logout(OneSignalID)),
+      setTimeout(() => {
+        history.push("/login"), window.location.reload();
+      }, 200);
+  };
 
   return (
     <>
@@ -83,9 +95,7 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
                       className="nav-link-icon"
                       to="/"
                       onClick={() => {
-                          logout(),
-                          history.push("/"),
-                          window.location.reload(false);
+                        LoggingOut();
                       }}
                       tag={Link}
                     >
@@ -115,9 +125,14 @@ const AuthNavbar = ({ logout, isAuth, user }) => {
   );
 };
 
-const mapToStateProps = (state) => ({
-  isAuth: state.auth.isAuthenticated,
-  user: state.auth.user,
+const mapStateToProps = (state) => ({
+  List: state.notifications.notifications,
+  isLoading: state.notifications.loading,
+  CodeMsg: state.notifications.codeMsg,
 });
 
-export default connect(mapToStateProps, { logout })(AuthNavbar);
+const mapActionToProps = {
+  //AllNotif: getUserNotif,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(AuthNavbar);
