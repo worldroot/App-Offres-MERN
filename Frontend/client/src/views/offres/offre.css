@@ -29,3 +29,13 @@
   .cardBg {
     background: #FFF;
   } 
+
+  .cardmsg {
+    height: 300;
+    width: 600;
+  }
+
+  .cardDemande {
+    height: 300;
+    width: 600;
+  }

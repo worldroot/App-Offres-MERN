@@ -44,7 +44,7 @@ const AuthNavbar = ({ ...props }) => {
   let history = useHistory();
   const userExist = localStorage.getItem("user");
   const dispatch = useDispatch();
-  const [user] = useState(() => {
+  const [userLocal] = useState(() => {
     const saved = localStorage.getItem("user");
     const initialValue = JSON.parse(saved);
     return initialValue || "";
@@ -231,7 +231,9 @@ const AuthNavbar = ({ ...props }) => {
                   <UncontrolledDropdown nav>
                     <DropdownToggle className="pr-0" nav>
                       <Media className="align-items-center">
+                       
                         <i className="fas fa-user-circle fa-2x text-red"></i>
+                        <span className="text-red">{userLocal.nom}</span>
                       </Media>
                     </DropdownToggle>
                     <DropdownMenu className="dropdown-menu-arrow" right>

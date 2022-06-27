@@ -30,12 +30,19 @@ const AjoutDemande = ({ ...props }) => {
     hidden: { opacity: 0 },
   };
   const modal = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { y: "-100vh", opacity: 0 },
+    visible: {
+      y: "150px",
+      x: "0px",
+      opacity: 1,
+      transition: { delay: 0.5 },
+    },
   };
   const userExist = localStorage.getItem("user");
   const [showImg, setShowImg] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showSucc, setShowSucc] = useState(false);
+  const [showWarn, setShowWarn] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const initialFieldValues = {
     prix: "",
@@ -56,6 +63,9 @@ const AjoutDemande = ({ ...props }) => {
     } else {
       props.create(data);
       props.setShowModal2(false);
+      setTimeout(() => {
+        setShowConfirm(true);
+      }, 1000);
     }
   };
 
@@ -67,19 +77,19 @@ const AjoutDemande = ({ ...props }) => {
     if (showConfirm) {
       if (data.prix <= props.currentObj.prixdebut) {
         setShowConfirm(false);
-        toast.warn(
-          <h3>{`Attention ! Votre prix doit dépasser le prix initial de l'offre ${props.currentObj.titre}`}</h3>
-        );
+        setShowWarn(true);
       }
     }
   }, [data.prix, showConfirm]);
-  console.log(data.prix);
+
+  //console.log(data.prix);
   /*   console.log(showConfirm);
   console.log(props.currentObj.prixdebut);
   */
+
   return (
     <>
-      <Card>
+      <Card className=" overflow-auto h-100vh cardDemande">
         <Row className="justify-content-center">
           <Col>
             <Button
@@ -93,7 +103,7 @@ const AjoutDemande = ({ ...props }) => {
         </Row>
         <Row>
           {/* Demamde */}
-          <Col lg="6">
+          <Col lg="4">
             <CardHeader className="border-0">
               <h2 className="text-red">Soumettre une demande pour l'offre</h2>
               <h2 className="text-dark">{props.currentObj.titre}</h2>
@@ -102,33 +112,37 @@ const AjoutDemande = ({ ...props }) => {
               {showConfirm ? (
                 <div>
                   <Row>
-                    <h3 className="text-dark">
-                      Êtes-vous sûr de soumettre {data.prix} dt ?
-                    </h3>
+                    <Col>
+                      <h2 className="text-dark">
+                        Êtes-vous sûr de soumettre {data.prix} dt ?
+                      </h2>
+                    </Col>
                   </Row>
                   <Row>
-                    <Button
-                      className="btn-outline-success"
-                      type="submit"
-                      onClick={onSubmit}
-                    >
-                      Confirmer
-                    </Button>
-                    <Button
-                      className="btn-outline-danger"
-                      onClick={() => {
-                        setShowConfirm(false);
-                      }}
-                    >
-                      Annuler
-                    </Button>
+                    <Col>
+                      <Button
+                        className="btn-outline-success"
+                        type="submit"
+                        onClick={onSubmit}
+                      >
+                        Confirmer
+                      </Button>
+                      <Button
+                        className="btn-outline-danger"
+                        onClick={() => {
+                          setShowConfirm(false);
+                        }}
+                      >
+                        Annuler
+                      </Button>
+                    </Col>
                   </Row>
                 </div>
               ) : (
                 <div>
-                  <p className="text-dark">Votre prix en dt</p>
                   <Row>
-                    <Col lg="8">
+                    <Col>
+                      <p className="text-dark">Votre prix en dt</p>
                       <CurrencyInput
                         name="prix"
                         className="form-control border border-dark"
@@ -141,10 +155,8 @@ const AjoutDemande = ({ ...props }) => {
                           A partir de {props.currentObj.prixdebut} dt
                         </small>
                       )}
-                    </Col>
-                    <Col lg="2" className=" justify-content-center">
                       <Button
-                        className="btn-default"
+                        className="btn-default my-3"
                         onClick={() => setShowConfirm(true)}
                       >
                         Suivant
@@ -156,12 +168,17 @@ const AjoutDemande = ({ ...props }) => {
             </CardBody>
           </Col>
           {/* Offre details */}
-          <Col lg="6">
+          <Col lg="8">
             <CardBody className=" justify-content-center border-left">
               <Form role="form">
                 <h2 className="text-gray">
                   Détails de {props.currentObj.titre}
                 </h2>
+                <Button
+                  onClick={() => {
+                    setShowSucc(true);
+                  }}
+                ></Button>
                 <Row className="justify-content-center">
                   <Col>
                     <FormGroup>
@@ -260,6 +277,85 @@ const AjoutDemande = ({ ...props }) => {
           </Col>
         </Row>
       </Card>
+      {/* Pop up Success */}
+      <AnimatePresence
+        exitBeforeEnter
+        showModal={showSucc}
+        setShowModal={setShowSucc}
+      >
+        {showSucc && (
+          <motion.div
+            className="backdrop"
+            variants={backdrop}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <Col className=" fixed-top center" xl="5">
+              <motion.div className="" variants={modal}>
+                <Card className=" bg-success pointer-event cardmsg">
+                  <CardHeader className="bg-success border-0 justify-content-center text-center">
+                    <i class="far fa-check-circle fa-6x text-white text-center"></i>
+                  </CardHeader>
+                  <CardBody>
+                    <Row className=" justify-content-center">
+                      <h1 className="text-white text-center">
+                        Votre soumission a été validée
+                      </h1>
+                      <Button
+                        className="btn-outline-white"
+                        onClick={() => setShowSucc(false)}
+                      >
+                        OK
+                      </Button>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </motion.div>
+            </Col>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Pop up Warn */}
+      <AnimatePresence
+        exitBeforeEnter
+        showModal={showWarn}
+        setShowModal={setShowWarn}
+      >
+        {showWarn && (
+          <motion.div
+            className="backdrop"
+            variants={backdrop}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <motion.div className="" variants={modal}>
+              <Card className=" bg-warning pointer-event cardmsg">
+                <CardHeader className="bg-warning border-0 justify-content-center text-center ">
+                  <i class="fas fa-exclamation-triangle fa-6x text-white text-center"></i>
+                </CardHeader>
+                <CardBody>
+                  <Row className=" justify-content-center text-center">
+                    <Col>
+                      <h1 className="text-white">
+                        {`Attention ! Votre prix doit dépasser le prix initial de l'offre ${props.currentObj.titre}`}
+                      </h1>
+                      <Button
+                        className="btn-outline-white"
+                        onClick={() => setShowWarn(false)}
+                      >
+                        OK
+                      </Button>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
