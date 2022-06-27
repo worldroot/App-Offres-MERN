@@ -41,27 +41,27 @@ const Infos = ({ ...props }) => {
         <CardBody>
           <Row>
             <Row className=" m-2">
-              <span className=" text-success text-underline">Published </span>
+              <span className=" text-success text-underline">Publié </span>
               <span className=" text-dark">
                 : {DatetoCheck.toISOString().substring(0, 10)} est entre date
                 debut et date fin
               </span>
             </Row>
             <Row className=" m-2">
-              <span className=" text-warning text-underline">Pending </span>
+              <span className=" text-warning text-underline">En attente </span>
               <span className=" text-dark">
                 : {DatetoCheck.toISOString().substring(0, 10)} est avant date
                 debut
               </span>
             </Row>
             <Row className=" m-2">
-              <span className=" text-grey text-underline ">Archived </span>
+              <span className=" text-grey text-underline ">Archivé </span>
               <span className=" text-dark">
                 : Offre archivee de la part super-admin
               </span>
             </Row>
             <Row className=" m-2">
-              <span className=" text-dark text-underline">Closed </span>
+              <span className=" text-dark text-underline">Clôturé </span>
               <span className=" text-dark">
                 : {DatetoCheck.toISOString().substring(0, 10)} est apres date
                 fin
@@ -70,7 +70,7 @@ const Infos = ({ ...props }) => {
             <Row className=" m-2">
             <span className=" text-red text-underline">Conditions :</span>
               <span className=" text-danger">
-                Impossible de modifier, Si le nombre de soumissions de l'offre choisie avec un status 'Archived' est supérieur à zéro
+                Impossible de modifier, Si le nombre de soumissions de l'offre choisie avec un status 'Archivé' est supérieur à zéro
               </span>
             </Row>
           </Row>

@@ -12,6 +12,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 
 import Header from "../../components/Headers/Header.js";
@@ -97,6 +98,8 @@ const OffreList = ({ ...props }) => {
   const DatetoCheck = new Date(date.getTime());
 
   const [Search, setSearch] = useState("");
+  const [Order, setOrder] = useState("asc");
+  const [Sorting, setSorting] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const Data = props.List;
@@ -109,12 +112,17 @@ const OffreList = ({ ...props }) => {
         of.titre.toLowerCase().includes(Search.toLowerCase())
       );
     }
+    if (Sorting) {
+      computed = computed.sort((a, b) => a.status.localeCompare(b.status));
+    }else{
+      computed = computed.sort((a, b) => b.status.localeCompare(a.status));
+    }
     setPageNumber(computed.length);
     return computed.slice(
       (currentPage - 1) * offresPerPage,
       (currentPage - 1) * offresPerPage + offresPerPage
     );
-  }, [Data, currentPage, Search]);
+  }, [Data, currentPage, Search, Sorting]);
 
   const prev_loading = usePrevious(props.isLoadingCreate);
 
@@ -178,6 +186,19 @@ const OffreList = ({ ...props }) => {
                         <h3 className="mb-0">List des offres</h3>
 
                         <Row>
+                        <UncontrolledDropdown size="sm">
+                          <DropdownToggle caret>
+                            <i className="fas fa-filter"></i>
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            {!Sorting ? (
+                              <DropdownItem className="bg-white" onClick={() => { setSorting(true) }}><i className="fas fa-sort"></i>Status Clôturé</DropdownItem>
+                            ):(
+                              <DropdownItem className="bg-white" onClick={() => { setSorting(false) }}><i className="fas fa-sort"></i>Status Publié</DropdownItem>
+                            )} 
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
+                          
                           {user.role === "admin" && (
                             <Button
                               size="sm"
@@ -193,6 +214,7 @@ const OffreList = ({ ...props }) => {
                           >
                             <i className="fas fa-info"></i>
                           </Button>
+                          
                         </Row>
                       </div>
                     </CardHeader>
@@ -211,7 +233,10 @@ const OffreList = ({ ...props }) => {
                           {user.role === "admin" && (
                             <th scope="col">Soumissions</th>
                           )}
-                          <th scope="col">Status</th>
+                          <th scope="col">
+                            Status
+                           
+                          </th>
                           <th scope="col"></th>
                         </tr>
                       </thead>
@@ -245,14 +270,12 @@ const OffreList = ({ ...props }) => {
 
                                 {user.role === "admin" && (
                                   <td>
-                                    {!of.demandes ? (
-                                      0
-                                    ) : DatetoCheck > new Date(of.dateDebut) &&
-                                      DatetoCheck < new Date(of.dateFin) ? (
-                                      ((of.demandes.length))
-                                    ) : (
-                                     ((of.demandes.length))
-                                    )}
+                                    {!of.demandes
+                                      ? 0
+                                      : DatetoCheck > new Date(of.dateDebut) &&
+                                        DatetoCheck < new Date(of.dateFin)
+                                      ? of.demandes.length
+                                      : of.demandes.length}
                                   </td>
                                 )}
 
@@ -261,20 +284,23 @@ const OffreList = ({ ...props }) => {
                                     DatetoCheck > new Date(of.dateDebut) &&
                                     DatetoCheck < new Date(of.dateFin) && (
                                       <span className=" text-success">
-                                        Published
+                                        Publié
                                       </span>
                                     )}
-                                  {!of.archived && DatetoCheck > new Date(of.dateFin) && (
-                                    <span className=" text-dark">Closed</span>
-                                  )}
+                                  {!of.archived &&
+                                    DatetoCheck > new Date(of.dateFin) && (
+                                      <span className=" text-dark">
+                                        Clôturé
+                                      </span>
+                                    )}
                                   {DatetoCheck < new Date(of.dateDebut) &&
                                     !of.archived && (
                                       <span className=" text-warning">
-                                        Pending
+                                        En attente
                                       </span>
                                     )}
                                   {of.archived && (
-                                    <span className=" text-grey">Archived</span>
+                                    <span className=" text-grey">Archivé</span>
                                   )}
                                 </td>
                                 {/* DateToCheck > Debut && DateToCheck < Fin */}
@@ -357,15 +383,15 @@ const OffreList = ({ ...props }) => {
                                             <i className="fas fa-arrow-up"></i>
                                           </Button>
                                         )}
-                                        {of.archived &&(
-                                          <Button
-                                            className="btn btn-outline-success"
-                                            size="sm"
-                                            onClick={() => onStatus(of._id)}
-                                          >
-                                            <i className="fas fa-arrow-up"></i>
-                                          </Button>
-                                        )}
+                                      {of.archived && (
+                                        <Button
+                                          className="btn btn-outline-success"
+                                          size="sm"
+                                          onClick={() => onStatus(of._id)}
+                                        >
+                                          <i className="fas fa-arrow-up"></i>
+                                        </Button>
+                                      )}
                                       {/* Update ToArchive */}
                                       {!of.archived &&
                                         DatetoCheck >
