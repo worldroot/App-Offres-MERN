@@ -13,6 +13,7 @@ import {
   GET_OFFDEMS_S,
   GET_DEMANDE,
   GET_OFFDEMS_F,
+  LOADING_DEMANDE,
 } from "./offreTypes";
 
 const intialState = {
@@ -21,6 +22,8 @@ const intialState = {
   offres: [],
   demandes: [],
   error: null,
+  codeMsg: null,
+  loading_dem: false,
 };
 
 export default function (state = intialState, action) {
@@ -38,20 +41,30 @@ export default function (state = intialState, action) {
     case GET_OFFDEMS_F:
 
     case GET_DEMANDE:
-      return { ...state, demandes: [], loading: true  };
+      return { ...state, demandes: [], loading: true };
     case GET_DEMANDE_S:
-      return { ...state, demandes: [...action.payload], loading: false  };
+      return { ...state, demandes: [...action.payload], loading: false };
     case GET_DEMANDE_F:
 
+    case LOADING_DEMANDE: 
+      return {
+        ...state,
+        loading_dem: true,
+        codeMsg: null,
+      }
     case ADD_DEMANDE:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload, codeMsg: 1, loading_dem: false, loading: false };
+    case DEMANDE_ERROR:
+      return {
+        ...state,
+        codeMsg: 1, 
+        loading_dem: false
+      }
     case DEL_DEMANDE:
       return {
         ...state,
         demandes: state.demandes.filter((c) => c._id !== action.payload),
       };
-
-    case DEMANDE_ERROR:
     case OFFRE_ERROR:
 
     default:

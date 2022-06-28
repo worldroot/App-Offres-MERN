@@ -18,12 +18,16 @@ import {
   GET_OFFREPUB,
   GET_OFFREPUB_S,
   GET_OFFREPUB_F,
+  GET_DEMS,
+  GET_DEMS_S,
+  GET_DEMS_F,
 } from "./offreTypes";
 
 const intialState = {
   offdems: [],
   offpubs: [],
   offres: [],
+  dems: [],
   loading: false,
   loading_create: false,
   loading_decrypt: false,
@@ -44,6 +48,12 @@ export default function (state = intialState, action) {
     case GET_OFFDEMS_S:
       return { ...state, offdems: [...action.payload], loading: false };
     case GET_OFFDEMS_F:
+
+    case GET_DEMS:
+      return { ...state, dems: [], loading: true };
+    case GET_DEMS_S:
+      return { ...state, dems: [...action.payload], loading: false };
+    case GET_DEMS_F:
 
     case GET_OFFREPUB:
       return { ...state, offpubs: [], loading: true };

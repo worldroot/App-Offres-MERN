@@ -18,6 +18,9 @@ import {
   GET_OFFREPUB,
   GET_OFFREPUB_S,
   GET_OFFREPUB_F,
+  GET_DEMS,
+  GET_DEMS_S,
+  GET_DEMS_F,
 } from "./offreTypes";
 
 import { OffremsURL } from "helpers/urls";
@@ -30,14 +33,14 @@ export const Fetch = () => axios.get(`${OffremsURL}/api/offre/all`);
 export const allOffres = () => (dispatch) => {
   dispatch({ type: GET_OFFRE });
   setTimeout(() => {
-  Fetch()
-    .then((res) => {
-      dispatch({
-        type: GET_OFFRE_S,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err), GET_OFFRE_F);
+    Fetch()
+      .then((res) => {
+        dispatch({
+          type: GET_OFFRE_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_OFFRE_F);
   }, 1000);
 };
 
@@ -85,7 +88,8 @@ export const addOffre = (offre) => async (dispatch) => {
   } else {
     dispatch({ type: LOADING_OFFRE });
     setAuthToken(localStorage.accessToken);
-    axios.post(`${OffremsURL}/api/offre/`, data)
+    axios
+      .post(`${OffremsURL}/api/offre/`, data)
       .then((res) => {
         //console.log(res);
         dispatch({
@@ -94,7 +98,6 @@ export const addOffre = (offre) => async (dispatch) => {
         });
       })
       .catch(() => {
-        console.log("9a3ed iji lhnee ");
         dispatch({ type: OFFRE_ADD_FAILED });
       });
   }
@@ -159,6 +162,19 @@ export const allOffresDems = () => (dispatch) => {
       .catch((err) => console.log(err), GET_OFFDEMS_F),
       1000;
   });
+};
+
+export const FetchDems = () => axios.get(`${OffremsURL}/api/demande/all`);
+export const allDems = () => (dispatch) => {
+  dispatch({ type: GET_DEMS });
+  FetchDems()
+    .then((res) => {
+      dispatch({
+        type: GET_DEMS_S,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err), GET_DEMS_F);
 };
 
 export const DecDems = (id, updated) =>

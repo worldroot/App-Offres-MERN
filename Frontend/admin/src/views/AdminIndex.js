@@ -27,11 +27,13 @@ import React, { Fragment, useEffect, useState } from "react";
 import { refreshJwt } from "redux/auth/authActions";
 import { allOffres } from "redux/offres/offreActions";
 import { allPub } from "redux/offres/offreActions";
+import { allDems } from "redux/offres/offreActions";
 
 const AdminIndex = ({ ...props }) => {
   useEffect(() => {
     props.All();
     props.AllPub();
+    props.AllDems()
   }, []);
 
   const userExist = localStorage.getItem("user");
@@ -235,7 +237,7 @@ const AdminIndex = ({ ...props }) => {
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-success">
+                                <h1 className="text-red">
                                   {props.List.length}
                                 </h1>
                               </Col>
@@ -253,8 +255,26 @@ const AdminIndex = ({ ...props }) => {
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-red font-weight-bolder">
+                                <h1 className="text-success font-weight-bolder">
                                   {props.ListPub.length}
+                                </h1>
+                              </Col>
+                            </Row>
+                          </CardBody>
+                        </Card>
+                      </Row>
+                      <Row className="justify-content-center w-100 mt-2">
+                        <Card className="bg-white shadow w-100">
+                          <CardBody>
+                            <Row>
+                              <Col lg="8">
+                                <p className="text-dark">
+                                  Nombre total de soumissions
+                                </p>
+                              </Col>
+                              <Col lg="4">
+                                <h1 className="text-orange font-weight-bolder">
+                                  {props.ListDems.length}
                                 </h1>
                               </Col>
                             </Row>
@@ -275,6 +295,7 @@ const AdminIndex = ({ ...props }) => {
 
 const mapStateToProps = (state) => ({
   List: state.offres.offres,
+  ListDems: state.offres.dems,
   ListPub: state.offres.offpubs,
   isLoading: state.offres.loading,
   isAuth: state.auth.isAuthenticated,
@@ -284,6 +305,7 @@ const mapStateToProps = (state) => ({
 const mapActionToProps = {
   All: allOffres,
   AllPub: allPub,
+  AllDems: allDems
 };
 
 export default connect(mapStateToProps, mapActionToProps)(AdminIndex);

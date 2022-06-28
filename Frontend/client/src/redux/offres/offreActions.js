@@ -12,6 +12,8 @@ import {
   GET_OFFDEMS_F,
   GET_DEMANDE,
   GET_DEMANDE_F,
+  LOADING_DEMANDE,
+  DEMANDE_ERROR,
 } from "./offreTypes";
 
 import axios from "axios";
@@ -97,26 +99,24 @@ export const createSuccess = (data) => {
   };
 };
 
-export const AddDem = (demande) => {
+export const AddDem = (demande) => async (dispatch) => {
   const data = { prix: demande.prix, offre: demande.offre };
   if (!data.prix || !data.offre) {
     toast.warn("Verifier vos champs !");
   } else {
-    return (dispatch) => {
-      setAuthToken(localStorage.accessToken);
-      axios
-        .post(`${OffremsURL}/api/demande/`, data)
-        .then((res) => {
-          dispatch(createSuccess(res.data));
-          //toast.success("Soumission ajouté avec succès");
-          /* setTimeout(() => {
-            window.location.reload();
-          }, 1500); */
-        })
-        .catch(function (error) {
-          OFFRE_ERROR, console.log(error);
+    dispatch({ type: LOADING_DEMANDE });
+    setAuthToken(localStorage.accessToken);
+    axios
+      .post(`${OffremsURL}/api/demande/`, data)
+      .then((res) => {
+        dispatch({
+          type: ADD_DEMANDE,
+          payload: res.data,
         });
-    };
+      })
+      .catch(function (error) {
+        DEMANDE_ERROR, console.log(error);
+      });
   }
 };
 

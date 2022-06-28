@@ -143,7 +143,8 @@ const AjoutDemande = ({ ...props }) => {
                 <div>
                   <Row>
                     <Col lg="8">
-                      <CurrencyInput
+                      <Input
+                        type="number"
                         placeholder="Votre prix en dt"
                         name="prix"
                         className="form-control border border-dark"
@@ -177,11 +178,7 @@ const AjoutDemande = ({ ...props }) => {
                 <h2 className="text-gray">
                   Détails de {props.currentObj.titre}
                 </h2>
-                <Button
-                  onClick={() => {
-                    setShowSucc(true);
-                  }}
-                ></Button>
+               
                 <Row className="justify-content-center">
                   <Col>
                     <FormGroup>
@@ -280,45 +277,7 @@ const AjoutDemande = ({ ...props }) => {
           </Col>
         </Row>
       </Card>
-      {/* Pop up Success */}
-      <AnimatePresence
-        exitBeforeEnter
-        showModal={showSucc}
-        setShowModal={setShowSucc}
-      >
-        {showSucc && (
-          <motion.div
-            className="backdrop"
-            variants={backdrop}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <Col className=" fixed-top center" xl="5">
-              <motion.div className="" variants={modal}>
-                <Card className=" bg-success pointer-event cardmsg">
-                  <CardHeader className="bg-success border-0 justify-content-center text-center">
-                    <i class="far fa-check-circle fa-6x text-white text-center"></i>
-                  </CardHeader>
-                  <CardBody>
-                    <Row className=" justify-content-center">
-                      <h1 className="text-white text-center">
-                        Votre soumission a été validée
-                      </h1>
-                      <Button
-                        className="btn-outline-white"
-                        onClick={() => setShowSucc(false)}
-                      >
-                        OK
-                      </Button>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </motion.div>
-            </Col>
-          </motion.div>
-        )}
-      </AnimatePresence>
+     
 
       {/* Pop up Warn */}
       <AnimatePresence
@@ -363,12 +322,14 @@ const AjoutDemande = ({ ...props }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  List: state.offres.offres,
+  isLoadingDem: state.offres.loading_dem,
+  CodeMsg: state.offres.codeMsg,
+});
+
 const mapActionToProps = {
   create: AddDem,
 };
-
-const mapStateToProps = (state) => ({
-  List: state.offres.offres,
-});
 
 export default connect(mapStateToProps, mapActionToProps)(AjoutDemande);

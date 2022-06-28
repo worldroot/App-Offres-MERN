@@ -11,6 +11,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Button,
   UncontrolledDropdown,
   DropdownToggle,
@@ -35,6 +36,8 @@ import DetailsOffre from "./detailsOffre";
 import AjoutDemande from "./ajoutDemande";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import usePrevious from "helpers/usePrevious";
+import { AddDem } from "redux/offres/offreActions";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -48,9 +51,16 @@ const modal = {
     transition: { delay: 0.5 },
   },
 };
+const msgmodal = {
+  hidden: { y: "-100vh", opacity: 0 },
+  visible: {
+    y: "150px",
+    opacity: 1,
+    transition: { delay: 0.5 },
+  },
+};
 
 const Offres = ({ ...props }) => {
-
   useEffect(() => {
     props.AllPub();
     props.AllCat();
@@ -61,6 +71,8 @@ const Offres = ({ ...props }) => {
   const [showModal2, setShowModal2] = useState(false);
   const [currentObj, setCurrentObj] = useState({});
   const [checked, setchecked] = useState(false);
+  const [showSucc, setShowSucc] = useState(false);
+  const [showErr, setShowErr] = useState(false);
   const [Search, setSearch] = useState("");
   const [SearchCat, setSearchCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
@@ -98,6 +110,21 @@ const Offres = ({ ...props }) => {
     height: 200,
     width: 220,
   };
+
+  const prev_loading = usePrevious(props.isLoadingDem);
+  useEffect(() => {
+    if (prev_loading && !props.isLoadingDem) {
+      if (props.CodeMsg === 1) {
+        props.AllPub();
+        //setShowModal2(false);
+        setShowSucc(true);
+      }
+      if (props.CodeMsg === 0) {
+        setShowErr(true);
+        //toast.error("Problème lors de l'ajout !");
+      }
+    }
+  }, [props.isLoadingDem, props.Listpub]);
 
   return (
     <>
@@ -261,7 +288,6 @@ const Offres = ({ ...props }) => {
                                   Date Limite: {of.dateFin.substring(0, 10)}
                                 </small>
                               </Row>
-                             
                             </CardBody>
                             {userLocal.active ? (
                               <CardFooter className="text-center">
@@ -284,7 +310,9 @@ const Offres = ({ ...props }) => {
                                     className="btn-outline-danger"
                                     color="dark"
                                     onClick={() => {
-                                       toast.info("Connectez ou créer un compte pour soumettre une demande !");
+                                      toast.info(
+                                        "Connectez ou créer un compte pour soumettre une demande !"
+                                      );
                                     }}
                                   >
                                     Soumettre une demande
@@ -353,6 +381,7 @@ const Offres = ({ ...props }) => {
               </motion.div>
             )}
           </AnimatePresence>
+
           {/* Ajout Demande  */}
           <AnimatePresence
             exitBeforeEnter
@@ -376,6 +405,7 @@ const Offres = ({ ...props }) => {
                         showModal2,
                         setShowModal2,
                       }}
+                      create={props.create}
                     />
                   </motion.div>
                 </Col>
@@ -383,6 +413,91 @@ const Offres = ({ ...props }) => {
             )}
           </AnimatePresence>
         </Container>
+
+        
+        {/* Pop up Success */}
+        <AnimatePresence
+          exitBeforeEnter
+          showModal={showSucc}
+          setShowModal={setShowSucc}
+        >
+          {showSucc && (
+            <motion.div
+              className="backdrop"
+              variants={backdrop}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <Col className=" fixed-top center" xl="3">
+                <motion.div className="" variants={msgmodal}>
+                  <Card className=" bg-success ">
+                    <CardHeader className="bg-success border-0 justify-content-center text-center">
+                      <i class="far fa-check-circle fa-6x text-white text-center"></i>
+                    </CardHeader>
+                    <CardBody>
+                      <Row className=" justify-content-center">
+                        <h1 className="text-white text-center">
+                          Votre soumission a été validée
+                        </h1>
+                      </Row>
+                      <Row className=" justify-content-center">
+                        <Button
+                          className="btn-outline-white"
+                          onClick={() => setShowSucc(false)}
+                        >
+                          OK
+                        </Button>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                </motion.div>
+              </Col>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Pop up Error */}
+        <AnimatePresence
+          exitBeforeEnter
+          showModal={showErr}
+          setShowModal={setShowErr}
+        >
+          {showErr && (
+            <motion.div
+              className="backdrop"
+              variants={backdrop}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <Col className=" fixed-top center" xl="3">
+                <motion.div className="" variants={msgmodal}>
+                  <Card className=" bg-danger ">
+                    <CardHeader className="bg-danger border-0 justify-content-center text-center">
+                      <i class="far fa-times-circle fa-6x text-white text-center"></i>
+                    </CardHeader>
+                    <CardBody>
+                      <Row className=" justify-content-center">
+                        <h1 className="text-white text-center">
+                          Quelque chose s'est mal passé
+                        </h1>
+                      </Row>
+                      <Row className=" justify-content-center">
+                        <Button
+                          className="btn-outline-white"
+                          onClick={() => setShowErr(false)}
+                        >
+                          OK
+                        </Button>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                </motion.div>
+              </Col>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );
@@ -393,11 +508,14 @@ const mapStateToProps = (state) => ({
   ListCat: state.category.categories,
   isAuth: state.auth.isAuthenticated,
   isLoading: state.offres.loading,
+  isLoadingDem: state.offres.loading_dem,
+  CodeMsg: state.offres.codeMsg,
 });
 
 const mapActionToProps = {
   AllPub: allPub,
   AllCat: getAllCat,
+  create: AddDem,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Offres);

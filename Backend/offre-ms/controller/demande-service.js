@@ -323,7 +323,7 @@ router.delete(
 // @access  Public
 router.get("/all", async (req, res) => {
   try {
-    const data = await Demande.find({});
+    const data = await Demande.find({}).select("-properties");
     res.status(200).json(data);
   } catch (error) {
     console.log(error.message);

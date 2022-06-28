@@ -10,6 +10,10 @@ export const GET_OFFDEMS = "LOADING OFFDEMS"
 export const GET_OFFDEMS_S = "GET OFFDEMS SUCC"
 export const GET_OFFDEMS_F = "GET OFFDDEMS FAILED"
 
+export const GET_DEMS = "LOADING DEMS"
+export const GET_DEMS_S = "GET DEMS SUCC"
+export const GET_DEMS_F = "GET DEMS FAILED"
+
 export const LOADING_OFFRE = "LOADING ADD OFFRE"
 export const OFFRE_ADDED = "ADD OFFRE DONE"
 export const OFFRE_ADD_FAILED = "FAIL TO ADD OFFRE"

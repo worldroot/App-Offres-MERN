@@ -110,6 +110,7 @@ router.post(
                         souscategory: response.data.sousnomcat,
                         postedBy: responseUser.data._id,
                         responsable: responsable._id,
+                        status: "pending",
                       });
 
                       /*  if (responsable.OneSignalID) {
