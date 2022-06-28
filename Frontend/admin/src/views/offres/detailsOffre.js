@@ -38,6 +38,9 @@ const DetailsOffre = ({ ...props }) => {
         if (u._id === values.responsable) {
           setresdep(u);
         }
+        if (u._id === values.postedBy) {
+          setPosted(u);
+        }
       });
     }
   }, [props.currentObj]);
@@ -47,9 +50,11 @@ const DetailsOffre = ({ ...props }) => {
     useForm(initialFieldValues, props.setCurrentObj);
 
   const initRes = { email: "" };
+  const initPosted = { email: "" };
 
   const userExist = localStorage.getItem("user");
   const [resdep, setresdep] = useState(initRes);
+  const [posted, setPosted] = useState(initPosted);
   const [showImg, setShowImg] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
@@ -91,7 +96,7 @@ const DetailsOffre = ({ ...props }) => {
                   <p>
                     Posté par:
                     <label className="form-control-label text-dark mx-2">
-                      {values.postedBy}
+                      {posted.email}
                     </label>
                   </p>
                 </FormGroup>

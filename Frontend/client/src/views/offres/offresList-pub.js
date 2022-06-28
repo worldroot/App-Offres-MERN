@@ -261,17 +261,7 @@ const Offres = ({ ...props }) => {
                                   Date Limite: {of.dateFin.substring(0, 10)}
                                 </small>
                               </Row>
-                              <Row>
-                                <a
-                                  className="card-link text-underline text-gray"
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    setShowModal(true), setCurrentObj(of);
-                                  }}
-                                >
-                                  <small>Details</small>
-                                </a>
-                              </Row>
+                             
                             </CardBody>
                             {userLocal.active ? (
                               <CardFooter className="text-center">

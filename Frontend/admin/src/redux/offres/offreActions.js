@@ -38,7 +38,7 @@ export const allOffres = () => (dispatch) => {
       });
     })
     .catch((err) => console.log(err), GET_OFFRE_F);
-  }, 500);
+  }, 1000);
 };
 
 export const allPub = () => (dispatch) => {
@@ -53,7 +53,7 @@ export const allPub = () => (dispatch) => {
         });
       })
       .catch((err) => console.log(err), GET_OFFREPUB_F);
-  }, 500);
+  }, 1000);
 };
 
 export const addOffre = (offre) => async (dispatch) => {
