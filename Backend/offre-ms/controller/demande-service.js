@@ -34,8 +34,8 @@ router.post(
         var email = responseUser.data.email;
         var date = new Date();
         const DateToCheck = new Date(date.getTime());
-        const Today = new Date(date.getTime()).toDateString();
-        
+        const Today = DateToCheck.toISOString().substring(0, 10);
+
         if (role !== "user") {
           return res.status(404).json({
             error: "Access Denied !!",
@@ -55,7 +55,7 @@ router.post(
             let offreModel = await Offre.findById(offre);
             const Debut = new Date(offreModel.dateDebut);
             const Fin = new Date(offreModel.dateFin);
-            const FinDate = new Date(offreModel.dateFin).toDateString();;
+            const FinDate = Fin.toISOString().substring(0, 10);
             const ResDep = offreModel.responsable;
             const Admin = offreModel.postedBy;
             const theKey = offreModel.publickey;
@@ -82,6 +82,8 @@ router.post(
                       { $set: { publickey: PublicKey } },
                       { new: true }
                     );
+
+                    //Email-ResDep
                     await axios
                       .get("http://localhost:5001/api/user/" + ResDep)
                       .then(async (resdep) => {
@@ -104,22 +106,21 @@ router.post(
                       responseUser.data.nom
                     );
 
-                    const encrypted = ToCrypte(PublicKey, rs);
-                    const newDem = new Demande({
-                      offre,
-                      properties: encrypted,
-                    });
-
-                    //Notif-Admin
-                    const Adminbody = {
-                      postedBy: offreModel.postedBy,
-                      titre: offreModel.titre,
-                      date: Today,
-                    };
-                    await axios.post(
-                      "http://localhost:5004/api/notif/new",
-                      Adminbody
-                    );
+                    //Notif-Ad
+                    await axios
+                      .get("http://localhost:5001/api/user/" + Admin)
+                      .then(async (ad) => {
+                        const Adminbody = {
+                          postedBy: ad.data._id,
+                          titre: offreModel.titre,
+                          date: Today,
+                          array: ad.data.OneSignalID,
+                        };
+                        await axios.post(
+                          "http://localhost:5004/api/notif/new",
+                          Adminbody
+                        );
+                      });
 
                     //Notif-Client
                     const Clientbody = {
@@ -133,9 +134,15 @@ router.post(
                       Clientbody
                     );
 
+                    const encrypted = ToCrypte(PublicKey, rs);
+                    const newDem = new Demande({
+                      offre,
+                      properties: encrypted,
+                    });
+
                     newDem.save().then(() => res.json(newDem));
                   } else {
-                    //Email
+                    //Email-Client
                     await emailDem(
                       responseUser.data.email,
                       offreModel.titre,
@@ -157,6 +164,22 @@ router.post(
                       Clientbody
                     );
 
+                    //Notif-Ad
+                    await axios
+                    .get("http://localhost:5001/api/user/" + Admin)
+                    .then(async (ad) => {
+                      const Adminbody = {
+                        postedBy: ad.data._id,
+                        titre: offreModel.titre,
+                        date: Today,
+                        array: ad.data.OneSignalID,
+                      };
+                      await axios.post(
+                        "http://localhost:5004/api/notif/new",
+                        Adminbody
+                      );
+                    });
+
                     const encrypted = ToCrypte(theKey, rs);
                     const newDem = new Demande({
                       offre,
@@ -172,7 +195,6 @@ router.post(
                       "http://localhost:5004/api/notif/new",
                       Adminbody
                     ); */
-                    
 
                     newDem.save().then(() => res.json(newDem));
                   }

@@ -74,7 +74,7 @@ const Home = ({ ...props }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5 }}
           >
-            <UncontrolledCarousel items={items} />
+            <UncontrolledCarousel  items={items} />
           </motion.div>
         </Container>
         <Container className="mb-6 mt-4">

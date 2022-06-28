@@ -38,7 +38,7 @@ router.post("/selected", async (req, res) => {
   var message = {
     app_id: AdminApp,
     contents: {
-      en: `Un clé vient de vous être envoyé par mail`,
+      en: `Clé de '${data.titre}' vient de vous être envoyé par mail`,
     },
     include_player_ids: data.responsable.OneSignalID,
     data: { foo: "bar" },
@@ -76,6 +76,51 @@ router.post("/selected", async (req, res) => {
     .status(200)
     .json({ etat: true, message: "Notification sent successfully" });
   console.log("Notification Selected Responsable");
+});
+
+router.post("/new", async (req, res) => {
+  const data = req.body;
+  var message = {
+    app_id: AdminApp,
+    contents: {
+      en: `Nouvelle soumission !`,
+    },
+    include_player_ids: data.array,
+    data: { foo: "bar" },
+  };
+
+  var req = https.request(optionsAd, function (res) {
+    var payload = "";
+    res.on("data", function (data) {
+      payload += data;
+    });
+
+    res.on("end", function () {
+      payload = JSON.parse(payload);
+      const notification = new Notif({
+        idClient: data.postedBy,
+        idNotification: payload.id,
+        title: message.contents.en,
+        text: `L'appel d'offre '${data.titre}' a une nouvelle soumission`,
+        delivered: data.date,
+      });
+      notification.save();
+      return payload;
+    });
+  });
+
+  req.on("error", function (e) {
+    console.log("ERROR:");
+    console.log(e);
+  });
+
+  req.write(JSON.stringify(message));
+  req.end();
+
+  res
+    .status(200)
+    .json({ etat: true, message: "Notification sent successfully" });
+  console.log("Notification New Demande");
 });
 
 router.get("/user-email", async (req, res) => {
@@ -271,67 +316,6 @@ router.post("/welcome", async (req, res) => {
   console.log("Welcome Notification ");
 });
 
-router.post("/new", async (req, res) => {
-  const data = req.body;
-
-  await axios
-    .get("http://localhost:5001/api/access/admin", {
-      email: data.postedBy,
-    })
-    .then(async (ad) => {
-      var message = {
-        app_id: AdminApp,
-        contents: {
-          en: `Nouvelle soumission !`,
-        },
-        include_player_ids: ad.data.OneSignalID,
-        data: { foo: "bar" },
-      };
-
-      console.log(ad.data);
-
-      var req = https.request(optionsAd, function (res) {
-        var payload = "";
-        res.on("data", function (data) {
-          payload += data;
-        });
-
-        res.on("end", function () {
-          payload = JSON.parse(payload);
-          const notification = new Notif({
-            idClient: ad.data._id,
-            idNotification: payload.id,
-            title: message.contents.en,
-            text: `L'appel d'offre '${data.titre}' a une nouvelle soumission`,
-            delivered: data.date,
-          });
-          notification.save();
-          return payload;
-        });
-      });
-
-      req.on("error", function (e) {
-        console.log("ERROR:");
-        console.log(e);
-      });
-
-      req.write(JSON.stringify(message));
-      req.end();
-
-      res
-        .status(200)
-        .json({ etat: true, message: "Notification sent successfully" });
-      console.log("Notification New Demande");
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(403).json({
-        error: true,
-        msg: "Demande impossible !",
-      });
-    });
-});
-
 router.post("/demande", async (req, res) => {
   const data = req.body;
   var message = {
@@ -356,7 +340,7 @@ router.post("/demande", async (req, res) => {
       const notification = new Notif({
         idNotification: payload.id,
         idClient: data.userId,
-        title: 'Confirmation de soumission',
+        title: "Confirmation de soumission",
         text: message.contents.en,
         delivered: data.date,
       });
