@@ -43,7 +43,7 @@ const Register = ({ register, isAuth, isLoading, user }) => {
     setSignal(userId);
   });
 
-  const { nom, prenom, email, password } = data;
+  const { nom, prenom, email, password, telephone } = data;
   const style = { width: "200px" };
   const history = useHistory();
   /*
@@ -63,7 +63,7 @@ const Register = ({ register, isAuth, isLoading, user }) => {
       toast.warn("Verifier vos champs !");
     } else {
       try {
-        register({ nom, prenom, email, password, OneSignalID });
+        register({ nom, prenom, email, password, telephone, OneSignalID });
       } catch (error) {
         console.log(error);
         toast.error("Error dans les champs !");
@@ -156,8 +156,9 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                           </FormGroup>
                         </Col>
                       </Row>
-
-                      <FormGroup>
+                      <Row>
+                        <Col>
+                        <FormGroup>
                         <InputGroup className="input-group-alternative mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -172,6 +173,28 @@ const Register = ({ register, isAuth, isLoading, user }) => {
                           />
                         </InputGroup>
                       </FormGroup>
+                        </Col>
+                        <Col>
+                        <FormGroup>
+                        <InputGroup className="input-group-alternative mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="fas fa-phone"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="Telephone"
+                            type="phone"
+                            onChange={handleChange("telephone")}
+                            value={telephone}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                        </Col>
+                     
+                      </Row>
+                     
+
                       <FormGroup>
                         <InputGroup className="input-group-alternative">
                           <InputGroupAddon addonType="prepend">

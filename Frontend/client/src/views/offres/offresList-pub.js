@@ -73,6 +73,23 @@ const Offres = ({ ...props }) => {
   const [checked, setchecked] = useState(false);
   const [showSucc, setShowSucc] = useState(false);
   const [showErr, setShowErr] = useState(false);
+  const prev_loading = usePrevious(props.isLoadingDem);
+  useEffect(() => {
+    console.log(prev_loading);
+    console.log(props.isLoadingDem);
+    if (prev_loading && !props.isLoadingDem) {
+      if (props.CodeMsg === 1) {
+        props.AllPub();
+        //setShowModal2(false);
+        setShowSucc(true);
+      }
+      if (props.CodeMsg === 0) {
+        setShowErr(true);
+        //toast.error("Problème lors de l'ajout !");
+      }
+    }
+  }, [props.isLoadingDem, props.Listpub]);
+
   const [Search, setSearch] = useState("");
   const [SearchCat, setSearchCat] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
@@ -110,21 +127,6 @@ const Offres = ({ ...props }) => {
     height: 200,
     width: 220,
   };
-
-  const prev_loading = usePrevious(props.isLoadingDem);
-  useEffect(() => {
-    if (prev_loading && !props.isLoadingDem) {
-      if (props.CodeMsg === 1) {
-        props.AllPub();
-        //setShowModal2(false);
-        setShowSucc(true);
-      }
-      if (props.CodeMsg === 0) {
-        setShowErr(true);
-        //toast.error("Problème lors de l'ajout !");
-      }
-    }
-  }, [props.isLoadingDem, props.Listpub]);
 
   return (
     <>
@@ -405,7 +407,7 @@ const Offres = ({ ...props }) => {
                         showModal2,
                         setShowModal2,
                       }}
-                      create={props.create}
+                      create={(data) => props.create(data, setShowSucc(true))}
                     />
                   </motion.div>
                 </Col>
@@ -414,7 +416,6 @@ const Offres = ({ ...props }) => {
           </AnimatePresence>
         </Container>
 
-        
         {/* Pop up Success */}
         <AnimatePresence
           exitBeforeEnter
@@ -475,7 +476,7 @@ const Offres = ({ ...props }) => {
                 <motion.div className="" variants={msgmodal}>
                   <Card className=" bg-danger ">
                     <CardHeader className="bg-danger border-0 justify-content-center text-center">
-                      <i class="far fa-times-circle fa-6x text-white text-center"></i>
+                      <i className="far fa-times-circle fa-6x text-white text-center"></i>
                     </CardHeader>
                     <CardBody>
                       <Row className=" justify-content-center">

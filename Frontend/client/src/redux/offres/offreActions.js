@@ -99,7 +99,7 @@ export const createSuccess = (data) => {
   };
 };
 
-export const AddDem = (demande) => async (dispatch) => {
+export const AddDem = (demande, succ) => async (dispatch) => {
   const data = { prix: demande.prix, offre: demande.offre };
   if (!data.prix || !data.offre) {
     toast.warn("Verifier vos champs !");
@@ -113,9 +113,12 @@ export const AddDem = (demande) => async (dispatch) => {
           type: ADD_DEMANDE,
           payload: res.data,
         });
+        succ
       })
       .catch(function (error) {
-        DEMANDE_ERROR, console.log(error);
+        DEMANDE_ERROR, 
+        console.log(error),
+        err
       });
   }
 };

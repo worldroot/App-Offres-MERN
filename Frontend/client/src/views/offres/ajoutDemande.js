@@ -76,17 +76,17 @@ const AjoutDemande = ({ ...props }) => {
 
   useEffect(() => {
     if (showConfirm) {
-      if (data.prix <= props.currentObj.prixdebut) {
+      if (data.prix <= parseInt(props.currentObj.prixdebut,10)) {
         setShowConfirm(false);
         setShowWarn(true);
       }
     }
   }, [data.prix, showConfirm]);
 
-  //console.log(data.prix);
   /*   console.log(showConfirm);
   console.log(props.currentObj.prixdebut);
   */
+
 
   return (
     <>
@@ -328,8 +328,4 @@ const mapStateToProps = (state) => ({
   CodeMsg: state.offres.codeMsg,
 });
 
-const mapActionToProps = {
-  create: AddDem,
-};
-
-export default connect(mapStateToProps, mapActionToProps)(AjoutDemande);
+export default connect(mapStateToProps)(AjoutDemande);

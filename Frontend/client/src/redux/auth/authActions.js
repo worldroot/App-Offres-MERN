@@ -44,7 +44,7 @@ export const loadUser = () => async (dispatch) => {
 };
 
 export const register =
-  ({ nom, prenom, email, password, OneSignalID }) =>
+  ({ nom, prenom, email, password, OneSignalID, telephone }) =>
   async (dispatch) => {
     // Config header for axios
     const config = { headers: { "Content-Type": "application/json" } };
@@ -53,6 +53,7 @@ export const register =
       nom,
       prenom,
       email,
+      telephone,
       password,
       OneSignalID,
     });

@@ -147,7 +147,7 @@ const AuthNavbar = ({ ...props }) => {
                       )}
                     </DropdownToggle>
 
-                    <DropdownMenu className="dropdown-menu-arrow" right>
+                    <DropdownMenu className="dropdown-menu-arrow " right>
                       {props.isLoading ? (
                         <div className="text-center my-3">
                           <div id="small-loading"></div>

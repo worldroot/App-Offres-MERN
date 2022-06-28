@@ -46,20 +46,21 @@ export default function (state = intialState, action) {
       return { ...state, demandes: [...action.payload], loading: false };
     case GET_DEMANDE_F:
 
-    case LOADING_DEMANDE: 
+    case LOADING_DEMANDE:
       return {
         ...state,
         loading_dem: true,
         codeMsg: null,
-      }
-    case ADD_DEMANDE:
-      return { ...state, ...action.payload, codeMsg: 1, loading_dem: false, loading: false };
+      };
+    case ADD_DEMANDE: {
+      return { ...state, codeMsg: 1, loading_dem: false, loading: false };
+    }
     case DEMANDE_ERROR:
       return {
         ...state,
-        codeMsg: 1, 
-        loading_dem: false
-      }
+        codeMsg: 1,
+        loading_dem: false,
+      };
     case DEL_DEMANDE:
       return {
         ...state,
