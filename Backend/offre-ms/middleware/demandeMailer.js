@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const emailKey = async (email, key, text, user) => {
+const emailKey = async (email, key, text, offreId, offre) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.mailtrap.io",
@@ -14,7 +14,7 @@ const emailKey = async (email, key, text, user) => {
     await transporter.sendMail({
       from: process.env.USER,
       to: email,
-      subject: "Admin clé de decryptage",
+      subject: `Clé d'offre ${offre}`,
       html: `
 			<html lang="en">
 			<head>
@@ -87,7 +87,7 @@ const emailKey = async (email, key, text, user) => {
 				<div class="wrapper">
 				  <div class="card">
 					
-					<p>Offre ID: ${user}</p>
+					<p>Offre ID: ${offreId}</p>
                     <h3>${text}</h3>
                     <textarea disabled>${key}</textarea>
 					<small>Copier tout le text !</small>

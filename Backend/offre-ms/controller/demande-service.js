@@ -92,7 +92,8 @@ router.post(
                           resdep.data.email,
                           PrivateKey,
                           `Décryptage clé pour l'offre: ${offreModel.titre}`,
-                          offreModel._id
+                          offreModel._id,
+                          offreModel.titre
                         );
                       });
 
