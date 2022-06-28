@@ -2,6 +2,7 @@ import {
   Row,
   Card,
   CardHeader,
+  CardBody,
   Table,
   Container,
   Col,
@@ -15,6 +16,8 @@ import Typography from "@mui/material/Typography";
 import Header from "../../components/Headers/Header.js";
 import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import LineChart from "../../components/Charts/LineChart";
+import RadarChart from "../../components/Charts/RadarChart";
 import { connect, useDispatch } from "react-redux";
 import {
   getAllCat,
@@ -31,7 +34,8 @@ import UpdateSousCategorie from "./updateSouscategorie.js";
 
 import { motion, AnimatePresence } from "framer-motion";
 import "components/modal.css";
-import decode from 'jwt-decode'
+import decode from "jwt-decode";
+import PieChart from "components/Charts/PieChart.js";
 
 const backdrop = {
   visible: { opacity: 1 },
@@ -93,6 +97,25 @@ const CategoriesList = ({ ...props }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
 
+  const [categorieData, setCategorieData] = useState({
+    labels: props.List.map((data) => data.nomcat),
+    datasets: [
+      {
+        label: "Sous-catégorie",
+        data: props.List.map((data) => data.souscategorie.length),
+        backgroundColor: [
+          "#2ECDF3",
+          "#FFA88E",
+          "#898989",
+          "#FFA300",
+          "#2CD5C4",
+        ],
+        borderColor: "black",
+        borderWidth: 1,
+      },
+    ],
+  });
+
   return (
     <>
       {/* Layout*/}
@@ -114,45 +137,48 @@ const CategoriesList = ({ ...props }) => {
           <Row>
             <Col className="order-xl-1 mb-5 mb-xl-0" xl="12">
               <div className="col">
-                <Card className="shadow">
-                  <CardHeader className="border-0 ">
-                    <div className="d-flex justify-content-between">
-                      <h3 className="mb-0">List des catégories</h3>
-                      {user.role === "super-admin" && (
-                        <>
-                          <Row>
-                            <Button
-                              size="sm"
-                              onClick={() => setShowModal(true)}
-                            >
-                              <i className="fas fa-plus"></i> Catégorie
-                            </Button>
-                          </Row>
-                        </>
-                      )}
-                    </div>
-                  </CardHeader>
-                  <Table className="align-items-center table-flush" responsive>
-                    <thead className="thead-light">
-                      <tr>
+                {user.role === "super-admin" && (
+                  <Card className="shadow">
+                    <CardHeader className="border-0 ">
+                      <div className="d-flex justify-content-between">
+                        <h3 className="mb-0">List des catégories</h3>
                         {user.role === "super-admin" && (
                           <>
-                            <th scope="col">Catégories & Sous-catégories</th>
-                            <th scope="col">Actions</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                            <Row>
+                              <Button
+                                size="sm"
+                                onClick={() => setShowModal(true)}
+                              >
+                                <i className="fas fa-plus"></i> Catégorie
+                              </Button>
+                            </Row>
                           </>
                         )}
-                        {user.role === "admin" && (
-                          <>
-                            <th scope="col">Catégories</th>
-                            <th scope="col">Sous-atégories</th>
-                          </>
-                        )}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {user.role === "super-admin" && (
+                      </div>
+                    </CardHeader>
+                    <Table
+                      className="align-items-center table-flush"
+                      responsive
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          {user.role === "super-admin" && (
+                            <>
+                              <th scope="col">Catégories & Sous-catégories</th>
+                              <th scope="col">Actions</th>
+                              <th scope="col"></th>
+                              <th scope="col"></th>
+                            </>
+                          )}
+                          {user.role === "admin" && (
+                            <>
+                              <th scope="col">Catégories</th>
+                              <th scope="col">Sous-atégories</th>
+                            </>
+                          )}
+                        </tr>
+                      </thead>
+                      <tbody>
                         <>
                           {props.List.map((cat, index) => {
                             //console.log( )
@@ -280,40 +306,26 @@ const CategoriesList = ({ ...props }) => {
                             );
                           })}
                         </>
-                      )}
-
-                      {/* List of Categories for **Admin**/}
-                      {user.role === "admin" && (
-                        <>
-                          {props.List.map((cat, index) => {
-                            return (
-                              <Fragment key={index}>
-                                <tr key={cat._id}>
-                                  <td>{cat.nomcat}</td>
-                                  <td>
-                                    {cat.souscategorie.map(
-                                      ({ sousnomcat, _id }) => {
-                                        return (
-                                          <Fragment key={_id}>
-                                            <div>
-                                              <span className="mx-1">
-                                                {sousnomcat}
-                                              </span>
-                                            </div>
-                                          </Fragment>
-                                        );
-                                      }
-                                    )}
-                                  </td>
-                                </tr>
-                              </Fragment>
-                            );
-                          })}
-                        </>
-                      )}
-                    </tbody>
-                  </Table>
-                </Card>
+                      </tbody>
+                    </Table>
+                  </Card>
+                )}
+                {user.role === "admin" && (
+                  <Card className="bg-white shadow w-100">
+                    <CardHeader>
+                      <h3 className="text-dark">
+                        Statistiques des sous-categories par categorie
+                      </h3>
+                    </CardHeader>
+                    <CardBody>
+                      <Row>
+                        <Col> <LineChart chartData={categorieData}/></Col>
+                        <Col> <PieChart chartData={categorieData}/></Col>
+                      </Row>
+                     
+                    </CardBody>
+                  </Card>
+                )}
               </div>
             </Col>
 

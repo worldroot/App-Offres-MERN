@@ -41,7 +41,7 @@ export const allOffres = () => (dispatch) => {
         });
       })
       .catch((err) => console.log(err), GET_OFFRE_F);
-  }, 1000);
+  }, 2000);
 };
 
 export const allPub = () => (dispatch) => {
@@ -167,14 +167,16 @@ export const allOffresDems = () => (dispatch) => {
 export const FetchDems = () => axios.get(`${OffremsURL}/api/demande/all`);
 export const allDems = () => (dispatch) => {
   dispatch({ type: GET_DEMS });
-  FetchDems()
-    .then((res) => {
-      dispatch({
-        type: GET_DEMS_S,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err), GET_DEMS_F);
+  setTimeout(() => {
+    FetchDems()
+      .then((res) => {
+        dispatch({
+          type: GET_DEMS_S,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err), GET_DEMS_F);
+  }, 1000);
 };
 
 export const DecDems = (id, updated) =>

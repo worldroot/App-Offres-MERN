@@ -33,7 +33,7 @@ const AdminIndex = ({ ...props }) => {
   useEffect(() => {
     props.All();
     props.AllPub();
-    props.AllDems()
+    props.AllDems();
   }, []);
 
   const userExist = localStorage.getItem("user");
@@ -82,6 +82,12 @@ const AdminIndex = ({ ...props }) => {
       },
     ],
   });
+
+  useEffect(() => {
+    if(offresData.labels.length === 0){
+      props.All();
+    }
+  }, [offresData]);
 
   const img = {
     height: 200,
@@ -142,7 +148,6 @@ const AdminIndex = ({ ...props }) => {
                         <Row xs={1} md={3} className="g-4">
                           {props.ListPub.slice(0, 3).map((of, index) => {
                             return (
-                              
                               <Fragment key={index}>
                                 <motion.div
                                   initial={{ opacity: 0 }}
@@ -190,7 +195,6 @@ const AdminIndex = ({ ...props }) => {
                             );
                           })}
                         </Row>
-                        
                       </CardBody>
                     </Card>
                   </Col>
@@ -228,16 +232,16 @@ const AdminIndex = ({ ...props }) => {
                       </Row>
 
                       <Row className="justify-content-center w-100 mt-2">
-                        <Card className="bg-white shadow w-100">
+                        <Card className="bg-blue shadow w-100">
                           <CardBody>
                             <Row>
                               <Col lg="8">
-                                <p className="text-dark">
+                                <p className="text-white">
                                   Nombre total d'offres
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-red">
+                                <h1 className="text-dark">
                                   {props.List.length}
                                 </h1>
                               </Col>
@@ -246,7 +250,7 @@ const AdminIndex = ({ ...props }) => {
                         </Card>
                       </Row>
                       <Row className="justify-content-center w-100 mt-2">
-                        <Card className="bg-white shadow w-100">
+                        <Card className="bg-success shadow w-100">
                           <CardBody>
                             <Row>
                               <Col lg="8">
@@ -255,7 +259,7 @@ const AdminIndex = ({ ...props }) => {
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-success font-weight-bolder">
+                                <h1 className="text-white font-weight-bolder">
                                   {props.ListPub.length}
                                 </h1>
                               </Col>
@@ -264,16 +268,16 @@ const AdminIndex = ({ ...props }) => {
                         </Card>
                       </Row>
                       <Row className="justify-content-center w-100 mt-2">
-                        <Card className="bg-white shadow w-100">
+                        <Card className="bg-orange shadow w-100">
                           <CardBody>
                             <Row>
                               <Col lg="8">
-                                <p className="text-dark">
+                                <p className="text-white">
                                   Nombre total de soumissions
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-orange font-weight-bolder">
+                                <h1 className="text-dark font-weight-bolder">
                                   {props.ListDems.length}
                                 </h1>
                               </Col>
@@ -305,7 +309,7 @@ const mapStateToProps = (state) => ({
 const mapActionToProps = {
   All: allOffres,
   AllPub: allPub,
-  AllDems: allDems
+  AllDems: allDems,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(AdminIndex);
