@@ -123,6 +123,7 @@ const Offre = ({ ...props }) => {
   const [ShowImg, setShowImg] = useState(false);
   var date = new Date();
   const DatetoCheck = date.toISOString().substring(0, 10);
+  const Today = new Date(date.getTime());
   //console.log(data.responsable);
   //console.log(data.responsable);
 
@@ -138,6 +139,25 @@ const Offre = ({ ...props }) => {
       });
     }
   }, [resdep]);
+
+  /*   const [Text, setText] = useState("");
+  useEffect(() => {
+    if (data.dateDebut && data.dateFin) {
+      if (DatetoCheck > data.dateDebut && DatetoCheck < data.dateFin) {
+        //toast.info("Votre offre va être publier directement !");
+        setText("Votre offre va être publier directement !");
+      }
+
+      if (DatetoCheck > data.dateDebut) {
+        setText("Votre offre va être publier avec un status 'En attente' ");
+        //toast.info("Votre offre va être publier avec un status 'En attente' ");
+      }
+    }
+  }, [data.dateDebut, data.dateFin]); */
+
+  /*   console.log(data.dateFin);
+  console.log(DatetoCheck);
+  console.log(data.dateDebut); */
 
   return (
     <>
@@ -293,6 +313,7 @@ const Offre = ({ ...props }) => {
                 </FormGroup>
               </Col>
             </Row>
+
             <Row>
               <Col className="text-center">
                 <FormGroup>
@@ -382,8 +403,13 @@ const Offre = ({ ...props }) => {
                 )}
               </>
             </Row>
-
-            <div className="text-center">
+            <Row className=" justify-content-center">
+              <h4 className="text-success">
+                {/* Votre offre va être publier directement ! */}
+                {Text}
+              </h4>
+            </Row>
+            <Row className=" justify-content-center">
               <Button
                 className="my-4 btn-outline-success"
                 color="dark"
@@ -394,7 +420,7 @@ const Offre = ({ ...props }) => {
               <Button className="my-4 btn-outline-dark" onClick={() => reset()}>
                 Reset
               </Button>
-            </div>
+            </Row>
           </Form>
         </CardBody>
       </Card>

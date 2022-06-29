@@ -19,40 +19,32 @@ import {
 export const ALL = () => axios.get(`${UsermsURL}/api/user`);
 //export const DELU = (id) => axios.delete(`${UsermsURL}/api/users/` + id);
 
-export const updateUser = (nom, prenom, email) => (dispatch) => {
+export const updateUser = (nom, prenom, email, telephone) => (dispatch) => {
   const config = { headers: { "Content-Type": "application/json" } };
-  const body = JSON.stringify({ nom, prenom, email });
+  const body = JSON.stringify({ nom, prenom, email, telephone });
   dispatch({ type: USER_REQ });
-  //localStorage.removeItem('user')
-
-  try {
-    setAuthToken(localStorage.accessToken);
-    const res = axios
-      .put(`${UsermsURL}/api/user/`, body, config)
-      .catch(function (error) {
-        if (error.response) {
-          dispatch({
-            type: USER_ERR,
-            payload: res.data,
-          });
-          toast.error("Error !");
-        }
+  setAuthToken(localStorage.accessToken);
+  const res = axios
+    .put(`${UsermsURL}/api/user/`, body, config)
+    .then((res) => {
+      dispatch({
+        type: USER_UP,
+        payload: res.data,
       });
 
-    dispatch({
-      type: USER_UP,
-      payload: res.data,
+      //localStorage.setItem('user', JSON.stringify(res.data));
+      //localStorage.setItem('user', res.data);
+      toast.info("Mise a jour profil avec succès");
+    })
+    .catch(function (error) {
+      if (error.response) {
+        dispatch({
+          type: USER_ERR,
+          payload: res.data,
+        });
+        toast.error("Error !");
+      }
     });
-
-    //localStorage.setItem('user', JSON.stringify(res.data));
-    //localStorage.setItem('user', res.data);
-    toast.info("Mise a jour profil avec succès");
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: USER_ERR,
-    });
-  }
 };
 
 export const getAllUsers = () => (dispatch) => {

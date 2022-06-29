@@ -28,12 +28,13 @@ const UpdateUserDetails = ({ ...props }) => {
   const [nom, setnom] = useState(user.nom);
   const [prenom, setprenom] = useState(user.prenom);
   const [email, setemail] = useState(user.email);
+  const [telephone, settelephone] = useState(user.telephone);
 
   var { resetForm } = useForm(initialFieldValues, props.setCurrentId);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser(nom, prenom, email));
+    dispatch(updateUser(nom, prenom, email, telephone));
 
     setTimeout(() => {
       window.location.reload();
@@ -115,6 +116,20 @@ const UpdateUserDetails = ({ ...props }) => {
                       onChange={(e) => setemail(e.target.value)}
                       className="form-control-alternative"
                       type="email"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col lg="6">
+                  <FormGroup>
+                    <label className="form-control-label text-dark">
+                      Numero Telephone
+                    </label>
+                    <Input
+                      value={telephone}
+                      name="telephone"
+                      onChange={(e) => settelephone(e.target.value)}
+                      className="form-control-alternative"
+                      type="number"
                     />
                   </FormGroup>
                 </Col>

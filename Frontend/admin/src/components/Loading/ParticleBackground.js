@@ -19,28 +19,7 @@ export default function ParticleBackground() {
           },
         },
         fpsLimit: 120,
-        interactivity: {
-          events: {
-            onClick: {
-              enable: true,
-              mode: "push",
-            },
-            onHover: {
-              enable: true,
-              mode: "repulse",
-            },
-            resize: true,
-          },
-          modes: {
-            push: {
-              quantity: 5,
-            },
-            repulse: {
-              distance: 100,
-              duration: 0.1,
-            },
-          },
-        },
+        
         particles: {
           color: {
             value: "#ffffff",
