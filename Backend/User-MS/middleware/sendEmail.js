@@ -1,39 +1,24 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
-const sgTransport = require('nodemailer-sendgrid-transport');
+const sgTransport = require("nodemailer-sendgrid-transport");
 
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const apiKey = `${process.env.SENDGRID_API_KEY}`;
-//console.log("SendGrid key ", apiKey);
 
 const emailSender = async (email, url, text) => {
   try {
-    /* 		const transporter = nodemailer.createTransport({
-		
-		
-			host: "smtp.mailtrap.io",
-			port: 2525,
-			auth: {
-			  user: "6adcb0b3bc15c3",
-			  pass: "c170a6da93e22e",
-			},
-		  }); 
-	*/
-
-	const transporter = nodemailer.createTransport({
-		
-		
-		host: "smtp.mailtrap.io",
-		port: 2525,
-		auth: {
-		  user: "6adcb0b3bc15c3",
-		  pass: "c170a6da93e22e",
-		},
-	  }); 
+    const transporter = nodemailer.createTransport({
+      host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+        user: "6adcb0b3bc15c3",
+        pass: "c170a6da93e22e",
+      },
+    });
 
     await transporter.sendMail({
-      from: 'appoffres@mailpluss.com',
+      from: "appoffres@mailpluss.com",
       to: email,
       subject: "Activate your account",
       html: `

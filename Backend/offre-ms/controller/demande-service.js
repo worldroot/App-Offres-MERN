@@ -31,7 +31,6 @@ router.post(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (responseUser) => {
         var role = responseUser.data.role;
-        var email = responseUser.data.email;
         var date = new Date();
         const DateToCheck = new Date(date.getTime());
         const Today = DateToCheck.toISOString().substring(0, 10);
@@ -42,8 +41,6 @@ router.post(
           });
         } else {
           try {
-            //const prix = req.body.properties.prix;
-            //const offre = req.body.offre;
             let { offre, prix } = req.body;
             const props = {
               prix: prix,
@@ -186,17 +183,7 @@ router.post(
                       offre,
                       properties: encrypted,
                     });
-
-                    /* const Adminbody = {
-                      postedBy: offreModel.postedBy,
-                      titre: offreModel.titre,
-                      date: DateToCheck,
-                    };
-                    await axios.post(
-                      "http://localhost:5004/api/notif/new",
-                      Adminbody
-                    ); */
-
+                    
                     newDem.save().then(() => res.json(newDem));
                   }
                 }
@@ -231,7 +218,6 @@ router.put(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (response) => {
         var role = response.data.role;
-        //let DemandeModel = await Demande.findOne(req.params.demandeId);
         const OF = await Offre.findById(req.params.offreId);
 
         if (role === "admin") {
@@ -363,7 +349,7 @@ router.get("/filter/ofdem", verifyAccessToken, async (req, res) => {
       .then(async (response) => {
         var role = response.data.role;
         if (role === "user") {
-          //let offreModel = await Offre.findById(offre);
+      
           const DemandeData = await Demande.aggregate([
             { $match: { propperties: { userInfos: response.data.email } } },
           ]);
@@ -401,11 +387,6 @@ const demandeParcour = (DemandeData, offre) =>
     for (let i = 0; i < DemandeData.length; i++) {
       const demande = DemandeData[i];
       if (demande.offre.toString() === offre.offre._id.toString()) {
-        /*         
-        console.log("=IF-TRUE=");
-        console.log(offre.offre._id);
-        console.log(demande.offre);
-        console.log("========="); */
         var a = { offre: offre.offre, exist: true };
         return resolve(a);
       }

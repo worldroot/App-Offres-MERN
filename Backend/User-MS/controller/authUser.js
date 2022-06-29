@@ -68,19 +68,11 @@ router.post(
           });
         }
       } catch (error) {
-        //console.log(error);
         res.status(500).json({
           error: true,
           msg: "Erreur lors de l'inscription",
         });
       }
-
-      /*  if (error.errors.password) {
-        res.status(500).json({
-          error: true,
-          msg: "Minimum huit caractères, au moins une lettre et un chiffre",
-        });
-      } */
     }
   }
 );
@@ -225,7 +217,6 @@ router.post(
 
 router.get("/admin", async (req, res) => {
   try {
-    //const data = req.body
     const user = await User.findOne(req.body).select("-password");
     res.json(user);
   } catch (error) {

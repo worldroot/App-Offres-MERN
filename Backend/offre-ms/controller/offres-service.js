@@ -7,7 +7,6 @@ const {
   isRequestValidated,
 } = require("../middleware/offreValidator");
 const axios = require("axios");
-//const offreByid = require("../middleware/offreByid");
 
 // @route   POST api/appeloffre
 // @desc    Create appel offre
@@ -36,9 +35,6 @@ router.post(
               dateFin,
               souscategory,
               prixdebut,
-              category,
-              status,
-              postedBy,
               responsable,
             } = req.body;
 
@@ -113,13 +109,6 @@ router.post(
                         status: "pending",
                       });
 
-                      /*  if (responsable.OneSignalID) {
-                        if (responsable.OneSignalID.length > 0) {
-                          
-                          
-                        }
-                      } */
-                      
                       const Adminbody = {
                         responsable: responsable,
                         titre: titre,
@@ -154,12 +143,8 @@ router.put("/changestatus", verifyAccessToken, async (req, res) => {
     .get("http://localhost:5001/api/user/" + req.user.id)
     .then(async (response) => {
       var role = response.data.role;
-      let { id, status, archived } = req.body;
+      let { id } = req.body;
       const one = await Offre.findById(id);
-      var date = new Date();
-      const Debut = new Date(one.dateDebut);
-      const Fin = new Date(one.dateFin);
-      const DateToCheck = new Date(date.getTime());
       if (role === "super-admin") {
         try {
           if (one.status === "published" && !one.archived) {
@@ -201,18 +186,6 @@ router.put(
       .get("http://localhost:5001/api/user/" + req.user.id)
       .then(async (response) => {
         var role = response.data.role;
-        let {
-          titre,
-          description,
-          image,
-          dateDebut,
-          dateFin,
-          souscategory,
-          category,
-          status,
-          prixdebut,
-          responsable,
-        } = req.body;
         var date = new Date();
         const OF = await Offre.findById(req.params.offreId);
         const Debut = new Date(OF.dateDebut);
@@ -227,18 +200,7 @@ router.put(
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
-                  $set: {
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    prixdebut,
-                    souscategory,
-                    category,
-                    status,
-                    responsable,
-                  },
+                  $set: req.body,
                 },
                 { new: true }
               );
@@ -251,18 +213,7 @@ router.put(
               const updateOffre = await Offre.findByIdAndUpdate(
                 req.params.offreId,
                 {
-                  $set: {
-                    titre,
-                    description,
-                    image,
-                    dateDebut,
-                    dateFin,
-                    prixdebut,
-                    souscategory,
-                    category,
-                    status,
-                    responsable,
-                  },
+                  $set: req.body,
                 },
                 { new: true }
               );
@@ -299,9 +250,7 @@ router.delete(
         var date = new Date();
         const OF = await Offre.findById(req.params.offreId);
         const Debut = new Date(OF.dateDebut);
-        const Fin = new Date(OF.dateFin);
         const DateToCheck = new Date(date.getTime());
-        let offre = req.offre;
 
         if (role === "admin") {
           if (DateToCheck < Debut) {

@@ -44,13 +44,13 @@ router.post("/selected", async (req, res) => {
     data: { foo: "bar" },
   };
 
-  var req = https.request(optionsAd, function (res) {
+  var reqq = https.request(optionsAd, function (ress) {
     var payload = "";
-    res.on("data", function (data) {
+    ress.on("data", function (data) {
       payload += data;
     });
 
-    res.on("end", function () {
+    ress.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
         idClient: data.responsable._id,
@@ -64,13 +64,12 @@ router.post("/selected", async (req, res) => {
     });
   });
 
-  req.on("error", function (e) {
+  reqq.on("error", function (e) {
     console.log("ERROR:");
     console.log(e);
   });
-
-  req.write(JSON.stringify(message));
-  req.end();
+  reqq.write(JSON.stringify(message));
+  reqq.end();
 
   res
     .status(200)
@@ -89,13 +88,13 @@ router.post("/new", async (req, res) => {
     data: { foo: "bar" },
   };
 
-  var req = https.request(optionsAd, function (res) {
+  var reqq = https.request(optionsAd, function (ress) {
     var payload = "";
-    res.on("data", function (data) {
+    ress.on("data", function (data) {
       payload += data;
     });
 
-    res.on("end", function () {
+    ress.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
         idClient: data.postedBy,
@@ -109,13 +108,13 @@ router.post("/new", async (req, res) => {
     });
   });
 
-  req.on("error", function (e) {
+  reqq.on("error", function (e) {
     console.log("ERROR:");
     console.log(e);
   });
 
-  req.write(JSON.stringify(message));
-  req.end();
+  reqq.write(JSON.stringify(message));
+  reqq.end();
 
   res
     .status(200)
@@ -146,13 +145,13 @@ router.post("/toAll", async (req, res) => {
     included_segments: ["Subscribed Users"],
   };
 
-  var req = https.request(optionsAd, function (res) {
+  var reqq = https.request(optionsAd, function (ress) {
     var payload = "";
-    res.on("data", function (data) {
+    ress.on("data", function (data) {
       payload += data;
     });
 
-    res.on("end", function () {
+    ress.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
         idNotification: payload.id,
@@ -163,13 +162,13 @@ router.post("/toAll", async (req, res) => {
     });
   });
 
-  req.on("error", function (e) {
+  reqq.on("error", function (e) {
     console.log("ERROR:");
     console.log(e);
   });
 
-  req.write(JSON.stringify(message));
-  req.end();
+  reqq.write(JSON.stringify(message));
+  reqq.end();
 
   res
     .status(200)
@@ -186,15 +185,13 @@ router.post("/published-offre", async (req, res) => {
     included_segments: ["Subscribed Users"],
   };
 
-  var req = https.request(options, function (res) {
+  var reqq = https.request(options, function (ress) {
     var payload = "";
-    res.on("data", function (data) {
+    ress.on("data", function (data) {
       payload += data;
-      //console.log("Response:");
-      //console.log(JSON.parse(data));
     });
 
-    res.on("end", function () {
+    ress.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
         idNotification: payload.id,
@@ -207,13 +204,13 @@ router.post("/published-offre", async (req, res) => {
     });
   });
 
-  req.on("error", function (e) {
+  reqq.on("error", function (e) {
     console.log("ERROR:");
     console.log(e);
   });
 
-  req.write(JSON.stringify(message));
-  req.end();
+  reqq.write(JSON.stringify(message));
+  reqq.end();
 
   res
     .status(200)
@@ -234,12 +231,12 @@ router.post("/verif-account", async (req, res) => {
       data: { foo: "bar" },
     };
 
-    var req = https.request(options, function (res) {
+    var reqq = https.request(options, function (ress) {
       var payload = "";
-      res.on("data", function (data) {
+      ress.on("data", function (data) {
         payload += data;
       });
-      res.on("end", function () {
+      ress.on("end", function () {
         payload = JSON.parse(payload);
         const notification = new Notif({
           idClient: data.userId,
@@ -253,13 +250,13 @@ router.post("/verif-account", async (req, res) => {
       });
     });
 
-    req.on("error", function (e) {
+    reqq.on("error", function (e) {
       console.log("ERROR:");
       console.log(e);
     });
 
-    req.write(JSON.stringify(message));
-    req.end();
+    reqq.write(JSON.stringify(message));
+    reqq.end();
 
     res
       .status(200)
@@ -284,12 +281,12 @@ router.post("/welcome", async (req, res) => {
     data: { foo: "bar" },
   };
 
-  var req = https.request(options, function (res) {
+  var reqq = https.request(options, function (ress) {
     var payload = "";
-    res.on("data", function (data) {
+    ress.on("data", function (data) {
       payload += data;
     });
-    res.on("end", function () {
+    ress.on("end", function () {
       payload = JSON.parse(payload);
       const notification = new Notif({
         idClient: data.userId,
@@ -302,13 +299,13 @@ router.post("/welcome", async (req, res) => {
     });
   });
 
-  req.on("error", function (e) {
+  reqq.on("error", function (e) {
     console.log("ERROR:");
     console.log(e);
   });
 
-  req.write(JSON.stringify(message));
-  req.end();
+  reqq.write(JSON.stringify(message));
+  reqq.end();
 
   res
     .status(200)
@@ -327,9 +324,9 @@ router.post("/demande", async (req, res) => {
     data: { foo: "bar" },
   };
 
-  var req = https.request(options, function (res) {
+  var reqq = https.request(options, function (ress) {
     var payload = "";
-    res.on("data", function (data) {
+    ress.on("data", function (data) {
       payload += data;
       //console.log("Response:");
       //console.log(JSON.parse(data));
@@ -349,13 +346,13 @@ router.post("/demande", async (req, res) => {
     });
   });
 
-  req.on("error", function (e) {
+  reqq.on("error", function (e) {
     console.log("ERROR:");
     console.log(e);
   });
 
-  req.write(JSON.stringify(message));
-  req.end();
+  reqq.write(JSON.stringify(message));
+  reqq.end();
 
   res
     .status(200)

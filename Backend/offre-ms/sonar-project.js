@@ -25,8 +25,7 @@ const params = {
 sonarqubeScanner(
   {
     params,
-  },
-  () => {}
+  }
 );
 
 /**

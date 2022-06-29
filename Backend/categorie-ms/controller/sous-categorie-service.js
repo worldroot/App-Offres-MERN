@@ -33,7 +33,7 @@ router.post('/',
 
         }else{
              
-            const { sousnomcat, category, catref } = req.body
+            const { sousnomcat, category } = req.body
             try {
                 let categoryModel = await Category.findById(category)
                 if (!categoryModel) {

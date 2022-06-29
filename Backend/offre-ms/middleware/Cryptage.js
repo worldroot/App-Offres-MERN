@@ -4,7 +4,6 @@ const key = new NodeRSA({ b: 512 });
 var PublicKey = key.exportKey("public");
 var PrivateKey = key.exportKey("private");
 
-//let key_public = new NodeRSA(PublicKey);
 
 const ToCrypte = (key, text) => {
   try {
