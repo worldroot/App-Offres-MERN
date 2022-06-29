@@ -43,6 +43,8 @@ const DetailsDemande = ({ ...props }) => {
   const handleChange = (name) => (event) => {
     setData({ ...data, [name]: event.target.value });
   };
+  const Data = Offre.demandes;
+  const highestPrice = Math.max(...Data.map((dem) => dem.properties.prix));
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -143,16 +145,39 @@ const DetailsDemande = ({ ...props }) => {
                               </>
                             ) : (
                               <>
-                                <td>{dm.properties.userInfos}</td>
-                                <td>
-                                  {dm.createdAt
-                                    ? dm.createdAt.substring(0, 10)
-                                    : ""}
-                                </td>
-                                <td>
-                                  <i className="fas fa-lock-open mx-2 "> </i>
-                                  {dm.properties.prix} Dt
-                                </td>
+                                {highestPrice === parseInt(dm.properties.prix,10) ? (
+                                  <>
+                                    <td className="bg-success text-white ">{dm.properties.userEmail} {dm.properties.userTel}</td>
+                                    
+                                    <td className="bg-success text-white">
+                                      {dm.createdAt
+                                        ? dm.createdAt.substring(0, 10)
+                                        : ""}
+                                    </td>
+                                    <td className="bg-success text-white border-0">
+                                      <i className="fas fa-lock-open mx-2 ">
+                                        {" "}
+                                      </i>
+                                      {dm.properties.prix} Dt
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{dm.properties.userEmail}</td>
+                                   
+                                    <td>
+                                      {dm.createdAt
+                                        ? dm.createdAt.substring(0, 10)
+                                        : ""}
+                                    </td>
+                                    <td>
+                                      <i className="fas fa-lock-open mx-2 ">
+                                        {" "}
+                                      </i>
+                                      {dm.properties.prix} Dt
+                                    </td>
+                                  </>
+                                )}
                               </>
                             )}
                           </tr>

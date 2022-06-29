@@ -98,7 +98,7 @@ const Offre = ({ ...props }) => {
     const files = [...e.target.files];
     files.forEach((file) => {
       convertToBase64(file).then((res) => {
-        //console.log(res);
+        console.log(res);
         setData({ ...data, image: [...data.image, res] });
       });
     });
@@ -125,7 +125,6 @@ const Offre = ({ ...props }) => {
   const DatetoCheck = date.toISOString().substring(0, 10);
   const Today = new Date(date.getTime());
   //console.log(data.responsable);
-  //console.log(data.responsable);
 
   useEffect(() => {
     if (resdep) {
@@ -140,24 +139,6 @@ const Offre = ({ ...props }) => {
     }
   }, [resdep]);
 
-  /*   const [Text, setText] = useState("");
-  useEffect(() => {
-    if (data.dateDebut && data.dateFin) {
-      if (DatetoCheck > data.dateDebut && DatetoCheck < data.dateFin) {
-        //toast.info("Votre offre va être publier directement !");
-        setText("Votre offre va être publier directement !");
-      }
-
-      if (DatetoCheck > data.dateDebut) {
-        setText("Votre offre va être publier avec un status 'En attente' ");
-        //toast.info("Votre offre va être publier avec un status 'En attente' ");
-      }
-    }
-  }, [data.dateDebut, data.dateFin]); */
-
-  /*   console.log(data.dateFin);
-  console.log(DatetoCheck);
-  console.log(data.dateDebut); */
 
   return (
     <>

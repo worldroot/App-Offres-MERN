@@ -5,6 +5,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./assets/scss/argon-dashboard-react.scss";
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/fonts/Ooredoo-Heavy.otf'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import App from './app'
 

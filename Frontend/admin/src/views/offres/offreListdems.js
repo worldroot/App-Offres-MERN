@@ -174,7 +174,7 @@ const OffreListDemandes = ({ ...props }) => {
                           <th scope="col">Date fin</th>
                           <th scope="col">Catégories</th>
                           <th scope="col">Soumissions</th>
-                          <th scope="col">Status</th>
+                         
                           <th scope="col"></th>
                         </tr>
                       </thead>
@@ -198,11 +198,7 @@ const OffreListDemandes = ({ ...props }) => {
                                   {of.category} - {of.souscategory}
                                 </td>
                                 <td>( {of.demandes.length} )</td>
-                                <td>
-                                  {of.status === "closed" && (
-                                    <span className=" text-dark">Closed</span>
-                                  )}
-                                </td>
+                                
                                 <td>
                                   <Button
                                     className="btn btn-outline-success"

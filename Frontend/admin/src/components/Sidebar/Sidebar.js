@@ -104,6 +104,20 @@ const Sidebar = (props) => {
             </Row>
           </div>
 
+          {user.role === "admin" && (
+            <NavItem className="pt-0 nav-link" to="/admin" tag={Link}>
+              <i className="fas fa-tools text-red mr-2" />
+              <span className="text-dark"> Dashboard</span>
+            </NavItem>
+          )}
+          <br />
+          {user.role === "super-admin" && (
+            <NavItem className="pt-0 nav-link" to="/super-admin" tag={Link}>
+              <i className="fas fa-tools text-red mr-2" />
+              <span className="text-dark"> Dashboard</span>
+            </NavItem>
+          )}
+
           <NavItem className="pt-0 nav-link" to="/userslist" tag={Link}>
             <i className="fas fa-users text-red mr-2" />
             <span className="text-dark"> Utilisateurs</span>

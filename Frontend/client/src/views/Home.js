@@ -28,6 +28,8 @@ const select = require("../assets/img/undraw_Selecting_re_5ff6.png");
 const final = require("../assets/img/undraw_Agreement_re_d4dv.png");
 const dep = require("../assets/img/undraw_Folder_files_re_2cbm.png");
 
+import { Carousel } from "react-responsive-carousel";
+
 const Home = ({ ...props }) => {
   useEffect(() => {
     props.AllPub();
@@ -74,7 +76,23 @@ const Home = ({ ...props }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5 }}
           >
-            <UncontrolledCarousel  items={items} />
+            <Carousel
+              autoPlay={true}
+              showThumbs={false}
+              showIndicators={true}
+              showStatus={false}
+              showArrows={false}
+            >
+              <div>
+                <img src={bg1} />
+              </div>
+              <div>
+                <img src={bg2} />
+              </div>
+              <div>
+                <img src={bg3} />
+              </div>
+            </Carousel>
           </motion.div>
         </Container>
         <Container className="mb-6 mt-4">
