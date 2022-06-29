@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev-notif": "nodemon index.js",
-    "test": "jest --silent"
+    "test": "jest --silent",
+    "sonar": "node sonar-project.js"
   },
   "repository": {
     "type": "git",
