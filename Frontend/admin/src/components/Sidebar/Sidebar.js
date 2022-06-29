@@ -106,7 +106,7 @@ const Sidebar = (props) => {
 
           {user.role === "admin" && (
             <NavItem className="pt-0 nav-link" to="/admin" tag={Link}>
-              <i className="fas fa-tools text-red mr-2" />
+              <i className="fas fa-chart-line text-red mr-2" />
               <span className="text-dark"> Dashboard</span>
             </NavItem>
           )}

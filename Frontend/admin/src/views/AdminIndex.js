@@ -67,15 +67,15 @@ const AdminIndex = ({ ...props }) => {
         label: "Soumissions",
         data: props.List.map((data) => data.demandes.length),
         backgroundColor: [
-          "#2ECDF3",
-          "#FFA88E",
-          "#898989",
-          "#FFA300",
-          "#2CD5C4",
-          "#B0E020",
-          "#FFD500",
-          "#003f5c",
-          "#bc5090",
+          "#e27c7c",
+          "#a86464",
+          "#6d4b4b",
+          "#503f3f",
+          "#333333",
+          "#3c4e4b",
+          "#466964",
+          "#599e94",
+          "#6cd4c5",
         ],
         borderColor: "black",
         borderWidth: 1,
@@ -84,7 +84,7 @@ const AdminIndex = ({ ...props }) => {
   });
 
   useEffect(() => {
-    if(offresData.labels.length === 0){
+    if (offresData.labels.length === 0) {
       props.All();
     }
   }, [offresData]);
@@ -138,65 +138,7 @@ const AdminIndex = ({ ...props }) => {
                         </Row>
                       </CardBody>
                     </Card>
-                    <Card className="bg-white shadow w-100 mt-3">
-                      <CardHeader>
-                        <h3 className="text-dark">
-                          Les appels d'offres publiés
-                        </h3>
-                      </CardHeader>
-                      <CardBody>
-                        <Row xs={1} md={3} className="g-4">
-                          {props.ListPub.slice(0, 3).map((of, index) => {
-                            return (
-                              <Fragment key={index}>
-                                <motion.div
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ duration: 1.5 }}
-                                >
-                                  <Col>
-                                    <Card className="m-2 cardStyle border-0">
-                                      <CardBody className="text-dark border-0">
-                                        <div className="text-center">
-                                          <img
-                                            className="img-fluid rounded avatar avatar-lg m-2"
-                                            style={img}
-                                            src={of.image[0]}
-                                            alt=""
-                                          />
-                                        </div>
-                                        <Row>
-                                          <h3>{of.titre.substring(0, 25)}</h3>
-                                        </Row>
-                                        <Row>
-                                          <small>
-                                            Categorie: {of.category} -{" "}
-                                            {of.souscategory}
-                                          </small>
-                                        </Row>
-
-                                        <Row>
-                                          <small className="text-danger">
-                                            Date Debut:{" "}
-                                            {of.dateDebut.substring(0, 10)}
-                                          </small>
-                                        </Row>
-                                        <Row>
-                                          <small className="text-danger">
-                                            Date Limite:{" "}
-                                            {of.dateFin.substring(0, 10)}
-                                          </small>
-                                        </Row>
-                                      </CardBody>
-                                    </Card>
-                                  </Col>
-                                </motion.div>
-                              </Fragment>
-                            );
-                          })}
-                        </Row>
-                      </CardBody>
-                    </Card>
+                   
                   </Col>
 
                   <Col xl="3">
@@ -210,29 +152,18 @@ const AdminIndex = ({ ...props }) => {
                           <CardHeader className="  border-0">
                             <Row className="justify-content-center">
                               <Col>
-                                <i className="fas fa-user-shield text-center fa-3x text-dark"></i>
-                              </Col>
-                              <Col>
-                                <h3>Admin connecté</h3>
+                                <p className="text-dark">{userLocal.email}</p>
+                                <p className="text-dark">
+                                  {userLocal.nom} {userLocal.prenom}
+                                </p>
                               </Col>
                             </Row>
                           </CardHeader>
-                          <CardBody>
-                            <Row>
-                              <p>
-                                Nom et Prenom: {userLocal.nom}{" "}
-                                {userLocal.prenom}
-                              </p>
-                            </Row>
-                            <Row>
-                              <p>Email: {userLocal.email}</p>
-                            </Row>
-                          </CardBody>
                         </Card>
                       </Row>
 
                       <Row className="justify-content-center w-100 mt-2">
-                        <Card className="bg-blue shadow w-100">
+                        <Card className=" bg-gradient-info shadow w-100 border-0">
                           <CardBody>
                             <Row>
                               <Col lg="8">
@@ -241,7 +172,7 @@ const AdminIndex = ({ ...props }) => {
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-dark">
+                                <h1 className="text-white">
                                   {props.List.length}
                                 </h1>
                               </Col>
@@ -250,11 +181,11 @@ const AdminIndex = ({ ...props }) => {
                         </Card>
                       </Row>
                       <Row className="justify-content-center w-100 mt-2">
-                        <Card className="bg-success shadow w-100">
+                        <Card className="border-0 bg-gradient-success shadow w-100">
                           <CardBody>
                             <Row>
                               <Col lg="8">
-                                <p className="text-dark">
+                                <p className="text-white">
                                   Nombre d'offres publiés
                                 </p>
                               </Col>
@@ -268,7 +199,7 @@ const AdminIndex = ({ ...props }) => {
                         </Card>
                       </Row>
                       <Row className="justify-content-center w-100 mt-2">
-                        <Card className="bg-orange shadow w-100">
+                        <Card className="border-0 bg-gradient-red shadow w-100">
                           <CardBody>
                             <Row>
                               <Col lg="8">
@@ -277,7 +208,7 @@ const AdminIndex = ({ ...props }) => {
                                 </p>
                               </Col>
                               <Col lg="4">
-                                <h1 className="text-dark font-weight-bolder">
+                                <h1 className="text-white font-weight-bolder">
                                   {props.ListDems.length}
                                 </h1>
                               </Col>
@@ -287,6 +218,9 @@ const AdminIndex = ({ ...props }) => {
                       </Row>
                     </motion.div>
                   </Col>
+                </Row>
+                <Row>
+                
                 </Row>
               </>
             )}
