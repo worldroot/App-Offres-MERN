@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/notification-ms/tests/notificationById.test.js">
+        <testCase name="Notification getById  should return null if nothing is found" duration="16"/>
+        <testCase name="Notification getById  should retrieve correct notification if id matches" duration="4"/>
+    </file>
+    <file path="/Users/ghassenboughzala/Documents/Projects/App-Offres-MERN/Backend/notification-ms/tests/notification.test.js">
+        <testCase name="Create Notif can be created correctly" duration="11"/>
+    </file>
+</testExecutions>
