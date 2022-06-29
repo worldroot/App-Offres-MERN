@@ -136,6 +136,7 @@ const UsersList = (props) => {
                       <tr>
                         <th scope="col">Email</th>
                         <th scope="col">Nom {"&"} Prenom</th>
+                        <th scope="col">Telephone</th>
                         <th scope="col">Role</th>
                         <th scope="col">Active</th>
                         <th scope="col">Banned</th>
@@ -160,8 +161,8 @@ const UsersList = (props) => {
                                   <td>
                                     {user.nom} {user.prenom}
                                   </td>
+                                  <td>{user.telephone}</td>
                                   <td>{user.role}</td>
-
                                   <td>
                                     {user.active ? (
                                       <i className="far fa-check-circle text-success fa-2x"></i>
@@ -213,6 +214,7 @@ const UsersList = (props) => {
                                     {user.nom} {user.prenom}
                                   </td>
                                   <td>{user.role}</td>
+                                  <td>{user.telephone}</td>
                                   <td>
                                     {user.active ? (
                                       <i className="far fa-check-circle text-success fa-2x"></i>

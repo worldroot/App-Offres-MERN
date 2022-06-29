@@ -82,6 +82,7 @@ const Home = ({ ...props }) => {
               showIndicators={true}
               showStatus={false}
               showArrows={false}
+              infiniteLoop={true}
             >
               <div>
                 <img src={bg1} />

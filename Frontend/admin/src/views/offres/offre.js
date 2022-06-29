@@ -98,13 +98,25 @@ const Offre = ({ ...props }) => {
     const files = [...e.target.files];
     files.forEach((file) => {
       convertToBase64(file).then((res) => {
-        console.log(res);
         setData({ ...data, image: [...data.image, res] });
       });
     });
-    //toast.info("Téléchargement d'images réussi");
     setShowImg(true);
   };
+  console.log(data.image);
+  /*     const handleFileUpload = async (e) => {
+    const files = [...e.target.files];
+    const filePathsPromises = image;
+    files.forEach((file) => {
+      filePathsPromises.push(convertToBase64(file));
+    });
+    const filePaths = await Promise.all(filePathsPromises);
+    const mappedFiles = filePaths.map((base64File) => base64File);
+    toast.info("Téléchargement d'images réussi");
+    setShowImg(true);
+    setData({ ...data, image: mappedFiles.reverse() });
+  };
+  */
 
   const onDelete = (e) => {
     const filtered = data.image.filter((item, index) => index !== e);
@@ -138,7 +150,6 @@ const Offre = ({ ...props }) => {
       });
     }
   }, [resdep]);
-
 
   return (
     <>
@@ -180,14 +191,13 @@ const Offre = ({ ...props }) => {
                     Prix debut (dt)
                   </label>
 
-                  <CurrencyInput
+                  <Input
                     name="prixdebut"
                     className="form-control"
-                    defaultValue={data.prixdebut}
-                    decimalsLimit={2}
+                    type="number"
+                    value={data.prixdebut}
                     onChange={handleChange("prixdebut")}
                   />
-                  {console.log(data.prixdebut.trim())}
                 </FormGroup>
               </Col>
             </Row>

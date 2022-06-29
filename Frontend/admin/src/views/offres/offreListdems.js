@@ -125,11 +125,7 @@ const OffreListDemandes = ({ ...props }) => {
             <div className="text-center my-3">
               <div id="loading"></div>
             </div>
-            <Row className="justify-content-center">
-              <h1 className="text-center text-red text-xl-center my-3">
-                Aucune demandes à traiter
-              </h1>
-            </Row>
+           
           </>
         ) : (
           <Container className="mt--7" fluid>
@@ -197,7 +193,7 @@ const OffreListDemandes = ({ ...props }) => {
                                 <td>
                                   {of.category} - {of.souscategory}
                                 </td>
-                                <td>( {of.demandes.length} )</td>
+                                <td> {of.demandes.length} </td>
                                 
                                 <td>
                                   <Button
