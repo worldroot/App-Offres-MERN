@@ -1,15 +1,16 @@
 /* groovylint-disable CompileStatic, DuplicateStringLiteral, FileEndsWithoutNewline, SpaceAroundOperator, SpaceBeforeOpeningBrace, TrailingWhitespace, UnnecessaryGString */
 pipeline {
-    agent any 
-        
+     
     environment { 
         PATH = "$PATH:/usr/local/bin"
         COMPOSE_FILE = "docker-compose.yml"
         registry = "ghassenbogh/pfe-mern" 
         registryCredential = 'docker-app-offre'
-        dockerImage = ''  
+        dockerImage = ''
         //DOCKERHUB_CREDENTIALS=credentials('docker-app-offre')
     }
+
+    agent any 
 
     stages{
             stage('Jest Tests'){
@@ -58,21 +59,20 @@ pipeline {
                     }                
             }
             stage('Push') {
-
                     steps {
-                        script{
-                                docker.withTool('') { 
-
-                                    docker.withRegistry( '', registryCredential ) 
-                                    {dockerImage.push()}
-
+                        script { 
+                        docker.withRegistry( '', registryCredential ) { 
+                            dockerImage.push() 
                                 }
-                                
-                            }
-                        //sh 'docker push ghassenbogh/pfe-mern:latest'
-                    }
+                            } 
+                        }
 		    }
-
+            stage('Cleaning up') { 
+                steps { 
+                    sh "docker rmi $registry:$BUILD_NUMBER" 
+                }
+            } 
+            
 
             /*
             stage('Building Images'){
