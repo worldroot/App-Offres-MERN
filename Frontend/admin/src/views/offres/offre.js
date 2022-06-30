@@ -18,7 +18,6 @@ import {
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import CurrencyInput from "react-currency-input-field";
 import React, { Fragment, useState, useEffect } from "react";
 import { addOffre } from "redux/offres/offreActions";
 import { getAllCat, getAllSousCat } from "redux/cat/catActions";

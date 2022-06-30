@@ -23,7 +23,7 @@ import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "components/modal.css";
 import "./offre.css";
 import { toast } from "react-toastify";
-import CurrencyInput from "react-currency-input-field";
+//import CurrencyInput from "react-currency-input-field";
 
 const AjoutDemande = ({ ...props }) => {
   const backdrop = {

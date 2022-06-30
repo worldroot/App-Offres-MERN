@@ -74,8 +74,7 @@
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
-    "svgo": "^2.8.0",
-    "uuid": "^8.3.2"
+    "svgo": "^2.8.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

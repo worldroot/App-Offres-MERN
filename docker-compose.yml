@@ -69,7 +69,7 @@ services:
   react-client:
     build:
       context: ./Frontend/client
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     image: react-client
     container_name: react-client
     command: npm run start
