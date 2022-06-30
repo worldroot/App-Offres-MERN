@@ -64,11 +64,11 @@ const user1 = {
     nom: 'testNom',
     prenom: 'testPrenom',
     email: '@test',
-    password: process.env.RANDOM_PASSWORD
+    password: 'gh12345678'
 };
 const user2 = {
     nom: 'Test2',
     prenom: 'Test2',
     email: '2@test',
-    password: process.env.RANDOM_PASSWORD
+    password: 'gh12347856'
 };
