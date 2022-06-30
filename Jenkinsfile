@@ -3,12 +3,12 @@ pipeline {
     agent any 
         
     environment { 
-/*         PATH = "$PATH:/usr/local/bin"
+        PATH = "$PATH:/usr/local/bin"
         COMPOSE_FILE = "docker-compose.yml"
         registry = "ghassenbogh/pfe-mern" 
-        registryCredential = 'dockerHub'
-        dockerImage = ''  */
-        DOCKERHUB_CREDENTIALS=credentials('docker-app-offre')
+        registryCredential = 'docker-app-offre'
+        dockerImage = ''  
+        //DOCKERHUB_CREDENTIALS=credentials('docker-app-offre')
     }
 
     stages{
@@ -38,10 +38,10 @@ pipeline {
                             sh "npm install"
                             sh "npm run sonar"
                         }
-                dir("Backend/categorie-ms"){
-                            sh "npm install"
-                            sh "npm run sonar"
-                }
+                        dir("Backend/categorie-ms"){
+                                    sh "npm install"
+                                    sh "npm run sonar"
+                        }
                         dir("Backend/offre-ms"){
                             sh "npm install"
                             sh "npm run sonar"
