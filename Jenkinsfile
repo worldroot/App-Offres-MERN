@@ -40,26 +40,20 @@ pipeline {
                             sh "npm install"
                             sh "npm run sonar"
                         }
-                    } 
-                    steps{
-                        dir("Backend/categorie-ms"){
+                         dir("Backend/categorie-ms"){
                             sh "npm install"
                             sh "npm run sonar"
                         }
-                    } 
-                    steps{
                         dir("Backend/offre-ms"){
                             sh "npm install"
                             sh "npm run sonar"
                         }
-                    }  
-                    steps{
                         dir("Backend/notification-ms"){
                             sh "npm install"
                             sh "npm run sonar"
                         }
-                    }    
-
+                    } 
+                    
             }
             stage('Docker Compose Build'){
                     steps{
