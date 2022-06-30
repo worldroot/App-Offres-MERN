@@ -60,15 +60,7 @@ pipeline {
             }
             stage('Push') {
                     steps{
-                        script{
-                                withCredentials([usernamePassword( credentialsId: 'docker-app-offre', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                docker.withRegistry('', 'docker-app-offre') {
-                                    sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-                                    dockerImage.push("${env.BUILD_NUMBER}")
-                                    dockerImage.push("latest")
-                                    }
-                                }
-                            }  
+                        sh "docker-compose push dep-user-ms:$BUILD_NUMBER"
                     }
             }    
             stage('Cleaning up') { 
@@ -76,7 +68,6 @@ pipeline {
                     sh "docker rmi $registry:$BUILD_NUMBER" 
                 }
             } 
-             
         } 
 
 }
