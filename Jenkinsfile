@@ -1,14 +1,9 @@
-/* groovylint-disable CompileStatic, DuplicateStringLiteral, FileEndsWithoutNewline, SpaceAroundOperator, SpaceBeforeOpeningBrace, TrailingWhitespace, UnnecessaryGString */
+/* groovylint-disable CompileStatic, DuplicateStringLiteral, FileEndsWithoutNewline, LineLength, SpaceAroundOperator, SpaceBeforeOpeningBrace, TrailingWhitespace, UnnecessaryGString */
 pipeline {
     agent any 
         
     environment { 
-/*         PATH = "$PATH:/usr/local/bin"
-        COMPOSE_FILE = "docker-compose.yml"
-        registry = "ghassenbogh/pfe-mern" 
-        registryCredential = 'dockerHub'
-        dockerImage = ''  */
-        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+        DOCKERHUB_CREDENTIALS=credentials('docker-app-offre')
     }
 
     stages{
