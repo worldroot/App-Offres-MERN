@@ -15,22 +15,6 @@ services:
       - "5001:5001"
     networks:
       - app-network
-  
-  dep-user-ms:
-    build:
-      context: ./Backend/user-ms
-      dockerfile: Dockerfile
-    image: ghassenbogh/user-ms
-    container_name: user-ms
-    command: npm run dev-user
-    volumes:
-      - ./Backend/user-ms:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - "5001:5001"
-    networks:
-      - app-network
-
   categorie-ms:
     build:
       context: ./Backend/categorie-ms
