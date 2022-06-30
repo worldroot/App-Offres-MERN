@@ -60,7 +60,16 @@ pipeline {
             stage('Push') {
 
                     steps {
-                        sh 'docker push ghassenbogh/pfe-mern:latest'
+                        script{
+                                docker.withTool('') { 
+
+                                    docker.withRegistry( '', registryCredential ) 
+                                    {dockerImage.push()}
+
+                                }
+                                
+                            }
+                        //sh 'docker push ghassenbogh/pfe-mern:latest'
                     }
 		    }
 

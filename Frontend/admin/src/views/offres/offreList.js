@@ -116,9 +116,9 @@ const OffreList = ({ ...props }) => {
       );
     }
     if (Sorting) {
-      computed = computed.sort((a, b) => a.status.localeCompare(b.status));
+      computed = computed.sort((a, b) => new Date(a.dateFin) - new Date(b.dateFin))
     } else {
-      computed = computed.sort((a, b) => b.status.localeCompare(a.status));
+      computed = computed.sort((a, b) => new Date(b.dateFin) - new Date(a.dateFin));
     }
     setPageNumber(computed.length);
     return computed.slice(
