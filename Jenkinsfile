@@ -111,7 +111,12 @@ pipeline {
             }      
             stage('Cleaning up') { 
                     steps { 
-                        sh "docker rmi $registry:$BUILD_NUMBER" 
+                        sh "docker rmi ghassenbogh/user-ms:$BUILD_NUMBER"
+                        sh "docker rmi ghassenbogh/categorie-ms:$BUILD_NUMBER"
+                        sh "docker rmi ghassenbogh/offre-ms:$BUILD_NUMBER" 
+                        sh "docker rmi ghassenbogh/notification-ms:$BUILD_NUMBER"
+                        sh "docker rmi ghassenbogh/react-client:$BUILD_NUMBER"
+                        sh "docker rmi ghassenbogh/offre-ms:$BUILD_NUMBER"
                     }
             } 
         } 
