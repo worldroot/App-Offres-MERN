@@ -40,5 +40,6 @@ const CompleteOffre = {
     dateDebut: '2022-06-06',
     dateFin: '2022-06-30',
     souscategory: 'x',
-    postedBy: 'x',
+    postedBy: '62a8b00bf9c4fe079c3ec659',
+    responsable: '62a8b00bf9c4fe079c3ec659'
 };

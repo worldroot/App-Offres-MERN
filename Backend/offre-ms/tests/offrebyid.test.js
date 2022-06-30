@@ -60,7 +60,8 @@ const offre1 = {
     dateDebut: '2022-06-06',
     dateFin: '2022-06-30',
     souscategory: 'x',
-    postedBy: 'x',
+    postedBy: '62a8b00bf9c4fe079c3ec659',
+    responsable: '62a8b00bf9c4fe079c3ec659'
 };
 const offre2 = {
     titre: 'Test34',
@@ -69,5 +70,6 @@ const offre2 = {
     dateDebut: '2022-06-06',
     dateFin: '2022-06-30',
     souscategory: 'x2',
-    postedBy: 'x2',
+    postedBy: '62a8b00bf9c4fe079c3ec659',
+    responsable: '62a8b00bf9c4fe079c3ec659'
 };
