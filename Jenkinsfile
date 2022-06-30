@@ -13,54 +13,15 @@ pipeline {
     agent any 
 
     stages{
-            stage('Jest Tests'){
-                    steps{
-                        dir("Backend/user-ms"){
-                            sh "npm install"
-                            sh "npm test"
-                        }
-                        dir("Backend/categorie-ms"){
-                            sh "npm install"
-                            sh "npm test"
-                        }
-                        dir("Backend/offre-ms"){
-                            sh "npm install"
-                            sh "npm test"
-                        }
-                        dir("Backend/notification-ms"){
-                            sh "npm install"
-                            sh "npm test"
-                        }
-                    }                
-            }
-            stage('SonarQube'){
-                    steps{
-                        dir("Backend/user-ms"){
-                            sh "npm install"
-                            sh "npm run sonar"
-                        }
-                        dir("Backend/categorie-ms"){
-                                    sh "npm install"
-                                    sh "npm run sonar"
-                        }
-                        dir("Backend/offre-ms"){
-                            sh "npm install"
-                            sh "npm run sonar"
-                        }
-                        dir("Backend/notification-ms"){
-                            sh "npm install"
-                            sh "npm run sonar"
-                        }
-                    } 
-            }
+            
             stage('Docker Compose Build'){
                     steps{
                         sh "docker-compose build"
                     }                
             }
-            stage('Push') {
+            stage('Docker Compose Push') {
                     steps{
-                        sh "docker-compose push dep-user-ms:$BUILD_NUMBER"
+                        sh "docker-compose push dep-user-ms"
                     }
             }    
             stage('Cleaning up') { 
