@@ -59,46 +59,20 @@ pipeline {
                     }                
             }
             stage('Push') {
-                    steps {
-                        script { 
-                        docker.withRegistry( '', registryCredential ) { 
-                            dockerImage.push() 
-                                }
-                            } 
+                    withCredentials([usernamePassword( credentialsId: 'docker-app-offre', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    docker.withRegistry('', 'docker-app-offre') {
+                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                        dockerImage.push("latest")
                         }
-		    }
+                    }
+            }    
             stage('Cleaning up') { 
                 steps { 
                     sh "docker rmi $registry:$BUILD_NUMBER" 
                 }
             } 
-            
+             
+        } 
 
-            /*
-            stage('Building Images'){
-                    steps{
-                        dir("Backend/user-ms"){
-                            script{
-                                dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                            }
-                        }    
-                    }                
-            }
-            stage('Deploy Images'){
-                    steps{
-                        dir("Backend/user-ms"){
-                            script{
-                                docker.withTool('') { 
-
-                                    docker.withRegistry( '', registryCredential ) 
-                                    {dockerImage.push()}
-
-                                }
-                                
-                            }
-                        }
-                    }
-            }
-            */ 
-    }
-} 
+}
