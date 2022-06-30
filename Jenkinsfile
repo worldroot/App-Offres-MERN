@@ -60,13 +60,15 @@ pipeline {
             }
             stage('Push') {
                     steps{
-                            withCredentials([usernamePassword( credentialsId: 'docker-app-offre', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        docker.withRegistry('', 'docker-app-offre') {
-                            sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-                            dockerImage.push("${env.BUILD_NUMBER}")
-                            dockerImage.push("latest")
-                            }
-                        }
+                        script{
+                                withCredentials([usernamePassword( credentialsId: 'docker-app-offre', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                docker.withRegistry('', 'docker-app-offre') {
+                                    sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                                    dockerImage.push("${env.BUILD_NUMBER}")
+                                    dockerImage.push("latest")
+                                    }
+                                }
+                            }  
                     }
             }    
             stage('Cleaning up') { 
